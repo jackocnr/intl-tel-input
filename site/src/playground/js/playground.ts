@@ -28,6 +28,7 @@ const resetAllButton = document.querySelector<HTMLButtonElement>("#playgroundRes
 const shareButton = document.querySelector<HTMLButtonElement>("#playgroundShareBtn");
 const resetAttrsButton = document.querySelector<HTMLButtonElement>("#playgroundResetAttrs");
 const initCodeEl = document.querySelector<HTMLElement>("#playgroundInitCode")!;
+const initHtmlEl = document.querySelector<HTMLElement>("#playgroundInitHtml");
 const integrationTabs = document.querySelectorAll<HTMLButtonElement>(".iti-playground-integration-tabs [data-integration]");
 
 const INTEGRATION_VALUES = new Set<Integration>(["vanilla", "react", "vue", "angular", "svelte"]);
@@ -394,7 +395,7 @@ integrationTabs.forEach((tab) => {
       optionMeta,
       defaultState,
       specialOptionKeys,
-    }, currentIntegration);
+    }, currentIntegration, initHtmlEl);
   });
 });
 
@@ -403,7 +404,7 @@ renderInitCodeFromState(initialState, initCodeEl, {
   optionMeta,
   defaultState,
   specialOptionKeys,
-}, currentIntegration);
+}, currentIntegration, initHtmlEl);
 
 void initItiWithState(initialState);
 updateUrlFromState(initialState, {
@@ -704,7 +705,7 @@ function scheduleReinit() {
       optionMeta,
       defaultState,
       specialOptionKeys,
-    }, currentIntegration);
+    }, currentIntegration, initHtmlEl);
     updateNotesVisibility(state);
     initItiWithState(state).then(() => {
       if (pendingHintChecks.size > 0) {
@@ -773,7 +774,7 @@ function resetOptionGroupToDefaults(groupKeys) {
     optionMeta,
     defaultState,
     specialOptionKeys,
-  }, currentIntegration);
+  }, currentIntegration, initHtmlEl);
   updateNotesVisibility(state);
   void initItiWithState(state);
   updateUrlFromState(state, {
@@ -817,7 +818,7 @@ function resetAllToDefaults() {
     optionMeta,
     defaultState,
     specialOptionKeys,
-  }, currentIntegration);
+  }, currentIntegration, initHtmlEl);
   updateNotesVisibility(state);
   void initItiWithState(state);
   updateUrlFromState(state, {
@@ -847,7 +848,7 @@ if (resetAttrsButton) {
       optionMeta,
       defaultState,
       specialOptionKeys,
-    }, currentIntegration);
+    }, currentIntegration, initHtmlEl);
     updateNotesVisibility(state);
     void initItiWithState(state);
     updateUrlFromState(state, {
@@ -1139,7 +1140,7 @@ function syncStateAfterFormEdit() {
     optionMeta,
     defaultState,
     specialOptionKeys,
-  }, currentIntegration);
+  }, currentIntegration, initHtmlEl);
 }
 
 function captureSelectedCountryToForm({ requireDropdownInteraction = true } = {}) {

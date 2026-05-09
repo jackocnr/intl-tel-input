@@ -126,6 +126,23 @@ function camelToKebab(s: string): string {
   return s.replace(/([A-Z])/g, "-$1").toLowerCase();
 }
 
+function escapeHtmlAttr(s: string): string {
+  return s.replace(/&/g, "&amp;").replace(/"/g, "&quot;");
+}
+
+// ---------- VANILLA HTML ----------
+
+function renderVanillaHtml(model: SnippetModel): string {
+  const attrs: string[] = ['type="tel"', 'id="phone"'];
+  if (model.placeholder) {
+    attrs.push(`placeholder="${escapeHtmlAttr(model.placeholder)}"`);
+  }
+  if (model.initialValue) {
+    attrs.push(`value="${escapeHtmlAttr(model.initialValue)}"`);
+  }
+  return `<input ${attrs.join(" ")} />`;
+}
+
 // ---------- VANILLA ----------
 
 function renderVanilla(model: SnippetModel): string {
@@ -540,11 +557,19 @@ const RENDERERS: Record<Integration, (model: SnippetModel) => string> = {
   svelte: renderSvelte,
 };
 
+function rehighlight(el: HTMLElement) {
+  if (window.hljs && typeof window.hljs.highlightElement === "function") {
+    delete el.dataset.highlighted;
+    window.hljs.highlightElement(el);
+  }
+}
+
 export function renderInitCodeFromState(
   state: Record<string, any>,
   initCodeEl: HTMLElement | null,
   deps: BuildModelDeps,
   integration: Integration = "vanilla",
+  initHtmlEl: HTMLElement | null = null,
 ) {
   if (!initCodeEl) {
     return;
@@ -572,8 +597,19 @@ export function renderInitCodeFromState(
   // Highlight.js highlights on page load, but we update this block live, so re-run highlighting.
   // Highlight.js marks nodes as already-highlighted via `data-highlighted`, so clear that first.
   // Highlight.js is loaded after this script, so guard for it not being available yet.
-  if (window.hljs && typeof window.hljs.highlightElement === "function") {
-    delete initCodeEl.dataset.highlighted;
-    window.hljs.highlightElement(initCodeEl);
+  rehighlight(initCodeEl);
+
+  // Vanilla snippet uses `document.querySelector("#phone")`, so show the user the matching
+  // <input> markup (with the configured value/placeholder) above the JS block.
+  if (initHtmlEl) {
+    const htmlPre = initHtmlEl.parentElement;
+    const showHtml = integration === "vanilla";
+    if (htmlPre) {
+      htmlPre.toggleAttribute("hidden", !showHtml);
+    }
+    if (showHtml) {
+      initHtmlEl.textContent = renderVanillaHtml(model);
+      rehighlight(initHtmlEl);
+    }
   }
 }
