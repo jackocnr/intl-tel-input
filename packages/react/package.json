@@ -54,13 +54,23 @@
     "intl-tel-input",
     "react",
     "component",
+    "controlled-component",
+    "react-hook-form",
     "international",
+    "country",
+    "country-picker",
     "telephone",
     "phone",
+    "phone-number",
+    "tel",
+    "mobile",
+    "dial-code",
     "input",
     "flag",
     "dropdown",
     "validation",
+    "libphonenumber",
+    "formatting",
     "typescript"
   ]
 }

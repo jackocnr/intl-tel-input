@@ -42,14 +42,25 @@
   "keywords": [
     "intl-tel-input",
     "vue",
+    "vue3",
     "component",
+    "composition-api",
+    "v-model",
     "international",
+    "country",
+    "country-picker",
     "telephone",
     "phone",
+    "phone-number",
+    "tel",
+    "mobile",
+    "dial-code",
     "input",
     "flag",
     "dropdown",
     "validation",
+    "libphonenumber",
+    "formatting",
     "typescript"
   ]
 }

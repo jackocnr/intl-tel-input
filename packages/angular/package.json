@@ -55,14 +55,26 @@
   "keywords": [
     "intl-tel-input",
     "angular",
+    "ngx",
     "component",
+    "standalone",
+    "forms",
+    "reactive-forms",
     "international",
+    "country",
+    "country-picker",
     "telephone",
     "phone",
+    "phone-number",
+    "tel",
+    "mobile",
+    "dial-code",
     "input",
     "flag",
     "dropdown",
     "validation",
+    "libphonenumber",
+    "formatting",
     "typescript"
   ]
 }

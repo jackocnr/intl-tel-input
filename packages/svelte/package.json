@@ -43,14 +43,24 @@
   "keywords": [
     "intl-tel-input",
     "svelte",
+    "svelte5",
+    "runes",
     "component",
     "international",
+    "country",
+    "country-picker",
     "telephone",
     "phone",
+    "phone-number",
+    "tel",
+    "mobile",
+    "dial-code",
     "input",
     "flag",
     "dropdown",
     "validation",
+    "libphonenumber",
+    "formatting",
     "typescript"
   ]
 }
