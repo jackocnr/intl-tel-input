@@ -125,6 +125,11 @@ function shouldDisableKeepDropdownOpen(state) {
   return getKeepDropdownOpenDisabledReason(state) !== null;
 }
 
+// Tracks "we auto-unchecked the checkbox because the current options disabled
+// it" so that when the user reverses those options, we can restore the
+// previous on-state. Cleared whenever the user toggles the checkbox themselves.
+let keepDropdownOpenAutoDisabled = false;
+
 let keepDropdownOpenTooltip: InstanceType<typeof window.bootstrap.Tooltip> | null = null;
 let keepDropdownOpenTooltipCleanup: (() => void) | null = null;
 function disposeKeepDropdownOpenTooltip() {
@@ -171,7 +176,12 @@ function syncKeepDropdownOpenAvailability(state) {
   }
 
   if (disabled && keepDropdownOpenCheckbox.checked) {
+    keepDropdownOpenAutoDisabled = true;
     keepDropdownOpenCheckbox.checked = false;
+    syncKeepDropdownOpen();
+  } else if (!disabled && keepDropdownOpenAutoDisabled && !keepDropdownOpenCheckbox.checked) {
+    keepDropdownOpenAutoDisabled = false;
+    keepDropdownOpenCheckbox.checked = true;
     syncKeepDropdownOpen();
   }
 }
@@ -220,6 +230,8 @@ const syncKeepDropdownOpen = () => {
   updateKeepDropdownOpenUrlParam(keepDropdownOpenCheckbox.checked);
 };
 keepDropdownOpenCheckbox.addEventListener("change", () => {
+  // User toggled it themselves — drop any pending auto-restore.
+  keepDropdownOpenAutoDisabled = false;
   syncKeepDropdownOpen();
   scheduleReinit();
 });
