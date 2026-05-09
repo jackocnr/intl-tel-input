@@ -55,6 +55,34 @@ describe("Svelte IntlTelInput wrapper", () => {
     });
   });
 
+  test("initialValue prop sets the initial number on mount", async () => {
+    const { component } = render(IntlTelInput, { initialValue: "+447733123456" });
+    const getInstance = (component as unknown as {
+      getInstance: () => { getNumber: () => string; getSelectedCountryData: () => { iso2: string } } | undefined;
+    }).getInstance;
+    await waitFor(() => {
+      expect(getInstance()?.getNumber()).toBe("+447733123456");
+      expect(getInstance()?.getSelectedCountryData().iso2).toBe("gb");
+    });
+  });
+
+  test("setting value then resetting to empty clears the input", async () => {
+    const onChangeNumber = vi.fn();
+    const { rerender } = render(IntlTelInput, {
+      value: "+447733123456",
+      onChangeNumber,
+    });
+    await waitFor(() => {
+      expect(getTelInput().value).not.toBe("");
+      expect(onChangeNumber).toHaveBeenCalledWith("+447733123456");
+    });
+    await rerender({ value: "", onChangeNumber });
+    await waitFor(() => {
+      expect(getTelInput().value).toBe("");
+      expect(onChangeNumber).toHaveBeenLastCalledWith("");
+    });
+  });
+
   test("fires onChangeValidity and onChangeErrorCode when number becomes valid", async () => {
     const onChangeValidity = vi.fn();
     const onChangeErrorCode = vi.fn();

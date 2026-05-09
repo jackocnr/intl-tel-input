@@ -119,6 +119,23 @@ describe("Angular IntlTelInput wrapper", () => {
     expect(errorCodeChange).toHaveBeenLastCalledWith(null);
   });
 
+  test("writeValue then resetting to empty clears the input", async () => {
+    const { fixture, component } = mount();
+    const numberChange = vi.fn();
+    component.numberChange.subscribe(numberChange);
+
+    const instance = component.getInstance()!;
+    await instance.promise;
+
+    component.writeValue("+447733123456");
+    await waitUntil(() => getTelInput(fixture).value !== "");
+    expect(numberChange).toHaveBeenCalledWith("+447733123456");
+
+    component.writeValue("");
+    await waitUntil(() => getTelInput(fixture).value === "");
+    expect(numberChange).toHaveBeenLastCalledWith("");
+  });
+
   test("disabled input toggles the input disabled state", () => {
     const { fixture } = mount({ disabled: true });
     expect(getTelInput(fixture).disabled).toBe(true);

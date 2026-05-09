@@ -64,6 +64,22 @@ describe("Vue IntlTelInput wrapper", () => {
     });
   });
 
+  test("setting modelValue then resetting to empty clears the input", async () => {
+    const onChangeNumber = vi.fn();
+    const { rerender } = render(IntlTelInput, {
+      props: { modelValue: "+447733123456", onChangeNumber },
+    });
+    await waitFor(() => {
+      expect(getTelInput().value).not.toBe("");
+      expect(onChangeNumber).toHaveBeenCalledWith("+447733123456");
+    });
+    await rerender({ modelValue: "", onChangeNumber });
+    await waitFor(() => {
+      expect(getTelInput().value).toBe("");
+      expect(onChangeNumber).toHaveBeenLastCalledWith("");
+    });
+  });
+
   test("fires changeValidity and changeErrorCode when number becomes valid", async () => {
     const onChangeValidity = vi.fn();
     const onChangeErrorCode = vi.fn();

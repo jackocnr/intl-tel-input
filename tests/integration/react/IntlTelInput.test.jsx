@@ -60,6 +60,37 @@ describe("React IntlTelInput wrapper", () => {
     });
   });
 
+  // React's equivalent of an `initialValue` prop is `inputProps.defaultValue`.
+  test("inputProps.defaultValue sets the initial number on mount", async () => {
+    const ref = createRef();
+    render(
+      <IntlTelInput
+        ref={ref}
+        inputProps={{ defaultValue: "+447733123456" }}
+      />,
+    );
+    await waitFor(() => {
+      expect(ref.current.getInstance().getNumber()).toBe("+447733123456");
+      expect(ref.current.getInstance().getSelectedCountryData().iso2).toBe("gb");
+    });
+  });
+
+  test("clearing the value prop empties the input", async () => {
+    const onChangeNumber = vi.fn();
+    const { rerender } = render(
+      <IntlTelInput onChangeNumber={onChangeNumber} value="+447733123456" />,
+    );
+    await waitFor(() => {
+      expect(getTelInput().value).not.toBe("");
+      expect(onChangeNumber).toHaveBeenCalledWith("+447733123456");
+    });
+    rerender(<IntlTelInput onChangeNumber={onChangeNumber} value="" />);
+    await waitFor(() => {
+      expect(getTelInput().value).toBe("");
+      expect(onChangeNumber).toHaveBeenLastCalledWith("");
+    });
+  });
+
   test("fires onChangeValidity and onChangeErrorCode for valid and invalid numbers", async () => {
     const onChangeValidity = vi.fn();
     const onChangeErrorCode = vi.fn();
