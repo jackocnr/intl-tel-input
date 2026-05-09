@@ -101,7 +101,7 @@ Additional class(es) to add to the (injected) wrapper div element `<div class="i
 Type: `boolean`  
 Default: `true`  
 
-Add a search input to the top of the dropdown, so users can filter the displayed countries. 
+Add a search input to the top of the dropdown, so users can filter the displayed countries. Matches against country name, iso2 code, dial code, and initials. 
 
 View `intl-tel-input` with this disabled in the [Playground](/playground?countrySearch=false#user-interface-options).
 
