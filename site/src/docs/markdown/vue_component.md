@@ -101,6 +101,9 @@ In Vue templates you can also use the kebab-case form (e.g. `initial-country`) i
 > [!NOTE]
 > If you're migrating from an older version, the previous `:initOptions="{ initialCountry: 'us' }"` style is no longer supported — pass each option as its own prop instead.
 
+> [!NOTE]
+> These props are read once at init — changing them later has no effect. For runtime changes, see [Accessing instance methods](#accessing-instance-methods) below (e.g. `getInstance().setCountry("gb")`).
+
 
 ## Events
 

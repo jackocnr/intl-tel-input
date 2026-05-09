@@ -89,6 +89,9 @@ All of the core library's [initialisation options](/docs/options) are supported 
 > [!NOTE]
 > If you're migrating from an older version, the previous `[initOptions]="{ initialCountry: 'us' }"` style is no longer supported — pass each option as its own input instead.
 
+> [!NOTE]
+> These inputs are read once at init — changing them later has no effect. For runtime changes, see [Accessing instance methods](#accessing-instance-methods) below (e.g. `getInstance().setCountry("gb")`).
+
 
 ## Form integration (ngModel / formControl)
 
