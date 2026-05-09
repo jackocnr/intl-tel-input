@@ -49,7 +49,6 @@ h1 {
 }
 
 .iti-live-results {
-  margin: 10px 0 20px;
   border: 1px solid rgb(var(--header-bg-color-rgb));
   padding: 10px;
   border-radius: 3px;

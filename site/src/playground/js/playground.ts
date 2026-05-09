@@ -21,6 +21,7 @@ const telInput = document.querySelector<HTMLInputElement>("#playgroundPhone")!;
 const playgroundContainer = document.querySelector<HTMLElement>("#itiPlayground")!;
 const keepDropdownOpenCheckbox = document.querySelector<HTMLInputElement>("#playgroundKeepDropdownOpen")!;
 const keepDropdownOpenWrapper = keepDropdownOpenCheckbox.closest<HTMLElement>(".playground-dropdown-checkbox")!;
+const syncDemoStateCheckbox = document.querySelector<HTMLInputElement>("#playgroundSyncDemoState")!;
 const optionsForm = document.querySelector<HTMLFormElement>("#playgroundOptions")!;
 const attrsForm = document.querySelector<HTMLFormElement>("#playgroundAttributes")!;
 const resetAllButton = document.querySelector<HTMLButtonElement>("#playgroundResetAll");
@@ -77,6 +78,7 @@ const iso2ModalTableBody = document.querySelector<HTMLElement>("#itiPlaygroundIs
 const iso2ModalSearch = document.querySelector<HTMLInputElement>("#itiPlaygroundIso2ModalSearch");
 
 const KEEP_DROPDOWN_OPEN_PARAM = "keepDropdownOpen";
+const SYNC_DEMO_STATE_PARAM = "syncDemoState";
 
 const presetsSelect = document.querySelector<HTMLSelectElement>("#playgroundPresetsSelect");
 if (presetsSelect) {
@@ -289,9 +291,28 @@ const itiController = new ItiPlaygroundController({
   specialOptionKeys,
 });
 
+// Track whether an iti init (incl. async geoIpLookup) is in flight, so that
+// the demo-state capture below can skip the countrychange events that fire
+// from initial setup / geoIp results — those aren't user-driven selections.
+let itiInitInProgress = true;
+let itiInitNonce = 0;
+
 function initItiWithState(state) {
+  const nonce = ++itiInitNonce;
+  itiInitInProgress = true;
   syncKeepDropdownOpenAvailability(state);
-  return itiController.initWithState(getFullState(state)).then(() => syncKeepDropdownOpen());
+  return itiController.initWithState(getFullState(state))
+    .then(() => {
+      syncKeepDropdownOpen();
+      // Wait for the iti instance's own promise too (resolves after geoIp).
+      return itiController.iti?.promise?.catch(() => undefined);
+    })
+    .then(() => {
+      // If a newer init has started since, leave the flag for it to clear.
+      if (nonce === itiInitNonce) {
+        itiInitInProgress = false;
+      }
+    });
 }
 
 const { resetGroupKeys: optionResetGroupKeys } = renderControls(optionsForm, optionMeta, {
@@ -1060,3 +1081,119 @@ function revalidateCustomInputs() {
     validateCountryNameOverridesTextarea(countryNameOverridesInput, { invalidOnly: true });
   }
 }
+
+// Pin the live demo state across reinits, by mirroring user interactions in
+// the live demo back into the form's initialCountry / value fields. Without
+// this, toggling any option wipes the user's selection.
+syncDemoStateCheckbox.checked = parseBooleanParam(
+  new URLSearchParams(window.location.search).get(SYNC_DEMO_STATE_PARAM),
+  true,
+);
+
+const syncDemoStateInfo = document.querySelector<HTMLElement>("#playgroundSyncDemoStateInfo");
+if (syncDemoStateInfo) {
+  new window.bootstrap.Tooltip(syncDemoStateInfo);
+}
+
+function updateSyncDemoStateUrlParam(enabled: boolean) {
+  const url = new URL(window.location.href);
+  if (enabled) {
+    url.searchParams.delete(SYNC_DEMO_STATE_PARAM);
+  } else {
+    url.searchParams.set(SYNC_DEMO_STATE_PARAM, "false");
+  }
+  if (url.search !== window.location.search) {
+    window.history.replaceState(null, "", url);
+  }
+}
+
+let dropdownCurrentlyOpen = false;
+telInput.addEventListener("open:countrydropdown", () => {
+  dropdownCurrentlyOpen = true;
+});
+telInput.addEventListener("close:countrydropdown", () => {
+  dropdownCurrentlyOpen = false;
+});
+
+function syncStateAfterFormEdit() {
+  const state = getCombinedStateFromControls();
+  updateUrlFromState(state, {
+    optionMeta,
+    attributeMeta,
+    defaultState: playgroundInitialState,
+  });
+  renderInitCodeFromState(state, initCodeEl, {
+    defaultInitOptions,
+    optionMeta,
+    defaultState,
+    specialOptionKeys,
+  }, currentIntegration);
+}
+
+function captureSelectedCountryToForm({ requireDropdownInteraction = true } = {}) {
+  if (!syncDemoStateCheckbox.checked) {
+    return;
+  }
+  // Skip countrychange events that fire while the iti instance is still
+  // setting itself up (incl. async geoIp). Otherwise the geoIp result on
+  // first load would silently overwrite the user's initialCountry="auto".
+  if (itiInitInProgress) {
+    return;
+  }
+  // Only mirror user-driven dropdown picks. Skip country auto-detection from
+  // typing — in that case the typed number itself is what gets preserved,
+  // and the country re-derives from it on the next reinit. Note: with
+  // keepDropdownOpen on, the dropdown is "open" from init, so this guard
+  // can't filter out geoIp on its own — itiInitInProgress (above) does that.
+  if (requireDropdownInteraction && !dropdownCurrentlyOpen) {
+    return;
+  }
+  const iso2 = itiController.iti?.getSelectedCountryData()?.iso2;
+  if (!iso2) {
+    return;
+  }
+  const input = optionsForm.querySelector<HTMLInputElement>("[data-option='initialCountry']");
+  if (!input || input.value === iso2) {
+    return;
+  }
+  input.value = iso2;
+  validateInitialCountryInput(input);
+  syncStateAfterFormEdit();
+}
+
+function captureTypedNumberToForm() {
+  if (!syncDemoStateCheckbox.checked) {
+    return;
+  }
+  const input = attrsForm.querySelector<HTMLInputElement>("[data-attr='value']");
+  if (!input) {
+    return;
+  }
+  let newValue: string;
+  if (!telInput.value) {
+    newValue = "";
+  } else if (window.intlTelInput?.utils && itiController.iti) {
+    newValue = itiController.iti.getNumber();
+  } else {
+    // utils not loaded — getNumber() would throw, so leave the saved value alone
+    return;
+  }
+  if (input.value === newValue) {
+    return;
+  }
+  input.value = newValue;
+  syncStateAfterFormEdit();
+}
+
+syncDemoStateCheckbox.addEventListener("change", () => {
+  updateSyncDemoStateUrlParam(syncDemoStateCheckbox.checked);
+  if (syncDemoStateCheckbox.checked) {
+    // Enabling the checkbox is itself explicit consent, so skip the
+    // dropdown-interaction gate when capturing the current country.
+    captureSelectedCountryToForm({ requireDropdownInteraction: false });
+    captureTypedNumberToForm();
+  }
+});
+
+telInput.addEventListener("countrychange", () => captureSelectedCountryToForm());
+telInput.addEventListener("input", captureTypedNumberToForm);
