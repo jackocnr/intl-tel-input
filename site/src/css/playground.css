@@ -101,11 +101,30 @@
     width: 100%;
     max-width: 250px;
   }
-  /* Single-column layout: space the live results away from the input.
-     The 2-column desktop layout (keep-dropdown-open) overrides this back to 0. */
+  /* Single-column (mobile) layout: space the live results away from the input.
+     The 2-column desktop layout overrides this back to 0. */
   .iti-live-results {
     margin-top: 10px;
     width: fit-content;
+  }
+
+  /* Desktop: input on the left, live results + checkboxes on the right,
+     separated by a subtle dividing line. */
+  @media (min-width: 992px) {
+    .demo-input-wrap {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      column-gap: 1.5rem;
+      align-items: start;
+      max-width: none;
+    }
+    .iti-playground-demo-aside {
+      border-left: 1px solid var(--bs-border-color);
+      padding-left: 1.5rem;
+    }
+    .iti-live-results {
+      margin-top: 0;
+    }
   }
 }
 
@@ -136,25 +155,10 @@
   }
 
   /* Reserve vertical space for the always-open (absolutely-positioned) dropdown.
-     On mobile this pushes the next sibling down; in the desktop 2-column layout
-     it forces the demo card to fit the dropdown's height. */
+     On mobile this pushes the next sibling down; on desktop the 2-column layout
+     means it forces the demo card to fit the dropdown's height. */
   .iti {
     margin-bottom: 230px;
-  }
-
-  /* Desktop: switch to a 2-column layout so the dropdown sits beside the live
-     results + checkboxes instead of pushing them down. */
-  @media (min-width: 992px) {
-    .demo-input-wrap {
-      display: grid;
-      grid-template-columns: 250px 1fr;
-      column-gap: 1.5rem;
-      align-items: start;
-      max-width: none;
-    }
-    .iti-live-results {
-      margin-top: 0;
-    }
   }
 }
 
