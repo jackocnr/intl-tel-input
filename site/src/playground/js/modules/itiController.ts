@@ -1,9 +1,17 @@
 import type { Iti } from "../../../../../packages/core/dist/js/intlTelInput";
 import { resolveI18nSelection } from "./i18n";
 
+// Captured on first run so the playground's required base classes (e.g. Bootstrap's
+// form-control) survive when the user supplies their own class via state.class.
+let baseInputClass: string | null = null;
+
 function applyInputAttributes(state: any, telInput: HTMLInputElement) {
   if (!state || !telInput) {
     return;
+  }
+
+  if (baseInputClass === null) {
+    baseInputClass = telInput.className;
   }
 
   if (typeof state.value === "string") {
@@ -14,6 +22,11 @@ function applyInputAttributes(state: any, telInput: HTMLInputElement) {
 
   if (typeof state.placeholder === "string") {
     telInput.placeholder = state.placeholder;
+  }
+
+  if (typeof state.class === "string") {
+    const userClass = state.class.trim();
+    telInput.className = userClass ? `${baseInputClass} ${userClass}` : baseInputClass;
   }
 }
 

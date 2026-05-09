@@ -125,6 +125,7 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
   const defaultInputAttributes = {
     value: "",
     placeholder: "",
+    class: "",
   };
 
   const optionMeta = {
@@ -269,6 +270,7 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
   const attributeMeta = {
     value: { type: "text", label: "Initial value" },
     placeholder: { type: "text", label: "Placeholder" },
+    class: { type: "text", label: "Class" },
   };
 
   return {
