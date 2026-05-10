@@ -516,6 +516,9 @@ const HINT_CONFIGS = [
   {
     optionKey: "autoPlaceholder",
     message: () => {
+      if (!getCombinedStateFromControls().loadUtils) {
+        return "Tip: enable loadUtils to see this in action.";
+      }
       if (!itiController.iti?.getSelectedCountryData()) {
         return "Tip: select a country to see the placeholder update based on this setting.";
       }
@@ -525,10 +528,13 @@ const HINT_CONFIGS = [
       return "Tip: \"polite\" only differs from \"aggressive\" when the input has a placeholder attribute — set one below to see the effect.";
     },
     shouldShow: () => {
+      const state = getCombinedStateFromControls();
+      if (!state.loadUtils) {
+        return true;
+      }
       if (!itiController.iti?.getSelectedCountryData() || telInput.value) {
         return true;
       }
-      const state = getCombinedStateFromControls();
       return state.autoPlaceholder === "polite" && !state.placeholder;
       // NOTE: if they select aggressive, then it doesn't matter if there's a placeholder set.
     },
@@ -537,12 +543,15 @@ const HINT_CONFIGS = [
   {
     optionKey: "customPlaceholder",
     message: () => {
+      if (!getCombinedStateFromControls().loadUtils) {
+        return "Tip: enable loadUtils to see this in action.";
+      }
       if (!itiController.iti?.getSelectedCountryData()) {
         return "Tip: select a country to see the placeholder update based on this setting.";
       }
       return "Tip: clear the input to see the placeholder update based on this setting.";
     },
-    shouldShow: () => !itiController.iti?.getSelectedCountryData() || telInput.value,
+    shouldShow: () => !getCombinedStateFromControls().loadUtils || !itiController.iti?.getSelectedCountryData() || telInput.value,
     alsoShowOnToggleOff: true,
   },
   {
@@ -581,6 +590,9 @@ const HINT_CONFIGS = [
   {
     optionKey: "formatAsYouType",
     message: () => {
+      if (!getCombinedStateFromControls().loadUtils) {
+        return "Tip: enable loadUtils to see this in action.";
+      }
       if (!itiController.iti?.getSelectedCountryData()) {
         return "Tip: select a country and type a phone number to see this in action.";
       }
@@ -590,8 +602,13 @@ const HINT_CONFIGS = [
   },
   {
     optionKey: "formatOnDisplay",
-    message: "Tip: enter a valid phone number to see this in action.",
-    shouldShow: () => !telInput.value,
+    message: () => {
+      if (!getCombinedStateFromControls().loadUtils) {
+        return "Tip: enable loadUtils to see this in action.";
+      }
+      return "Tip: enter a valid phone number to see this in action.";
+    },
+    shouldShow: () => !getCombinedStateFromControls().loadUtils || !telInput.value,
   },
   {
     optionKey: "nationalMode",
@@ -607,6 +624,9 @@ const HINT_CONFIGS = [
   {
     optionKey: "strictMode",
     message: () => {
+      if (!getCombinedStateFromControls().loadUtils) {
+        return "Tip: enable loadUtils to see this in action.";
+      }
       if (!itiController.iti?.getSelectedCountryData()) {
         return "Tip: select a country and try typing valid/invalid characters in the input to see this in action.";
       }
@@ -617,14 +637,23 @@ const HINT_CONFIGS = [
   // Validation Options
   {
     optionKey: "allowedNumberTypes",
-    message: "Tip: enter a valid phone number to see this in action.",
-    shouldShow: () => !telInput.value,
+    message: () => {
+      if (!getCombinedStateFromControls().loadUtils) {
+        return "Tip: enable loadUtils to see this in action.";
+      }
+      return "Tip: enter a valid phone number to see this in action.";
+    },
+    shouldShow: () => !getCombinedStateFromControls().loadUtils || !telInput.value,
     isMultidropdown: true,
   },
   {
     optionKey: "allowNumberExtensions",
     message: () => {
-      if (getCombinedStateFromControls().strictMode) {
+      const state = getCombinedStateFromControls();
+      if (!state.loadUtils) {
+        return "Tip: enable loadUtils to see this in action.";
+      }
+      if (state.strictMode) {
         return "Tip: disable strictMode to see this in action.";
       }
       return "Tip: enter a phone number with/without an extension to see this in action.";
@@ -635,7 +664,11 @@ const HINT_CONFIGS = [
   {
     optionKey: "allowPhonewords",
     message: () => {
-      if (getCombinedStateFromControls().strictMode) {
+      const state = getCombinedStateFromControls();
+      if (!state.loadUtils) {
+        return "Tip: enable loadUtils to see this in action.";
+      }
+      if (state.strictMode) {
         return "Tip: disable strictMode to see this in action.";
       }
       return "Tip: enter a phone number with/without letters to see this in action.";
