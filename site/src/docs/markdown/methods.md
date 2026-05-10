@@ -159,14 +159,11 @@ iti.setNumber("+447733123456");
 ###### setPlaceholderNumberType
 Type: `(type: NumberType) => void`  
 
-Change the [`placeholderNumberType`](/docs/options#placeholdernumbertype) option — see [`NumberType`](/docs/types#numbertype) for the valid values.
+Change the [`placeholderNumberType`](/docs/options#placeholdernumbertype) option — see [`NumberType`](/docs/types#numbertype) for the valid values. We strongly recommend sticking to `"MOBILE"`, `"FIXED_LINE"`, or `"FIXED_LINE_OR_MOBILE"` — these are the only types with an example number for every country (see [`placeholderNumberType`](/docs/options#placeholdernumbertype) for details).
 
 ```js
 iti.setPlaceholderNumberType("FIXED_LINE");
 ```
-
-> [!NOTE]
-> Not every country has an example number for every type — see the [`placeholderNumberType` option](/docs/options#placeholdernumbertype) for details.
 
 > [!TIP]
 > You can also pass a [constant](/docs/types#constant-objects), e.g. `iti.setPlaceholderNumberType(intlTelInput.NUMBER_TYPE.FIXED_LINE)` — useful in plain JavaScript where typos in the string literal won't be caught at compile time.

@@ -205,15 +205,12 @@ View `intl-tel-input` with this enabled in the [Playground](/playground?customPl
 Type: `NumberType`  
 Default: `"MOBILE"`  
 
-Set the [number type](/docs/types#numbertype) to use for the generated placeholder numbers. 
+Set the [number type](/docs/types#numbertype) to use for the generated placeholder numbers. We strongly recommend sticking to `"MOBILE"` (the default), `"FIXED_LINE"`, or `"FIXED_LINE_OR_MOBILE"` — these are the only types with an example number for every country. Other values produce an empty placeholder for any country where libphonenumber has no example (e.g. `"PAGER"` only has examples for ~9% of countries).
 
 View `intl-tel-input` with this set to `"FIXED_LINE"` in the [Playground](/playground?placeholderNumberType=FIXED_LINE#placeholder-options).
 
-> [!NOTE]
-> Not every country has an example number for every type — when libphonenumber has no example for the selected country and type, the placeholder will be empty.
-
 > [!TIP]
-> You can also pass a [constant](/docs/types#constant-objects), e.g. `placeholderNumberType: intlTelInput.NUMBER_TYPE.FIXED_LINE` — useful in plain JavaScript where typos in the string literal won't be caught at compile time.
+> You can either pass a string literal, e.g. `"MOBILE"`, or a [constant](/docs/types#constant-objects), e.g. `intlTelInput.NUMBER_TYPE.MOBILE` — useful where typos in the string literal won't be caught at compile time.
 
 
 ## Formatting options

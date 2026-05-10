@@ -35,7 +35,7 @@ The kind of phone number. Returned by [`getNumberType`](/docs/methods#getnumbert
 - `"UNKNOWN"` — type couldn't be determined.
 
 > [!NOTE]
-> In some countries (e.g. the US) there's no way to differentiate between fixed-line and mobile numbers, so in those cases libphonenumber returns `"FIXED_LINE_OR_MOBILE"`. If you're checking for mobile numbers, check for both `"MOBILE"` and `"FIXED_LINE_OR_MOBILE"`.
+> In some countries (e.g. the US) there's no way to differentiate between fixed-line and mobile numbers, so in those cases libphonenumber returns `"FIXED_LINE_OR_MOBILE"`. So, for example, if you're checking for mobile numbers, you need to check for both `"MOBILE"` and `"FIXED_LINE_OR_MOBILE"`.
 
 > [!NOTE]
 > When this is used with the [`placeholderNumberType`](/docs/options#placeholdernumbertype) option, not every country has an example number for every type — when libphonenumber has no example, the placeholder will be empty.

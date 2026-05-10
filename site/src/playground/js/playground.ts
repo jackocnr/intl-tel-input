@@ -562,7 +562,7 @@ const HINT_CONFIGS = [
       if (!state.loadUtils) {
         return "Tip: enable loadUtils to see this in action.";
       }
-      return `Tip: libphonenumber has no example "${state.placeholderNumberType}" number for ${country.name} — try a different type or country.`;
+      return `Tip: libphonenumber has no example "${state.placeholderNumberType}" number for ${country.name} — try "MOBILE", "FIXED_LINE", or a different country.`;
     },
     shouldShow: () => {
       const country = itiController.iti?.getSelectedCountryData();
