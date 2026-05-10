@@ -5,7 +5,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from "@angular/forms";
-import IntlTelInput from "../../src/IntlTelInputWithUtils";
+import IntlTelInput, { intlTelInput } from "../../src/IntlTelInputWithUtils";
+import type { ValidationError } from "intl-tel-input";
 
 @Component({
   selector: "app-root",
@@ -20,7 +21,7 @@ import IntlTelInput from "../../src/IntlTelInputWithUtils";
           [inputAttributes]="{ class: 'form-control' }"
           searchInputClass="form-control"
         />
-        <button class="btn btn-primary" type="submit" [disabled]="!fg.valid">
+        <button class="btn btn-primary" type="submit">
           Validate
         </button>
       </div>
@@ -28,7 +29,7 @@ import IntlTelInput from "../../src/IntlTelInputWithUtils";
         @if (phone?.errors?.["required"] && phone?.touched) {
           Phone number is required.
         } @else if (phone?.errors?.["invalidPhone"] && phone?.touched) {
-          {{ phone?.errors?.["invalidPhone"].errorMessage }}
+          {{ getErrorMessage(phone?.errors?.["invalidPhone"]) }}
         } @else if (isSubmitted && fg.valid) {
           Valid number: {{ telInput.getInstance()?.getNumber() }}
         }
@@ -49,6 +50,17 @@ export class AppComponent implements OnInit {
 
   get phone() {
     return this.fg.get("phone");
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  getErrorMessage(errorCode: ValidationError | null): string {
+    const { VALIDATION_ERROR } = intlTelInput;
+    switch (errorCode) {
+      case VALIDATION_ERROR.INVALID_COUNTRY_CODE: return "Invalid dial code";
+      case VALIDATION_ERROR.TOO_SHORT: return "Too short";
+      case VALIDATION_ERROR.TOO_LONG: return "Too long";
+      default: return "Invalid number";
+    }
   }
 
   ngOnInit(): void {

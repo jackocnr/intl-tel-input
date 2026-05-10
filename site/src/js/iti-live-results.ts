@@ -1,12 +1,12 @@
 (() => {
   const getErrorMessage = (errorCode: string | null): string => {
     const { VALIDATION_ERROR } = window.intlTelInput;
-    const errorMap: Record<string, string> = {
-      [VALIDATION_ERROR.INVALID_COUNTRY_CODE]: "Invalid dial code",
-      [VALIDATION_ERROR.TOO_SHORT]: "Too short",
-      [VALIDATION_ERROR.TOO_LONG]: "Too long",
-    };
-    return errorCode ? errorMap[errorCode] || "" : "";
+    switch (errorCode) {
+      case VALIDATION_ERROR.INVALID_COUNTRY_CODE: return "Invalid dial code";
+      case VALIDATION_ERROR.TOO_SHORT: return "Too short";
+      case VALIDATION_ERROR.TOO_LONG: return "Too long";
+      default: return "";
+    }
   };
   const getItiInstance = (): any => window.intlTelInput?.instances?.values().next().value;
 

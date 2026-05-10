@@ -2,15 +2,13 @@
   import IntlTelInput, { intlTelInput } from "../../src/IntlTelInputWithUtils.svelte";
 
   const getErrorMessage = (errorCode) => {
-    const genericError = "Invalid number";
     const { VALIDATION_ERROR } = intlTelInput;
-    const errorMap = {
-      [VALIDATION_ERROR.INVALID_COUNTRY_CODE]: "Invalid dial code",
-      [VALIDATION_ERROR.TOO_SHORT]: "Too short",
-      [VALIDATION_ERROR.TOO_LONG]: "Too long",
-      [VALIDATION_ERROR.INVALID_LENGTH]: genericError,
-    };
-    return errorMap[errorCode] || genericError;
+    switch (errorCode) {
+      case VALIDATION_ERROR.INVALID_COUNTRY_CODE: return "Invalid dial code";
+      case VALIDATION_ERROR.TOO_SHORT: return "Too short";
+      case VALIDATION_ERROR.TOO_LONG: return "Too long";
+      default: return "Invalid number";
+    }
   };
 
   let isValid = $state(null);
