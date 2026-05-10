@@ -548,12 +548,33 @@ const HINT_CONFIGS = [
   {
     optionKey: "placeholderNumberType",
     message: () => {
-      if (!itiController.iti?.getSelectedCountryData()) {
+      const country = itiController.iti?.getSelectedCountryData();
+      if (!country) {
         return "Tip: select a country to see the placeholder update based on this setting.";
       }
-      return "Tip: clear the input to see the placeholder update based on this setting.";
+      if (telInput.value) {
+        return "Tip: clear the input to see the placeholder update based on this setting.";
+      }
+      const state = getCombinedStateFromControls();
+      if (state.autoPlaceholder === "off") {
+        return "Tip: set autoPlaceholder to \"polite\" or \"aggressive\" to see this in action.";
+      }
+      if (!state.loadUtils) {
+        return "Tip: enable loadUtils to see this in action.";
+      }
+      return `Tip: libphonenumber has no example "${state.placeholderNumberType}" number for ${country.name} — try a different type or country.`;
     },
-    shouldShow: () => !itiController.iti?.getSelectedCountryData() || telInput.value,
+    shouldShow: () => {
+      const country = itiController.iti?.getSelectedCountryData();
+      if (!country || telInput.value) {
+        return true;
+      }
+      const state = getCombinedStateFromControls();
+      if (state.autoPlaceholder === "off" || !state.loadUtils) {
+        return true;
+      }
+      return !window.intlTelInput.utils!.getExampleNumber(country.iso2, false, state.placeholderNumberType);
+    },
     alsoShowOnToggleOff: true,
   },
   // Formatting Options
