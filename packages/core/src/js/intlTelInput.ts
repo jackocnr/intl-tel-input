@@ -378,10 +378,22 @@ export class Iti {
     intlTelInput.startedLoadingAutoCountry = true;
 
     if (typeof this.#options.geoIpLookup === "function") {
+      //* Cap the wait so a hanging lookup (e.g. fetch with no timeout against a flaky IP service) doesn't leave the loading spinner up forever.
+      let timeoutId: ReturnType<typeof setTimeout> | undefined;
       try {
-        const iso2 = await this.#options.geoIpLookup();
+        const iso2 = await Promise.race([
+          this.#options.geoIpLookup(),
+          new Promise<never>((_, reject) => {
+            timeoutId = setTimeout(
+              () => reject(new Error("intl-tel-input: geoIpLookup timed out after 10s")),
+              10000,
+            );
+          }),
+        ]);
         const iso2Lower = typeof iso2 === "string" ? iso2.toLowerCase() : "";
         if (!isIso2(iso2Lower)) {
+          //* Reset so a later instance with a different lookup can retry.
+          intlTelInput.startedLoadingAutoCountry = false;
           Iti.forEachInstance("handleAutoCountryFailure");
           return;
         }
@@ -393,7 +405,13 @@ export class Iti {
         //* this, which allows the core library to finish initialising.
         setTimeout(() => Iti.forEachInstance("handleAutoCountryLoaded"));
       } catch {
+        //* Reset so a later instance with a different lookup can retry — important for both timeouts and rejections.
+        intlTelInput.startedLoadingAutoCountry = false;
         Iti.forEachInstance("handleAutoCountryFailure");
+      } finally {
+        if (timeoutId !== undefined) {
+          clearTimeout(timeoutId);
+        }
       }
     }
   }

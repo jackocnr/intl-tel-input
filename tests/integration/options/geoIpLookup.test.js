@@ -126,4 +126,81 @@ describe("geoIpLookup option", () => {
       });
     });
   });
+
+  describe("init a 2nd instance after the first lookup fails", () => {
+    let iti1, iti2, secondLookupCalled;
+
+    beforeEach(async () => {
+      intlTelInput.startedLoadingAutoCountry = false;
+      intlTelInput.autoCountry = undefined;
+      secondLookupCalled = false;
+
+      ({ iti: iti1 } = initIntlTelInput({
+        options: {
+          initialCountry: "auto",
+          geoIpLookup: () => Promise.reject(),
+        },
+      }));
+      // Wait for the first lookup to fail.
+      await iti1.promise.catch(() => {});
+
+      ({ iti: iti2 } = initIntlTelInput({
+        options: {
+          initialCountry: "auto",
+          geoIpLookup: () => {
+            secondLookupCalled = true;
+            return Promise.resolve("gb");
+          },
+        },
+      }));
+    });
+
+    afterEach(() => {
+      teardown(iti1);
+      teardown(iti2);
+      intlTelInput.startedLoadingAutoCountry = false;
+      intlTelInput.autoCountry = undefined;
+    });
+
+    test("second instance's geoIpLookup is invoked and resolves", async () => {
+      await iti2.promise;
+      expect(secondLookupCalled).toBe(true);
+      expect(intlTelInput.autoCountry).toBe("gb");
+    });
+  });
+
+  describe("geoIpLookup hangs (never settles)", () => {
+    let iti, rejected;
+
+    beforeEach(() => {
+      vi.useFakeTimers({ shouldAdvanceTime: true });
+      rejected = false;
+      intlTelInput.startedLoadingAutoCountry = false;
+      intlTelInput.autoCountry = undefined;
+      const options = {
+        initialCountry: "auto",
+        geoIpLookup: () => new Promise(() => {}), // never resolves
+      };
+      ({ iti } = initIntlTelInput({ options }));
+      iti.promise.catch(() => {
+        rejected = true;
+      });
+    });
+
+    afterEach(() => {
+      teardown(iti);
+      intlTelInput.startedLoadingAutoCountry = false;
+      intlTelInput.autoCountry = undefined;
+      vi.useRealTimers();
+    });
+
+    test("times out and rejects after 10s", async () => {
+      // Advance past the 10s built-in timeout.
+      await vi.advanceTimersByTimeAsync(10000);
+      await expect(iti.promise).rejects.toBeUndefined();
+      expect(rejected).toBe(true);
+      // Reset on failure so a future instance can retry.
+      expect(intlTelInput.startedLoadingAutoCountry).toBe(false);
+    });
+  });
 });
