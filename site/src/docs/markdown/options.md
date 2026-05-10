@@ -209,6 +209,9 @@ Set the [number type](/docs/types#numbertype) to use for the generated placehold
 
 View `intl-tel-input` with this set to `"FIXED_LINE"` in the [Playground](/playground?placeholderNumberType=FIXED_LINE#placeholder-options).
 
+> [!NOTE]
+> Not every country has an example number for every type — when libphonenumber has no example for the selected country and type, the placeholder will be empty.
+
 > [!TIP]
 > You can also pass a [constant](/docs/types#constant-objects), e.g. `placeholderNumberType: intlTelInput.NUMBER_TYPE.FIXED_LINE` — useful in plain JavaScript where typos in the string literal won't be caught at compile time.
 

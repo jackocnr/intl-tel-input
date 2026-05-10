@@ -165,6 +165,9 @@ Change the [`placeholderNumberType`](/docs/options#placeholdernumbertype) option
 iti.setPlaceholderNumberType("FIXED_LINE");
 ```
 
+> [!NOTE]
+> Not every country has an example number for every type — see the [`placeholderNumberType` option](/docs/options#placeholdernumbertype) for details.
+
 > [!TIP]
 > You can also pass a [constant](/docs/types#constant-objects), e.g. `iti.setPlaceholderNumberType(intlTelInput.NUMBER_TYPE.FIXED_LINE)` — useful in plain JavaScript where typos in the string literal won't be caught at compile time.
 
