@@ -153,7 +153,7 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     },
     containerClass: {
       type: "text",
-      tooltip: "Additional CSS class to add to the container element.",
+      tooltip: "Additional CSS class to add to the (generated) container element.",
     },
     countryNameLocale: {
       type: "text",

@@ -492,13 +492,18 @@ const HINT_CONFIGS = [
   },
   {
     optionKey: "separateDialCode",
-    message: "Tip: set initialCountry to \"us\" (etc) to see this in action.",
+    message: "Tip: select a country to see this in action.",
     shouldShow: () => !itiController.iti?.getSelectedCountryData(),
     alsoShowOnToggleOff: true,
   },
   {
     optionKey: "showFlags",
-    message: "Tip: set initialCountry to \"us\" (etc) and/or enable \"Keep dropdown open\" to see this in action.",
+    message: () => {
+      if (!itiController.iti?.getSelectedCountryData()) {
+        return "Tip: select a country to see this in action.";
+      }
+      return "Tip: enable \"Keep dropdown open\" to see how this updates the dropdown.";
+    },
     shouldShow: () => !keepDropdownOpenCheckbox.checked && !itiController.iti?.getSelectedCountryData(),
     alsoShowOnToggleOff: true,
   },
@@ -512,70 +517,109 @@ const HINT_CONFIGS = [
     optionKey: "autoPlaceholder",
     message: () => {
       if (!itiController.iti?.getSelectedCountryData()) {
-        return "Tip: set initialCountry to \"us\" (etc) to see the placeholder.";
+        return "Tip: select a country to see the placeholder update based on this setting.";
+      }
+      if (telInput.value) {
+        return "Tip: clear the input to see the placeholder update based on this setting.";
       }
       return "Tip: \"polite\" only differs from \"aggressive\" when the input has a placeholder attribute — set one below to see the effect.";
     },
     shouldShow: () => {
-      if (!itiController.iti?.getSelectedCountryData()) {
+      if (!itiController.iti?.getSelectedCountryData() || telInput.value) {
         return true;
       }
       const state = getCombinedStateFromControls();
       return state.autoPlaceholder === "polite" && !state.placeholder;
+      // NOTE: if they select aggressive, then it doesn't matter if there's a placeholder set.
     },
     alsoShowOnToggleOff: true,
   },
   {
     optionKey: "customPlaceholder",
-    message: "Tip: set initialCountry to \"us\" (etc) to see the placeholder.",
-    shouldShow: () => !itiController.iti?.getSelectedCountryData(),
+    message: () => {
+      if (!itiController.iti?.getSelectedCountryData()) {
+        return "Tip: select a country to see the placeholder update based on this setting.";
+      }
+      return "Tip: clear the input to see the placeholder update based on this setting.";
+    },
+    shouldShow: () => !itiController.iti?.getSelectedCountryData() || telInput.value,
     alsoShowOnToggleOff: true,
   },
   {
     optionKey: "placeholderNumberType",
-    message: "Tip: set initialCountry to \"us\" (etc) to see the placeholder.",
-    shouldShow: () => !itiController.iti?.getSelectedCountryData(),
+    message: () => {
+      if (!itiController.iti?.getSelectedCountryData()) {
+        return "Tip: select a country to see the placeholder update based on this setting.";
+      }
+      return "Tip: clear the input to see the placeholder update based on this setting.";
+    },
+    shouldShow: () => !itiController.iti?.getSelectedCountryData() || telInput.value,
     alsoShowOnToggleOff: true,
   },
   // Formatting Options
   {
     optionKey: "formatAsYouType",
-    message: "Tip: select a country and type a phone number to see this in action.",
-    shouldShow: () => !telInput.value,
+    message: () => {
+      if (!itiController.iti?.getSelectedCountryData()) {
+        return "Tip: select a country and type a phone number to see this in action.";
+      }
+      return "Tip: type a phone number to see this in action.";
+    },
+    shouldShow: () => true, // always show this as they have to take action
   },
   {
     optionKey: "formatOnDisplay",
-    message: "Tip: add a phone number in the Phone Input Attributes section below in order to see this in action.",
+    message: "Tip: enter a valid phone number to see this in action.",
     shouldShow: () => !telInput.value,
   },
   {
     optionKey: "nationalMode",
-    message: "Tip: disable separateDialCode and set initialCountry to \"us\" (etc) to see how this option formats the placeholder number differently.",
-    shouldShow: () => getCombinedStateFromControls().separateDialCode || (!telInput.value && !telInput.placeholder),
+    message: () => {
+      if (getCombinedStateFromControls().separateDialCode ) {
+        return "Tip: disable separateDialCode to see this in action.";
+      }
+      return "Tip: select a country to see how this option formats the typed number (or placeholder number) differently.";
+    },
+    shouldShow: () => getCombinedStateFromControls().separateDialCode || !itiController.iti?.getSelectedCountryData(),
     alsoShowOnToggleOff: true,
   },
   {
     optionKey: "strictMode",
-    message: "Tip: select a country and try typing valid/invalid characters in the input to see this in action.",
-    shouldShow: () => !telInput.value,
+    message: () => {
+      if (!itiController.iti?.getSelectedCountryData()) {
+        return "Tip: select a country and try typing valid/invalid characters in the input to see this in action.";
+      }
+      return "Tip: try typing valid/invalid characters in the input to see this in action.";
+    },
+    shouldShow: () => true, // always show this as they have to take action
   },
   // Validation Options
   {
     optionKey: "allowedNumberTypes",
-    message: "Tip: add a phone number in the Phone Input Attributes section below in order to see this in action.",
+    message: "Tip: enter a valid phone number to see this in action.",
     shouldShow: () => !telInput.value,
     isMultidropdown: true,
   },
   {
     optionKey: "allowNumberExtensions",
-    message: "Tip: add a phone number in the Phone Input Attributes section below in order to see this in action.",
-    shouldShow: () => !telInput.value,
+    message: () => {
+      if (getCombinedStateFromControls().strictMode) {
+        return "Tip: disable strictMode to see this in action.";
+      }
+      return "Tip: enter a phone number with/without an extension to see this in action.";
+    },
+    shouldShow: () => true, // always show this as they have to take action
     alsoShowOnToggleOff: true,
   },
   {
     optionKey: "allowPhonewords",
-    message: "Tip: add a phone number in the Phone Input Attributes section below in order to see this in action.",
-    shouldShow: () => !telInput.value,
+    message: () => {
+      if (getCombinedStateFromControls().strictMode) {
+        return "Tip: disable strictMode to see this in action.";
+      }
+      return "Tip: enter a phone number with/without letters to see this in action.";
+    },
+    shouldShow: () => true, // always show this as they have to take action
     alsoShowOnToggleOff: true,
   },
   // Translation Options
@@ -586,8 +630,13 @@ const HINT_CONFIGS = [
   },
   {
     optionKey: "i18n",
-    message: "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see this change in action.",
-    shouldShow: () => !keepDropdownOpenCheckbox.checked,
+    message: () => {
+      if (!getCombinedStateFromControls().countrySearch) {
+        return "Tip: enable countrySearch to see the search placeholder update based on this setting.";
+      }
+      return "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see the search placeholder update based on this setting.";
+    },
+    shouldShow: () => !keepDropdownOpenCheckbox.checked || !getCombinedStateFromControls().countrySearch,
   },
   // Miscellaneous Options
   {
