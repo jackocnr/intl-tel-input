@@ -3,18 +3,37 @@
 @import url('highlight.js/styles/github.min.css');
 @import url('dark-wrap:highlight.js/styles/github-dark.min.css');
 
-/* Match GitHub's rendered code block background */
+/* Match GitHub's rendered code block background. The border-radius matches
+   the wrapping pre so .hljs's background doesn't paint square corners over
+   pre's rounded border. */
 .hljs {
   background-color: #f6f8fa;
+  border-radius: var(--bs-border-radius);
 
   [data-bs-theme="dark"] & {
     background-color: #151b23;
   }
 }
 
-/* Copy button */
+/* Reserve space on the right of the pre for the copy button (~2rem wide +
+   0.5rem from the edge). The github hljs theme already makes the inner
+   `code.hljs` element a horizontal scroll container (display:block;
+   overflow-x:auto), so .hljs fills pre's content box exactly and pre itself
+   never overflows — meaning padding-right on pre stays as real visible
+   padding on the right (where the button sits) rather than being absorbed
+   into a scroll area. Background-color is duplicated onto pre so the
+   padding strip matches the code block. */
 pre:has(> .hljs) {
   position: relative;
+  padding-right: 2.5rem;
+  background-color: #f6f8fa;
+  border: 1px solid var(--bs-border-color);
+  border-radius: var(--bs-border-radius);
+
+  [data-bs-theme="dark"] & {
+    background-color: #151b23;
+    border-color: #3d444d;
+  }
 }
 .hljs-copy-btn {
   position: absolute;
@@ -27,13 +46,7 @@ pre:has(> .hljs) {
   font-size: 1rem;
   line-height: 1;
   cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.15s ease-in-out, color 0.15s ease-in-out;
-
-  pre:hover &,
-  &:focus-visible {
-    opacity: 1;
-  }
+  transition: color 0.15s ease-in-out;
 
   &:hover {
     color: #0969da;
@@ -41,9 +54,5 @@ pre:has(> .hljs) {
     [data-bs-theme="dark"] & {
       color: #4493f8;
     }
-  }
-
-  &.hljs-copy-btn--copied {
-    opacity: 1;
   }
 }

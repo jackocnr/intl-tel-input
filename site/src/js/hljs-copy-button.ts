@@ -24,20 +24,11 @@ window.hljs.addPlugin({
       icon.className = "bi bi-clipboard";
       setTooltip("Copy to clipboard");
     };
-    // When the button fades out (opacity 1 → 0), defer the icon/tooltip
-    // reset until the fade completes so the user never sees the tick flip
-    // back to the clipboard icon mid-fade.
-    btn.addEventListener("transitionend", (e) => {
-      if (e.propertyName === "opacity" && getComputedStyle(btn).opacity === "0") {
-        resetToIdle();
-      }
-    });
 
     btn.addEventListener("click", async () => {
       try {
         await navigator.clipboard.writeText(text);
         icon.className = "bi bi-check-lg";
-        btn.classList.add("hljs-copy-btn--copied");
         setTooltip("Copied!");
       } catch {
         icon.className = "bi bi-x-lg";
@@ -48,12 +39,8 @@ window.hljs.addPlugin({
       // Drop focus so only hover governs visibility from here on.
       btn.blur();
       setTimeout(() => {
-        btn.classList.remove("hljs-copy-btn--copied");
-        if (btn.matches(":hover")) {
-          resetToIdle();
-        } else {
-          // Not hovering: releasing --copied starts the fade. Leave the
-          // tick in place — transitionend will reset it on opacity 0.
+        resetToIdle();
+        if (!btn.matches(":hover")) {
           tooltip.hide();
         }
       }, 3000);
