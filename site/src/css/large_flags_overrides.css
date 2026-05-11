@@ -10,7 +10,7 @@
 .iti {
   font-size: 20px;
 }
-.iti,
+.iti--input-container,
 .section.demo input {
   width: 350px !important;
 }
