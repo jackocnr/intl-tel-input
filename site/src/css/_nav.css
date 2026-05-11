@@ -36,7 +36,7 @@
   }
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1030px) {
   .iti-header-nav-row {
     position: relative;
   }
@@ -47,6 +47,26 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+  }
+}
+
+/* Bootstrap's navbar-expand-lg / d-lg-* / offcanvas-lg utilities switch the
+   header to desktop layout at 992px, but at that width the centered search
+   sits too close to the right-aligned nav links. Keep the mobile layout
+   between 992px and our custom 1030px breakpoint by re-asserting mobile-mode
+   rules for the elements those utilities control. */
+@media (min-width: 992px) and (max-width: 1029.98px) {
+  /* Hide the desktop nav menu container (search + nav links) */
+  .iti-header-nav-menu.offcanvas-lg {
+    display: none !important;
+  }
+  /* Show the hamburger (navbar-expand-lg hides .navbar-toggler at lg+) */
+  .iti-header-nav .navbar-toggler {
+    display: block;
+  }
+  /* Show the mobile search icon (its d-lg-none hides it at lg+) */
+  .iti-header-nav-icon-btn.d-lg-none {
+    display: inline-block !important;
   }
 }
 
@@ -133,7 +153,7 @@
     height: 100%; /* required for vertical alignment */
   }
 
-  @media (min-width: 992px) {
+  @media (min-width: 1030px) {
     .navbar-nav {
       .nav-link {
         opacity: 0.85;
