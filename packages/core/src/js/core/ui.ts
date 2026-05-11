@@ -125,6 +125,7 @@ export default class UI {
     //* Containers (mostly for positioning).
     const parentClasses = buildClassNames({
       iti: true,
+      "iti--input-container": true,
       "iti--allow-dropdown": allowDropdown,
       "iti--show-flags": showFlags,
       "iti--inline-dropdown": !useFullscreenPopup,
