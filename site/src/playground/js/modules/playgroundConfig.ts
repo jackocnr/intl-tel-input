@@ -54,7 +54,7 @@ export const OPTION_GROUPS = [
   },
   {
     title: "Formatting Options",
-    icon: "bi-braces",
+    icon: "bi-magic",
     description: "How numbers are formatted as you type and on initial display.",
     keys: ["formatAsYouType", "formatOnDisplay", "nationalMode", "strictMode", "strictRejectAnimation"],
   },
