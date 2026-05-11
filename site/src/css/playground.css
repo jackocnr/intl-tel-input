@@ -162,11 +162,30 @@
   }
 }
 
-.playground-dropdown-checkbox.is-disabled {
-  cursor: pointer;
-  .form-check-label {
-    cursor: pointer;
-  }
+.playground-dropdown-checkbox.is-disabled .iti-playground-info {
+  color: var(--bs-warning-text-emphasis, #997404);
+}
+
+.iti-playground-demo-controls {
+  margin-top: 1rem;
+  padding: 0.75rem 0.875rem;
+  border: 1px dashed var(--bs-border-color);
+  border-radius: 0.375rem;
+  background-color: var(--bs-tertiary-bg);
+}
+.iti-playground-demo-controls__heading {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--bs-secondary-color);
+  margin-bottom: 0.25rem;
+}
+.iti-playground-demo-controls__subheading {
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: normal;
+  font-style: italic;
 }
 
 /* playground: interactive tooltip with docs link — opt-in via customClass.

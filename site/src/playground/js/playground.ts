@@ -21,6 +21,8 @@ const telInput = document.querySelector<HTMLInputElement>("#playgroundPhone")!;
 const playgroundContainer = document.querySelector<HTMLElement>("#itiPlayground")!;
 const keepDropdownOpenCheckbox = document.querySelector<HTMLInputElement>("#playgroundKeepDropdownOpen")!;
 const keepDropdownOpenWrapper = keepDropdownOpenCheckbox.closest<HTMLElement>(".playground-dropdown-checkbox")!;
+const keepDropdownOpenInfo = document.querySelector<HTMLElement>("#playgroundKeepDropdownOpenInfo")!;
+const KEEP_DROPDOWN_OPEN_DEFAULT_TOOLTIP = keepDropdownOpenInfo.getAttribute("data-bs-title") ?? "";
 const syncDemoStateCheckbox = document.querySelector<HTMLInputElement>("#playgroundSyncDemoState")!;
 const optionsForm = document.querySelector<HTMLFormElement>("#playgroundOptions")!;
 const attrsForm = document.querySelector<HTMLFormElement>("#playgroundAttributes")!;
@@ -132,17 +134,17 @@ function shouldDisableKeepDropdownOpen(state) {
 let keepDropdownOpenAutoDisabled = false;
 
 let keepDropdownOpenTooltip: InstanceType<typeof window.bootstrap.Tooltip> | null = null;
-let keepDropdownOpenTooltipCleanup: (() => void) | null = null;
-function disposeKeepDropdownOpenTooltip() {
-  if (keepDropdownOpenTooltipCleanup) {
-    keepDropdownOpenTooltipCleanup();
-    keepDropdownOpenTooltipCleanup = null;
-  }
+// Bootstrap's Tooltip doesn't expose a clean way to swap title text, so we
+// dispose and recreate the instance whenever the content changes.
+function setKeepDropdownOpenTooltip(title: string) {
   if (keepDropdownOpenTooltip) {
     keepDropdownOpenTooltip.dispose();
     keepDropdownOpenTooltip = null;
   }
+  keepDropdownOpenInfo.setAttribute("data-bs-title", title);
+  keepDropdownOpenTooltip = new window.bootstrap.Tooltip(keepDropdownOpenInfo);
 }
+setKeepDropdownOpenTooltip(KEEP_DROPDOWN_OPEN_DEFAULT_TOOLTIP);
 
 function syncKeepDropdownOpenAvailability(state) {
   const reason = getKeepDropdownOpenDisabledReason(state);
@@ -150,31 +152,7 @@ function syncKeepDropdownOpenAvailability(state) {
   keepDropdownOpenCheckbox.disabled = disabled;
   keepDropdownOpenWrapper.classList.toggle("is-disabled", disabled);
 
-  // Bootstrap Tooltip won't render with an empty title, so dispose+recreate
-  // each time the reason changes rather than try to update an existing instance.
-  disposeKeepDropdownOpenTooltip();
-  if (reason) {
-    keepDropdownOpenTooltip = new window.bootstrap.Tooltip(keepDropdownOpenWrapper, {
-      title: reason,
-      trigger: "click",
-    });
-
-    const onDocumentMousedown = (event: MouseEvent) => {
-      const target = event.target as Node | null;
-      if (target && !keepDropdownOpenWrapper.contains(target)) {
-        keepDropdownOpenTooltip?.hide();
-      }
-    };
-    const onShown = () => document.addEventListener("mousedown", onDocumentMousedown);
-    const onHidden = () => document.removeEventListener("mousedown", onDocumentMousedown);
-    keepDropdownOpenWrapper.addEventListener("shown.bs.tooltip", onShown);
-    keepDropdownOpenWrapper.addEventListener("hidden.bs.tooltip", onHidden);
-    keepDropdownOpenTooltipCleanup = () => {
-      keepDropdownOpenWrapper.removeEventListener("shown.bs.tooltip", onShown);
-      keepDropdownOpenWrapper.removeEventListener("hidden.bs.tooltip", onHidden);
-      document.removeEventListener("mousedown", onDocumentMousedown);
-    };
-  }
+  setKeepDropdownOpenTooltip(reason ?? KEEP_DROPDOWN_OPEN_DEFAULT_TOOLTIP);
 
   if (disabled && keepDropdownOpenCheckbox.checked) {
     keepDropdownOpenAutoDisabled = true;
@@ -1210,6 +1188,7 @@ const syncDemoStateInfo = document.querySelector<HTMLElement>("#playgroundSyncDe
 if (syncDemoStateInfo) {
   new window.bootstrap.Tooltip(syncDemoStateInfo);
 }
+
 
 function updateSyncDemoStateUrlParam(enabled: boolean) {
   const url = new URL(window.location.href);
