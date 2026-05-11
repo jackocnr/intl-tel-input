@@ -51,3 +51,7 @@ If your error handling code inserts an error message before the `<input>`, it wi
 ##### Dropdown position
 
 The dropdown should automatically appear above/below the input depending on the available space. For this to work properly, you must only initialise after the `<input>` is in the DOM.
+
+## Still stuck?
+
+Try searching the [GitHub issues](https://github.com/jackocnr/intl-tel-input/issues?q=is%3Aissue) — chances are someone has run into the same thing before.

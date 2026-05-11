@@ -71,3 +71,8 @@ If you’re using the utils script, you can validate numbers and show useful err
 A lot of “broken” behaviour is caused by layout/CSS or initialising on an input that isn't in the DOM yet. Check devtools: is the CSS loading? Have you overridden the flag paths correctly, and are the flag images loading?
 
 Also see [Troubleshooting](/docs/troubleshooting).
+
+
+## Still stuck?
+
+Try searching the [GitHub issues](https://github.com/jackocnr/intl-tel-input/issues?q=is%3Aissue) — chances are someone has had the same question before.
