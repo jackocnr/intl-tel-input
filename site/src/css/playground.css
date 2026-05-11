@@ -179,6 +179,7 @@
   border: 1px dashed var(--bs-border-color);
   border-radius: 0.375rem;
   background-color: var(--bs-tertiary-bg);
+  max-width: 296px;
 }
 .iti-playground-demo-controls__heading {
   font-size: 0.75rem;
