@@ -16,6 +16,7 @@ import {
   parseQueryOverrides,
 } from "./modules/stateUtils";
 import { updateUrlFromState } from "./modules/urlState";
+import { setupStrictRejectToast } from "../../js/strictRejectToast";
 
 const telInput = document.querySelector<HTMLInputElement>("#playgroundPhone")!;
 const playgroundContainer = document.querySelector<HTMLElement>("#itiPlayground")!;
@@ -391,28 +392,7 @@ updateUrlFromState(initialState, {
   defaultState: playgroundInitialState,
 });
 
-const strictToastEl = document.getElementById("playgroundStrictRejectToast");
-const strictToastBody = document.getElementById("playgroundStrictRejectToastBody");
-if (strictToastEl && strictToastBody) {
-  const strictToast = window.bootstrap.Toast.getOrCreateInstance(strictToastEl);
-  telInput.addEventListener("strict:reject", (e) => {
-    const { reason, rejectedInput, source } = (e as CustomEvent).detail;
-    let message: string;
-    if (reason === "max-length") {
-      message = "Maximum length reached for this country";
-    } else if (source === "paste") {
-      message = "Stripped invalid characters from pasted text";
-    } else {
-      message = `Character not allowed: "${rejectedInput}"`;
-    }
-    const link = document.createElement("a");
-    link.href = "/docs/options#strictmode";
-    link.className = "link-light";
-    link.textContent = "strictMode";
-    strictToastBody.replaceChildren(`${message} (see `, link, ")");
-    strictToast.show();
-  });
-}
+setupStrictRejectToast(telInput, "playgroundStrictRejectToast", "playgroundStrictRejectToastBody");
 
 // Contextual hints: shown when toggling an option that has no visible effect
 // until the user takes an additional action (e.g. selecting a country, typing a number).

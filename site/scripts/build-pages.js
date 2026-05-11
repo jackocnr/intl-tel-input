@@ -649,6 +649,16 @@ tasks.push({
   data: () => ({ cacheBust }),
 });
 
+// strict_reject_toast_js — shared helper imported by homepage and the vanilla
+// example pages. Copied through tmp/ so esbuild can resolve the import from
+// the templated entry points that live under tmp/.
+tasks.push({
+  name: "strict_reject_toast_js",
+  src: "src/js/strictRejectToast.ts",
+  dest: "tmp/js/strictRejectToast.ts",
+  data: () => ({}),
+});
+
 // homepage
 tasks.push({
   name: "homepage_layout",

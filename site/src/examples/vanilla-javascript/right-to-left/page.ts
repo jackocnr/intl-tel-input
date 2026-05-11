@@ -1,5 +1,6 @@
 import intlTelInput from "../../../../dist/intl-tel-input/js/intlTelInput.mjs";
 import ar from "../../../../dist/intl-tel-input/js/i18n/ar.js"; // arabic
+import { setupStrictRejectToast } from "../../../js/strictRejectToast";
 
 const input = document.querySelector<HTMLInputElement>("#phone")!;
 
@@ -12,25 +13,4 @@ intlTelInput(input, {
   searchInputClass: "form-control",
 });
 
-const toastEl = document.getElementById("strictRejectToast");
-const toastBody = document.getElementById("strictRejectToastBody");
-if (toastEl && toastBody) {
-  const toast = window.bootstrap.Toast.getOrCreateInstance(toastEl);
-  input.addEventListener("strict:reject", (e) => {
-    const { reason, rejectedInput, source } = (e as CustomEvent).detail;
-    let message: string;
-    if (reason === "max-length") {
-      message = "Maximum length reached for this country";
-    } else if (source === "paste") {
-      message = "Stripped invalid characters from pasted text";
-    } else {
-      message = `Character not allowed: "${rejectedInput}"`;
-    }
-    const link = document.createElement("a");
-    link.href = "/docs/options#strictmode";
-    link.className = "link-light";
-    link.textContent = "strictMode";
-    toastBody.replaceChildren(`${message} (see `, link, ")");
-    toast.show();
-  });
-}
+setupStrictRejectToast(input);
