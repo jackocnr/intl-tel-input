@@ -1,14 +1,9 @@
 import { setupStrictRejectToast } from "../../../js/strictRejectToast";
+import { geoIpLookup } from "../../../js/geoIpLookup";
 
 const inputHome = document.querySelector<HTMLInputElement>("#home")!;
 const inputMobile = document.querySelector<HTMLInputElement>("#mobile")!;
 const inputVacation = document.querySelector<HTMLInputElement>("#vacation")!;
-
-const geoIpLookup = async () => {
-  const res = await fetch(`https://ipapi.co/json?token=${process.env.IPAPI_TOKEN}`);
-  const data = await res.json();
-  return data.country_code;
-};
 
 window.intlTelInput(inputHome, {
   initialCountry: "auto",

@@ -1,5 +1,6 @@
 import type { Iso2 } from "../../../../../packages/core/dist/js/intlTelInput";
 import { setupStrictRejectToast } from "../../../js/strictRejectToast";
+import { getErrorMessage } from "../../../js/getErrorMessage";
 
 const form = document.querySelector<HTMLFormElement>("#form")!;
 const loading = document.querySelector<HTMLElement>("#loading")!;
@@ -17,19 +18,6 @@ const lookupCountry = async (): Promise<{ code: string; name: string }> => {
   } catch (e) {
     console.log("Error looking up country:", e);
     return { code: "us", name: "United States" };
-  }
-};
-
-const getErrorMessage = (number: string, errorCode: string | null) => {
-  if (!number) {
-    return "Please enter a number";
-  }
-  const { VALIDATION_ERROR } = window.intlTelInput;
-  switch (errorCode) {
-    case VALIDATION_ERROR.INVALID_COUNTRY_CODE: return "Invalid dial code";
-    case VALIDATION_ERROR.TOO_SHORT: return "Too short";
-    case VALIDATION_ERROR.TOO_LONG: return "Too long";
-    default: return "Invalid number";
   }
 };
 

@@ -8,24 +8,9 @@ import {
   ReactiveFormsModule,
   Validators,
 } from "@angular/forms";
-import IntlTelInput, { intlTelInput } from "@intl-tel-input/angular";
-import type { ValidationError } from "intl-tel-input";
-
-const getErrorMessage = (
-  number: string,
-  errorCode: ValidationError | null,
-): string => {
-  if (!number) {
-    return "Please enter a number";
-  }
-  const { VALIDATION_ERROR } = intlTelInput;
-  switch (errorCode) {
-    case VALIDATION_ERROR.INVALID_COUNTRY_CODE: return "Invalid dial code";
-    case VALIDATION_ERROR.TOO_SHORT: return "Too short";
-    case VALIDATION_ERROR.TOO_LONG: return "Too long";
-    default: return "Invalid number";
-  }
-};
+import IntlTelInput from "@intl-tel-input/angular";
+import { getErrorMessage } from "../../../js/getErrorMessage";
+import { geoIpLookup } from "../../../js/geoIpLookup";
 
 @Component({
   selector: "#app",
@@ -90,14 +75,7 @@ export class AppComponent implements AfterViewInit {
   // eslint-disable-next-line class-methods-use-this
   loadUtils = () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>");
 
-  // eslint-disable-next-line class-methods-use-this
-  geoIpLookup = async (): Promise<string> => {
-    const res = await fetch(
-      `https://ipapi.co/json?token=${process.env.IPAPI_TOKEN}`,
-    );
-    const data = await res.json();
-    return data.country_code;
-  };
+  geoIpLookup = geoIpLookup;
 
   fg: FormGroup = new FormGroup({
     phone: new FormControl<string>("", [Validators.required]),

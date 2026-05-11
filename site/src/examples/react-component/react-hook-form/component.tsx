@@ -5,32 +5,8 @@ import IntlTelInput, {
   intlTelInput,
   type IntlTelInputRef,
 } from "@intl-tel-input/react";
-import type {
-  Iso2,
-  ValidationError,
-} from "intl-tel-input";
-
-const getErrorMessage = (
-  number: string,
-  errorCode: ValidationError | null,
-): string => {
-  if (!number) {
-    return "Please enter a number";
-  }
-  const { VALIDATION_ERROR } = intlTelInput;
-  switch (errorCode) {
-    case VALIDATION_ERROR.INVALID_COUNTRY_CODE: return "Invalid dial code";
-    case VALIDATION_ERROR.TOO_SHORT: return "Too short";
-    case VALIDATION_ERROR.TOO_LONG: return "Too long";
-    default: return "Invalid number";
-  }
-};
-
-const geoIpLookup = async (): Promise<Iso2> => {
-  const res = await fetch(`https://ipapi.co/json?token=${process.env.IPAPI_TOKEN}`);
-  const data = await res.json();
-  return data.country_code;
-};
+import { getErrorMessage } from "../../../js/getErrorMessage";
+import { geoIpLookup } from "../../../js/geoIpLookup";
 
 type FormValues = { phone: string };
 

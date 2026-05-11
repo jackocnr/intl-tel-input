@@ -1,25 +1,8 @@
 <script setup>
   import { computed, onMounted, ref } from "vue";
-  import IntlTelInput, { intlTelInput } from "@intl-tel-input/vue";
-
-  const getErrorMessage = (number, errorCode) => {
-    if (!number) {
-      return "Please enter a number";
-    }
-    const { VALIDATION_ERROR } = intlTelInput;
-    switch (errorCode) {
-      case VALIDATION_ERROR.INVALID_COUNTRY_CODE: return "Invalid dial code";
-      case VALIDATION_ERROR.TOO_SHORT: return "Too short";
-      case VALIDATION_ERROR.TOO_LONG: return "Too long";
-      default: return "Invalid number";
-    }
-  };
-
-  const geoIpLookup = async () => {
-    const res = await fetch(`https://ipapi.co/json?token=${process.env.IPAPI_TOKEN}`);
-    const data = await res.json();
-    return data.country_code;
-  };
+  import IntlTelInput from "@intl-tel-input/vue";
+  import { getErrorMessage } from "../../../js/getErrorMessage";
+  import { geoIpLookup } from "../../../js/geoIpLookup";
 
   const number = ref("");
   const isValid = ref(false);

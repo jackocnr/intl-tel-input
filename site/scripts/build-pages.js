@@ -659,6 +659,23 @@ tasks.push({
   data: () => ({}),
 });
 
+// get_error_message_js — shared helper for the validation examples (vanilla +
+// frameworks bundled through tmp/). Same copy-through-tmp pattern as above.
+tasks.push({
+  name: "get_error_message_js",
+  src: "src/js/getErrorMessage.ts",
+  dest: "tmp/js/getErrorMessage.ts",
+  data: () => ({}),
+});
+
+// geo_ip_lookup_js — shared geoIpLookup helper. Same copy-through-tmp pattern.
+tasks.push({
+  name: "geo_ip_lookup_js",
+  src: "src/js/geoIpLookup.ts",
+  dest: "tmp/js/geoIpLookup.ts",
+  data: () => ({}),
+});
+
 // homepage
 tasks.push({
   name: "homepage_layout",

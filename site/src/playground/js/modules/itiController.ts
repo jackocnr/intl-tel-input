@@ -1,5 +1,6 @@
 import type { Iti } from "../../../../../packages/core/dist/js/intlTelInput";
 import { resolveI18nSelection } from "./i18n";
+import { geoIpLookup } from "../../../js/geoIpLookup";
 
 // Captured on first run so the playground's required base classes (e.g. Bootstrap's
 // form-control) survive when the user supplies their own class via state.class.
@@ -79,11 +80,7 @@ function toInitOptions(
   }
 
   if (state.geoIpLookup) {
-    opts.geoIpLookup = async (): Promise<string> => {
-      const res = await fetch(`https://ipapi.co/json?token=${process.env.IPAPI_TOKEN}`);
-      const data = await res.json();
-      return data.country_code;
-    };
+    opts.geoIpLookup = geoIpLookup;
   }
 
   if (state.hiddenInput) {
