@@ -45,17 +45,17 @@ This example loads the assets from [jsDelivr](https://www.jsdelivr.com/) for a q
 First, add the CSS:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@28.0.6/dist/css/intlTelInput.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@28.0.7/dist/css/intlTelInput.css">
 ```
 
 Then, add the script and initialise it on your input element:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@28.0.6/dist/js/intlTelInput.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@28.0.7/dist/js/intlTelInput.min.js"></script>
 <script>
   const input = document.querySelector("#phone");
   window.intlTelInput(input, {
-    loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@28.0.6/dist/js/utils.js"),
+    loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@28.0.7/dist/js/utils.js"),
   });
 </script>
 ```
