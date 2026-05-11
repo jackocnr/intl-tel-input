@@ -8,6 +8,7 @@
 - [How do I set the initial country?](#how-do-i-set-the-initial-country)
 - [Can I translate the UI and country names?](#can-i-translate-the-ui-and-country-names)
 - [How do I validate a number?](#how-do-i-validate-a-number)
+- [How do I restore the preferredCountries divider?](#how-do-i-restore-the-preferredcountries-divider)
 - [Something looks broken — where should I look first?](#something-looks-broken--where-should-i-look-first)
 
 
@@ -64,6 +65,41 @@ If you’re using the utils script, you can validate numbers and show useful err
 
 - See the [Validation example](/examples/vanilla-javascript/validation)
 - See the [Utils script](/docs/utils)
+
+
+## How do I restore the preferredCountries divider?
+
+The legacy `preferredCountries` option has been replaced by [`countryOrder`](/docs/options#countryorder), which takes the same array of iso2 codes. So before you had:
+
+```js
+preferredCountries: ["us", "gb"]
+```
+
+And now you have:
+
+```js
+countryOrder: ["us", "gb"]
+```
+
+The one visual difference is that the old option rendered a grey divider below the preferred group, and `countryOrder` does not. If you want that divider back, you can add the following CSS rule.
+
+If you have `countrySearch` enabled (the default), use this version, which hides the divider while searching:
+
+```css
+/* Replace "us" with the iso2 code of the last country in your preferred group */
+.iti__dropdown-content:has(.iti__search-input:placeholder-shown) .iti__country[data-iso2="us"] {
+  border-bottom: 1px solid var(--iti-border-color);
+}
+```
+
+If you have `countrySearch` disabled, this simpler version is enough:
+
+```css
+/* Replace "us" with the iso2 code of the last country in your preferred group */
+.iti__country[data-iso2="us"] {
+  border-bottom: 1px solid var(--iti-border-color);
+}
+```
 
 
 ## Something looks broken — where should I look first?

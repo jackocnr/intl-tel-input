@@ -23,25 +23,9 @@ Choose which countries are available, the order they're displayed in, and how th
 Type: `string[]`  
 Default: `null`  
 
-An array of iso2 codes that is used to order the country dropdown. Any omitted countries will appear after those specified, in alphabetical order, e.g. setting `countryOrder` to `["jp", "kr"]` will result in the list: Japan, South Korea, Afghanistan, Albania, Algeria, etc. _Note: this replaces the legacy `preferredCountries` option (now removed)._ 
+An array of iso2 codes that is used to order the country dropdown. Any omitted countries will appear after those specified, in alphabetical order, e.g. setting `countryOrder` to `["jp", "kr"]` will result in the list: Japan, South Korea, Afghanistan, Albania, Algeria, etc. _Note: this replaces the legacy `preferredCountries` option, which has now been removed, but you can still re-create the grey divider below the preferred group [with a single CSS rule](/docs/faq#how-do-i-restore-the-preferredcountries-divider)._
 
 Play with the above example in the [Playground](/playground?countryOrder=%5B"jp"%2C"kr"%5D&initialCountry=#country-options).
-
-If you're migrating from `preferredCountries` and want to restore the grey divider that used to appear below the preferred group, you can add the following CSS. If you have `countrySearch` enabled (the default), use this version (which hides the divider while searching) — replace `"us"` with the iso2 code of the last country in your preferred group:
-
-```css
-.iti__dropdown-content:has(.iti__search-input:placeholder-shown) .iti__country[data-iso2="us"] {
-  border-bottom: 1px solid var(--iti-border-color);
-}
-```
-
-If you have `countrySearch` disabled, use this simpler version — again, replace `"us"` with the iso2 code of the last country in your preferred group:
-
-```css
-.iti__country[data-iso2="us"] {
-  border-bottom: 1px solid var(--iti-border-color);
-}
-```
 
 ###### excludeCountries
 Type: `string[]`  
