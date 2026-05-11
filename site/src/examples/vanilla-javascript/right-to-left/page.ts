@@ -18,13 +18,19 @@ if (toastEl && toastBody) {
   const toast = window.bootstrap.Toast.getOrCreateInstance(toastEl);
   input.addEventListener("strict:reject", (e) => {
     const { reason, rejectedInput, source } = (e as CustomEvent).detail;
+    let message: string;
     if (reason === "max-length") {
-      toastBody.textContent = "Maximum length reached for this country";
+      message = "Maximum length reached for this country";
     } else if (source === "paste") {
-      toastBody.textContent = "Stripped invalid characters from pasted text";
+      message = "Stripped invalid characters from pasted text";
     } else {
-      toastBody.textContent = `Character not allowed: "${rejectedInput}"`;
+      message = `Character not allowed: "${rejectedInput}"`;
     }
+    const link = document.createElement("a");
+    link.href = "/docs/options#strictmode";
+    link.className = "link-light";
+    link.textContent = "strictMode";
+    toastBody.replaceChildren(`${message} (see `, link, ")");
     toast.show();
   });
 }

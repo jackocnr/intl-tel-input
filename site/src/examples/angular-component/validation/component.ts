@@ -41,10 +41,10 @@ const getErrorMessage = (
               role="alert"
               aria-live="assertive"
               aria-atomic="true"
-              data-bs-delay="2000"
+              data-bs-delay="4000"
             >
               <div class="d-flex">
-                <div class="toast-body">{{ toastMessage }}</div>
+                <div class="toast-body">@if (toastMessage) { {{ toastMessage }} (see <a href="/docs/options#strictmode" class="link-light">strictMode</a>) }</div>
                 <button
                   type="button"
                   class="btn-close btn-close-white me-2 m-auto"
