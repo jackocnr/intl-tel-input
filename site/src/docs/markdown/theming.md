@@ -16,7 +16,7 @@ The core library exposes a set of CSS variables (all prefixed `--iti-`) that you
 ###### --iti-hover-color
 Default: `rgba(0, 0, 0, 0.05)`  
 
-Hover background for the selected-country button and dropdown items.
+Hover background for the selected-country button and country list items.
 
 ###### --iti-border-color
 Default: `#ccc`  

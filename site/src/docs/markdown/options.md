@@ -23,7 +23,7 @@ Choose which countries are available, the order they're displayed in, and how th
 Type: `string[]`  
 Default: `null`  
 
-An array of iso2 codes that is used to order the country dropdown. Any omitted countries will appear after those specified, in alphabetical order, e.g. setting `countryOrder` to `["jp", "kr"]` will result in the list: Japan, South Korea, Afghanistan, Albania, Algeria, etc. _Note: this replaces the legacy `preferredCountries` option, which has now been removed, but you can still re-create the grey divider below the preferred group [with a single CSS rule](/docs/faq#how-do-i-restore-the-preferredcountries-divider)._
+An array of iso2 codes that is used to order the country list. Any omitted countries will appear after those specified, in alphabetical order, e.g. setting `countryOrder` to `["jp", "kr"]` will result in the list: Japan, South Korea, Afghanistan, Albania, Algeria, etc. _Note: this replaces the legacy `preferredCountries` option, which has now been removed, but you can still re-create the grey divider below the preferred group [with a single CSS rule](/docs/faq#how-do-i-restore-the-preferredcountries-divider)._
 
 Play with the above example in the [Playground](/playground?countryOrder=%5B"jp"%2C"kr"%5D&initialCountry=#country-options).
 
@@ -31,9 +31,9 @@ Play with the above example in the [Playground](/playground?countryOrder=%5B"jp"
 Type: `string[]`  
 Default: `null`  
 
-An array of iso2 codes to exclude from the country dropdown e.g. `["gb", "us"]`. Also see: [`onlyCountries`](#onlycountries) option.
+An array of iso2 codes to exclude from the country list e.g. `["gb", "us"]`. Also see: [`onlyCountries`](#onlycountries) option.
 
-Try `intl-tel-input` with all "A" countries excluded in the [Playground](/playground?excludeCountries=%5B"af"%2C"al"%2C"dz"%2C"as"%2C"ad"%2C"ao"%2C"ai"%2C"ag"%2C"ar"%2C"am"%2C"aw"%2C"ac"%2C"au"%2C"at"%2C"az"%2C"ax"%5D&initialCountry=#country-options) — the dropdown now starts at Bahamas.
+Try `intl-tel-input` with all "A" countries excluded in the [Playground](/playground?excludeCountries=%5B"af"%2C"al"%2C"dz"%2C"as"%2C"ad"%2C"ao"%2C"ai"%2C"ag"%2C"ar"%2C"am"%2C"aw"%2C"ac"%2C"au"%2C"at"%2C"az"%2C"ax"%5D&initialCountry=#country-options) — the country list now starts at Bahamas.
 
 ###### geoIpLookup
 Type: `() => Promise<string>`  
@@ -74,14 +74,14 @@ View `intl-tel-input` with `initialCountry` set to `"de"` (Germany) in the [Play
 Type: `string[]`  
 Default: `null`  
 
-In the dropdown, display only the countries you specify here, using their iso2 codes e.g. `["fr", "de", "es"]`. Also see: [`excludeCountries`](#excludecountries) option.
+In the country list, display only the countries you specify here, using their iso2 codes e.g. `["fr", "de", "es"]`. Also see: [`excludeCountries`](#excludecountries) option.
 
 Try `intl-tel-input` with this option set to only European countries in the [Playground](/playground?onlyCountries=%5B"al"%2C"ad"%2C"at"%2C"by"%2C"be"%2C"ba"%2C"bg"%2C"hr"%2C"cz"%2C"dk"%2C"ee"%2C"fo"%2C"fi"%2C"fr"%2C"de"%2C"gi"%2C"gr"%2C"va"%2C"hu"%2C"is"%2C"ie"%2C"it"%2C"lv"%2C"li"%2C"lt"%2C"lu"%2C"mk"%2C"mt"%2C"md"%2C"mc"%2C"me"%2C"nl"%2C"no"%2C"pl"%2C"pt"%2C"ro"%2C"ru"%2C"sm"%2C"rs"%2C"sk"%2C"si"%2C"es"%2C"se"%2C"ch"%2C"ua"%2C"gb"%5D#country-options).
 
 
 ## User interface options
 
-Control dropdown behaviour and whether certain UI elements are displayed.
+Control country list behaviour and whether certain UI elements are displayed.
 
 ###### allowDropdown
 Type: `boolean`  
@@ -101,7 +101,7 @@ Additional class(es) to add to the (injected) wrapper div element `<div class="i
 Type: `boolean`  
 Default: `true`  
 
-Add a search input to the top of the dropdown, so users can filter the displayed countries. Matches against country name, iso2 code, dial code, and initials. 
+Add a search input to the top of the country list, so users can filter the displayed countries. Matches against country name, iso2 code, dial code, and initials. 
 
 View `intl-tel-input` with this disabled in the [Playground](/playground?countrySearch=false#user-interface-options).
 
@@ -145,7 +145,7 @@ Play with this option in the [Playground](/playground#user-interface-options).
 </picture>
 
 > [!NOTE]  
-> If the user tries to type a new dial code (as well as the displayed one), we automatically open the country dropdown and focus the search input, so the dial code appears there instead - this way, if they type +54, then Argentina will be highlighted in the dropdown, and they can simply press Enter to select it, updating the displayed dial code (this feature requires [`allowDropdown`](#allowdropdown) and [`countrySearch`](#countrysearch) to be enabled).
+> If the user tries to type a new dial code (as well as the displayed one), we automatically open the country list and focus the search input, so the dial code appears there instead - this way, if they type +54, then Argentina will be highlighted in the country list, and they can simply press Enter to select it, updating the displayed dial code (this feature requires [`allowDropdown`](#allowdropdown) and [`countrySearch`](#countrysearch) to be enabled).
 
 ###### showFlags
 Type: `boolean`  

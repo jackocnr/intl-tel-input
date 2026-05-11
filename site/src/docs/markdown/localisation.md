@@ -64,7 +64,7 @@ Here is the full set of UI strings the [`i18n`](/docs/options#i18n) option accep
   noCountrySelected: "Select country for phone number",
   // Aria label for the country list element
   countryListAriaLabel: "List of countries",
-  // Placeholder for the search input in the dropdown
+  // Placeholder for the country search input
   searchPlaceholder: "Search",
   // Aria label for the clear search button
   clearSearchAriaLabel: "Clear search",

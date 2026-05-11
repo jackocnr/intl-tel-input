@@ -40,7 +40,7 @@ The country selector is fully keyboard-operable: Up/Down/Space/Enter to open and
 
 `intl-tel-input` is built to work well with screen readers out of the box.
 
-Its dropdown/search UI includes ARIA attributes to expose state and relationships (e.g. expanded state, controls relationships, listbox semantics), and it provides screen reader text for things like:
+Its country list/search UI includes ARIA attributes to expose state and relationships (e.g. expanded state, controls relationships, listbox semantics), and it provides screen reader text for things like:
 
 - The selected country button label (including the “no country selected” state)
 - Country list label
