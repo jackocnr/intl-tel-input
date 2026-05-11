@@ -3,3 +3,5 @@
 <p>Play with these options in the <a href="/playground">Playground</a>.</p>
 
 <p>Note: if you use <a href="/docs/options#loadutils"><code>loadUtils</code></a> or <a href="/docs/options#geoiplookup"><code>geoIpLookup</code></a> across multiple instances, those requests are only fired once and the result is shared between them.</p>
+
+<p>Note: the toast that appears when <a href="/docs/options#strictmode"><code>strictMode</code></a> rejects input isn't part of the library — it's wired up via the <a href="/docs/vanilla-javascript#strict-reject"><code>strict:reject</code></a> event (whose docs include a full example).</p>

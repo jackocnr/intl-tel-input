@@ -3,3 +3,5 @@
 <p>Note: reformatting the number this way requires the <a href="/docs/utils#loading-the-utils-script">utils script to be loaded</a>. The utils script is a custom build of Google's libphonenumber library, which we use for all formatting, validation, and placeholder generation.</p>
 
 <p>Play with the various library options on an input containing a number in the <a href="/playground?value=%2B447947123123#input-attributes">Playground</a>.</p>
+
+<p>Note: the toast that appears when <a href="/docs/options#strictmode"><code>strictMode</code></a> rejects input isn't part of the library — it's wired up via the <a href="/docs/vanilla-javascript#strict-reject"><code>strict:reject</code></a> event (whose docs include a full example).</p>

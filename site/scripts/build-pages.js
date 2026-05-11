@@ -289,6 +289,7 @@ const exampleDefinitions = [
     exampleSlug: "display-number",
     title: "Display existing number",
     metaDesc: "Automatically format an existing number during initialisation.",
+    js: { destDir: "tmp" },
     content: {
       includeItiScript: true,
     },

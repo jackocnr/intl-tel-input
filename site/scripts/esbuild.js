@@ -79,6 +79,13 @@ build({
   outfile: "dist/examples/js/large_flags.js",
 });
 
+// display existing number example
+build({
+  ...sharedOptions,
+  entryPoints: ["tmp/examples/vanilla-javascript/display-number/page.ts"],
+  outfile: "dist/examples/js/display_number.js",
+});
+
 // react component example
 build({
   ...sharedOptions,
