@@ -1,5 +1,5 @@
 <script setup>
-  import { computed, onMounted, ref } from "vue";
+  import { computed, ref } from "vue";
   import IntlTelInput from "@intl-tel-input/vue";
   import { getErrorMessage } from "../../../js/getErrorMessage";
   import { geoIpLookup } from "../../../js/geoIpLookup";
@@ -10,7 +10,6 @@
   const showValidation = ref(false);
   const submitted = ref(false);
   const toastMessage = ref("");
-  const itiRef = ref(null);
   const toastDivRef = ref(null);
 
   const inputValidityClass = computed(() => {
@@ -43,23 +42,18 @@
     submitted.value = true;
   };
 
-  onMounted(() => {
-    const input = itiRef.value?.input;
+  const handleStrictReject = (source, rejectedInput, reason) => {
     const toastEl = toastDivRef.value;
-    if (!input || !toastEl) return;
-    const toast = window.bootstrap.Toast.getOrCreateInstance(toastEl);
-    input.addEventListener("strict:reject", (e) => {
-      const { reason, rejectedInput, source } = e.detail;
-      if (reason === "max-length") {
-        toastMessage.value = "Maximum length reached for this country";
-      } else if (source === "paste") {
-        toastMessage.value = "Stripped invalid characters from pasted text";
-      } else {
-        toastMessage.value = `Character not allowed: "${rejectedInput}"`;
-      }
-      toast.show();
-    });
-  });
+    if (!toastEl) return;
+    if (reason === "max-length") {
+      toastMessage.value = "Maximum length reached for this country";
+    } else if (source === "paste") {
+      toastMessage.value = "Stripped invalid characters from pasted text";
+    } else {
+      toastMessage.value = `Character not allowed: "${rejectedInput}"`;
+    }
+    window.bootstrap.Toast.getOrCreateInstance(toastEl).show();
+  };
 </script>
 
 <template>
@@ -76,10 +70,10 @@
           </div>
         </div>
         <IntlTelInput
-          ref="itiRef"
           @changeNumber="handleChangeNumber"
           @changeValidity="isValid = $event"
           @changeErrorCode="errorCode = $event"
+          @strictReject="handleStrictReject"
           initial-country="auto"
           :separate-dial-code="true"
           :strict-mode="true"

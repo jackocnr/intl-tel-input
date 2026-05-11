@@ -1,5 +1,4 @@
 <script>
-  import { onMount } from "svelte";
   import IntlTelInput from "@intl-tel-input/svelte";
   import { getErrorMessage } from "../../../js/getErrorMessage";
   import { geoIpLookup } from "../../../js/geoIpLookup";
@@ -10,7 +9,6 @@
   let showValidation = $state(false);
   let submitted = $state(false);
   let toastMessage = $state("");
-  let itiRef;
   let toastDivRef;
 
   const inputValidityClass = $derived.by(() => {
@@ -39,22 +37,17 @@
     submitted = true;
   };
 
-  onMount(() => {
-    const input = itiRef?.getInput();
-    if (!input || !toastDivRef) return;
-    const toast = window.bootstrap.Toast.getOrCreateInstance(toastDivRef);
-    input.addEventListener("strict:reject", (e) => {
-      const { reason, rejectedInput, source } = e.detail;
-      if (reason === "max-length") {
-        toastMessage = "Maximum length reached for this country";
-      } else if (source === "paste") {
-        toastMessage = "Stripped invalid characters from pasted text";
-      } else {
-        toastMessage = `Character not allowed: "${rejectedInput}"`;
-      }
-      toast.show();
-    });
-  });
+  const handleStrictReject = (source, rejectedInput, reason) => {
+    if (!toastDivRef) return;
+    if (reason === "max-length") {
+      toastMessage = "Maximum length reached for this country";
+    } else if (source === "paste") {
+      toastMessage = "Stripped invalid characters from pasted text";
+    } else {
+      toastMessage = `Character not allowed: "${rejectedInput}"`;
+    }
+    window.bootstrap.Toast.getOrCreateInstance(toastDivRef).show();
+  };
 </script>
 
 <form onsubmit={handleSubmit} novalidate>
@@ -70,10 +63,10 @@
         </div>
       </div>
       <IntlTelInput
-        bind:this={itiRef}
         onChangeNumber={handleChangeNumber}
         onChangeValidity={(v) => (isValid = v)}
         onChangeErrorCode={(e) => (errorCode = e)}
+        onStrictReject={handleStrictReject}
         initialCountry="auto"
         {geoIpLookup}
         loadUtils={() => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>")}

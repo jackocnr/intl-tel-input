@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState, useRef } from "react";
 import { createRoot } from "react-dom/client";
 import IntlTelInput, {
-  type IntlTelInputRef,
+  type StrictRejectReason,
+  type StrictRejectSource,
 } from "@intl-tel-input/react";
 import type { ValidationError } from "intl-tel-input";
 import { getErrorMessage } from "../../../js/getErrorMessage";
@@ -14,7 +15,6 @@ const App = () => {
   const [showValidation, setShowValidation] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
-  const itiRef = useRef<IntlTelInputRef>(null);
   const toastDivRef = useRef<HTMLDivElement>(null);
 
   let inputValidityClass = "";
@@ -41,27 +41,20 @@ const App = () => {
     setSubmitted(true);
   };
 
-  useEffect(() => {
-    const input = itiRef.current?.getInput();
+  const handleStrictReject = (source: StrictRejectSource, rejectedInput: string, reason: StrictRejectReason) => {
     const toastEl = toastDivRef.current;
-    if (!input || !toastEl) {
-      return undefined;
+    if (!toastEl) {
+      return;
     }
-    const toast = window.bootstrap.Toast.getOrCreateInstance(toastEl);
-    const handleReject = (e: Event) => {
-      const { reason, rejectedInput, source } = (e as CustomEvent).detail;
-      if (reason === "max-length") {
-        setToastMessage("Maximum length reached for this country");
-      } else if (source === "paste") {
-        setToastMessage("Stripped invalid characters from pasted text");
-      } else {
-        setToastMessage(`Character not allowed: "${rejectedInput}"`);
-      }
-      toast.show();
-    };
-    input.addEventListener("strict:reject", handleReject);
-    return () => input.removeEventListener("strict:reject", handleReject);
-  }, []);
+    if (reason === "max-length") {
+      setToastMessage("Maximum length reached for this country");
+    } else if (source === "paste") {
+      setToastMessage("Stripped invalid characters from pasted text");
+    } else {
+      setToastMessage(`Character not allowed: "${rejectedInput}"`);
+    }
+    window.bootstrap.Toast.getOrCreateInstance(toastEl).show();
+  };
 
   return (
     <form onSubmit={handleSubmit} noValidate>
@@ -77,10 +70,10 @@ const App = () => {
             </div>
           </div>
           <IntlTelInput
-            ref={itiRef}
             onChangeNumber={handleChangeNumber}
             onChangeValidity={setIsValid}
             onChangeErrorCode={setErrorCode}
+            onStrictReject={handleStrictReject}
             initialCountry="auto"
             geoIpLookup={geoIpLookup}
             // @ts-expect-error EJS-templated URL string, resolved at build time.

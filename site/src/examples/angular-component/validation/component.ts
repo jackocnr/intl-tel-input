@@ -1,14 +1,14 @@
 import "zone.js";
 import "@angular/compiler";
 import { bootstrapApplication } from "@angular/platform-browser";
-import { Component, ViewChild, AfterViewInit } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from "@angular/forms";
-import IntlTelInput from "@intl-tel-input/angular";
+import IntlTelInput, { type StrictRejectDetail } from "@intl-tel-input/angular";
 import { getErrorMessage } from "../../../js/getErrorMessage";
 import { geoIpLookup } from "../../../js/geoIpLookup";
 
@@ -40,9 +40,9 @@ import { geoIpLookup } from "../../../js/geoIpLookup";
             </div>
           </div>
           <intl-tel-input
-            #iti
             formControlName="phone"
             (blur)="enableValidation()"
+            (strictReject)="handleStrictReject($event)"
             initialCountry="auto"
             [geoIpLookup]="geoIpLookup"
             [loadUtils]="loadUtils"
@@ -63,8 +63,7 @@ import { geoIpLookup } from "../../../js/geoIpLookup";
   standalone: true,
   imports: [IntlTelInput, ReactiveFormsModule],
 })
-export class AppComponent implements AfterViewInit {
-  @ViewChild("iti") itiComponent!: IntlTelInput;
+export class AppComponent {
   @ViewChild("toastRef") toastRef!: { nativeElement: HTMLElement };
 
   showValidation = false;
@@ -124,24 +123,19 @@ export class AppComponent implements AfterViewInit {
     this.submitted = true;
   }
 
-  ngAfterViewInit(): void {
-    const input = this.itiComponent.getInput();
+  handleStrictReject({ source, rejectedInput, reason }: StrictRejectDetail): void {
     const toastEl = this.toastRef.nativeElement;
-    if (!input || !toastEl) {
+    if (!toastEl) {
       return;
     }
-    const toast = window.bootstrap.Toast.getOrCreateInstance(toastEl);
-    input.addEventListener("strict:reject", (e) => {
-      const { reason, rejectedInput, source } = (e as CustomEvent).detail;
-      if (reason === "max-length") {
-        this.toastMessage = "Maximum length reached for this country";
-      } else if (source === "paste") {
-        this.toastMessage = "Stripped invalid characters from pasted text";
-      } else {
-        this.toastMessage = `Character not allowed: "${rejectedInput}"`;
-      }
-      toast.show();
-    });
+    if (reason === "max-length") {
+      this.toastMessage = "Maximum length reached for this country";
+    } else if (source === "paste") {
+      this.toastMessage = "Stripped invalid characters from pasted text";
+    } else {
+      this.toastMessage = `Character not allowed: "${rejectedInput}"`;
+    }
+    window.bootstrap.Toast.getOrCreateInstance(toastEl).show();
   }
 }
 

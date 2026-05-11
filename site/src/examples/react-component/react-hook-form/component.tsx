@@ -1,9 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { useForm, Controller, useWatch } from "react-hook-form";
 import IntlTelInput, {
   intlTelInput,
   type IntlTelInputRef,
+  type StrictRejectReason,
+  type StrictRejectSource,
 } from "@intl-tel-input/react";
 import { getErrorMessage } from "../../../js/getErrorMessage";
 import { geoIpLookup } from "../../../js/geoIpLookup";
@@ -25,27 +27,20 @@ const App = () => {
   });
   const phoneValue = useWatch({ control, name: "phone" });
 
-  useEffect(() => {
-    const input = itiRef.current?.getInput();
+  const handleStrictReject = (source: StrictRejectSource, rejectedInput: string, reason: StrictRejectReason) => {
     const toastEl = toastDivRef.current;
-    if (!input || !toastEl) {
-      return undefined;
+    if (!toastEl) {
+      return;
     }
-    const toast = window.bootstrap.Toast.getOrCreateInstance(toastEl);
-    const handleReject = (e: Event) => {
-      const { reason, rejectedInput, source } = (e as CustomEvent).detail;
-      if (reason === "max-length") {
-        setToastMessage("Maximum length reached for this country");
-      } else if (source === "paste") {
-        setToastMessage("Stripped invalid characters from pasted text");
-      } else {
-        setToastMessage(`Character not allowed: "${rejectedInput}"`);
-      }
-      toast.show();
-    };
-    input.addEventListener("strict:reject", handleReject);
-    return () => input.removeEventListener("strict:reject", handleReject);
-  }, []);
+    if (reason === "max-length") {
+      setToastMessage("Maximum length reached for this country");
+    } else if (source === "paste") {
+      setToastMessage("Stripped invalid characters from pasted text");
+    } else {
+      setToastMessage(`Character not allowed: "${rejectedInput}"`);
+    }
+    window.bootstrap.Toast.getOrCreateInstance(toastEl).show();
+  };
 
   const validatePhone = (value: string): true | string => {
     if (!intlTelInput.utils) {
@@ -96,6 +91,7 @@ const App = () => {
                   ref={itiRef}
                   value={field.value}
                   onChangeNumber={field.onChange}
+                  onStrictReject={handleStrictReject}
                   initialCountry="auto"
                   geoIpLookup={geoIpLookup}
                   // @ts-expect-error EJS-templated URL string, resolved at build time.
