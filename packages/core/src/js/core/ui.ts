@@ -52,6 +52,7 @@ export default class UI {
   #highlightedListItemEl: HTMLElement | null = null;
   readonly #listItemByIso2: Map<Iso2, HTMLElement> = new Map();
   #dropdownAbortController: AbortController | null = null;
+  #resizeObserver?: ResizeObserver;
 
   // public
   public telInputEl!: HTMLInputElement;
@@ -110,6 +111,7 @@ export default class UI {
     wrapper.appendChild(this.telInputEl);
 
     this.#updateInputPaddingAndReveal();
+    this.#observeSelectedCountryResize();
     this.#buildHiddenInputs(wrapper);
 
     // call this before setInitialState (see commit msg)
@@ -482,6 +484,19 @@ export default class UI {
         selectedCountryWidth + LAYOUT.INPUT_PADDING_EXTRA_LEFT;
       this.telInputEl.style.paddingLeft = `${inputPadding}px`;
     }
+  }
+
+  //* Keep the input padding in sync when the selected country's rendered width changes — e.g. responsive font-size shifts that change the dial code text width. Skip while hidden (offsetWidth === 0) so we don't waste work or clobber the padding using a fallback constant.
+  #observeSelectedCountryResize(): void {
+    if (!this.#selectedCountryEl || typeof ResizeObserver === "undefined") {
+      return;
+    }
+    this.#resizeObserver = new ResizeObserver(() => {
+      if (this.#selectedCountryEl?.offsetWidth) {
+        this.#updateInputPadding();
+      }
+    });
+    this.#resizeObserver.observe(this.#selectedCountryEl);
   }
 
   static #getBody(): HTMLElement {
@@ -1256,6 +1271,8 @@ export default class UI {
     //* Break cross-references from long-lived objects back to this instance.
     this.telInputEl.iti = undefined;
     delete this.telInputEl.dataset[DATA_KEYS.INSTANCE_ID];
+
+    this.#resizeObserver?.disconnect();
 
     //* Restore original styling
     this.telInputEl.style.paddingLeft = this.#originalPaddingLeft;
