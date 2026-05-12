@@ -3,12 +3,11 @@
  */
 
 import { userEvent } from "@testing-library/user-event";
-import { fireEvent } from "@testing-library/dom";
 import {
   initIntlTelInput,
   teardown,
   checkFlagSelected,
-  getPasteEventObject,
+  pasteIntoInput,
 } from "../helpers/helpers";
 
 // "Eastern" numerals that are still used for phone numbers in some countries:
@@ -116,8 +115,7 @@ describe("Eastern numerals support", () => {
     test("pasting intl number with Arabic-Indic digits is allowed", async () => {
       await user.click(input);
       const pastedContent = "+١٩٨٧١٢٣١٢٣٤"; // "+19871231234"
-      const eventObject = getPasteEventObject(pastedContent);
-      fireEvent.paste(input, eventObject);
+      expect(pasteIntoInput(input, pastedContent)).toBe(true);
       // Display should preserve Eastern Arabic numerals while formatting: +1 987-123-1234
       expect(input.value).toBe("+١٩٨٧١٢٣١٢٣٤");
     });

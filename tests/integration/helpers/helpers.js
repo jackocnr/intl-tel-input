@@ -1,4 +1,5 @@
 import "@testing-library/jest-dom/vitest";
+import { fireEvent } from "@testing-library/dom";
 import intlTelInputWithUtils from "intl-tel-input/intlTelInputWithUtils";
 
 export const intlTelInput = intlTelInputWithUtils;
@@ -174,4 +175,24 @@ export const getPasteEventObject = (str) => {
       getData: () => str,
     },
   };
+};
+
+export const pasteIntoInput = (input, str) => {
+  const pasteAllowed = fireEvent.paste(input, getPasteEventObject(str));
+
+  if (pasteAllowed) {
+    const selStart = input.selectionStart ?? input.value.length;
+    const selEnd = input.selectionEnd ?? input.value.length;
+    const before = input.value.slice(0, selStart);
+    const after = input.value.slice(selEnd);
+    input.value = before + str + after;
+    const caretPos = selStart + str.length;
+    input.setSelectionRange(caretPos, caretPos);
+    fireEvent.input(input, {
+      inputType: "insertFromPaste",
+      data: str,
+    });
+  }
+
+  return pasteAllowed;
 };

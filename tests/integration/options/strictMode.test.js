@@ -3,14 +3,13 @@
  */
 
 import { userEvent } from "@testing-library/user-event";
-import { fireEvent } from "@testing-library/dom";
 import {
   initIntlTelInput,
   teardown,
   stripFormattingChars,
   selectCountryAndTypePlaceholderNumberAsync,
   checkFlagSelected,
-  getPasteEventObject,
+  pasteIntoInput,
 } from "../helpers/helpers";
 
 
@@ -186,19 +185,22 @@ describe("strictMode option", () => {
     test("paste strips invalid chars, caps length, and formats", async () => {
       await user.click(input);
       const pastedContent = "+1a9./-:$@&*b8c7d+123123456";
-      const eventObject = getPasteEventObject(pastedContent);
-      // NOTE: could not get this working with user.paste
-      fireEvent.paste(input, eventObject);
+      const pasteAllowed = pasteIntoInput(input, pastedContent);
+      expect(pasteAllowed).toBe(true);
       expect(input.value).toBe("+1 987-123-1234");
+    });
+
+    test("does not prevent the paste event in strictMode", async () => {
+      await user.click(input);
+      expect(pasteIntoInput(input, "2345678901")).toBe(true);
     });
 
     // PREV BUG
     test("pasting a very long number still works", async () => {
       await user.click(input);
       const pastedContent = "2345678901234567999999";
-      const eventObject = getPasteEventObject(pastedContent);
-      // NOTE: could not get this working with user.paste
-      fireEvent.paste(input, eventObject);
+      const pasteAllowed = pasteIntoInput(input, pastedContent);
+      expect(pasteAllowed).toBe(true);
       expect(input.value).toBe("(234) 567-8901");
     });
 
@@ -222,7 +224,7 @@ describe("strictMode option", () => {
       input.addEventListener("strict:reject", (e) => events.push(e.detail));
       await user.click(input);
       const pastedContent = "a9871234567";
-      fireEvent.paste(input, getPasteEventObject(pastedContent));
+      expect(pasteIntoInput(input, pastedContent)).toBe(true);
       expect(events).toEqual([{ source: "paste", rejectedInput: pastedContent, reason: "invalid" }]);
     });
 
@@ -231,7 +233,7 @@ describe("strictMode option", () => {
       input.addEventListener("strict:reject", (e) => events.push(e.detail));
       await user.click(input);
       const pastedContent = "2345678901234567999999";
-      fireEvent.paste(input, getPasteEventObject(pastedContent));
+      expect(pasteIntoInput(input, pastedContent)).toBe(true);
       expect(events).toEqual([{ source: "paste", rejectedInput: pastedContent, reason: "max-length" }]);
     });
 
@@ -239,7 +241,7 @@ describe("strictMode option", () => {
       const events = [];
       input.addEventListener("strict:reject", (e) => events.push(e.detail));
       await user.click(input);
-      fireEvent.paste(input, getPasteEventObject("2345678901"));
+      expect(pasteIntoInput(input, "2345678901")).toBe(true);
       expect(events).toEqual([]);
     });
   });
@@ -366,13 +368,13 @@ describe("strictMode option", () => {
     test("does NOT add iti__strict-reject-animation class when paste is only partially stripped", async () => {
       await user.click(input);
       // This paste is partially sanitised (letters stripped) but still accepted.
-      fireEvent.paste(input, getPasteEventObject("a9871234567"));
+      pasteIntoInput(input, "a9871234567");
       expect(container.classList.contains("iti__strict-reject-animation")).toBe(false);
     });
 
     test("adds iti__strict-reject-animation class when every pasted character is stripped", async () => {
       await user.click(input);
-      fireEvent.paste(input, getPasteEventObject("abc"));
+      pasteIntoInput(input, "abc");
       expect(container.classList.contains("iti__strict-reject-animation")).toBe(true);
     });
 
@@ -380,7 +382,7 @@ describe("strictMode option", () => {
       await user.type(input, "7021234567");
       // caret now at end; move it into the middle
       input.setSelectionRange(5, 5);
-      fireEvent.paste(input, getPasteEventObject("99999999"));
+      pasteIntoInput(input, "99999999");
       expect(container.classList.contains("iti__strict-reject-animation")).toBe(true);
     });
 
