@@ -44,4 +44,39 @@
       dropdown.querySelectorAll('.iti-flyout-toggle[aria-expanded="true"]').forEach(closeFlyout);
     });
   });
+
+  // Floating feedback button: pre-fill the current URL into the GitHub issue
+  // form, wire up the dismiss control (hidden for the rest of the session).
+  // Deferred to DOMContentLoaded because on example pages this script is
+  // rendered inside <main>, before the button markup at the end of the layout.
+  function initFeedbackBtn() {
+    const STORAGE_KEY = 'iti-feedback-dismissed';
+    const btn = document.getElementById('iti-feedback-btn');
+    if (!btn) return;
+    try {
+      if (sessionStorage.getItem(STORAGE_KEY) === '1') return;
+    } catch (e) {}
+    const link = btn.querySelector('.iti-feedback-btn__link');
+    try {
+      const url = new URL(link.href);
+      url.searchParams.set('url', window.location.href);
+      const dpr = window.devicePixelRatio || 1;
+      const browserInfo = [
+        'User agent: ' + navigator.userAgent,
+        'Viewport: ' + window.innerWidth + '×' + window.innerHeight + (dpr !== 1 ? ' @' + dpr + 'x' : ''),
+      ].join('\n');
+      url.searchParams.set('browser', browserInfo);
+      link.href = url.toString();
+    } catch (e) {}
+    btn.querySelector('.iti-feedback-btn__close').addEventListener('click', () => {
+      try { sessionStorage.setItem(STORAGE_KEY, '1'); } catch (e) {}
+      btn.remove();
+    });
+    btn.hidden = false;
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initFeedbackBtn);
+  } else {
+    initFeedbackBtn();
+  }
 </script>

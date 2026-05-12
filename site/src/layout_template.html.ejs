@@ -24,3 +24,23 @@
   <aside class="iti-right-sidebar">
   </aside>
 </div>
+
+<!-- Floating feedback button (dismissed for the session via sessionStorage) -->
+<div id="iti-feedback-btn" class="iti-feedback-btn" hidden>
+  <a
+    class="iti-feedback-btn__link"
+    href="https://github.com/jackocnr/intl-tel-input/issues/new?template=3_website_issue.yml"
+    target="_blank"
+    rel="noopener"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+      <path fill="currentColor" d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+    </svg>
+    <span class="iti-feedback-btn__label">Feedback</span>
+  </a>
+  <button
+    type="button"
+    class="iti-feedback-btn__close"
+    aria-label="Hide feedback button"
+  >&times;</button>
+</div>

@@ -11,26 +11,13 @@ body:
           required: true
         - label: This is an issue with the website itself, not a bug in the intl-tel-input library. (For library bugs, please use the Bug Report template instead.)
           required: true
-  - type: dropdown
-    id: page
-    attributes:
-      label: Page
-      description: Which part of the website is affected?
-      options:
-        - Homepage
-        - Docs
-        - Playground
-        - Examples
-        - Other
-    validations:
-      required: true
   - type: input
     id: url
     attributes:
       label: URL
-      description: Link to the affected page (if applicable).
+      description: Link to the affected page.
     validations:
-      required: false
+      required: true
   - type: textarea
     id: description
     attributes:
