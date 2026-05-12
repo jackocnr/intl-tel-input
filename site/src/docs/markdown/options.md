@@ -6,77 +6,13 @@ _Throughout these docs, "iso2 code" means the two-letter country identifier ([IS
 
 ## Contents
 
-- [Country options](#country-options)
 - [User interface options](#user-interface-options)
-- [Placeholder options](#placeholder-options)
+- [Country options](#country-options)
 - [Formatting options](#formatting-options)
+- [Placeholder options](#placeholder-options)
 - [Validation options](#validation-options)
 - [Translation options](#translation-options)
 - [Miscellaneous options](#miscellaneous-options)
-
-
-## Country options
-
-Choose which countries are available, the order they're displayed in, and how the initial country is determined.
-
-###### countryOrder
-Type: `string[]`  
-Default: `null`  
-
-An array of iso2 codes that is used to order the country list. Any omitted countries will appear after those specified, in alphabetical order, e.g. setting `countryOrder` to `["jp", "kr"]` will result in the list: Japan, South Korea, Afghanistan, Albania, Algeria, etc. _Note: this replaces the legacy `preferredCountries` option, which has now been removed, but you can still re-create the grey divider below the preferred group [with a single CSS rule](/docs/faq#how-do-i-restore-the-preferredcountries-divider)._
-
-Play with the above example in the [Playground](/playground?countryOrder=%5B"jp"%2C"kr"%5D&initialCountry=#country-options).
-
-###### excludeCountries
-Type: `string[]`  
-Default: `null`  
-
-An array of iso2 codes to exclude from the country list e.g. `["gb", "us"]`. Also see: [`onlyCountries`](#onlycountries) option.
-
-Try `intl-tel-input` with all "A" countries excluded in the [Playground](/playground?excludeCountries=%5B"af"%2C"al"%2C"dz"%2C"as"%2C"ad"%2C"ao"%2C"ai"%2C"ag"%2C"ar"%2C"am"%2C"aw"%2C"ac"%2C"au"%2C"at"%2C"az"%2C"ax"%5D&initialCountry=#country-options) — the country list now starts at Bahamas.
-
-###### geoIpLookup
-Type: `() => Promise<string>`  
-Default: `null`  
-
-When setting [`initialCountry`](#initialcountry) to `"auto"`, you must use this option to specify a custom function that calls an IP lookup service to get the user's location and returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) that resolves with the relevant iso2 code (or rejects on error).
-
-Here is an example using the [ipapi](https://ipapi.co/api/?javascript#location-of-clients-ip) service<sup>*</sup> (assign this to `geoIpLookup`):  
-```js
-async () => {
-  const res = await fetch("https://ipapi.co/json");
-  const data = await res.json();
-  return data.country_code;
-}
-```
-_Tip: store the result in a cookie to avoid repeat lookups!_
-
-> [!NOTE]  
-> <sup>*</sup>The [ipapi](https://ipapi.co) service used in the example above (and across this site) has a limited free tier that stops working once its quota is reached. For production, you should either sign up for a paid plan, swap in another IP-lookup provider, or roll your own solution — the core library just cares that the returned promise eventually resolves with an iso2 code (or rejects).
-
-> [!NOTE]  
-> On initialisation, a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) is exposed via the `promise` property on the core library instance (accessible directly with the vanilla JavaScript library, or via a ref in the framework components), so you can `await` it to know when initialisation requests like this have completed.
-
-Play with this option in the [Playground](/playground#country-options).
-
-###### initialCountry
-Type: `string`  
-Default: `""`  
-
-Set the initial country selection by specifying its iso2 code, e.g. `"us"` for the United States. You can also set [`initialCountry`](#initialcountry) to `"auto"`, which will look up the user's country based on their IP address (requires the [`geoIpLookup`](#geoiplookup) option - [see example](/examples/vanilla-javascript/lookup-country)). Note: however you use [`initialCountry`](#initialcountry), it will not update the country selection if the input already contains a number with an international dial code. 
-
-View `intl-tel-input` with `initialCountry` set to `"de"` (Germany) in the [Playground](/playground?initialCountry=de#country-options).
-
-> [!WARNING]
-> Only set this if you're sure of the user's country. If set incorrectly and the user auto-fills their national number and submits without checking, the number can pass validation but be stored with the wrong dial code.
-
-###### onlyCountries
-Type: `string[]`  
-Default: `null`  
-
-In the country list, display only the countries you specify here, using their iso2 codes e.g. `["fr", "de", "es"]`. Also see: [`excludeCountries`](#excludecountries) option.
-
-Try `intl-tel-input` with this option set to only European countries in the [Playground](/playground?onlyCountries=%5B"al"%2C"ad"%2C"at"%2C"by"%2C"be"%2C"ba"%2C"bg"%2C"hr"%2C"cz"%2C"dk"%2C"ee"%2C"fo"%2C"fi"%2C"fr"%2C"de"%2C"gi"%2C"gr"%2C"va"%2C"hu"%2C"is"%2C"ie"%2C"it"%2C"lv"%2C"li"%2C"lt"%2C"lu"%2C"mk"%2C"mt"%2C"md"%2C"mc"%2C"me"%2C"nl"%2C"no"%2C"pl"%2C"pt"%2C"ro"%2C"ru"%2C"sm"%2C"rs"%2C"sk"%2C"si"%2C"es"%2C"se"%2C"ch"%2C"ua"%2C"gb"%5D#country-options).
 
 
 ## User interface options
@@ -170,47 +106,68 @@ Try `intl-tel-input` with this option enabled on the [Playground](/playground?us
 </picture>
 
 
-## Placeholder options
+## Country options
 
-Configure the automatically generated placeholder numbers.
+Choose which countries are available, the order they're displayed in, and how the initial country is determined.
 
-###### autoPlaceholder
-Type: `string`  
-Default: `"polite"`  
-
-Set the input's placeholder to an example number for the selected country, and update it if the country changes. You can specify the number type using the [`placeholderNumberType`](#placeholdernumbertype) option. By default, it is set to `"polite"`, which means it will only set the placeholder if the input doesn't already have one. You can also set it to `"aggressive"`, which will replace any existing placeholder, or `"off"`. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). 
-
-Play with this option on an input that contains a placeholder in the [Playground](/playground?initialCountry=gb&placeholder=Phone#placeholder-options).
-
-###### customPlaceholder
-Type: `(exampleNumber: string, selectedCountryData: Country | null) => string`  
+###### countryOrder
+Type: `string[]`  
 Default: `null`  
 
-Customise the placeholder text. Your function receives the example number (used as the default placeholder), along with the [selected country data](/docs/types#country), and whatever string you return is used as the placeholder instead.
+An array of iso2 codes that is used to order the country list. Any omitted countries will appear after those specified, in alphabetical order, e.g. setting `countryOrder` to `["jp", "kr"]` will result in the list: Japan, South Korea, Afghanistan, Albania, Algeria, etc. _Note: this replaces the legacy `preferredCountries` option, which has now been removed, but you can still re-create the grey divider below the preferred group [with a single CSS rule](/docs/faq#how-do-i-restore-the-preferredcountries-divider)._
 
-For example, the snippet below masks each digit with an `X`, or falls back to `"Enter number"` when no country is selected:
+Play with the above example in the [Playground](/playground?countryOrder=%5B"jp"%2C"kr"%5D&initialCountry=#country-options).
 
+###### excludeCountries
+Type: `string[]`  
+Default: `null`  
+
+An array of iso2 codes to exclude from the country list e.g. `["gb", "us"]`. Also see: [`onlyCountries`](#onlycountries) option.
+
+Try `intl-tel-input` with all "A" countries excluded in the [Playground](/playground?excludeCountries=%5B"af"%2C"al"%2C"dz"%2C"as"%2C"ad"%2C"ao"%2C"ai"%2C"ag"%2C"ar"%2C"am"%2C"aw"%2C"ac"%2C"au"%2C"at"%2C"az"%2C"ax"%5D&initialCountry=#country-options) — the country list now starts at Bahamas.
+
+###### geoIpLookup
+Type: `() => Promise<string>`  
+Default: `null`  
+
+When setting [`initialCountry`](#initialcountry) to `"auto"`, you must use this option to specify a custom function that calls an IP lookup service to get the user's location and returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) that resolves with the relevant iso2 code (or rejects on error).
+
+Here is an example using the [ipapi](https://ipapi.co/api/?javascript#location-of-clients-ip) service<sup>*</sup> (assign this to `geoIpLookup`):  
 ```js
-(exampleNumber, selectedCountryData) => exampleNumber
-  ? exampleNumber.replace(/\d/g, "X")
-  : "Enter number"
+async () => {
+  const res = await fetch("https://ipapi.co/json");
+  const data = await res.json();
+  return data.country_code;
+}
 ```
+_Tip: store the result in a cookie to avoid repeat lookups!_
 
-> [!IMPORTANT]
-> When no country is selected (globe state), `exampleNumber` is an empty string and `selectedCountryData` is `null`, so remember to guard against null when reading properties off it.
+> [!NOTE]  
+> <sup>*</sup>The [ipapi](https://ipapi.co) service used in the example above (and across this site) has a limited free tier that stops working once its quota is reached. For production, you should either sign up for a paid plan, swap in another IP-lookup provider, or roll your own solution — the core library just cares that the returned promise eventually resolves with an iso2 code (or rejects).
 
-View `intl-tel-input` with this enabled in the [Playground](/playground?customPlaceholder=true#placeholder-options).
+> [!NOTE]  
+> On initialisation, a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) is exposed via the `promise` property on the core library instance (accessible directly with the vanilla JavaScript library, or via a ref in the framework components), so you can `await` it to know when initialisation requests like this have completed.
 
-###### placeholderNumberType
-Type: `NumberType`  
-Default: `"MOBILE"`  
+Play with this option in the [Playground](/playground#country-options).
 
-Set the [number type](/docs/types#numbertype) to use for the generated placeholder numbers. We strongly recommend sticking to `"MOBILE"` (the default), `"FIXED_LINE"`, or `"FIXED_LINE_OR_MOBILE"` — these are the only types with an example number for every country. Other values produce an empty placeholder for any country where libphonenumber has no example (e.g. `"PAGER"` only has examples for ~9% of countries).
+###### initialCountry
+Type: `string`  
+Default: `""`  
 
-View `intl-tel-input` with this set to `"FIXED_LINE"` in the [Playground](/playground?placeholderNumberType=FIXED_LINE#placeholder-options).
+Set the initial country selection by specifying its iso2 code, e.g. `"us"` for the United States. You can also set [`initialCountry`](#initialcountry) to `"auto"`, which will look up the user's country based on their IP address (requires the [`geoIpLookup`](#geoiplookup) option - [see example](/examples/vanilla-javascript/lookup-country)). Note: however you use [`initialCountry`](#initialcountry), it will not update the country selection if the input already contains a number with an international dial code. 
 
-> [!TIP]
-> You can either pass a string literal, e.g. `"MOBILE"`, or a [constant](/docs/types#constant-objects), e.g. `intlTelInput.NUMBER_TYPE.MOBILE` — useful where typos in the string literal won't be caught at compile time.
+View `intl-tel-input` with `initialCountry` set to `"de"` (Germany) in the [Playground](/playground?initialCountry=de#country-options).
+
+> [!WARNING]
+> Only set this if you're sure of the user's country. If set incorrectly and the user auto-fills their national number and submits without checking, the number can pass validation but be stored with the wrong dial code.
+
+###### onlyCountries
+Type: `string[]`  
+Default: `null`  
+
+In the country list, display only the countries you specify here, using their iso2 codes e.g. `["fr", "de", "es"]`. Also see: [`excludeCountries`](#excludecountries) option.
+
+Try `intl-tel-input` with this option set to only European countries in the [Playground](/playground?onlyCountries=%5B"al"%2C"ad"%2C"at"%2C"by"%2C"be"%2C"ba"%2C"bg"%2C"hr"%2C"cz"%2C"dk"%2C"ee"%2C"fo"%2C"fi"%2C"fr"%2C"de"%2C"gi"%2C"gr"%2C"va"%2C"hu"%2C"is"%2C"ie"%2C"it"%2C"lv"%2C"li"%2C"lt"%2C"lu"%2C"mk"%2C"mt"%2C"md"%2C"mc"%2C"me"%2C"nl"%2C"no"%2C"pl"%2C"pt"%2C"ro"%2C"ru"%2C"sm"%2C"rs"%2C"sk"%2C"si"%2C"es"%2C"se"%2C"ch"%2C"ua"%2C"gb"%5D#country-options).
 
 
 ## Formatting options
@@ -257,6 +214,49 @@ Type: `boolean`
 Default: `true`  
 
 When [`strictMode`](#strictmode) is enabled, play a subtle animation any time a whole keystroke or paste is rejected — a brief shake by default, or a background-colour flash for users with `prefers-reduced-motion`. Partial paste sanitisation (e.g. only some characters stripped) does not trigger it. The flash colour can be customised via the `--iti-strict-reject-flash-color` CSS variable.
+
+
+## Placeholder options
+
+Configure the automatically generated placeholder numbers.
+
+###### autoPlaceholder
+Type: `string`  
+Default: `"polite"`  
+
+Set the input's placeholder to an example number for the selected country, and update it if the country changes. You can specify the number type using the [`placeholderNumberType`](#placeholdernumbertype) option. By default, it is set to `"polite"`, which means it will only set the placeholder if the input doesn't already have one. You can also set it to `"aggressive"`, which will replace any existing placeholder, or `"off"`. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). 
+
+Play with this option on an input that contains a placeholder in the [Playground](/playground?initialCountry=gb&placeholder=Phone#placeholder-options).
+
+###### customPlaceholder
+Type: `(exampleNumber: string, selectedCountryData: Country | null) => string`  
+Default: `null`  
+
+Customise the placeholder text. Your function receives the example number (used as the default placeholder), along with the [selected country data](/docs/types#country), and whatever string you return is used as the placeholder instead.
+
+For example, the snippet below masks each digit with an `X`, or falls back to `"Enter number"` when no country is selected:
+
+```js
+(exampleNumber, selectedCountryData) => exampleNumber
+  ? exampleNumber.replace(/\d/g, "X")
+  : "Enter number"
+```
+
+> [!IMPORTANT]
+> When no country is selected (globe state), `exampleNumber` is an empty string and `selectedCountryData` is `null`, so remember to guard against null when reading properties off it.
+
+View `intl-tel-input` with this enabled in the [Playground](/playground?customPlaceholder=true#placeholder-options).
+
+###### placeholderNumberType
+Type: `NumberType`  
+Default: `"MOBILE"`  
+
+Set the [number type](/docs/types#numbertype) to use for the generated placeholder numbers. We strongly recommend sticking to `"MOBILE"` (the default), `"FIXED_LINE"`, or `"FIXED_LINE_OR_MOBILE"` — these are the only types with an example number for every country. Other values produce an empty placeholder for any country where libphonenumber has no example (e.g. `"PAGER"` only has examples for ~9% of countries).
+
+View `intl-tel-input` with this set to `"FIXED_LINE"` in the [Playground](/playground?placeholderNumberType=FIXED_LINE#placeholder-options).
+
+> [!TIP]
+> You can either pass a string literal, e.g. `"MOBILE"`, or a [constant](/docs/types#constant-objects), e.g. `intlTelInput.NUMBER_TYPE.MOBILE` — useful where typos in the string literal won't be caught at compile time.
 
 
 ## Validation options
