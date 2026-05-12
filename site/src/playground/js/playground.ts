@@ -468,8 +468,13 @@ const HINT_CONFIGS = [
   },
   {
     optionKey: "separateDialCode",
-    message: "Tip: select a country to see this in action.",
-    shouldShow: () => !itiController.iti?.getSelectedCountryData(),
+    message: () => {
+      if (!itiController.iti?.getSelectedCountryData()) {
+        return "Tip: select a country to see this in action.";
+      }
+      return "Tip: with a number already typed, this just shifts the dial code between the input and a label beside it — clear the input to see the typing experience.";
+    },
+    shouldShow: () => !itiController.iti?.getSelectedCountryData() || Boolean(telInput.value),
     alsoShowOnToggleOff: true,
   },
   {
