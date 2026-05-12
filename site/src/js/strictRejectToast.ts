@@ -2,6 +2,7 @@ export const setupStrictRejectToast = (
   input: HTMLInputElement,
   toastId = "strictRejectToast",
   toastBodyId = "strictRejectToastBody",
+  link: { href: string; text: string } = { href: "/docs/options#strictmode", text: "strictMode" },
 ): void => {
   const toastEl = document.getElementById(toastId);
   const toastBody = document.getElementById(toastBodyId);
@@ -19,11 +20,11 @@ export const setupStrictRejectToast = (
     } else {
       message = `Character not allowed: "${rejectedInput}"`;
     }
-    const link = document.createElement("a");
-    link.href = "/docs/options#strictmode";
-    link.className = "link-light";
-    link.textContent = "strictMode";
-    toastBody.replaceChildren(`${message} (see `, link, ")");
+    const linkEl = document.createElement("a");
+    linkEl.href = link.href;
+    linkEl.className = "link-light";
+    linkEl.textContent = link.text;
+    toastBody.replaceChildren(`${message} (see `, linkEl, ")");
     toast.show();
   });
 };

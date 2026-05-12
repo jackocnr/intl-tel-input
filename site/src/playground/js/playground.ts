@@ -392,7 +392,10 @@ updateUrlFromState(initialState, {
   defaultState: playgroundInitialState,
 });
 
-setupStrictRejectToast(telInput, "playgroundStrictRejectToast", "playgroundStrictRejectToastBody");
+setupStrictRejectToast(telInput, "playgroundStrictRejectToast", "playgroundStrictRejectToastBody", {
+  href: "#formatting-options",
+  text: "strictMode",
+});
 
 // Contextual hints: shown when toggling an option that has no visible effect
 // until the user takes an additional action (e.g. selecting a country, typing a number).

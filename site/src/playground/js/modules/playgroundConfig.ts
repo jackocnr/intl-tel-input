@@ -24,13 +24,6 @@ export const SPECIAL_PLAYGROUND_OPTION_KEYS = [
 
 export const OPTION_GROUPS = [
   {
-    title: "Country Options",
-    icon: "bi-globe-americas",
-    description: "Choose which countries are available, the order they're displayed in, and how the initial country is determined.",
-    iso2ModalId: "itiPlaygroundIso2Modal",
-    keys: ["countryOrder", "excludeCountries", "geoIpLookup", "initialCountry", "onlyCountries"],
-  },
-  {
     title: "User Interface Options",
     icon: "bi-window",
     description: "Control dropdown behaviour and whether certain UI elements are displayed.",
@@ -47,16 +40,23 @@ export const OPTION_GROUPS = [
     ],
   },
   {
-    title: "Placeholder Options",
-    icon: "bi-input-cursor-text",
-    description: "Configure the automatically generated placeholder numbers.",
-    keys: ["autoPlaceholder", "customPlaceholder", "placeholderNumberType"],
+    title: "Country Options",
+    icon: "bi-globe-americas",
+    description: "Choose which countries are available, the order they're displayed in, and how the initial country is determined.",
+    iso2ModalId: "itiPlaygroundIso2Modal",
+    keys: ["countryOrder", "excludeCountries", "geoIpLookup", "initialCountry", "onlyCountries"],
   },
   {
     title: "Formatting Options",
     icon: "bi-magic",
     description: "How numbers are formatted as you type and on initial display.",
     keys: ["formatAsYouType", "formatOnDisplay", "nationalMode", "strictMode", "strictRejectAnimation"],
+  },
+  {
+    title: "Placeholder Options",
+    icon: "bi-input-cursor-text",
+    description: "Configure the automatically generated placeholder numbers.",
+    keys: ["autoPlaceholder", "customPlaceholder", "placeholderNumberType"],
   },
   {
     title: "Validation Options",
