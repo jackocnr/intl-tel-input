@@ -168,7 +168,7 @@ function buildControlRow(key: string, meta: any, { idPrefix, dataAttr, infoIconT
         idPrefix,
         dataAttr,
         infoIconTemplate,
-        exampleText: "() => import(\"/intl-tel-input/js/utils.js\")",
+        exampleText: "() => import(\"intl-tel-input/utils\")",
       });
     }
 
