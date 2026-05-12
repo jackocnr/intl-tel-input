@@ -506,7 +506,7 @@ const HINT_CONFIGS = [
       if (telInput.value) {
         return "Tip: clear the input to see the placeholder update based on this setting.";
       }
-      return "Tip: \"polite\" only differs from \"aggressive\" when the input has a placeholder attribute — set one below to see the effect.";
+      return "Tip: clear the existing placeholder (see Settings at the bottom) for \"polite\" to set the example number placeholder.";
     },
     shouldShow: () => {
       const state = getCombinedStateFromControls();
@@ -516,8 +516,7 @@ const HINT_CONFIGS = [
       if (!itiController.iti?.getSelectedCountryData() || telInput.value) {
         return true;
       }
-      return state.autoPlaceholder === "polite" && !state.placeholder;
-      // NOTE: if they select aggressive, then it doesn't matter if there's a placeholder set.
+      return state.autoPlaceholder === "polite" && state.placeholder;
     },
     alsoShowOnToggleOff: true,
   },
