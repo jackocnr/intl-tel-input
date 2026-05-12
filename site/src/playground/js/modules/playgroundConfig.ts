@@ -139,7 +139,7 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     },
     autoPlaceholder: {
       type: "select",
-      tooltip: "Automatically set a placeholder based on the selected country and placeholderNumberType.",
+      tooltip: "Automatically set a placeholder based on the selected country and placeholderNumberType. \"polite\" only shows an example number when there is no manual placeholder set. \"aggressive\" always shows it.",
       options: AUTO_PLACEHOLDER_OPTIONS,
     },
     countryNameLocale: {
