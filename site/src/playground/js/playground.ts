@@ -628,18 +628,39 @@ const HINT_CONFIGS = [
   // Translation Options
   {
     optionKey: "countryNameLocale",
-    message: "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see this change in action.",
-    shouldShow: () => !keepDropdownOpenCheckbox.checked,
+    message: () => {
+      if (!keepDropdownOpenCheckbox.checked) {
+        return "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see this change in action.";
+      }
+      return "Tip: also update i18n to translate the UI strings.";
+    },
+    shouldShow: () => {
+      if (!keepDropdownOpenCheckbox.checked) {
+        return true;
+      }
+      const state = getCombinedStateFromControls();
+      return Boolean(state.countryNameLocale) && state.countryNameLocale !== state.i18n;
+    },
   },
   {
     optionKey: "i18n",
     message: () => {
-      if (!getCombinedStateFromControls().countrySearch) {
+      const state = getCombinedStateFromControls();
+      if (!state.countrySearch) {
         return "Tip: enable countrySearch to see the search placeholder update based on this setting.";
       }
-      return "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see the search placeholder update based on this setting.";
+      if (!keepDropdownOpenCheckbox.checked) {
+        return "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see the search placeholder update based on this setting.";
+      }
+      return "Tip: also update countryNameLocale to translate the country names.";
     },
-    shouldShow: () => !keepDropdownOpenCheckbox.checked || !getCombinedStateFromControls().countrySearch,
+    shouldShow: () => {
+      const state = getCombinedStateFromControls();
+      if (!keepDropdownOpenCheckbox.checked || !state.countrySearch) {
+        return true;
+      }
+      return Boolean(state.i18n) && state.i18n !== state.countryNameLocale;
+    },
   },
   // Miscellaneous Options
   {
