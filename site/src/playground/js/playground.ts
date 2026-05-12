@@ -214,6 +214,33 @@ keepDropdownOpenCheckbox.addEventListener("change", () => {
 });
 syncKeepDropdownOpen();
 
+// Flash the "Keep dropdown open" checkbox if the user clicks the selected
+// country while it's on — that click would normally close the dropdown, so
+// the no-op can be confusing without something pointing at the cause.
+let keepDropdownOpenFlashTimer: number | null = null;
+playgroundContainer.addEventListener("click", (event) => {
+  if (!(event.target instanceof Element)) {
+    return;
+  }
+  if (!event.target.closest(".iti__selected-country")) {
+    return;
+  }
+  if (!keepDropdownOpenCheckbox.checked || keepDropdownOpenCheckbox.disabled) {
+    return;
+  }
+  keepDropdownOpenWrapper.classList.remove("is-flashing");
+  // Force reflow so the animation restarts cleanly on rapid clicks.
+  void keepDropdownOpenWrapper.offsetWidth;
+  keepDropdownOpenWrapper.classList.add("is-flashing");
+  if (keepDropdownOpenFlashTimer) {
+    window.clearTimeout(keepDropdownOpenFlashTimer);
+  }
+  keepDropdownOpenFlashTimer = window.setTimeout(() => {
+    keepDropdownOpenWrapper.classList.remove("is-flashing");
+    keepDropdownOpenFlashTimer = null;
+  }, 600);
+});
+
 if (shareButton) {
   let copiedResetTimer: number | null = null;
   const labelEl = shareButton.querySelector("[data-role=\"label\"]") || shareButton;
