@@ -1,0 +1,47 @@
+name: Website Issue
+description: Report an issue with the intl-tel-input.com website (docs, playground, examples, etc.)
+labels: ["website"]
+body:
+  - type: checkboxes
+    attributes:
+      label: Prerequisites
+      description: Take a moment to help our maintainers work faster.
+      options:
+        - label: I have searched the existing issues (including closed issues) to ensure this has not already been reported.
+          required: true
+        - label: This is an issue with the website itself, not a bug in the intl-tel-input library. (For library bugs, please use the Bug Report template instead.)
+          required: true
+  - type: dropdown
+    id: page
+    attributes:
+      label: Page
+      description: Which part of the website is affected?
+      options:
+        - Homepage
+        - Docs
+        - Playground
+        - Examples
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: URL
+      description: Link to the affected page (if applicable).
+    validations:
+      required: false
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: A concise description of the issue, including screenshots if helpful.
+    validations:
+      required: true
+  - type: textarea
+    id: browser
+    attributes:
+      label: Browser & device
+      description: Only needed for visual bugs.
+    validations:
+      required: false
