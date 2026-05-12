@@ -42,6 +42,6 @@ body:
     id: browser
     attributes:
       label: Browser & device
-      description: Only needed for visual bugs.
+      description: Only needed for visual bugs. Please include version numbers.
     validations:
       required: false
