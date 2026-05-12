@@ -17,9 +17,7 @@ export const SPECIAL_PLAYGROUND_OPTION_KEYS = [
   "i18n",
   "loadUtils",
   "customPlaceholder",
-  "dropdownContainer",
   "geoIpLookup",
-  "hiddenInput",
 ];
 
 export const OPTION_GROUPS = [
@@ -29,11 +27,8 @@ export const OPTION_GROUPS = [
     description: "Control dropdown behaviour and whether certain UI elements are displayed.",
     keys: [
       "allowDropdown",
-      "containerClass",
       "countrySearch",
-      "dropdownContainer",
       "fixDropdownWidth",
-      "searchInputClass",
       "separateDialCode",
       "showFlags",
       "useFullscreenPopup",
@@ -73,8 +68,8 @@ export const OPTION_GROUPS = [
   {
     title: "Miscellaneous Options",
     icon: "bi-gear",
-    description: "Extra features like hidden inputs and loading the utils module.",
-    keys: ["hiddenInput", "loadUtils"],
+    description: "Loading the utils module.",
+    keys: ["loadUtils"],
   },
 ];
 
@@ -85,15 +80,12 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     allowNumberExtensions: defaults.allowNumberExtensions,
     allowPhonewords: defaults.allowPhonewords,
     autoPlaceholder: defaults.autoPlaceholder,
-    containerClass: defaults.containerClass,
     countryNameLocale: defaults.countryNameLocale,
     countryNameOverrides: defaults.countryNameOverrides,
     countryOrder: defaults.countryOrder,
     countrySearch: defaults.countrySearch,
     customPlaceholder: false, // in playground, this is a checkbox
-    dropdownContainer: false, // in playground, this is a checkbox
     geoIpLookup: false, // in playground, this is a checkbox
-    hiddenInput: false, // in playground, this is a checkbox
     excludeCountries: defaults.excludeCountries,
     fixDropdownWidth: defaults.fixDropdownWidth,
     formatAsYouType: defaults.formatAsYouType,
@@ -104,7 +96,6 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     nationalMode: defaults.nationalMode,
     onlyCountries: defaults.onlyCountries,
     placeholderNumberType: defaults.placeholderNumberType,
-    searchInputClass: defaults.searchInputClass,
     separateDialCode: defaults.separateDialCode,
     showFlags: defaults.showFlags,
     strictMode: defaults.strictMode,
@@ -151,10 +142,6 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
       tooltip: "Automatically set a placeholder based on the selected country and placeholderNumberType.",
       options: AUTO_PLACEHOLDER_OPTIONS,
     },
-    containerClass: {
-      type: "text",
-      tooltip: "Additional CSS class to add to the (generated) container element.",
-    },
     countryNameLocale: {
       type: "text",
       tooltip: "Locale used when generating country names with Intl.DisplayNames (e.g. 'fr' for French).",
@@ -179,20 +166,10 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
       label: "customPlaceholder",
       tooltip: "Customise the auto-generated placeholder.",
     },
-    dropdownContainer: {
-      type: "boolean",
-      label: "dropdownContainer",
-      tooltip: "Append the dropdown to a specific element (useful when the input is inside a container with overflow:hidden).",
-    },
     geoIpLookup: {
       type: "boolean",
       label: "geoIpLookup",
       tooltip: "Auto-detect the user's country by IP address (async). Requires initialCountry='auto'.",
-    },
-    hiddenInput: {
-      type: "boolean",
-      label: "hiddenInput",
-      tooltip: "Add hidden inputs that get populated with the full number and the selected country's iso2 code on submit.",
     },
     excludeCountries: {
       type: "json",
@@ -240,10 +217,6 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
       type: "select",
       tooltip: "Number type used when generating placeholders (e.g. MOBILE).",
       options: NUMBER_TYPES,
-    },
-    searchInputClass: {
-      type: "text",
-      tooltip: "Additional CSS class to add to the search input element.",
     },
     separateDialCode: {
       type: "boolean",

@@ -185,15 +185,6 @@ function buildControlRow(key: string, meta: any, { idPrefix, dataAttr, infoIconT
       });
     }
 
-    if (key === "dropdownContainer") {
-      return buildBooleanExampleControl(key, meta, {
-        idPrefix,
-        dataAttr,
-        infoIconTemplate,
-        exampleText: "document.body",
-      });
-    }
-
     if (key === "geoIpLookup") {
       return buildBooleanExampleControl(key, meta, {
         idPrefix,
@@ -206,15 +197,6 @@ function buildControlRow(key: string, meta: any, { idPrefix, dataAttr, infoIconT
           "  return data.country_code;",
           "}",
         ].join("\n"),
-      });
-    }
-
-    if (key === "hiddenInput") {
-      return buildBooleanExampleControl(key, meta, {
-        idPrefix,
-        dataAttr,
-        infoIconTemplate,
-        exampleText: "() => ({ phone: \"phone_full\", country: \"country_iso2\" })",
       });
     }
 

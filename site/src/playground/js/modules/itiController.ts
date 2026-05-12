@@ -75,16 +75,8 @@ function toInitOptions(
     opts.customPlaceholder = (exampleNumber: string) => (exampleNumber ? exampleNumber.replace(/\d/g, "X") : "Enter number");
   }
 
-  if (state.dropdownContainer) {
-    opts.dropdownContainer = document.body;
-  }
-
   if (state.geoIpLookup) {
     opts.geoIpLookup = geoIpLookup;
-  }
-
-  if (state.hiddenInput) {
-    opts.hiddenInput = () => ({ phone: "phone_full", country: "country_iso2" });
   }
 
   if (typeof state.dropdownAlwaysOpen === "boolean") {
@@ -145,7 +137,7 @@ export class ItiPlaygroundController {
     this.telInput.style.paddingLeft = "";
     initOptions.i18n = i18n;
     // we need this bootstrap class, but don't want to bother users with this, so just add it here.
-    initOptions.searchInputClass += " form-control";
+    initOptions.searchInputClass = "form-control";
     this.iti = window.intlTelInput(this.telInput, initOptions);
 
     // Force the live results box to re-render against the new instance.

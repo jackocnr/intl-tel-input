@@ -119,9 +119,6 @@ function getKeepDropdownOpenDisabledReason(state) {
   if (!state.allowDropdown) {
     return "Disabled because allowDropdown is off — there is no dropdown to keep open.";
   }
-  if (state.dropdownContainer) {
-    return "Disabled because dropdownContainer uses position:fixed, which wouldn't work on a scrollable page.";
-  }
   return null;
 }
 
@@ -431,31 +428,16 @@ const HINT_CONFIGS = [
   },
   // User Interface Options (allowDropdown not needed as always clear)
   {
-    optionKey: "containerClass",
-    message: "Tip: open devtools and inspect the Live Demo to check this is working.",
-    shouldShow: () => true,
-  },
-  {
     optionKey: "countrySearch",
     message: "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see this change in action.",
     shouldShow: () => !keepDropdownOpenCheckbox.checked,
     alsoShowOnToggleOff: true,
   },
   {
-    optionKey: "dropdownContainer",
-    message: "Tip: open devtools and inspect the Live Demo to check this is working.",
-    shouldShow: () => true,
-  },
-  {
     optionKey: "fixDropdownWidth",
     message: "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see this change in action.",
     shouldShow: () => !keepDropdownOpenCheckbox.checked,
     alsoShowOnToggleOff: true,
-  },
-  {
-    optionKey: "searchInputClass",
-    message: "Tip: open devtools and inspect the Live Demo to check this is working.",
-    shouldShow: () => true,
   },
   {
     optionKey: "separateDialCode",
@@ -660,11 +642,6 @@ const HINT_CONFIGS = [
     shouldShow: () => !keepDropdownOpenCheckbox.checked || !getCombinedStateFromControls().countrySearch,
   },
   // Miscellaneous Options
-  {
-    optionKey: "hiddenInput",
-    message: "Tip: open devtools and inspect the Live Demo to check this is working.",
-    shouldShow: () => true,
-  },
   {
     optionKey: "loadUtils",
     message: "NOTE: without utils, formatting/validation (and more) is disabled.",

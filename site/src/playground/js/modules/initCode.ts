@@ -89,20 +89,6 @@ function buildModel(
       raw: true,
     });
   }
-  if (state.dropdownContainer) {
-    options.push({
-      key: "dropdownContainer",
-      value: "document.body",
-      raw: true,
-    });
-  }
-  if (state.hiddenInput) {
-    options.push({
-      key: "hiddenInput",
-      value: '() => ({ phone: "phone_full", country: "country_iso2" })',
-      raw: true,
-    });
-  }
 
   const i18nCode = String(state.i18n ?? "").trim();
   const hasI18n = Boolean(i18nCode) && i18nCode.toLowerCase() !== "en";
