@@ -263,7 +263,6 @@
 }
 
 .iti-playground-labelgroup {
-  padding-top: 3px;
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
@@ -298,11 +297,17 @@
       }
     }
 
-    /* Non-checkbox controls: slightly more vertical spacing and form-specific tweaks */
-    &:not(.iti-playground-control--check) {
-      row-gap: 6px;
+    /* Example-code variants: row 1 col 2 contains a multi-line <pre> snippet,
+       so top-align the label rather than centering it against a tall block.
+       Other controls let the default `stretch` + labelgroup's internal flex
+       centering handle vertical alignment against the input. */
+    &.iti-playground-control--example-code {
       align-items: start;
+      row-gap: 6px;
+    }
 
+    /* Non-checkbox controls: form-specific tweaks */
+    &:not(.iti-playground-control--check) {
       > .form-control,
       > .form-select,
       > .dropdown {
@@ -315,7 +320,6 @@
 
     /* On mobile, checkboxes appear on LHS. Here, we move them to the RHS. */
     &.iti-playground-control--check {
-      row-gap: 0;
       align-items: center;
       padding-left: 0; /* override bootstrap .form-check */
 
@@ -330,9 +334,6 @@
 }
 /* playground: loadUtils has an example snippet + a checkbox, so keep the example aligned with the label, and put the checkbox beneath. */
 @media (min-width: 600px) {
-  .iti-playground-control--example-code {
-    align-items: start;
-  }
   .iti-playground-control--example-code > .iti-playground-example-toggle {
     grid-column: 2;
     margin-top: 0;
