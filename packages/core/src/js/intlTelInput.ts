@@ -56,6 +56,14 @@ import {
 export { NUMBER_FORMAT, NUMBER_TYPE, VALIDATION_ERROR } from "./constants.js";
 import { Numerals } from "./core/numerals.js";
 import type { ForEachInstanceArgsMap } from "./types/forEachInstanceArgsMap.js";
+
+type StrictPasteSnapshot = {
+  pastedRaw: string;
+  value: string;
+  selectionStart: number;
+  selectionEnd: number;
+};
+
 // Re-export the full public type surface, so consumers who resolve
 // "intl-tel-input" to this source file (via tsconfig paths) see the same
 // exports as consumers of the bundled dist/js/intlTelInput.d.ts. Without
@@ -141,6 +149,7 @@ export class Iti {
   #numerals!: Numerals;
   //* Tracks whether the user has typed/pasted their own formatting chars, so AYT-formatting should back off.
   #userOverrideFormatting = false;
+  #strictPasteSnapshot: StrictPasteSnapshot | null = null;
 
   #autoCountryDeferred?: Deferred<void>;
   #utilsDeferred?: Deferred<void>;
@@ -538,7 +547,7 @@ export class Iti {
     if (detail?.["isCountryChange"]) {
       return;
     }
-    const inputValue = this.#getTelInputValue();
+    let inputValue = this.#getTelInputValue();
 
     //* Android workaround for handling plus when separateDialCode enabled
     if (
@@ -562,13 +571,24 @@ export class Iti {
       return;
     }
 
+    let didHandleStrictPaste = false;
+    if (strictMode && e?.inputType === INPUT_TYPES.PASTE) {
+      const didRejectPaste = this.#handleStrictPasteInputEvent(inputValue);
+      if (didRejectPaste) {
+        return;
+      }
+      didHandleStrictPaste = true;
+      inputValue = this.#getTelInputValue();
+    }
+
     //* Update selected country.
     if (this.#updateCountryFromNumber(inputValue)) {
       this.#dispatchCountryChangeEvent();
     }
 
     //* If user types their own formatting char (not a plus or a numeric), or they paste something, then set the override.
-    const isFormattingChar = e?.data && REGEX.NON_PLUS_NUMERIC.test(e.data);
+    const isFormattingChar =
+      !didHandleStrictPaste && e?.data && REGEX.NON_PLUS_NUMERIC.test(e.data);
     const isPaste = e?.inputType === INPUT_TYPES.PASTE && inputValue;
     if (isFormattingChar || (isPaste && !strictMode)) {
       this.#userOverrideFormatting = true;
@@ -687,25 +707,39 @@ export class Iti {
     });
   }
 
-  // Handle paste events when strictMode is enabled by sanitising the pasted content before it's inserted into the input, and rejecting it entirely if it would result in an invalid number
+  // In strict mode, remember paste details before the browser inserts the pasted text.
+  // The actual sanitisation runs on the following input event so native paste stays enabled.
   #handleStrictPasteEvent = (e: ClipboardEvent): void => {
-    // in strict mode we always control the pasted value
-    e.preventDefault();
-
-    // shortcuts
     const input = this.#ui.telInputEl;
-    const selStart = input.selectionStart;
-    const selEnd = input.selectionEnd;
     const inputValue = this.#getTelInputValue();
-    const before = inputValue.slice(0, selStart ?? undefined);
-    const after = inputValue.slice(selEnd ?? undefined);
+    this.#strictPasteSnapshot = {
+      pastedRaw: e.clipboardData?.getData("text") ?? "",
+      value: inputValue,
+      selectionStart: input.selectionStart ?? inputValue.length,
+      selectionEnd: input.selectionEnd ?? inputValue.length,
+    };
+  };
+
+  // Handle paste input events when strictMode is enabled by sanitising the pasted content after
+  // the browser inserts it, and rejecting it entirely if it would result in an invalid number.
+  #handleStrictPasteInputEvent(inputValue: string): boolean {
+    const input = this.#ui.telInputEl;
+    const pasteSnapshot = this.#strictPasteSnapshot;
+    this.#strictPasteSnapshot = null;
+
+    const pastedRaw = pasteSnapshot?.pastedRaw ?? inputValue;
+    const originalValue = pasteSnapshot?.value ?? "";
+    const selStart = pasteSnapshot?.selectionStart ?? originalValue.length;
+    const selEnd = pasteSnapshot?.selectionEnd ?? originalValue.length;
+    const before = originalValue.slice(0, selStart);
+    const after = originalValue.slice(selEnd);
     const iso2 = this.#selectedCountry?.iso2;
 
-    const pastedRaw = e.clipboardData!.getData("text");
     const pasted = this.#numerals.normalise(pastedRaw);
     // only allow a plus in the pasted content if there's not already one in the input, or the existing one is selected to be replaced by the pasted content
-    const initialCharSelected = selStart === 0 && selEnd! > 0;
-    const allowLeadingPlus = !inputValue.startsWith("+") || initialCharSelected;
+    const initialCharSelected = selStart === 0 && selEnd > 0;
+    const allowLeadingPlus =
+      !originalValue.startsWith("+") || initialCharSelected;
     // just numerics and pluses
     const allowedChars = pasted.replace(REGEX.NON_PLUS_NUMERIC_GLOBAL, "");
     const hasLeadingPlus = allowedChars.startsWith("+");
@@ -728,7 +762,8 @@ export class Iti {
         rejectedInput: pastedRaw,
         reason: "max-length",
       });
-      return;
+      this.#restoreValueBeforeStrictPaste(pasteSnapshot);
+      return true;
     }
 
     // utils.getCoreNumber doesn't work for very short numbers, so only bother checking once we have a few chars
@@ -750,13 +785,14 @@ export class Iti {
           rejectedInput: pastedRaw,
           reason: "max-length",
         });
-        return;
+        this.#restoreValueBeforeStrictPaste(pasteSnapshot);
+        return true;
       }
       if (
         this.#maxCoreNumberLength &&
         coreNumber.length > this.#maxCoreNumberLength
       ) {
-        if (input.selectionEnd === inputValue.length) {
+        if (selEnd === originalValue.length) {
           // if they try to paste too many digits at the end, then just trim the excess
           const trimLength = coreNumber.length - this.#maxCoreNumberLength;
           newValue = newValue.slice(0, newValue.length - trimLength);
@@ -769,17 +805,15 @@ export class Iti {
             rejectedInput: pastedRaw,
             reason: "max-length",
           });
-          return;
+          this.#restoreValueBeforeStrictPaste(pasteSnapshot);
+          return true;
         }
       }
     }
     // preserve pasted numeral set in display
     this.#setTelInputValue(newValue);
-    const caretPos = selStart! + sanitised.length;
+    const caretPos = selStart + sanitised.length;
     input.setSelectionRange(caretPos, caretPos);
-
-    // trigger format-as-you-type and country update etc
-    input.dispatchEvent(new InputEvent("input", { bubbles: true }));
 
     if (rejectReason) {
       // If the paste had content but every character was stripped, treat it as a whole-input rejection.
@@ -792,7 +826,23 @@ export class Iti {
         reason: rejectReason,
       });
     }
-  };
+    return false;
+  }
+
+  #restoreValueBeforeStrictPaste(
+    pasteSnapshot: StrictPasteSnapshot | null,
+  ): void {
+    if (!pasteSnapshot) {
+      this.#setTelInputValue("");
+      this.#ui.telInputEl.setSelectionRange(0, 0);
+      return;
+    }
+    this.#setTelInputValue(pasteSnapshot.value);
+    this.#ui.telInputEl.setSelectionRange(
+      pasteSnapshot.selectionStart,
+      pasteSnapshot.selectionEnd,
+    );
+  }
 
   //* Adhere to the input's maxlength attr.
   #truncateToMaxLength(number: string): string {
