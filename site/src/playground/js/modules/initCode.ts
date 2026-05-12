@@ -225,7 +225,7 @@ function formatJsxObjectProp(
 
 function renderReact(model: SnippetModel): string {
   const lines: string[] = [];
-  lines.push('import IntlTelInput from "intl-tel-input/react";');
+  lines.push('import IntlTelInput from "@intl-tel-input/react";');
   if (model.i18n) {
     lines.push(
       `import { ${model.i18n.importName} } from "intl-tel-input/i18n";`,
@@ -311,7 +311,7 @@ function formatVueAttr(key: string, value: any, raw: boolean): string {
 function renderVue(model: SnippetModel): string {
   // Build script body unindented, then indent each line by 2 spaces on emission.
   const scriptBody: string[] = [];
-  scriptBody.push('import IntlTelInput from "intl-tel-input/vue";');
+  scriptBody.push('import IntlTelInput from "@intl-tel-input/vue";');
   if (model.i18n) {
     scriptBody.push(
       `import { ${model.i18n.importName} } from "intl-tel-input/i18n";`,
@@ -414,7 +414,7 @@ function pushAngularProp(
 function renderAngular(model: SnippetModel): string {
   const importLines: string[] = [];
   importLines.push('import { Component } from "@angular/core";');
-  importLines.push('import IntlTelInput from "intl-tel-input/angular";');
+  importLines.push('import IntlTelInput from "@intl-tel-input/angular";');
   if (model.i18n) {
     importLines.push(
       `import { ${model.i18n.importName} } from "intl-tel-input/i18n";`,
@@ -504,7 +504,7 @@ function pushSvelteHoistedConst(
 function renderSvelte(model: SnippetModel): string {
   const scriptLines: string[] = [];
   scriptLines.push("<script>");
-  scriptLines.push('  import IntlTelInput from "intl-tel-input/svelte";');
+  scriptLines.push('  import IntlTelInput from "@intl-tel-input/svelte";');
   if (model.i18n) {
     scriptLines.push(
       `  import { ${model.i18n.importName} } from "intl-tel-input/i18n";`,
