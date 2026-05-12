@@ -141,8 +141,13 @@ export class ItiPlaygroundController {
     this.iti = window.intlTelInput(this.telInput, initOptions);
 
     // Force the live results box to re-render against the new instance.
-    window.setTimeout(() => {
+    const dispatchRefresh = () => {
       this.telInput.dispatchEvent(new Event("iti-live-results:refresh"));
-    }, 0);
+    };
+    window.setTimeout(dispatchRefresh, 0);
+    // Also re-dispatch after the iti's promise resolves, so the box updates once
+    // async utils loading finishes (otherwise enabling loadUtils leaves the
+    // "Enable loadUtils" message in place even after utils has loaded).
+    this.iti.promise?.catch(() => undefined).then(dispatchRefresh);
   }
 }

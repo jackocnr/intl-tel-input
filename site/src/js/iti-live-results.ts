@@ -33,7 +33,20 @@
 
       const emptyMessage = liveResults.textContent || "";
 
+      const renderNoUtilsMessage = () => {
+        liveResults.textContent = "Enable ";
+        const link = document.createElement("a");
+        link.href = "#miscellaneous-options";
+        link.textContent = "loadUtils";
+        liveResults.appendChild(link);
+        liveResults.appendChild(document.createTextNode(" to see validation here"));
+      };
+
       const updateResults = () => {
+        if (!window.intlTelInput.utils) {
+          renderNoUtilsMessage();
+          return;
+        }
         const hasValue = itiInput.value.trim().length > 0;
         if (!hasValue) {
           liveResults.textContent = emptyMessage;
