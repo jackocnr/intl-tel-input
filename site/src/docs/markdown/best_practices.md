@@ -28,7 +28,7 @@ Check the number is valid before storing it, and reject invalid input. Get the v
 
 ##### Show a user-facing error message
 
-When a number is invalid, you'll get an error code (from [`getValidationError`](/docs/methods#getvalidationerror) for the vanilla JS library, or via the `onChangeErrorCode` / `errorCodeChange` callback for the framework components). Mapping the error codes to user-facing messages is left to you because the wording belongs to your app. Here is a reasonable starting point:
+When a number is invalid, you'll get an error code (from [`getValidationError`](/docs/methods#getvalidationerror) for the vanilla JS library, or via the `onChangeErrorCode` / `errorCodeChange` callback for the framework components). Mapping the error codes to user-facing messages is left to you because the wording belongs to your app. Here is a reasonable starting point — a `getErrorMessage` helper:
 
 ```js
 const getErrorMessage = (number, errorCode) => {
