@@ -48,6 +48,7 @@ import {
   NUMBER_TYPE,
   VALIDATION_ERROR,
   PLACEHOLDER_MODES,
+  CLASSES,
 } from "./constants.js";
 // Re-export the enum constant objects so consumers can write
 // VALIDATION_ERROR.TOO_SHORT / NUMBER_TYPE.MOBILE / NUMBER_FORMAT.E164 instead
@@ -861,10 +862,17 @@ export class Iti {
     if (!wrapperEl) {
       return;
     }
-    wrapperEl.classList.remove("iti__strict-reject-animation");
+    wrapperEl.classList.remove(CLASSES.STRICT_REJECT_ANIMATION);
     //* Force reflow so re-adding the class restarts the animation even if it's already running.
     void wrapperEl.offsetWidth;
-    wrapperEl.classList.add("iti__strict-reject-animation");
+    wrapperEl.classList.add(CLASSES.STRICT_REJECT_ANIMATION);
+    //* Remove the class once the animation finishes, otherwise hiding then re-showing the container
+    //* (e.g. a <dialog>) replays the animation because the class is still present.
+    wrapperEl.addEventListener(
+      "animationend",
+      () => wrapperEl.classList.remove(CLASSES.STRICT_REJECT_ANIMATION),
+      { once: true },
+    );
   }
 
   //* Trigger a custom event on the input (typed via ItiEventMap).

@@ -19,6 +19,7 @@ export const CLASSES = {
   LOADING: "iti__loading",
   COUNTRY_ITEM: "iti__country",
   HIGHLIGHT: "iti__highlight",
+  STRICT_REJECT_ANIMATION: "iti__strict-reject-animation",
 } as const;
 
 export const KEYS = {
