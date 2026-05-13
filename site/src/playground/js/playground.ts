@@ -77,9 +77,6 @@ function persistIntegration(value: Integration) {
 }
 const infoIconTemplate = document.querySelector<HTMLTemplateElement>("#itiPlaygroundInfoIconTemplate");
 const optionGroupTemplate = document.querySelector<HTMLTemplateElement>("#itiPlaygroundOptionGroupTemplate");
-const iso2ModalEl = document.querySelector<HTMLElement>("#itiPlaygroundIso2Modal");
-const iso2ModalTableBody = document.querySelector<HTMLElement>("#itiPlaygroundIso2ModalTableBody");
-const iso2ModalSearch = document.querySelector<HTMLInputElement>("#itiPlaygroundIso2ModalSearch");
 
 const KEEP_DROPDOWN_OPEN_PARAM = "keepDropdownOpen";
 const SYNC_DEMO_STATE_PARAM = "syncDemoState";
@@ -1013,75 +1010,6 @@ function getSupportedCountries() {
   }
   const data = window.intlTelInput.getCountryData();
   return Array.isArray(data) ? data : [];
-}
-
-const englishDisplayNames = new Intl.DisplayNames(["en"], { type: "region" });
-
-function renderSupportedCountriesTable(filter = "") {
-  if (!iso2ModalTableBody) {
-    return;
-  }
-  iso2ModalTableBody.innerHTML = "";
-
-  const countries = getSupportedCountries();
-  const query = filter.toLowerCase().trim();
-
-  const fragment = document.createDocumentFragment();
-  countries.forEach(({ iso2, dialCode }) => {
-    const name = englishDisplayNames.of(iso2.toUpperCase()) || iso2;
-    if (query && !name.toLowerCase().includes(query) && !iso2.includes(query) && !("+"+dialCode).includes(query)) {
-      return;
-    }
-
-    const row = document.createElement("tr");
-
-    const countryCell = document.createElement("td");
-    countryCell.className = "d-flex align-items-center";
-    const flagDiv = document.createElement("div");
-    flagDiv.className = `iti__flag iti__${iso2}`;
-    const countryNameSpan = document.createElement("span");
-    countryNameSpan.className = "ms-2";
-    countryNameSpan.textContent = `${name} (+${dialCode})`;
-    countryCell.appendChild(flagDiv);
-    countryCell.appendChild(countryNameSpan);
-
-    const iso2Cell = document.createElement("td");
-    iso2Cell.textContent = iso2;
-
-    row.appendChild(countryCell);
-    row.appendChild(iso2Cell);
-    fragment.appendChild(row);
-  });
-
-  iso2ModalTableBody.appendChild(fragment);
-
-  if (query && iso2ModalTableBody.childElementCount === 0) {
-    const row = document.createElement("tr");
-    const cell = document.createElement("td");
-    cell.colSpan = 2;
-    cell.className = "text-center text-muted py-3";
-    cell.textContent = "No countries found";
-    row.appendChild(cell);
-    iso2ModalTableBody.appendChild(row);
-  }
-}
-
-if (iso2ModalEl) {
-  iso2ModalEl.addEventListener("show.bs.modal", () => {
-    if (iso2ModalSearch) {
-      iso2ModalSearch.value = "";
-    }
-    renderSupportedCountriesTable();
-  });
-  iso2ModalEl.addEventListener("shown.bs.modal", () => {
-    iso2ModalSearch?.focus();
-  });
-}
-
-if (iso2ModalSearch) {
-  iso2ModalSearch.addEventListener("input", () => {
-    renderSupportedCountriesTable(iso2ModalSearch.value);
-  });
 }
 
 function getValidIso2Set() {

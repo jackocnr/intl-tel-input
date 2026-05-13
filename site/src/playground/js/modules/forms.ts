@@ -878,7 +878,7 @@ function attachMultiCombobox(
   return container;
 }
 
-function createControlGroup(optionGroupTemplate: HTMLTemplateElement, title: string, groupId: string, description: string, { iso2ModalId = null, icon = null }: { iso2ModalId?: string | null; icon?: string | null } = {}) {
+function createControlGroup(optionGroupTemplate: HTMLTemplateElement, title: string, groupId: string, description: string, { icon = null }: { icon?: string | null } = {}) {
   const slugify = (text: string) => String(text || "")
     .trim()
     .toLowerCase()
@@ -912,21 +912,6 @@ function createControlGroup(optionGroupTemplate: HTMLTemplateElement, title: str
   const descEl = group.querySelector<HTMLElement>("[data-role=\"description\"]")!;
   descEl.textContent = description;
 
-  const modalId = String(iso2ModalId || "").trim();
-  if (modalId) {
-    descEl.appendChild(document.createTextNode(" "));
-
-    const link = document.createElement("a");
-    link.href = "#";
-    link.textContent = "Supported ISO2 country codes";
-    link.setAttribute("data-bs-toggle", "modal");
-    link.setAttribute("data-bs-target", `#${modalId}`);
-    link.addEventListener("click", (e) => e.preventDefault());
-
-    descEl.appendChild(link);
-    descEl.appendChild(document.createTextNode("."));
-  }
-
   const resetButton = group.querySelector("[data-role=\"reset\"]")!;
   resetButton.setAttribute("data-playground-reset-group", String(groupId));
 
@@ -956,7 +941,7 @@ export function renderControls(formEl: HTMLElement | null, metaMap: Record<strin
   const allKeys = Object.keys(metaMap);
   const usedKeys = new Set();
 
-  groups.forEach(({ title, description, keys, iso2ModalId, icon }: any, index: number) => {
+  groups.forEach(({ title, description, keys, icon }: any, index: number) => {
     const groupKeys = (Array.isArray(keys) ? keys : []).filter((k: string) => metaMap[k]);
     if (groupKeys.length === 0) {
       return;
@@ -964,7 +949,7 @@ export function renderControls(formEl: HTMLElement | null, metaMap: Record<strin
 
     const groupId = `group_${index}`;
     resetGroupKeys.set(groupId, groupKeys);
-    const { group, stack } = createControlGroup(optionGroupTemplate, title, groupId, description, { iso2ModalId, icon });
+    const { group, stack } = createControlGroup(optionGroupTemplate, title, groupId, description, { icon });
 
     groupKeys.forEach((key: string) => {
       usedKeys.add(key);
