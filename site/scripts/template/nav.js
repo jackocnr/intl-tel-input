@@ -97,11 +97,6 @@ const examplesDropdownSections = [
         label: "Validation",
       },
       {
-        name: "validation_precise",
-        href: "/examples/vanilla-javascript/validation-precise",
-        label: "Precise validation (advanced)",
-      },
-      {
         name: "lookup_country",
         href: "/examples/vanilla-javascript/lookup-country",
         label: "Lookup user's country",
@@ -135,6 +130,11 @@ const examplesDropdownSections = [
         name: "large_flags",
         href: "/examples/vanilla-javascript/large-flags",
         label: "Large flags",
+      },
+      {
+        name: "validation_precise",
+        href: "/examples/vanilla-javascript/validation-precise",
+        label: "Precise validation (advanced)",
       },
     ],
   },
