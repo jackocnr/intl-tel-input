@@ -142,7 +142,7 @@ Optional controlled value. If provided, the component becomes controlled — whe
 
 ## Initialisation options
 
-All of the core library's [initialisation options](/docs/options) are supported as individual Svelte component props using the same option name. For example:
+All of the core library's initialisation options are supported as individual Svelte component props using the same option name. There are dozens of options — country picker, formatting, validation, placeholders, localisation, and more — see the full list on the [Initialisation options](/docs/options) page, or try them interactively in the [playground](/playground). For example:
 
 ```js
 <IntlTelInput initialCountry="us" />
