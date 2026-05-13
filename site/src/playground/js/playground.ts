@@ -423,6 +423,27 @@ setupStrictRejectToast(telInput, "playgroundStrictRejectToast", "playgroundStric
   text: "strictMode",
 });
 
+// Returns true when the browser's Intl.DisplayNames falls back to English for the
+// given locale — either the locale isn't in supportedLocalesOf, or it claims support
+// but the region data is missing (Chrome does this for e.g. "bs"). Used to warn the
+// user that country names won't actually be translated.
+function hasNoBrowserCountryNameData(locale: string): boolean {
+  if (!locale || /^en($|-)/i.test(locale)) {
+    return false;
+  }
+  try {
+    const supported = (Intl as any).DisplayNames.supportedLocalesOf([locale]);
+    if (supported.length === 0) {
+      return true;
+    }
+    const dn = new (Intl as any).DisplayNames([locale], { type: "region" });
+    const en = new (Intl as any).DisplayNames(["en"], { type: "region" });
+    return ["US", "FR", "DE", "CN", "RU"].every((iso) => dn.of(iso) === en.of(iso));
+  } catch {
+    return false;
+  }
+}
+
 // Contextual hints: shown when toggling an option that has no visible effect
 // until the user takes an additional action (e.g. selecting a country, typing a number).
 const HINT_CONFIGS = [
@@ -662,16 +683,23 @@ const HINT_CONFIGS = [
   {
     optionKey: "countryNameLocale",
     message: () => {
+      const state = getCombinedStateFromControls();
+      if (hasNoBrowserCountryNameData(state.countryNameLocale)) {
+        return "Warning: your browser's Intl.DisplayNames has no country-name data for this locale — falling back to English.";
+      }
       if (!keepDropdownOpenCheckbox.checked) {
         return "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see this change in action.";
       }
       return "Tip: also update i18n to translate the UI strings.";
     },
     shouldShow: () => {
+      const state = getCombinedStateFromControls();
+      if (hasNoBrowserCountryNameData(state.countryNameLocale)) {
+        return true;
+      }
       if (!keepDropdownOpenCheckbox.checked) {
         return true;
       }
-      const state = getCombinedStateFromControls();
       return Boolean(state.countryNameLocale) && state.countryNameLocale !== state.i18n;
     },
   },
