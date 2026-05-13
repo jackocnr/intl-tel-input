@@ -3,12 +3,14 @@
  */
 
 import { userEvent } from "@testing-library/user-event";
+import { fireEvent } from "@testing-library/dom";
 import {
   initIntlTelInput,
   teardown,
   stripFormattingChars,
   selectCountryAndTypePlaceholderNumberAsync,
   checkFlagSelected,
+  isDropdownOpen,
   pasteIntoInput,
 } from "../helpers/helpers";
 
@@ -195,6 +197,20 @@ describe("strictMode option", () => {
       expect(pasteIntoInput(input, "2345678901")).toBe(true);
     });
 
+    test("does not clear long content if a paste input event has no paste snapshot", () => {
+      const events = [];
+      input.addEventListener("strict:reject", (e) => events.push(e.detail));
+      const inputValue = "234567890123456789012345678901";
+      input.value = inputValue;
+      input.setSelectionRange(inputValue.length, inputValue.length);
+      fireEvent.input(input, {
+        inputType: "insertFromPaste",
+        data: inputValue,
+      });
+      expect(events).toEqual([]);
+      expect(input.value).toBe(inputValue);
+    });
+
     // PREV BUG
     test("pasting a very long number still works", async () => {
       await user.click(input);
@@ -333,6 +349,52 @@ describe("strictMode option", () => {
       await user.type(input, "1");
       // sometimes AYT formatting is slightly different, so strip formatting chars
       expect(stripFormattingChars(input.value)).toBe(placeholderNumberClean);
+    });
+  });
+
+  describe("Android paste handling", () => {
+    let input, iti, user, container;
+
+    beforeEach(() => {
+      user = userEvent.setup();
+      vi.spyOn(window.navigator, "userAgent", "get").mockReturnValue(
+        "Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 Chrome/120 Mobile Safari/537.36",
+      );
+    });
+
+    afterEach(() => {
+      teardown(iti);
+    });
+
+    test("handles pasted plus as paste instead of opening country search", async () => {
+      ({ input, iti, container } = initIntlTelInput({
+        options: {
+          strictMode: true,
+          separateDialCode: true,
+          initialCountry: "us",
+        },
+      }));
+      await user.click(input);
+
+      expect(pasteIntoInput(input, "+")).toBe(true);
+      expect(isDropdownOpen(container)).toBe(false);
+      expect(input.value).toBe("+");
+    });
+
+    test("handles pasted invalid chars as paste instead of Android typed input", async () => {
+      ({ input, iti } = initIntlTelInput({
+        options: {
+          strictMode: true,
+          initialCountry: "us",
+        },
+      }));
+      const events = [];
+      input.addEventListener("strict:reject", (e) => events.push(e.detail));
+      await user.click(input);
+
+      expect(pasteIntoInput(input, " ")).toBe(true);
+      expect(events).toEqual([{ source: "paste", rejectedInput: " ", reason: "invalid" }]);
+      expect(input.value).toBe("");
     });
   });
 
