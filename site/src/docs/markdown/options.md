@@ -310,7 +310,7 @@ Localise country names and the core library UI strings, e.g. the country search 
 Type: `string`  
 Default: `"en"`  
 
-The locale to pass to `Intl.DisplayNames` to generate the country names. Should adhere to the [BCP 47](https://developer.mozilla.org/en-US/docs/Glossary/BCP_47_language_tag) standard, e.g. `"zh"` (Chinese), or `"zh-Hans"` (Simplified Chinese). For translating the other UI strings, like the country search placeholder, see [`i18n`](#i18n) below.
+The locale to pass to `Intl.DisplayNames` to generate the country names. Should adhere to the [BCP 47](https://developer.mozilla.org/en-US/docs/Glossary/BCP_47_language_tag) standard, e.g. `"zh"` (Chinese), or `"zh-Hans"` (Simplified Chinese). To override individual country names, see [`countryNameOverrides`](#countrynameoverrides) below. For translating the other UI strings, like the country search placeholder, see [`i18n`](#i18n) below.
 
 View `intl-tel-input` in Chinese in the [Playground](/playground?countryNameLocale=zh&i18n=zh&initialCountry=cn#translation-options).
 
@@ -318,7 +318,7 @@ View `intl-tel-input` in Chinese in the [Playground](/playground?countryNameLoca
 Type: `object`  
 Default: `{}`  
 
-Override individual country names, keyed by iso2 code. Useful when the name produced by [`countryNameLocale`](#countrynamelocale) doesn't match your preferred wording, e.g.
+Override individual country names, keyed by iso2 code. Useful when the name produced by [`countryNameLocale`](#countrynamelocale) doesn't match your preferred wording. Example use:
 
 ```js
 {
