@@ -1,5 +1,5 @@
-<p>When you want to display a user's number back to them, pass the full international number as <code>defaultValue</code> via <a href="/docs/react_component#inputprops"><code>inputProps</code></a>. The component will automatically select the relevant flag and reformat the number.</p>
+<p>When you want to display a user's number back to them, pass the full international number as <code>defaultValue</code> via <a href="/docs/react-component#inputprops"><code>inputProps</code></a>. The component will automatically select the relevant flag and reformat the number.</p>
 
 <p>Note: reformatting the number this way requires the utils script to be loaded via the <a href="/docs/options#loadutils"><code>loadUtils</code></a> option. The utils script is a custom build of Google's libphonenumber library, which we use for all formatting, validation, and placeholder generation.</p>
 
-<p>Note: the toast that appears when <a href="/docs/options#strictmode"><code>strictMode</code></a> rejects input isn't part of the library — it's wired up via the <a href="/docs/react_component#onstrictreject"><code>onStrictReject</code></a> callback.</p>
+<p>Note: the toast shown when input is rejected isn't part of the library — see the <a href="/docs/react-component#onstrictreject"><code>onStrictReject</code></a> callback docs for an example of how to wire one up yourself.</p>

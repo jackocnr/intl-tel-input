@@ -9,4 +9,4 @@
 
 <p>In the example below, we call the <a rel="noopener" href="https://ipapi.co">ipapi</a> service (which offers a free tier) using the standard <code>fetch</code> API. If the request fails, the returned promise should reject (or resolve with an empty/invalid value) so the library falls back appropriately.</p>
 
-<p>Note: the toast that appears when <a href="/docs/options#strictmode"><code>strictMode</code></a> rejects input isn't part of the library — it's wired up via the <a href="/docs/vanilla-javascript#strict-reject"><code>strict:reject</code></a> event (whose docs include a full example).</p>
+<p>Note: the toast shown when input is rejected isn't part of the library — see the <a href="/docs/vanilla-javascript#strict-reject"><code>strict:reject</code></a> event docs for an example of how to wire one up yourself.</p>
