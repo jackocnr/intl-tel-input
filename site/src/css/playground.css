@@ -165,9 +165,21 @@
 }
 .iti-playground-overrides-row {
   display: grid;
-  grid-template-columns: minmax(8rem, 1fr) minmax(10rem, 2fr) auto;
+  grid-template-columns: minmax(10rem, 1fr) minmax(10rem, 1fr) auto;
   gap: 0.35rem;
   align-items: start;
+}
+.iti-playground-overrides-header {
+  font-size: 0.85rem;
+  color: var(--bs-secondary-color);
+}
+/* Invisible spacer must keep its horizontal padding so it occupies the same
+   grid-track width as the real remove button below it, but drop vertical
+   padding so it doesn't inflate the header row's height. */
+.iti-playground-overrides-header .iti-playground-overrides-remove {
+  visibility: hidden;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 /* The country combobox inside a row stretches to fill its grid cell. */
 .iti-playground-overrides-row .iti-playground-combobox {
@@ -477,6 +489,12 @@
     &.iti-playground-control--example-code {
       align-items: start;
       row-gap: 6px;
+    }
+
+    /* Overrides-editor variants grow vertically as rows are added; pin the
+       label to the top so it doesn't drift downward with the row count. */
+    &.iti-playground-control--overrides {
+      align-items: start;
     }
 
     /* Non-checkbox controls: form-specific tweaks */

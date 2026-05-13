@@ -322,6 +322,7 @@ function buildControlRow(key: string, meta: any, { idPrefix, dataAttr, infoIconT
       hiddenInput.type = "hidden";
       hiddenInput.id = `${idPrefix}_${key}`;
       hiddenInput.setAttribute(dataAttr, key);
+      wrapper.classList.add("iti-playground-control--overrides");
       wrapper.appendChild(attachOverridesEditor(hiddenInput, meta.overridesEditor));
       return wrapper;
     }
@@ -925,6 +926,25 @@ function attachOverridesEditor(
   container.className = "iti-playground-overrides-editor";
   container.appendChild(hiddenInput);
 
+  const validIso2Set = new Set(countryOptions.map((o) => o.value.toLowerCase()));
+
+  const headerEl = document.createElement("div");
+  headerEl.className = "iti-playground-overrides-row iti-playground-overrides-header";
+  const iso2HeaderEl = document.createElement("span");
+  iso2HeaderEl.textContent = "Country code (iso2)";
+  const nameHeaderEl = document.createElement("span");
+  nameHeaderEl.textContent = "Override name";
+  // Invisible spacer so the header's grid track widths match the rows below
+  // (each row has a remove button in its 3rd column).
+  const removeSpacerEl = document.createElement("span");
+  removeSpacerEl.className = "iti-playground-overrides-remove";
+  removeSpacerEl.setAttribute("aria-hidden", "true");
+  removeSpacerEl.textContent = "×";
+  headerEl.appendChild(iso2HeaderEl);
+  headerEl.appendChild(nameHeaderEl);
+  headerEl.appendChild(removeSpacerEl);
+  container.appendChild(headerEl);
+
   const rowsEl = document.createElement("div");
   rowsEl.className = "iti-playground-overrides-rows";
   container.appendChild(rowsEl);
@@ -988,7 +1008,7 @@ function attachOverridesEditor(
     iso2Input.type = "text";
     iso2Input.className = "form-control iti-playground-overrides-iso2";
     iso2Input.id = `${hiddenInput.id}_iso2_${rowCounter}`;
-    iso2Input.placeholder = "country";
+    iso2Input.placeholder = "e.g. us for United States";
     iso2Input.value = iso2;
 
     const iso2Wrapper = attachCombobox(iso2Input, countryOptions, {
@@ -996,17 +1016,34 @@ function attachOverridesEditor(
     });
     const refreshCombobox = (iso2Wrapper as any).__comboboxRefresh as () => void;
 
+    function validateIso2({ invalidOnly = false } = {}) {
+      const trimmed = iso2Input.value.trim().toLowerCase();
+      iso2Input.classList.remove("is-valid", "is-invalid");
+      if (trimmed === "") {
+        return;
+      }
+      if (validIso2Set.has(trimmed)) {
+        if (!invalidOnly) {
+          iso2Input.classList.add("is-valid");
+        }
+      } else {
+        iso2Input.classList.add("is-invalid");
+      }
+    }
+
     iso2Input.addEventListener("input", () => {
       updateHiddenInput();
+      validateIso2();
       // Other rows' menus may need to (un-)exclude this row's previous/new value.
       refreshAllCombos();
     });
+    validateIso2({ invalidOnly: true });
 
     const nameInput = document.createElement("input");
     nameInput.type = "text";
     nameInput.className = "form-control iti-playground-overrides-name";
     nameInput.id = `${hiddenInput.id}_name_${rowCounter}`;
-    nameInput.placeholder = "override name";
+    nameInput.placeholder = "e.g. America";
     nameInput.value = name;
     nameInput.addEventListener("input", () => updateHiddenInput());
 
