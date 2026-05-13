@@ -5,7 +5,7 @@ const interfaceTranslations: I18n = {
   selectedCountryAriaLabel: "البلد المحدد",
   noCountrySelected: "لم يتم تحديد أي بلد",
   countryListAriaLabel: "قائمة الدول",
-  searchPlaceholder: "يبحث",
+  searchPlaceholder: "بحث",
   clearSearchAriaLabel: "مسح البحث",
   searchEmptyState: "لم يتم العثور على نتائج",
 

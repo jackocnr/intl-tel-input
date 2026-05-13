@@ -7,11 +7,11 @@ const interfaceTranslations: I18n = {
   countryListAriaLabel: "Lista țărilor",
   searchPlaceholder: "Căutare",
   clearSearchAriaLabel: "Șterge căutarea",
-  searchEmptyState: "Nici un rezultat gasit",
+  searchEmptyState: "Nici un rezultat găsit",
 
   searchSummaryAria(count) {
     if (count === 0) {
-      return "Nici un rezultat gasit";
+      return "Nici un rezultat găsit";
     }
     if (count === 1) {
       return "1 rezultat găsit";
