@@ -1185,6 +1185,30 @@ export default class UI {
     this.#selectedFlagEl!.classList.toggle(CLASSES.LOADING, isLoading);
   }
 
+  //* Play the strict-reject animation (shake, or background-colour flash under prefers-reduced-motion) on the wrapper.
+  //* Called when strictMode rejects the whole input (keystroke, or whole paste).
+  //* Uses the wrapper (not the input) so any separateDialCode / country button move together with the input.
+  public playStrictRejectAnimation(): void {
+    if (!this.#options.strictRejectAnimation) {
+      return;
+    }
+    const wrapperEl = this.telInputEl.parentElement;
+    if (!wrapperEl) {
+      return;
+    }
+    wrapperEl.classList.remove(CLASSES.STRICT_REJECT_ANIMATION);
+    //* Force reflow so re-adding the class restarts the animation even if it's already running.
+    void wrapperEl.offsetWidth;
+    wrapperEl.classList.add(CLASSES.STRICT_REJECT_ANIMATION);
+    //* Remove the class once the animation finishes, otherwise hiding then re-showing the container
+    //* (e.g. a <dialog>) replays the animation because the class is still present.
+    wrapperEl.addEventListener(
+      "animationend",
+      () => wrapperEl.classList.remove(CLASSES.STRICT_REJECT_ANIMATION),
+      { once: true },
+    );
+  }
+
   public isLoading(): boolean {
     return this.#selectedFlagEl!.classList.contains(CLASSES.LOADING);
   }
