@@ -286,26 +286,28 @@ describe("UI list-item highlight on hover", () => {
 });
 
 // ── keyboard arrow navigation ──────────────────────────────────
-// handleUpDownKey is private; triggered via document keydown while the
-// dropdown is open.
+// handleUpDownKey is private; triggered via keydown events that bubble up to
+// the dropdown content (where the listener is bound) while the dropdown is open.
 describe("UI arrow-key navigation", () => {
-  const pressKey = (key) => {
-    document.dispatchEvent(new KeyboardEvent("keydown", { key, bubbles: true }));
+  const pressKey = (input, key) => {
+    getSearchInput(input).dispatchEvent(
+      new KeyboardEvent("keydown", { key, bubbles: true }),
+    );
   };
 
   test("ArrowDown moves to next sibling", () => {
     const { ui, input } = buildUI({ dropdownAlwaysOpen: true });
     ui.openDropdown(() => {}, () => {});
     // openDropdown highlights the first item by default
-    pressKey(KEYS.ARROW_DOWN);
+    pressKey(input, KEYS.ARROW_DOWN);
     expect(getHighlighted(input)).toBe(getCountryList(input).children[1]);
   });
 
   test("ArrowUp moves to previous sibling", () => {
     const { ui, input } = buildUI({ dropdownAlwaysOpen: true });
     ui.openDropdown(() => {}, () => {});
-    pressKey(KEYS.ARROW_DOWN); // now on children[1]
-    pressKey(KEYS.ARROW_UP); // back to children[0]
+    pressKey(input, KEYS.ARROW_DOWN); // now on children[1]
+    pressKey(input, KEYS.ARROW_UP); // back to children[0]
     expect(getHighlighted(input)).toBe(getCountryList(input).children[0]);
   });
 
@@ -315,10 +317,10 @@ describe("UI arrow-key navigation", () => {
     const list = getCountryList(input);
     // Move to the last item
     for (let i = 0; i < list.children.length - 1; i++) {
-      pressKey(KEYS.ARROW_DOWN);
+      pressKey(input, KEYS.ARROW_DOWN);
     }
     expect(getHighlighted(input)).toBe(list.children[list.children.length - 1]);
-    pressKey(KEYS.ARROW_DOWN);
+    pressKey(input, KEYS.ARROW_DOWN);
     expect(getHighlighted(input)).toBe(list.children[0]);
   });
 
@@ -327,7 +329,7 @@ describe("UI arrow-key navigation", () => {
     ui.openDropdown(() => {}, () => {});
     const list = getCountryList(input);
     // openDropdown starts us on the first item
-    pressKey(KEYS.ARROW_UP);
+    pressKey(input, KEYS.ARROW_UP);
     expect(getHighlighted(input)).toBe(list.children[list.children.length - 1]);
   });
 });

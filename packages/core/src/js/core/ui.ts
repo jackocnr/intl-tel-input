@@ -913,7 +913,6 @@ export default class UI {
 
   //* Keyboard navigation while the dropdown is open: arrow keys navigate, hidden-search keys filter,
   //* and enter/escape invoke the caller's callbacks (which handle country selection / dropdown close).
-  //* Listens on document because key events go there when no input has focus.
   //* Uses keydown rather than keypress so non-char keys (arrow, esc) fire and so holding a key repeats.
   #bindDropdownKeydownListener(
     signal: AbortSignal,
@@ -948,11 +947,8 @@ export default class UI {
 
       //* When countrySearch disabled: listen for alpha chars to perform hidden search.
       //* Regex allows one latin alpha char or space, based on https://stackoverflow.com/a/26900132/217866.
-      //* Skip when the event target is the tel input — otherwise with dropdownAlwaysOpen
-      //* enabled, typing letters in the tel input would scroll the dropdown.
       if (
         !this.#options.countrySearch &&
-        e.target !== this.telInputEl &&
         REGEX.HIDDEN_SEARCH_CHAR.test(e.key)
       ) {
         e.stopPropagation();
@@ -967,7 +963,10 @@ export default class UI {
         }, TIMINGS.HIDDEN_SEARCH_RESET_MS);
       }
     };
-    document.addEventListener("keydown", handleKeydown, { signal });
+    //* Catches keystrokes while the selected-country button is focused (e.g. countrySearch disabled, or dropdownAlwaysOpen).
+    this.#selectedCountryEl?.addEventListener("keydown", handleKeydown, { signal });
+    //* Catches keystrokes from the search input and country list (which both live inside dropdownContent).
+    this.#dropdownContentEl?.addEventListener("keydown", handleKeydown, { signal });
   }
 
   //* Wire up country search input listener: typing filters the list, the clear button resets it.
