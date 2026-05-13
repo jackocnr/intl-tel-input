@@ -428,6 +428,13 @@ function attachCombobox(
     optionEls.push(li);
   });
 
+  const emptyEl = document.createElement("li");
+  emptyEl.className = "iti-playground-combobox-empty";
+  emptyEl.setAttribute("aria-disabled", "true");
+  emptyEl.textContent = "No matches";
+  emptyEl.hidden = true;
+  menu.appendChild(emptyEl);
+
   let activeIndex = -1;
 
   function setActive(newIndex: number) {
@@ -457,6 +464,7 @@ function attachCombobox(
       const search = el.dataset.search || "";
       el.hidden = q !== "" && !search.includes(q);
     });
+    emptyEl.hidden = optionEls.some((el) => !el.hidden);
     setActive(-1);
   }
 
@@ -633,6 +641,13 @@ function attachMultiCombobox(
     optionEls.set(opt.value, li);
   });
 
+  const emptyEl = document.createElement("li");
+  emptyEl.className = "iti-playground-combobox-empty";
+  emptyEl.setAttribute("aria-disabled", "true");
+  emptyEl.textContent = "No matches";
+  emptyEl.hidden = true;
+  menu.appendChild(emptyEl);
+
   let selected: string[] = [];
   let activeIndex = -1;
 
@@ -701,6 +716,7 @@ function attachMultiCombobox(
       const search = el.dataset.search || "";
       el.hidden = q !== "" && !search.includes(q);
     });
+    emptyEl.hidden = [...optionEls.values()].some((el) => !el.hidden);
     setActive(-1);
   }
 

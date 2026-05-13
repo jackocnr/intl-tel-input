@@ -69,6 +69,12 @@
 .iti-playground-combobox-option.is-selected {
   display: none;
 }
+.iti-playground-combobox-empty {
+  padding: 0.25rem 0.75rem;
+  color: var(--bs-secondary-color);
+  font-style: italic;
+  cursor: default;
+}
 
 /* Multi-select combobox: chip-style selected items + filterable suggestion menu.
    Stores its value as a JSON array on a hidden input. */
