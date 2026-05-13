@@ -73,7 +73,7 @@ export const OPTION_GROUPS = [
   },
 ];
 
-export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOptionLabels, i18nDatalist }) {
+export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOptionLabels, i18nDatalist, initialCountryDatalist }) {
   const defaultInitOptions = {
     allowDropdown: defaults.allowDropdown,
     allowedNumberTypes: defaults.allowedNumberTypes,
@@ -199,6 +199,7 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
       type: "text",
       tooltip: "Initial selected country (ISO2 code), e.g. 'gb', or else \"auto\" for use with geoIpLookup.",
       placeholder: "e.g. gb",
+      datalist: initialCountryDatalist,
     },
     loadUtils: {
       type: "boolean",

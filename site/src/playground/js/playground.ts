@@ -279,6 +279,16 @@ const { defaults } = window.intlTelInput;
 const i18nOptionLabels = createI18nOptionLabels(I18N_LANGUAGE_CODES);
 const i18nDatalist = createI18nDatalist(I18N_LANGUAGE_CODES);
 
+//* Datalist for the initialCountry combobox: "auto" pinned on top, then all supported
+//* countries sorted by their English name (independent of the playground's countryNameLocale).
+const initialCountryDatalist = (() => {
+  const englishNames = new Intl.DisplayNames(["en"], { type: "region" });
+  const countryEntries = window.intlTelInput.getCountryData()
+    .map((c) => ({ value: c.iso2, label: englishNames.of(c.iso2.toUpperCase()) || c.iso2 }))
+    .sort((a, b) => a.label.localeCompare(b.label));
+  return [{ value: "auto", label: "Auto-detect via geoIpLookup" }, ...countryEntries];
+})();
+
 const {
   defaultInitOptions,
   playgroundInitialOptions,
@@ -292,6 +302,7 @@ const {
   i18nLanguageCodes: I18N_LANGUAGE_CODES,
   i18nOptionLabels,
   i18nDatalist,
+  initialCountryDatalist,
 });
 
 // Library defaults — what the user would get calling intlTelInput(input) with no options.
