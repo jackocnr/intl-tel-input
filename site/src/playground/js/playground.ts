@@ -279,15 +279,20 @@ const { defaults } = window.intlTelInput;
 const i18nOptionLabels = createI18nOptionLabels(I18N_LANGUAGE_CODES);
 const i18nDatalist = createI18nDatalist(I18N_LANGUAGE_CODES);
 
-//* Datalist for the initialCountry combobox: "auto" pinned on top, then all supported
-//* countries sorted by their English name (independent of the playground's countryNameLocale).
-const initialCountryDatalist = (() => {
+//* Datalist of all supported countries (used by countryOrder, excludeCountries, onlyCountries
+//* multi-comboboxes) — labels in English so they stay stable regardless of countryNameLocale.
+const countryDatalist = (() => {
   const englishNames = new Intl.DisplayNames(["en"], { type: "region" });
-  const countryEntries = window.intlTelInput.getCountryData()
+  return window.intlTelInput.getCountryData()
     .map((c) => ({ value: c.iso2, label: englishNames.of(c.iso2.toUpperCase()) || c.iso2 }))
     .sort((a, b) => a.label.localeCompare(b.label));
-  return [{ value: "auto", label: "Auto-detect via geoIpLookup" }, ...countryEntries];
 })();
+
+//* Datalist for the initialCountry combobox: "auto" pinned on top, then the country list above.
+const initialCountryDatalist = [
+  { value: "auto", label: "Auto-detect via geoIpLookup" },
+  ...countryDatalist,
+];
 
 const {
   defaultInitOptions,
@@ -303,6 +308,7 @@ const {
   i18nOptionLabels,
   i18nDatalist,
   initialCountryDatalist,
+  countryDatalist,
 });
 
 // Library defaults — what the user would get calling intlTelInput(input) with no options.
@@ -1078,54 +1084,9 @@ if (iso2ModalSearch) {
   });
 }
 
-// --- ISO2 array textarea validation ---
-const ISO2_TEXTAREA_KEYS = ["countryOrder", "excludeCountries", "onlyCountries"];
-
 function getValidIso2Set() {
   return new Set(getSupportedCountries().map((c) => c.iso2));
 }
-
-function isValidIso2Array(value, validIso2s) {
-  const trimmed = value.trim();
-  if (trimmed === "") {
-    return null;
-  } // empty = neutral, no class
-  let parsed;
-  // Accept bare comma-separated values (e.g. "us, gb") as well as JSON arrays.
-  if (!trimmed.startsWith("[")) {
-    parsed = trimmed.split(",").map((s) => s.trim()).filter(Boolean);
-  } else {
-    try {
-      parsed = JSON.parse(trimmed.replace(/'/g, "\""));
-    } catch {
-      return false;
-    }
-    if (!Array.isArray(parsed)) {
-      return false;
-    }
-  }
-  return parsed.every((item) => typeof item === "string" && validIso2s.has(item.toLowerCase()));
-}
-
-function validateIso2Textarea(textarea, { invalidOnly = false } = {}) {
-  const validIso2s = getValidIso2Set();
-  const result = isValidIso2Array(textarea.value, validIso2s);
-  textarea.classList.remove("is-valid", "is-invalid");
-  if (result === true && !invalidOnly) {
-    textarea.classList.add("is-valid");
-  } else if (result === false) {
-    textarea.classList.add("is-invalid");
-  }
-}
-
-ISO2_TEXTAREA_KEYS.forEach((key) => {
-  const textarea = optionsForm.querySelector(`[data-option='${key}']`);
-  if (textarea) {
-    textarea.addEventListener("input", () => validateIso2Textarea(textarea));
-    // on load, only flag invalid values (don't show green for valid)
-    validateIso2Textarea(textarea, { invalidOnly: true });
-  }
-});
 
 // --- initialCountry input validation ---
 function validateInitialCountryInput(input, { invalidOnly = false } = {}) {
@@ -1218,12 +1179,6 @@ if (countryNameOverridesInput) {
 }
 
 function revalidateCustomInputs() {
-  ISO2_TEXTAREA_KEYS.forEach((key) => {
-    const textarea = optionsForm.querySelector(`[data-option='${key}']`);
-    if (textarea) {
-      validateIso2Textarea(textarea, { invalidOnly: true });
-    }
-  });
   if (initialCountryInput) {
     validateInitialCountryInput(initialCountryInput, { invalidOnly: true });
   }

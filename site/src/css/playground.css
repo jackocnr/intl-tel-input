@@ -61,6 +61,85 @@
 .iti-playground-combobox-label {
   flex: 1;
 }
+.iti-playground-combobox-option.is-selected {
+  display: none;
+}
+
+/* Multi-select combobox: chip-style selected items + filterable suggestion menu.
+   Stores its value as a JSON array on a hidden input. */
+.iti-playground-multi-combobox {
+  position: relative;
+}
+.iti-playground-multi-combobox-control {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  cursor: text;
+  min-height: calc(1.5em + 0.75rem + 2px); /* match .form-control */
+}
+.iti-playground-multi-combobox-filter {
+  flex: 1;
+  min-width: 8em;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  padding: 0.1rem 0.25rem;
+  font: inherit;
+  color: inherit;
+}
+.iti-playground-multi-combobox-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.1rem 0.35rem 0.1rem 0.5rem;
+  border-radius: 999px;
+  background-color: var(--bs-tertiary-bg);
+  border: 1px solid var(--bs-border-color);
+  font-size: 0.875em;
+  line-height: 1.4;
+  user-select: none;
+}
+.iti-playground-multi-combobox-chip[draggable="true"] {
+  cursor: grab;
+}
+.iti-playground-multi-combobox-chip.is-dragging {
+  opacity: 0.4;
+  cursor: grabbing;
+}
+.iti-playground-multi-combobox-chip.is-drop-target-before {
+  box-shadow: -3px 0 0 var(--bs-primary);
+}
+.iti-playground-multi-combobox-chip.is-drop-target-after {
+  box-shadow: 3px 0 0 var(--bs-primary);
+}
+.iti-playground-multi-combobox-chip-code {
+  font-family: var(--bs-font-monospace);
+  color: var(--bs-secondary-color);
+}
+.iti-playground-multi-combobox-chip-label {
+  color: var(--bs-body-color);
+}
+.iti-playground-multi-combobox-chip-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.1em;
+  height: 1.1em;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--bs-secondary-color);
+  font-size: 1.1em;
+  line-height: 1;
+  cursor: pointer;
+}
+.iti-playground-multi-combobox-chip-remove:hover {
+  background-color: var(--bs-secondary-bg);
+  color: var(--bs-body-color);
+}
 
 /* multidropdown toggle: disable hover styling when closed */
 .iti-playground-multidropdown-toggle {

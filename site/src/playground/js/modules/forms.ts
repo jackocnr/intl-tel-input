@@ -301,6 +301,15 @@ function buildControlRow(key: string, meta: any, { idPrefix, dataAttr, infoIconT
   }
 
   if (meta.type === "json") {
+    if (Array.isArray(meta.multiCombobox) && meta.multiCombobox.length > 0) {
+      const hiddenInput = document.createElement("input");
+      hiddenInput.type = "hidden";
+      hiddenInput.id = `${idPrefix}_${key}`;
+      hiddenInput.setAttribute(dataAttr, key);
+      wrapper.appendChild(attachMultiCombobox(hiddenInput, meta.multiCombobox, { draggable: Boolean(meta.draggable) }));
+      return wrapper;
+    }
+
     const textarea = document.createElement("textarea");
     textarea.className = "form-control";
     textarea.id = `${idPrefix}_${key}`;
@@ -534,6 +543,341 @@ function attachCombobox(input: HTMLInputElement, options: Array<{ value: string;
   return container;
 }
 
+// Multi-select combobox: chip-style selected items + filterable suggestion list.
+// Stores the underlying value as a JSON-stringified array on the hidden input, so
+// existing JSON form-state plumbing (URL/share, code-snippet diffing) works unchanged.
+// Optionally allows drag-and-drop reordering of chips (used by countryOrder).
+function attachMultiCombobox(
+  hiddenInput: HTMLInputElement,
+  options: Array<{ value: string; label?: string }>,
+  { draggable = false }: { draggable?: boolean } = {},
+): HTMLElement {
+  const container = document.createElement("div");
+  container.className = "iti-playground-multi-combobox";
+
+  // Chip strip + filter input. Styled like a form-control so it blends in.
+  const control = document.createElement("div");
+  control.className = "iti-playground-multi-combobox-control form-control";
+  container.appendChild(control);
+
+  const filter = document.createElement("input");
+  filter.type = "text";
+  filter.className = "iti-playground-multi-combobox-filter";
+  filter.placeholder = "type to add…";
+  filter.id = `${hiddenInput.id}_filter`;
+  filter.setAttribute("role", "combobox");
+  filter.setAttribute("autocomplete", "off");
+  control.appendChild(filter);
+
+  // Suggestion menu — reuses the single-combobox option styling.
+  const menu = document.createElement("ul");
+  menu.className = "iti-playground-combobox-menu iti-playground-multi-combobox-menu";
+  menu.setAttribute("role", "listbox");
+  menu.hidden = true;
+  container.appendChild(menu);
+
+  const optionEls = new Map<string, HTMLLIElement>();
+  options.forEach((opt) => {
+    const li = document.createElement("li");
+    li.className = "iti-playground-combobox-option";
+    li.dataset.value = opt.value;
+    li.setAttribute("role", "option");
+
+    const valueEl = document.createElement("span");
+    valueEl.className = "iti-playground-combobox-value";
+    valueEl.textContent = opt.value;
+    li.appendChild(valueEl);
+
+    if (opt.label) {
+      const labelEl = document.createElement("span");
+      labelEl.className = "iti-playground-combobox-label";
+      labelEl.textContent = opt.label;
+      li.appendChild(labelEl);
+    }
+
+    menu.appendChild(li);
+    optionEls.set(opt.value, li);
+  });
+
+  let selected: string[] = [];
+  let activeIndex = -1;
+
+  function updateHiddenInput(dispatch = true) {
+    hiddenInput.value = selected.length === 0 ? "" : JSON.stringify(selected);
+    if (dispatch) {
+      hiddenInput.dispatchEvent(new Event("input", { bubbles: true }));
+      hiddenInput.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+  }
+
+  function getChipLabel(value: string) {
+    return optionEls.get(value)?.querySelector(".iti-playground-combobox-label")?.textContent || value;
+  }
+
+  function renderChips() {
+    [...control.querySelectorAll(".iti-playground-multi-combobox-chip")].forEach((el) => el.remove());
+    selected.forEach((value) => {
+      const chip = document.createElement("span");
+      chip.className = "iti-playground-multi-combobox-chip";
+      chip.dataset.value = value;
+      if (draggable) {
+        chip.draggable = true;
+        chip.title = "Drag to reorder";
+        setupDragHandlers(chip);
+      }
+
+      const codeEl = document.createElement("span");
+      codeEl.className = "iti-playground-multi-combobox-chip-code";
+      codeEl.textContent = value;
+      chip.appendChild(codeEl);
+
+      const labelEl = document.createElement("span");
+      labelEl.className = "iti-playground-multi-combobox-chip-label";
+      labelEl.textContent = getChipLabel(value);
+      chip.appendChild(labelEl);
+
+      const removeBtn = document.createElement("button");
+      removeBtn.type = "button";
+      removeBtn.className = "iti-playground-multi-combobox-chip-remove";
+      removeBtn.setAttribute("aria-label", `Remove ${value}`);
+      removeBtn.textContent = "×";
+      removeBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        removeValue(value);
+      });
+      chip.appendChild(removeBtn);
+
+      control.insertBefore(chip, filter);
+    });
+  }
+
+  function syncMenuSelectionState() {
+    optionEls.forEach((el, value) => {
+      el.classList.toggle("is-selected", selected.includes(value));
+    });
+  }
+
+  function filterMenu(query: string) {
+    const q = query.toLowerCase().trim();
+    optionEls.forEach((el, value) => {
+      if (selected.includes(value)) {
+        el.hidden = true;
+        return;
+      }
+      const label = el.querySelector(".iti-playground-combobox-label")?.textContent?.toLowerCase() || "";
+      el.hidden = q !== "" && !value.toLowerCase().includes(q) && !label.includes(q);
+    });
+    setActive(-1);
+  }
+
+  function getVisible() {
+    return [...optionEls.values()].filter((el) => !el.hidden);
+  }
+
+  function setActive(idx: number) {
+    const visible = getVisible();
+    visible.forEach((el) => el.classList.remove("is-active"));
+    activeIndex = idx;
+    if (idx >= 0 && idx < visible.length) {
+      visible[idx].classList.add("is-active");
+      visible[idx].scrollIntoView({ block: "nearest" });
+    }
+  }
+
+  function addValue(value: string) {
+    if (selected.includes(value) || !optionEls.has(value)) {
+      return;
+    }
+    selected.push(value);
+    renderChips();
+    filter.value = "";
+    filterMenu("");
+    syncMenuSelectionState();
+    updateHiddenInput();
+    filter.focus();
+  }
+
+  function removeValue(value: string) {
+    selected = selected.filter((v) => v !== value);
+    renderChips();
+    filterMenu(filter.value);
+    syncMenuSelectionState();
+    updateHiddenInput();
+    filter.focus();
+  }
+
+  function openMenu() {
+    menu.hidden = false;
+  }
+
+  function closeMenu() {
+    menu.hidden = true;
+    setActive(-1);
+  }
+
+  // Drag-and-drop reordering: each chip is the drop target. Drop position is
+  // determined by mouse x relative to the chip's center (before vs. after).
+  let dragValue: string | null = null;
+  function clearDropTargets() {
+    [...control.querySelectorAll(".is-drop-target-before, .is-drop-target-after")].forEach((el) => {
+      el.classList.remove("is-drop-target-before", "is-drop-target-after");
+    });
+  }
+  function setupDragHandlers(chip: HTMLElement) {
+    chip.addEventListener("dragstart", (e) => {
+      dragValue = chip.dataset.value || null;
+      chip.classList.add("is-dragging");
+      if (e.dataTransfer) {
+        e.dataTransfer.setData("text/plain", dragValue || "");
+        e.dataTransfer.effectAllowed = "move";
+      }
+    });
+    chip.addEventListener("dragend", () => {
+      chip.classList.remove("is-dragging");
+      clearDropTargets();
+      dragValue = null;
+    });
+    chip.addEventListener("dragover", (e) => {
+      if (!dragValue || chip.dataset.value === dragValue) {
+        return;
+      }
+      e.preventDefault();
+      if (e.dataTransfer) {
+        e.dataTransfer.dropEffect = "move";
+      }
+      const rect = chip.getBoundingClientRect();
+      const isAfter = e.clientX > rect.left + rect.width / 2;
+      clearDropTargets();
+      chip.classList.add(isAfter ? "is-drop-target-after" : "is-drop-target-before");
+    });
+    chip.addEventListener("dragleave", () => {
+      chip.classList.remove("is-drop-target-before", "is-drop-target-after");
+    });
+    chip.addEventListener("drop", (e) => {
+      e.preventDefault();
+      if (!dragValue || chip.dataset.value === dragValue) {
+        return;
+      }
+      const dropAfter = chip.classList.contains("is-drop-target-after");
+      const targetValue = chip.dataset.value!;
+      const without = selected.filter((v) => v !== dragValue);
+      const targetIdx = without.indexOf(targetValue);
+      without.splice(dropAfter ? targetIdx + 1 : targetIdx, 0, dragValue);
+      selected = without;
+      clearDropTargets();
+      renderChips();
+      updateHiddenInput();
+    });
+  }
+
+  filter.addEventListener("focus", openMenu);
+  filter.addEventListener("click", openMenu);
+  filter.addEventListener("input", () => {
+    openMenu();
+    filterMenu(filter.value);
+  });
+  filter.addEventListener("keydown", (e) => {
+    const visible = getVisible();
+    switch (e.key) {
+      case "ArrowDown": {
+        e.preventDefault();
+        openMenu();
+        if (visible.length === 0) {
+          return;
+        }
+        setActive(activeIndex < visible.length - 1 ? activeIndex + 1 : 0);
+        break;
+      }
+      case "ArrowUp": {
+        e.preventDefault();
+        openMenu();
+        if (visible.length === 0) {
+          return;
+        }
+        setActive(activeIndex > 0 ? activeIndex - 1 : visible.length - 1);
+        break;
+      }
+      case "Enter":
+        if (!menu.hidden && activeIndex >= 0 && visible[activeIndex]) {
+          e.preventDefault();
+          const value = visible[activeIndex].dataset.value;
+          if (value) {
+            addValue(value);
+          }
+        }
+        break;
+      case "Escape":
+        if (!menu.hidden) {
+          e.preventDefault();
+          closeMenu();
+        }
+        break;
+      case "Backspace":
+        if (filter.value === "" && selected.length > 0) {
+          e.preventDefault();
+          removeValue(selected[selected.length - 1]);
+        }
+        break;
+    }
+  });
+
+  // mousedown rather than click prevents filter input from blurring first.
+  menu.addEventListener("mousedown", (e) => e.preventDefault());
+  menu.addEventListener("click", (e) => {
+    const li = (e.target as HTMLElement).closest<HTMLLIElement>(".iti-playground-combobox-option");
+    if (li?.dataset.value) {
+      addValue(li.dataset.value);
+    }
+  });
+
+  control.addEventListener("click", (e) => {
+    // Clicking the chip-strip gaps (not on a chip or button) focuses the filter.
+    if (e.target === control) {
+      filter.focus();
+    }
+  });
+
+  document.addEventListener("mousedown", (e) => {
+    if (!container.contains(e.target as Node)) {
+      closeMenu();
+    }
+  });
+
+  // External API used by setFormFromState to push state back into the chips.
+  (hiddenInput as any).__multiCombobox = {
+    setValues(arr: unknown) {
+      const next = Array.isArray(arr) ? arr.filter((v) => typeof v === "string" && optionEls.has(v)) as string[] : [];
+      selected = next;
+      renderChips();
+      filter.value = "";
+      filterMenu("");
+      syncMenuSelectionState();
+      // Don't dispatch — this is an external set, not a user edit.
+      updateHiddenInput(false);
+    },
+  };
+
+  // Hidden input lives outside the visible control so the listeners on `control`
+  // don't fire on it (it has no rendered surface anyway).
+  container.insertBefore(hiddenInput, control);
+
+  // Initialize from any pre-existing value on the hidden input (URL load path).
+  if (hiddenInput.value) {
+    try {
+      const parsed = JSON.parse(hiddenInput.value);
+      if (Array.isArray(parsed)) {
+        selected = parsed.filter((v) => typeof v === "string" && optionEls.has(v));
+        renderChips();
+        syncMenuSelectionState();
+      }
+    } catch {
+      // Ignore — leave selected empty.
+    }
+  }
+
+  return container;
+}
+
 function createControlGroup(optionGroupTemplate: HTMLTemplateElement, title: string, groupId: string, description: string, { iso2ModalId = null, icon = null }: { iso2ModalId?: string | null; icon?: string | null } = {}) {
   const slugify = (text: string) => String(text || "")
     .trim()
@@ -746,6 +1090,11 @@ export function setFormFromState(formEl: HTMLElement | null, state: Record<strin
     } else if (meta.type === "select") {
       control.value = state[key] ?? "";
     } else if (meta.type === "json") {
+      const multiComboboxApi = (control as any).__multiCombobox;
+      if (multiComboboxApi) {
+        multiComboboxApi.setValues(state[key]);
+        return;
+      }
       const value = state[key];
       const defaultValue = defaultState ? defaultState[key] : undefined;
       const isEmptyArray = (v: unknown): boolean => Array.isArray(v) && v.length === 0;
