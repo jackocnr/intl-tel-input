@@ -830,8 +830,12 @@ export class Iti {
     this.#ui.telInputEl.dispatchEvent(e);
   }
 
-  //* Open the dropdown.
+  //* Open the dropdown. Bail if already open — otherwise the existing AbortController gets overwritten
+  //* and its listeners leak. Reachable via openDropdownWithPlus when dropdownAlwaysOpen is set
   #openDropdown(): void {
+    if (this.#ui.isDropdownOpen()) {
+      return;
+    }
     this.#ui.openDropdown(
       (li) => this.#selectListItem(li),
       () => this.#closeDropdown(),
