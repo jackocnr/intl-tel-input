@@ -2,8 +2,9 @@
 import type { I18n } from "./types.js";
 
 const interfaceTranslations: I18n = {
-  selectedCountryAriaLabel: "Wybrany kraj",
-  noCountrySelected: "Nie wybrano kraju",
+  selectedCountryAriaLabel:
+    "Zmień kraj dla numeru telefonu, wybrano ${countryName} (${dialCode})",
+  noCountrySelected: "Wybierz kraj dla numeru telefonu",
   countryListAriaLabel: "Lista krajów",
   searchPlaceholder: "Szukaj",
   clearSearchAriaLabel: "Wyczyść wyszukiwanie",

@@ -2,8 +2,9 @@
 import type { I18n } from "./types.js";
 
 const interfaceTranslations: I18n = {
-  selectedCountryAriaLabel: "Kiválasztott ország",
-  noCountrySelected: "Nincs ország kiválasztva",
+  selectedCountryAriaLabel:
+    "Telefonszám országának módosítása, kiválasztva: ${countryName} (${dialCode})",
+  noCountrySelected: "Válassz országot a telefonszámhoz",
   countryListAriaLabel: "Országok listája",
   searchPlaceholder: "Keresés",
   clearSearchAriaLabel: "Keresés törlése",

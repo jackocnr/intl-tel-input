@@ -3,8 +3,8 @@ import type { I18n } from "./types.js";
 
 const interfaceTranslations: I18n = {
   selectedCountryAriaLabel:
-    "Pakeisti šalį, pasirinkta ${countryName} (${dialCode})",
-  noCountrySelected: "Pasirinkite šalį",
+    "Pakeisti šalį telefono numeriui, pasirinkta ${countryName} (${dialCode})",
+  noCountrySelected: "Pasirinkite šalį telefono numeriui",
   countryListAriaLabel: "Šalių sąrašas",
   searchPlaceholder: "Paieška",
   clearSearchAriaLabel: "Išvalyti paiešką",

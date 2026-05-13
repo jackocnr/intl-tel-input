@@ -3,8 +3,8 @@ import type { I18n } from "./types.js";
 
 const interfaceTranslations: I18n = {
   selectedCountryAriaLabel:
-    "Baguhin ang bansa, napili ang ${countryName} (${dialCode})",
-  noCountrySelected: "Pumili ng bansa",
+    "Baguhin ang bansa para sa numero ng telepono, napili ang ${countryName} (${dialCode})",
+  noCountrySelected: "Pumili ng bansa para sa numero ng telepono",
   countryListAriaLabel: "Listahan ng mga bansa",
   searchPlaceholder: "Maghanap",
   clearSearchAriaLabel: "I-clear ang paghahanap",

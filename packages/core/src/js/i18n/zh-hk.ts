@@ -2,8 +2,8 @@
 import type { I18n } from "./types.js";
 
 const interfaceTranslations: I18n = {
-  selectedCountryAriaLabel: "更改國家，選擇「${countryName}」（${dialCode}）",
-  noCountrySelected: "選擇國家",
+  selectedCountryAriaLabel: "更改電話號碼的國家，選擇「${countryName}」（${dialCode}）",
+  noCountrySelected: "選擇電話號碼的國家",
   countryListAriaLabel: "國家清單",
   searchPlaceholder: "搜尋",
   clearSearchAriaLabel: "清除搜尋",

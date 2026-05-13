@@ -3,8 +3,8 @@ import type { I18n } from "./types.js";
 
 const interfaceTranslations: I18n = {
   selectedCountryAriaLabel:
-    "Badilisha nchi, imechaguliwa ${countryName} (${dialCode})",
-  noCountrySelected: "Chagua nchi",
+    "Badilisha nchi kwa nambari ya simu, imechaguliwa ${countryName} (${dialCode})",
+  noCountrySelected: "Chagua nchi kwa nambari ya simu",
   countryListAriaLabel: "Orodha ya nchi",
   searchPlaceholder: "Tafuta",
   clearSearchAriaLabel: "Futa utafutaji",

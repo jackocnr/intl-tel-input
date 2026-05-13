@@ -3,8 +3,8 @@ import type { I18n } from "./types.js";
 
 const interfaceTranslations: I18n = {
   selectedCountryAriaLabel:
-    "Breyta landi, valið ${countryName} (${dialCode})",
-  noCountrySelected: "Veldu land",
+    "Breyta landi fyrir símanúmer, valið ${countryName} (${dialCode})",
+  noCountrySelected: "Veldu land fyrir símanúmer",
   countryListAriaLabel: "Listi yfir lönd",
   searchPlaceholder: "Leita",
   clearSearchAriaLabel: "Hreinsa leit",

@@ -2,8 +2,9 @@
 import type { I18n } from "./types.js";
 
 const interfaceTranslations: I18n = {
-  selectedCountryAriaLabel: "선택한 국가",
-  noCountrySelected: "선택한 국가가 없습니다.",
+  selectedCountryAriaLabel:
+    "전화번호 국가 변경, 선택됨: ${countryName} (${dialCode})",
+  noCountrySelected: "전화번호 국가 선택",
   countryListAriaLabel: "국가 목록",
   searchPlaceholder: "검색",
   clearSearchAriaLabel: "검색 지우기",

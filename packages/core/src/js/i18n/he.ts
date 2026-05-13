@@ -3,8 +3,8 @@ import type { I18n } from "./types.js";
 
 const interfaceTranslations: I18n = {
   selectedCountryAriaLabel:
-    "שנה מדינה, נבחרה ${countryName} (${dialCode})",
-  noCountrySelected: "בחר מדינה",
+    "שנה מדינה עבור מספר הטלפון, נבחרה ${countryName} (${dialCode})",
+  noCountrySelected: "בחר מדינה עבור מספר הטלפון",
   countryListAriaLabel: "רשימת מדינות",
   searchPlaceholder: "חיפוש",
   clearSearchAriaLabel: "נקה חיפוש",

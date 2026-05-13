@@ -2,8 +2,9 @@
 import type { I18n } from "./types.js";
 
 const interfaceTranslations: I18n = {
-  selectedCountryAriaLabel: "Valitud riik",
-  noCountrySelected: "Ühtegi riiki pole valitud",
+  selectedCountryAriaLabel:
+    "Muuda riiki telefoninumbri jaoks, valitud ${countryName} (${dialCode})",
+  noCountrySelected: "Vali riik telefoninumbri jaoks",
   countryListAriaLabel: "Riikide nimekiri",
   searchPlaceholder: "Otsi",
   clearSearchAriaLabel: "Tühjenda otsing",

@@ -3,8 +3,8 @@ import type { I18n } from "./types.js";
 
 const interfaceTranslations: I18n = {
   selectedCountryAriaLabel:
-    "Ndrysho vendin, i zgjedhur ${countryName} (${dialCode})",
-  noCountrySelected: "Zgjidh vendin",
+    "Ndrysho vendin për numrin e telefonit, i zgjedhur ${countryName} (${dialCode})",
+  noCountrySelected: "Zgjidh vendin për numrin e telefonit",
   countryListAriaLabel: "Lista e vendeve",
   searchPlaceholder: "Kërko",
   clearSearchAriaLabel: "Pastro kërkimin",

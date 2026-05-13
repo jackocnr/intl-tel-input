@@ -2,8 +2,9 @@
 import type { I18n } from "./types.js";
 
 const interfaceTranslations: I18n = {
-  selectedCountryAriaLabel: "Επιλεγμένη χώρα",
-  noCountrySelected: "Δεν έχει επιλεγεί χώρα",
+  selectedCountryAriaLabel:
+    "Αλλαγή χώρας για τον αριθμό τηλεφώνου, επιλεγμένη ${countryName} (${dialCode})",
+  noCountrySelected: "Επιλέξτε χώρα για τον αριθμό τηλεφώνου",
   countryListAriaLabel: "Κατάλογος χωρών",
   searchPlaceholder: "Αναζήτηση",
   clearSearchAriaLabel: "Εκκαθάριση αναζήτησης",

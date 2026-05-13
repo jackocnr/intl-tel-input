@@ -3,8 +3,8 @@ import type { I18n } from "./types.js";
 
 const interfaceTranslations: I18n = {
   selectedCountryAriaLabel:
-    "நாட்டை மாற்று, தேர்ந்தெடுக்கப்பட்டது ${countryName} (${dialCode})",
-  noCountrySelected: "ஒரு நாட்டைத் தேர்ந்தெடுக்கவும்",
+    "தொலைபேசி எண்ணுக்கு நாட்டை மாற்று, தேர்ந்தெடுக்கப்பட்டது ${countryName} (${dialCode})",
+  noCountrySelected: "தொலைபேசி எண்ணுக்கு நாட்டைத் தேர்ந்தெடுக்கவும்",
   countryListAriaLabel: "நாடுகளின் பட்டியல்",
   searchPlaceholder: "தேடு",
   clearSearchAriaLabel: "தேடலை அழி",

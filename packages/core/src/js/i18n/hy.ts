@@ -3,8 +3,8 @@ import type { I18n } from "./types.js";
 
 const interfaceTranslations: I18n = {
   selectedCountryAriaLabel:
-    "Փոխել երկիրը, ընտրված է ${countryName} (${dialCode})",
-  noCountrySelected: "Ընտրեք երկիր",
+    "Փոխել երկիրը հեռախոսահամարի համար, ընտրված է ${countryName} (${dialCode})",
+  noCountrySelected: "Ընտրեք երկիր հեռախոսահամարի համար",
   countryListAriaLabel: "Երկրների ցանկ",
   searchPlaceholder: "Որոնում",
   clearSearchAriaLabel: "Մաքրել որոնումը",
