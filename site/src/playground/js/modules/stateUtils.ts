@@ -16,8 +16,8 @@ export function parseBooleanParam(value, fallback) {
   return fallback;
 }
 
-// The playground textareas are user-facing and often contain JS-style literals
-// (e.g. ['us', 'gb']) rather than strict JSON (e.g. ["us", "gb"]).
+// URL query params are user-facing and often contain JS-style literals or bare
+// lists (e.g. ?countryOrder=us,gb or ['us','gb']) rather than strict JSON.
 // Avoid eval; instead, do a minimal, safe normalization and retry JSON.parse.
 const cleanTextForJson = (text) => {
   // If the text doesn't start with [ or {, treat it as a bare comma-separated

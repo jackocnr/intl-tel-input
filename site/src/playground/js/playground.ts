@@ -388,8 +388,8 @@ const initialOptionsState = parseQueryOverrides(playgroundInitialOptions, option
 const initialAttrsState = parseQueryOverrides(defaultInputAttributes, attributeMeta);
 const initialState = { ...initialOptionsState, ...initialAttrsState };
 
-setFormFromState(optionsForm, initialState, optionMeta, "data-option", { defaultState: playgroundInitialState });
-setFormFromState(attrsForm, initialState, attributeMeta, "data-attr", { defaultState: playgroundInitialState });
+setFormFromState(optionsForm, initialState, optionMeta, "data-option");
+setFormFromState(attrsForm, initialState, attributeMeta, "data-attr");
 
 function syncIntegrationTabs() {
   integrationTabs.forEach((tab) => {
@@ -910,7 +910,7 @@ function resetOptionGroupToDefaults(groupKeys) {
   const attrsState = getStateFromForm(attrsForm, defaultInputAttributes, attributeMeta, "data-attr");
 
   const state = { ...optionsState, ...attrsState };
-  setFormFromState(optionsForm, state, optionMeta, "data-option", { defaultState: playgroundInitialState });
+  setFormFromState(optionsForm, state, optionMeta, "data-option");
   revalidateCustomInputs();
   renderInitCodeFromState(state, initCodeEl, {
     defaultInitOptions,
@@ -953,8 +953,8 @@ function resetAllToDefaults() {
     ...deepClone(defaultInputAttributes),
   };
 
-  setFormFromState(optionsForm, state, optionMeta, "data-option", { defaultState: playgroundInitialState });
-  setFormFromState(attrsForm, state, attributeMeta, "data-attr", { defaultState: playgroundInitialState });
+  setFormFromState(optionsForm, state, optionMeta, "data-option");
+  setFormFromState(attrsForm, state, attributeMeta, "data-attr");
   revalidateCustomInputs();
   renderInitCodeFromState(state, initCodeEl, {
     defaultInitOptions,
@@ -985,7 +985,7 @@ if (resetAttrsButton) {
     // so we must gather the current option settings first.
     const optionsState = getStateFromForm(optionsForm, defaultInitOptions, optionMeta, "data-option");
     const state = { ...optionsState, ...deepClone(defaultInputAttributes) };
-    setFormFromState(attrsForm, state, attributeMeta, "data-attr", { defaultState: playgroundInitialState });
+    setFormFromState(attrsForm, state, attributeMeta, "data-attr");
     renderInitCodeFromState(state, initCodeEl, {
       defaultInitOptions,
       optionMeta,

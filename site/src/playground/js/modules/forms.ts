@@ -1,4 +1,4 @@
-import { deepClone, parseJsonParam, safeStringify } from "./stateUtils";
+import { deepClone, parseJsonParam } from "./stateUtils";
 
 // Normalize a string for diacritic-insensitive search: decompose accented chars
 // (NFD splits "Å" into "A" + combining ring), strip the combining marks, lower
@@ -324,21 +324,6 @@ function buildControlRow(key: string, meta: any, { idPrefix, dataAttr, infoIconT
       hiddenInput.setAttribute(dataAttr, key);
       wrapper.appendChild(attachOverridesEditor(hiddenInput, meta.overridesEditor));
       return wrapper;
-    }
-
-    const textarea = document.createElement("textarea");
-    textarea.className = "form-control";
-    textarea.id = `${idPrefix}_${key}`;
-    textarea.rows = 2;
-    textarea.setAttribute(dataAttr, key);
-    wrapper.appendChild(textarea);
-
-    const placeholderText = String(meta.placeholder || "").trim();
-    if (placeholderText) {
-      const placeholderEl = document.createElement("span");
-      placeholderEl.className = "form-text";
-      placeholderEl.textContent = placeholderText;
-      wrapper.appendChild(placeholderEl);
     }
 
     return wrapper;
@@ -1233,7 +1218,7 @@ export function getStateFromForm(formEl: HTMLElement | null, defaults: Record<st
   return state;
 }
 
-export function setFormFromState(formEl: HTMLElement | null, state: Record<string, any>, metaMap: Record<string, any>, dataAttr: string, { defaultState }: { defaultState?: Record<string, any> } = {}) {
+export function setFormFromState(formEl: HTMLElement | null, state: Record<string, any>, metaMap: Record<string, any>, dataAttr: string) {
   if (!formEl) {
     return;
   }
@@ -1282,23 +1267,6 @@ export function setFormFromState(formEl: HTMLElement | null, state: Record<strin
       if (overridesEditorApi) {
         overridesEditorApi.setValues(state[key]);
         return;
-      }
-      const value = state[key];
-      const defaultValue = defaultState ? defaultState[key] : undefined;
-      const isEmptyArray = (v: unknown): boolean => Array.isArray(v) && v.length === 0;
-      const isEmptyObject = (v: unknown): boolean => Boolean(v) && typeof v === "object" && !Array.isArray(v) && Object.keys(v as object).length === 0;
-      if (isEmptyArray(value) && isEmptyArray(defaultValue)) {
-        control.value = "";
-      } else if (isEmptyObject(value) && isEmptyObject(defaultValue)) {
-        control.value = "";
-      } else if (value === null) {
-        control.value = "";
-      } else if (typeof value === "string") {
-        control.value = value;
-      } else if (value === undefined) {
-        control.value = "";
-      } else {
-        control.value = safeStringify(value);
       }
     }
   });

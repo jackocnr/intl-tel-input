@@ -150,13 +150,11 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     countryNameOverrides: {
       type: "json",
       tooltip: "Override individual country names, keyed by iso2 code.",
-      placeholder: 'e.g. { "us": "United States of America" }',
       overridesEditor: countryDatalist,
     },
     countryOrder: {
       type: "json",
       tooltip: "Custom ordering for countries, given as an array of ISO2 codes. Any countries not listed will appear at the end in default order.",
-      placeholder: "e.g. us, gb",
       multiCombobox: countryDatalist,
       draggable: true,
     },
@@ -177,7 +175,6 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     excludeCountries: {
       type: "json",
       tooltip: "Exclude specific countries (array of ISO2 codes) from the dropdown.",
-      placeholder: "e.g. ru, cn",
       multiCombobox: countryDatalist,
     },
     fixDropdownWidth: {
@@ -216,7 +213,6 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     onlyCountries: {
       type: "json",
       tooltip: "Restrict the dropdown to only these countries (array of ISO2 codes).",
-      placeholder: "e.g. us, ca, mx",
       multiCombobox: countryDatalist,
     },
     placeholderNumberType: {
