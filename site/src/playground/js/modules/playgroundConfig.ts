@@ -151,6 +151,7 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
       type: "json",
       tooltip: "Override individual country names, keyed by iso2 code.",
       placeholder: 'e.g. { "us": "United States of America" }',
+      overridesEditor: countryDatalist,
     },
     countryOrder: {
       type: "json",

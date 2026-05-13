@@ -28,7 +28,6 @@
   position: absolute;
   top: 100%;
   left: 0;
-  right: 0;
   z-index: 10;
   margin: 0;
   padding: 0.25rem 0;
@@ -39,6 +38,12 @@
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
   max-height: 240px;
   overflow-y: auto;
+  /* Grow to fit the widest item so long country names stay readable when the
+     input itself is narrow (e.g. inside an overrides-editor row). Stays at
+     least as wide as the input, capped so it can't run off the viewport. */
+  min-width: 100%;
+  width: max-content;
+  max-width: min(28rem, calc(100vw - 2rem));
 }
 .iti-playground-combobox-option {
   display: flex;
@@ -139,6 +144,44 @@
 .iti-playground-multi-combobox-chip-remove:hover {
   background-color: var(--bs-secondary-bg);
   color: var(--bs-body-color);
+}
+
+/* Row editor for ISO2-keyed string maps (e.g. countryNameOverrides). */
+.iti-playground-overrides-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.iti-playground-overrides-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.iti-playground-overrides-row {
+  display: grid;
+  grid-template-columns: minmax(8rem, 1fr) minmax(10rem, 2fr) auto;
+  gap: 0.35rem;
+  align-items: start;
+}
+/* The country combobox inside a row stretches to fill its grid cell. */
+.iti-playground-overrides-row .iti-playground-combobox {
+  width: 100%;
+}
+.iti-playground-overrides-remove {
+  padding: 0.25rem 0.6rem;
+  line-height: 1;
+  font-size: 1.25rem;
+  color: var(--bs-secondary-color);
+  border: 0;
+  background: transparent;
+}
+.iti-playground-overrides-remove:hover {
+  color: var(--bs-body-color);
+}
+.iti-playground-overrides-add {
+  align-self: flex-start;
+  text-decoration: none;
+  padding: 0;
 }
 
 /* multidropdown toggle: disable hover styling when closed */

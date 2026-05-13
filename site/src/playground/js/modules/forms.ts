@@ -1,4 +1,11 @@
 import { deepClone, parseJsonParam, safeStringify } from "./stateUtils";
+
+// Normalize a string for diacritic-insensitive search: decompose accented chars
+// (NFD splits "Å" into "A" + combining ring), strip the combining marks, lower
+// case. So typing "aland" matches "Åland Islands", "reunion" matches "Réunion".
+function normalizeForSearch(s: string): string {
+  return s.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
+}
 // Add a single event listener for all enable spans
 // Listener toggles the adjacent checkbox
 document.addEventListener("click", function (e) {
@@ -310,6 +317,15 @@ function buildControlRow(key: string, meta: any, { idPrefix, dataAttr, infoIconT
       return wrapper;
     }
 
+    if (Array.isArray(meta.overridesEditor) && meta.overridesEditor.length > 0) {
+      const hiddenInput = document.createElement("input");
+      hiddenInput.type = "hidden";
+      hiddenInput.id = `${idPrefix}_${key}`;
+      hiddenInput.setAttribute(dataAttr, key);
+      wrapper.appendChild(attachOverridesEditor(hiddenInput, meta.overridesEditor));
+      return wrapper;
+    }
+
     const textarea = document.createElement("textarea");
     textarea.className = "form-control";
     textarea.id = `${idPrefix}_${key}`;
@@ -363,7 +379,14 @@ function buildControlRow(key: string, meta: any, { idPrefix, dataAttr, infoIconT
 // <datalist>, the popup is a regular DOM element under our control, so it
 // doesn't get dismissed by validation classes, hint mutations, or live-demo
 // reinits elsewhere on the page.
-function attachCombobox(input: HTMLInputElement, options: Array<{ value: string; label?: string }>) {
+// `getExcludedValues` lets callers (e.g. row editors) hide options already
+// chosen elsewhere. The returned container exposes `__comboboxRefresh()` so
+// callers can re-run the filter when their exclusion state changes.
+function attachCombobox(
+  input: HTMLInputElement,
+  options: Array<{ value: string; label?: string }>,
+  { getExcludedValues }: { getExcludedValues?: () => Set<string> } = {},
+) {
   const container = document.createElement("div");
   container.className = "iti-playground-combobox";
 
@@ -399,6 +422,7 @@ function attachCombobox(input: HTMLInputElement, options: Array<{ value: string;
       labelEl.textContent = opt.label;
       li.appendChild(labelEl);
     }
+    li.dataset.search = normalizeForSearch(`${opt.value} ${opt.label || ""}`);
 
     menu.appendChild(li);
     optionEls.push(li);
@@ -422,11 +446,16 @@ function attachCombobox(input: HTMLInputElement, options: Array<{ value: string;
   }
 
   function filter(query: string) {
-    const q = query.toLowerCase().trim();
+    const q = normalizeForSearch(query.trim());
+    const excluded = getExcludedValues?.();
     optionEls.forEach((el) => {
       const value = (el.dataset.value || "").toLowerCase();
-      const label = el.querySelector(".iti-playground-combobox-label")?.textContent?.toLowerCase() || "";
-      el.hidden = q !== "" && !value.includes(q) && !label.includes(q);
+      if (excluded?.has(value)) {
+        el.hidden = true;
+        return;
+      }
+      const search = el.dataset.search || "";
+      el.hidden = q !== "" && !search.includes(q);
     });
     setActive(-1);
   }
@@ -540,6 +569,10 @@ function attachCombobox(input: HTMLInputElement, options: Array<{ value: string;
   container.appendChild(input);
   container.appendChild(menu);
 
+  // Expose a way to re-run the filter externally — useful for row editors that
+  // need menus to re-hide/un-hide options as other rows' selections change.
+  (container as any).__comboboxRefresh = () => filter(input.value);
+
   return container;
 }
 
@@ -594,6 +627,7 @@ function attachMultiCombobox(
       labelEl.textContent = opt.label;
       li.appendChild(labelEl);
     }
+    li.dataset.search = normalizeForSearch(`${opt.value} ${opt.label || ""}`);
 
     menu.appendChild(li);
     optionEls.set(opt.value, li);
@@ -658,14 +692,14 @@ function attachMultiCombobox(
   }
 
   function filterMenu(query: string) {
-    const q = query.toLowerCase().trim();
+    const q = normalizeForSearch(query.trim());
     optionEls.forEach((el, value) => {
       if (selected.includes(value)) {
         el.hidden = true;
         return;
       }
-      const label = el.querySelector(".iti-playground-combobox-label")?.textContent?.toLowerCase() || "";
-      el.hidden = q !== "" && !value.toLowerCase().includes(q) && !label.includes(q);
+      const search = el.dataset.search || "";
+      el.hidden = q !== "" && !search.includes(q);
     });
     setActive(-1);
   }
@@ -878,6 +912,154 @@ function attachMultiCombobox(
   return container;
 }
 
+// Row editor for an ISO2-keyed string map (e.g. countryNameOverrides).
+// Each row: country combobox + override-name input + remove button. The hidden
+// input's value is a JSON object `{ iso2: name }`, with empty rows skipped on
+// serialization. Already-selected countries are hidden from other rows' menus.
+function attachOverridesEditor(
+  hiddenInput: HTMLInputElement,
+  countryOptions: Array<{ value: string; label?: string }>,
+): HTMLElement {
+  const container = document.createElement("div");
+  container.className = "iti-playground-overrides-editor";
+  container.appendChild(hiddenInput);
+
+  const rowsEl = document.createElement("div");
+  rowsEl.className = "iti-playground-overrides-rows";
+  container.appendChild(rowsEl);
+
+  const addBtn = document.createElement("button");
+  addBtn.type = "button";
+  addBtn.className = "iti-playground-overrides-add btn btn-link btn-sm";
+  addBtn.textContent = "+ Add row";
+  container.appendChild(addBtn);
+
+  type Row = {
+    rowEl: HTMLElement;
+    iso2Input: HTMLInputElement;
+    nameInput: HTMLInputElement;
+    refreshCombobox: () => void;
+  };
+  let rows: Row[] = [];
+  let rowCounter = 0;
+
+  function getSelectedIso2sExcept(self: HTMLInputElement | null): Set<string> {
+    const set = new Set<string>();
+    rows.forEach((r) => {
+      if (r.iso2Input === self) {
+        return;
+      }
+      const v = r.iso2Input.value.trim().toLowerCase();
+      if (v) {
+        set.add(v);
+      }
+    });
+    return set;
+  }
+
+  function refreshAllCombos() {
+    rows.forEach((r) => r.refreshCombobox());
+  }
+
+  function updateHiddenInput(dispatch = true) {
+    const obj: Record<string, string> = {};
+    rows.forEach((r) => {
+      const iso2 = r.iso2Input.value.trim().toLowerCase();
+      const name = r.nameInput.value;
+      // Skip empty rows and empty override names (an empty name would blank the
+      // country in the dropdown — almost certainly not what the user meant).
+      if (iso2 && name.trim() !== "") {
+        obj[iso2] = name;
+      }
+    });
+    hiddenInput.value = Object.keys(obj).length === 0 ? "" : JSON.stringify(obj);
+    if (dispatch) {
+      hiddenInput.dispatchEvent(new Event("input", { bubbles: true }));
+      hiddenInput.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+  }
+
+  function addRow(iso2 = "", name = "") {
+    const rowEl = document.createElement("div");
+    rowEl.className = "iti-playground-overrides-row";
+
+    const iso2Input = document.createElement("input");
+    iso2Input.type = "text";
+    iso2Input.className = "form-control iti-playground-overrides-iso2";
+    iso2Input.id = `${hiddenInput.id}_iso2_${rowCounter}`;
+    iso2Input.placeholder = "country";
+    iso2Input.value = iso2;
+
+    const iso2Wrapper = attachCombobox(iso2Input, countryOptions, {
+      getExcludedValues: () => getSelectedIso2sExcept(iso2Input),
+    });
+    const refreshCombobox = (iso2Wrapper as any).__comboboxRefresh as () => void;
+
+    iso2Input.addEventListener("input", () => {
+      updateHiddenInput();
+      // Other rows' menus may need to (un-)exclude this row's previous/new value.
+      refreshAllCombos();
+    });
+
+    const nameInput = document.createElement("input");
+    nameInput.type = "text";
+    nameInput.className = "form-control iti-playground-overrides-name";
+    nameInput.id = `${hiddenInput.id}_name_${rowCounter}`;
+    nameInput.placeholder = "override name";
+    nameInput.value = name;
+    nameInput.addEventListener("input", () => updateHiddenInput());
+
+    const removeBtn = document.createElement("button");
+    removeBtn.type = "button";
+    removeBtn.className = "iti-playground-overrides-remove btn";
+    removeBtn.setAttribute("aria-label", "Remove row");
+    removeBtn.textContent = "×";
+    removeBtn.addEventListener("click", () => {
+      rows = rows.filter((r) => r.rowEl !== rowEl);
+      rowEl.remove();
+      updateHiddenInput();
+      refreshAllCombos();
+    });
+
+    rowEl.appendChild(iso2Wrapper);
+    rowEl.appendChild(nameInput);
+    rowEl.appendChild(removeBtn);
+    rowsEl.appendChild(rowEl);
+
+    rows.push({ rowEl, iso2Input, nameInput, refreshCombobox });
+    rowCounter += 1;
+    refreshAllCombos();
+  }
+
+  addBtn.addEventListener("click", () => {
+    addRow();
+    rows[rows.length - 1].iso2Input.focus();
+  });
+
+  // External API used by setFormFromState.
+  (hiddenInput as any).__overridesEditor = {
+    setValues(obj: unknown) {
+      rowsEl.innerHTML = "";
+      rows = [];
+      if (obj && typeof obj === "object" && !Array.isArray(obj)) {
+        Object.entries(obj as Record<string, unknown>).forEach(([iso2, name]) => {
+          if (typeof name === "string") {
+            addRow(iso2, name);
+          }
+        });
+      }
+      // Always leave one empty row for adding more.
+      addRow();
+      updateHiddenInput(false);
+    },
+  };
+
+  // Initial: one empty row.
+  addRow();
+
+  return container;
+}
+
 function createControlGroup(optionGroupTemplate: HTMLTemplateElement, title: string, groupId: string, description: string, { icon = null }: { icon?: string | null } = {}) {
   const slugify = (text: string) => String(text || "")
     .trim()
@@ -1078,6 +1260,11 @@ export function setFormFromState(formEl: HTMLElement | null, state: Record<strin
       const multiComboboxApi = (control as any).__multiCombobox;
       if (multiComboboxApi) {
         multiComboboxApi.setValues(state[key]);
+        return;
+      }
+      const overridesEditorApi = (control as any).__overridesEditor;
+      if (overridesEditorApi) {
+        overridesEditorApi.setValues(state[key]);
         return;
       }
       const value = state[key];
