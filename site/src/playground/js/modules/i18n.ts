@@ -50,6 +50,27 @@ export function createI18nOptionLabels(languageCodes) {
   return labels;
 }
 
+function getPlainLanguageLabel(code) {
+  const rawCode = String(code || "").trim();
+  if (!rawCode) {
+    return "";
+  }
+  const tag = toBcp47LanguageTag(code);
+  if (!tag) {
+    return rawCode;
+  }
+  return (i18nDisplayNames ? i18nDisplayNames.of(tag) : null) || rawCode;
+}
+
+export function createI18nDatalist(languageCodes) {
+  return (languageCodes || [])
+    .map((code) => ({
+      value: code,
+      label: getPlainLanguageLabel(code),
+    }))
+    .sort((a, b) => a.label.localeCompare(b.label));
+}
+
 export async function resolveI18nSelection(value, { i18nDirHash }) {
   if (value === null || value === undefined) {
     return null;

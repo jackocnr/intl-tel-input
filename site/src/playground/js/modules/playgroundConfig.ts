@@ -73,7 +73,7 @@ export const OPTION_GROUPS = [
   },
 ];
 
-export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOptionLabels }) {
+export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOptionLabels, i18nDatalist }) {
   const defaultInitOptions = {
     allowDropdown: defaults.allowDropdown,
     allowedNumberTypes: defaults.allowedNumberTypes,
@@ -146,6 +146,7 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
       type: "text",
       tooltip: "Locale used when generating country names with Intl.DisplayNames (e.g. 'fr' for French).",
       placeholder: "e.g. fr",
+      datalist: i18nDatalist,
     },
     countryNameOverrides: {
       type: "json",

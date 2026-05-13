@@ -4,7 +4,7 @@ import {
   I18N_DIR_HASH,
 } from "../../../tmp/playground/playgroundConstants.js";
 
-import { createI18nOptionLabels } from "./modules/i18n";
+import { createI18nOptionLabels, createI18nDatalist } from "./modules/i18n";
 import { renderControls, getStateFromForm, setFormFromState } from "./modules/forms";
 import { renderInitCodeFromState, type Integration } from "./modules/initCode";
 import { createPlaygroundConfig } from "./modules/playgroundConfig";
@@ -277,6 +277,7 @@ if (shareButton) {
 
 const { defaults } = window.intlTelInput;
 const i18nOptionLabels = createI18nOptionLabels(I18N_LANGUAGE_CODES);
+const i18nDatalist = createI18nDatalist(I18N_LANGUAGE_CODES);
 
 const {
   defaultInitOptions,
@@ -290,6 +291,7 @@ const {
   defaults,
   i18nLanguageCodes: I18N_LANGUAGE_CODES,
   i18nOptionLabels,
+  i18nDatalist,
 });
 
 // Library defaults — what the user would get calling intlTelInput(input) with no options.

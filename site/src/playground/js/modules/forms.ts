@@ -341,9 +341,193 @@ function buildControlRow(key: string, meta: any, { idPrefix, dataAttr, infoIconT
     input.placeholder = meta.placeholder;
   }
 
-  wrapper.appendChild(input);
+  if (Array.isArray(meta.datalist) && meta.datalist.length > 0) {
+    wrapper.appendChild(attachCombobox(input, meta.datalist));
+  } else {
+    wrapper.appendChild(input);
+  }
 
   return wrapper;
+}
+
+// Custom combobox: text input + filterable suggestion list. Unlike the native
+// <datalist>, the popup is a regular DOM element under our control, so it
+// doesn't get dismissed by validation classes, hint mutations, or live-demo
+// reinits elsewhere on the page.
+function attachCombobox(input: HTMLInputElement, options: Array<{ value: string; label?: string }>) {
+  const container = document.createElement("div");
+  container.className = "iti-playground-combobox";
+
+  const menu = document.createElement("ul");
+  menu.className = "iti-playground-combobox-menu";
+  menu.setAttribute("role", "listbox");
+  menu.hidden = true;
+
+  const listboxId = `${input.id}_listbox`;
+  menu.id = listboxId;
+  input.setAttribute("role", "combobox");
+  input.setAttribute("aria-controls", listboxId);
+  input.setAttribute("aria-autocomplete", "list");
+  input.setAttribute("aria-expanded", "false");
+  input.setAttribute("autocomplete", "off");
+
+  const optionEls: HTMLLIElement[] = [];
+  options.forEach((opt, i) => {
+    const li = document.createElement("li");
+    li.className = "iti-playground-combobox-option";
+    li.id = `${listboxId}_${i}`;
+    li.setAttribute("role", "option");
+    li.dataset.value = opt.value;
+
+    const valueEl = document.createElement("span");
+    valueEl.className = "iti-playground-combobox-value";
+    valueEl.textContent = opt.value;
+    li.appendChild(valueEl);
+
+    if (opt.label) {
+      const labelEl = document.createElement("span");
+      labelEl.className = "iti-playground-combobox-label";
+      labelEl.textContent = opt.label;
+      li.appendChild(labelEl);
+    }
+
+    menu.appendChild(li);
+    optionEls.push(li);
+  });
+
+  let activeIndex = -1;
+
+  function setActive(newIndex: number) {
+    if (activeIndex >= 0 && optionEls[activeIndex]) {
+      optionEls[activeIndex].classList.remove("is-active");
+    }
+    activeIndex = newIndex;
+    if (activeIndex >= 0 && optionEls[activeIndex]) {
+      const li = optionEls[activeIndex];
+      li.classList.add("is-active");
+      input.setAttribute("aria-activedescendant", li.id);
+      li.scrollIntoView({ block: "nearest" });
+    } else {
+      input.removeAttribute("aria-activedescendant");
+    }
+  }
+
+  function filter(query: string) {
+    const q = query.toLowerCase().trim();
+    optionEls.forEach((el) => {
+      const value = (el.dataset.value || "").toLowerCase();
+      const label = el.querySelector(".iti-playground-combobox-label")?.textContent?.toLowerCase() || "";
+      el.hidden = q !== "" && !value.includes(q) && !label.includes(q);
+    });
+    setActive(-1);
+  }
+
+  function getVisible() {
+    return optionEls.filter((el) => !el.hidden);
+  }
+
+  function open() {
+    if (!menu.hidden) {
+      return;
+    }
+    menu.hidden = false;
+    input.setAttribute("aria-expanded", "true");
+    filter(input.value);
+  }
+
+  function close() {
+    if (menu.hidden) {
+      return;
+    }
+    menu.hidden = true;
+    input.setAttribute("aria-expanded", "false");
+    setActive(-1);
+  }
+
+  function selectOption(li: HTMLLIElement) {
+    const value = li.dataset.value || "";
+    input.value = value;
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+    input.dispatchEvent(new Event("change", { bubbles: true }));
+    close();
+    input.focus();
+  }
+
+  input.addEventListener("focus", open);
+  input.addEventListener("click", open);
+  input.addEventListener("input", () => {
+    open();
+    filter(input.value);
+  });
+
+  input.addEventListener("keydown", (e) => {
+    const visible = getVisible();
+    switch (e.key) {
+      case "ArrowDown": {
+        e.preventDefault();
+        open();
+        if (visible.length === 0) return;
+        const curr = activeIndex >= 0 ? visible.indexOf(optionEls[activeIndex]) : -1;
+        const next = curr < visible.length - 1 ? curr + 1 : 0;
+        setActive(optionEls.indexOf(visible[next]));
+        break;
+      }
+      case "ArrowUp": {
+        e.preventDefault();
+        open();
+        if (visible.length === 0) return;
+        const curr = activeIndex >= 0 ? visible.indexOf(optionEls[activeIndex]) : -1;
+        const prev = curr > 0 ? curr - 1 : visible.length - 1;
+        setActive(optionEls.indexOf(visible[prev]));
+        break;
+      }
+      case "Enter":
+        if (!menu.hidden && activeIndex >= 0 && !optionEls[activeIndex].hidden) {
+          e.preventDefault();
+          selectOption(optionEls[activeIndex]);
+        }
+        break;
+      case "Escape":
+        if (!menu.hidden) {
+          e.preventDefault();
+          close();
+        }
+        break;
+      case "Tab":
+        close();
+        break;
+    }
+  });
+
+  // mousedown prevents the input from blurring before the click handler runs.
+  menu.addEventListener("mousedown", (e) => e.preventDefault());
+
+  menu.addEventListener("click", (e) => {
+    const li = (e.target as HTMLElement).closest<HTMLLIElement>(".iti-playground-combobox-option");
+    if (li && optionEls.includes(li)) {
+      selectOption(li);
+    }
+  });
+
+  input.addEventListener("blur", () => {
+    // setTimeout lets click events on menu options register before we close.
+    setTimeout(() => {
+      if (!container.contains(document.activeElement)) {
+        close();
+      }
+    }, 0);
+  });
+
+  document.addEventListener("mousedown", (e) => {
+    if (!container.contains(e.target as Node)) {
+      close();
+    }
+  });
+
+  container.appendChild(input);
+  container.appendChild(menu);
+
+  return container;
 }
 
 function createControlGroup(optionGroupTemplate: HTMLTemplateElement, title: string, groupId: string, description: string, { iso2ModalId = null, icon = null }: { iso2ModalId?: string | null; icon?: string | null } = {}) {
