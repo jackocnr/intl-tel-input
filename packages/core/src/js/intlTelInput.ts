@@ -548,10 +548,13 @@ export class Iti {
       return;
     }
     let inputValue = this.#getTelInputValue();
+    const isPaste = e?.inputType === INPUT_TYPES.PASTE;
+    const isStrictPaste = strictMode && isPaste;
 
     //* Android workaround for handling plus when separateDialCode enabled
     if (
       this.#isAndroid &&
+      !isPaste &&
       e?.data === "+" &&
       separateDialCode &&
       allowDropdown &&
@@ -564,6 +567,7 @@ export class Iti {
     //* Android strictMode workaround: the keydown-based filter can't block these
     if (
       this.#isAndroid &&
+      !isPaste &&
       strictMode &&
       (e?.data === " " || e?.data === "-" || e?.data === ".")
     ) {
@@ -571,13 +575,11 @@ export class Iti {
       return;
     }
 
-    let didHandleStrictPaste = false;
-    if (strictMode && e?.inputType === INPUT_TYPES.PASTE) {
-      const didRejectPaste = this.#handleStrictPasteInputEvent(inputValue);
+    if (isStrictPaste) {
+      const didRejectPaste = this.#handleStrictPasteInputEvent();
       if (didRejectPaste) {
         return;
       }
-      didHandleStrictPaste = true;
       inputValue = this.#getTelInputValue();
     }
 
@@ -588,9 +590,9 @@ export class Iti {
 
     //* If user types their own formatting char (not a plus or a numeric), or they paste something, then set the override.
     const isFormattingChar =
-      !didHandleStrictPaste && e?.data && REGEX.NON_PLUS_NUMERIC.test(e.data);
-    const isPaste = e?.inputType === INPUT_TYPES.PASTE && inputValue;
-    if (isFormattingChar || (isPaste && !strictMode)) {
+      !isStrictPaste && e?.data && REGEX.NON_PLUS_NUMERIC.test(e.data);
+    const isNonStrictPaste = isPaste && inputValue && !strictMode;
+    if (isFormattingChar || isNonStrictPaste) {
       this.#userOverrideFormatting = true;
     } else if (!REGEX.NON_PLUS_NUMERIC.test(inputValue)) {
       //* If user removes all formatting chars, then reset the override.
@@ -722,15 +724,18 @@ export class Iti {
 
   // Handle paste input events when strictMode is enabled by sanitising the pasted content after
   // the browser inserts it, and rejecting it entirely if it would result in an invalid number.
-  #handleStrictPasteInputEvent(inputValue: string): boolean {
+  #handleStrictPasteInputEvent(): boolean {
     const input = this.#ui.telInputEl;
     const pasteSnapshot = this.#strictPasteSnapshot;
     this.#strictPasteSnapshot = null;
+    if (!pasteSnapshot) {
+      return false;
+    }
 
-    const pastedRaw = pasteSnapshot?.pastedRaw ?? inputValue;
-    const originalValue = pasteSnapshot?.value ?? "";
-    const selStart = pasteSnapshot?.selectionStart ?? originalValue.length;
-    const selEnd = pasteSnapshot?.selectionEnd ?? originalValue.length;
+    const pastedRaw = pasteSnapshot.pastedRaw;
+    const originalValue = pasteSnapshot.value;
+    const selStart = pasteSnapshot.selectionStart;
+    const selEnd = pasteSnapshot.selectionEnd;
     const before = originalValue.slice(0, selStart);
     const after = originalValue.slice(selEnd);
     const iso2 = this.#selectedCountry?.iso2;
@@ -830,13 +835,8 @@ export class Iti {
   }
 
   #restoreValueBeforeStrictPaste(
-    pasteSnapshot: StrictPasteSnapshot | null,
+    pasteSnapshot: StrictPasteSnapshot,
   ): void {
-    if (!pasteSnapshot) {
-      this.#setTelInputValue("");
-      this.#ui.telInputEl.setSelectionRange(0, 0);
-      return;
-    }
     this.#setTelInputValue(pasteSnapshot.value);
     this.#ui.telInputEl.setSelectionRange(
       pasteSnapshot.selectionStart,
