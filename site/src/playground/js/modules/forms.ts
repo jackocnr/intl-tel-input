@@ -466,7 +466,9 @@ function attachCombobox(input: HTMLInputElement, options: Array<{ value: string;
       case "ArrowDown": {
         e.preventDefault();
         open();
-        if (visible.length === 0) return;
+        if (visible.length === 0) {
+          return;
+        }
         const curr = activeIndex >= 0 ? visible.indexOf(optionEls[activeIndex]) : -1;
         const next = curr < visible.length - 1 ? curr + 1 : 0;
         setActive(optionEls.indexOf(visible[next]));
@@ -475,7 +477,9 @@ function attachCombobox(input: HTMLInputElement, options: Array<{ value: string;
       case "ArrowUp": {
         e.preventDefault();
         open();
-        if (visible.length === 0) return;
+        if (visible.length === 0) {
+          return;
+        }
         const curr = activeIndex >= 0 ? visible.indexOf(optionEls[activeIndex]) : -1;
         const prev = curr > 0 ? curr - 1 : visible.length - 1;
         setActive(optionEls.indexOf(visible[prev]));
