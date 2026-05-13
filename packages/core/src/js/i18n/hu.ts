@@ -13,9 +13,6 @@ const interfaceTranslations: I18n = {
     if (count === 0) {
       return "Nincs találat";
     }
-    if (count === 1) {
-      return "1 találat";
-    }
     return `${count} találat`;
   },
 };

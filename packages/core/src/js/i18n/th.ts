@@ -13,9 +13,6 @@ const interfaceTranslations: I18n = {
     if (count === 0) {
       return "ไม่พบผลลัพธ์";
     }
-    if (count === 1) {
-      return "พบผลลัพธ์ 1 รายการ";
-    }
     return `พบผลลัพธ์ ${count} รายการ`;
   },
 };

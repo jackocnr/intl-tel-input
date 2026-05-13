@@ -13,9 +13,6 @@ const interfaceTranslations: I18n = {
     if (count === 0) {
       return "Inga resultat hittades";
     }
-    if (count === 1) {
-      return "1 resultat hittades";
-    }
     return `${count} resultat hittades`;
   },
 };

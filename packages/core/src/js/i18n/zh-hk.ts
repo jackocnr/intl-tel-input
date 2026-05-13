@@ -13,9 +13,6 @@ const interfaceTranslations: I18n = {
     if (count === 0) {
       return "未找到相關項目";
     }
-    if (count === 1) {
-      return "找到 1 個相關項目";
-    }
     return `找到 ${count} 個相關項目`;
   },
 };
