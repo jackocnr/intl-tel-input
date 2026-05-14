@@ -370,26 +370,47 @@ function findOptionControl(key: string): HTMLElement | null {
     || optionsForm.querySelector<HTMLElement>(`[data-multidropdown='${key}']`);
 }
 
-let optionFlashTimer: number | null = null;
+// Per-wrapper timers so flashing one element back-to-back with another doesn't
+// leave the first stuck with the is-flashing class.
+const flashTimers = new WeakMap<HTMLElement, number>();
 function startFlash(wrapper: HTMLElement) {
   wrapper.classList.remove("is-flashing");
   // Force reflow so the animation restarts cleanly on rapid hashchange events.
   void wrapper.offsetWidth;
   wrapper.classList.add("is-flashing");
-  if (optionFlashTimer) {
-    window.clearTimeout(optionFlashTimer);
+  const existing = flashTimers.get(wrapper);
+  if (existing) {
+    window.clearTimeout(existing);
   }
-  optionFlashTimer = window.setTimeout(() => {
+  flashTimers.set(wrapper, window.setTimeout(() => {
     wrapper.classList.remove("is-flashing");
-    optionFlashTimer = null;
-  }, 700);
+    flashTimers.delete(wrapper);
+  }, 700));
 }
 
-// Wait until the page has stopped scrolling before invoking `callback`. We poll
-// scrollY for a few stable frames so this works for both instant and smooth
-// scrolls — and fires near-immediately when no scroll is happening.
-function whenScrollSettles(callback: () => void) {
-  let lastY = window.scrollY;
+// Find the nearest scrollable ancestor of `el`. The playground's right column
+// is its own overflow:auto container at ≥992px, so window.scrollY alone can't
+// detect scrolls within it.
+function findScrollableAncestor(el: HTMLElement): HTMLElement | null {
+  let parent = el.parentElement;
+  while (parent && parent !== document.body) {
+    const overflowY = window.getComputedStyle(parent).overflowY;
+    if ((overflowY === "auto" || overflowY === "scroll")
+      && parent.scrollHeight > parent.clientHeight) {
+      return parent;
+    }
+    parent = parent.parentElement;
+  }
+  return null;
+}
+
+// Wait until scrolling has stopped before invoking `callback`. We poll the
+// window and (optionally) a nested scroll container for a few stable frames so
+// this works for both instant and smooth scrolls, and fires near-immediately
+// when no scroll is happening.
+function whenScrollSettles(callback: () => void, container: HTMLElement | null = null) {
+  const snapshot = () => `${window.scrollY}:${container?.scrollTop ?? 0}`;
+  let last = snapshot();
   let stableFrames = 0;
   let frameId = 0;
   let done = false;
@@ -403,8 +424,8 @@ function whenScrollSettles(callback: () => void) {
     callback();
   };
   const tick = () => {
-    const y = window.scrollY;
-    if (y === lastY) {
+    const now = snapshot();
+    if (now === last) {
       stableFrames += 1;
       if (stableFrames >= 3) {
         finish();
@@ -412,7 +433,7 @@ function whenScrollSettles(callback: () => void) {
       }
     } else {
       stableFrames = 0;
-      lastY = y;
+      last = now;
     }
     frameId = window.requestAnimationFrame(tick);
   };
@@ -426,7 +447,47 @@ function flashOptionControl(key: string) {
   if (!wrapper) {
     return;
   }
-  whenScrollSettles(() => startFlash(wrapper));
+  whenScrollSettles(() => startFlash(wrapper), findScrollableAncestor(wrapper));
+}
+
+// Render a tip/note string, expanding markdown `[label](url)` syntax into
+// link elements. URLs starting with `#` are intercepted so the same-hash case
+// still runs scroll+flash (the browser fires no hashchange in that case).
+// Returns a DocumentFragment for safe insertion — no innerHTML, no XSS risk.
+const MARKDOWN_LINK_PATTERN = /\[([^\]]+)\]\(([^)]+)\)/g;
+
+function renderMarkdownLinks(text: string): DocumentFragment {
+  const frag = document.createDocumentFragment();
+  MARKDOWN_LINK_PATTERN.lastIndex = 0;
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+  while ((match = MARKDOWN_LINK_PATTERN.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      frag.appendChild(document.createTextNode(text.slice(lastIndex, match.index)));
+    }
+    const [, label, url] = match;
+    const link = document.createElement("a");
+    link.href = url;
+    link.className = "iti-playground-option-link";
+    link.textContent = label;
+    if (url.startsWith("#")) {
+      const key = url.slice(1);
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        if (window.location.hash === `#${key}`) {
+          handleHashTarget();
+        } else {
+          window.location.hash = key;
+        }
+      });
+    }
+    frag.appendChild(link);
+    lastIndex = match.index + match[0].length;
+  }
+  if (lastIndex < text.length) {
+    frag.appendChild(document.createTextNode(text.slice(lastIndex)));
+  }
+  return frag;
 }
 
 function handleHashTarget() {
@@ -442,6 +503,19 @@ function handleHashTarget() {
       title.scrollIntoView({ block: "start" });
     }
     flashOptionControl(matchedOptionKey);
+    return;
+  }
+  // The Keep-dropdown-open checkbox is treated like an option link: scroll to
+  // the parent group's header (Live Demo) and flash the checkbox.
+  if (raw === keepDropdownOpenWrapper.id) {
+    const title = keepDropdownOpenWrapper.closest<HTMLElement>(".card")?.querySelector<HTMLElement>("h2");
+    if (title && typeof title.scrollIntoView === "function") {
+      title.scrollIntoView({ block: "start" });
+    }
+    whenScrollSettles(
+      () => startFlash(keepDropdownOpenWrapper),
+      findScrollableAncestor(keepDropdownOpenWrapper),
+    );
     return;
   }
   const el = document.getElementById(raw);
@@ -552,13 +626,13 @@ const HINT_CONFIGS = [
   // User Interface Options (allowDropdown not needed as always clear)
   {
     optionKey: "countrySearch",
-    message: "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see this change in action.",
+    message: "Tip: in the Live Demo section, enable [Keep dropdown open](#keep-dropdown-open) to see this change in action.",
     shouldShow: () => !keepDropdownOpenCheckbox.checked,
     alsoShowOnToggleOff: true,
   },
   {
     optionKey: "fixDropdownWidth",
-    message: "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see this change in action.",
+    message: "Tip: in the Live Demo section, enable [Keep dropdown open](#keep-dropdown-open) to see this change in action.",
     shouldShow: () => !keepDropdownOpenCheckbox.checked,
     alsoShowOnToggleOff: true,
   },
@@ -579,7 +653,7 @@ const HINT_CONFIGS = [
       if (!itiController.iti?.getSelectedCountryData()) {
         return "Tip: select a country to see this in action.";
       }
-      return "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see how this updates the dropdown.";
+      return "Tip: in the Live Demo section, enable [Keep dropdown open](#keep-dropdown-open) to see how this updates the dropdown.";
     },
     shouldShow: () => !keepDropdownOpenCheckbox.checked && !itiController.iti?.getSelectedCountryData(),
     alsoShowOnToggleOff: true,
@@ -592,22 +666,22 @@ const HINT_CONFIGS = [
   // Country Options
   {
     optionKey: "countryOrder",
-    message: "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see these changes in action.",
+    message: "Tip: in the Live Demo section, enable [Keep dropdown open](#keep-dropdown-open) to see these changes in action.",
     shouldShow: () => !keepDropdownOpenCheckbox.checked,
   },
   {
     optionKey: "excludeCountries",
-    message: "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see these changes in action.",
+    message: "Tip: in the Live Demo section, enable [Keep dropdown open](#keep-dropdown-open) to see these changes in action.",
     shouldShow: () => !keepDropdownOpenCheckbox.checked,
   },
   {
     optionKey: "geoIpLookup",
-    message: "Tip: set initialCountry to \"auto\" for this to take effect.",
+    message: "Tip: set [initialCountry](#initialCountry) to \"auto\" for this to take effect.",
     shouldShow: () => getCombinedStateFromControls().initialCountry !== "auto",
   },
   {
     optionKey: "initialCountry",
-    message: "Tip: enable geoIpLookup to get this working.",
+    message: "Tip: enable [geoIpLookup](#geoIpLookup) to get this working.",
     shouldShow: () => {
       const state = getCombinedStateFromControls();
       return state.initialCountry === "auto" && !state.geoIpLookup;
@@ -615,7 +689,7 @@ const HINT_CONFIGS = [
   },
   {
     optionKey: "onlyCountries",
-    message: "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see these changes in action.",
+    message: "Tip: in the Live Demo section, enable [Keep dropdown open](#keep-dropdown-open) to see these changes in action.",
     shouldShow: () => !keepDropdownOpenCheckbox.checked,
   },
   // Formatting Options
@@ -623,7 +697,7 @@ const HINT_CONFIGS = [
     optionKey: "formatAsYouType",
     message: () => {
       if (!getCombinedStateFromControls().loadUtils) {
-        return "Tip: enable loadUtils to see this in action.";
+        return "Tip: enable [loadUtils](#loadUtils) to see this in action.";
       }
       if (!itiController.iti?.getSelectedCountryData()) {
         return "Tip: select a country and type a phone number to see this in action.";
@@ -636,7 +710,7 @@ const HINT_CONFIGS = [
     optionKey: "formatOnDisplay",
     message: () => {
       if (!getCombinedStateFromControls().loadUtils) {
-        return "Tip: enable loadUtils to see this in action.";
+        return "Tip: enable [loadUtils](#loadUtils) to see this in action.";
       }
       return "Tip: enter a valid phone number to see this in action.";
     },
@@ -646,7 +720,7 @@ const HINT_CONFIGS = [
     optionKey: "nationalMode",
     message: () => {
       if (getCombinedStateFromControls().separateDialCode ) {
-        return "Tip: disable separateDialCode to see this in action.";
+        return "Tip: disable [separateDialCode](#separateDialCode) to see this in action.";
       }
       return "Tip: select a country to see how this option formats the typed number (or placeholder number) differently.";
     },
@@ -657,7 +731,7 @@ const HINT_CONFIGS = [
     optionKey: "strictMode",
     message: () => {
       if (!getCombinedStateFromControls().loadUtils) {
-        return "Tip: enable loadUtils to see this in action.";
+        return "Tip: enable [loadUtils](#loadUtils) to see this in action.";
       }
       if (!itiController.iti?.getSelectedCountryData()) {
         return "Tip: select a country and try typing valid/invalid characters in the input to see this in action.";
@@ -671,7 +745,7 @@ const HINT_CONFIGS = [
     optionKey: "autoPlaceholder",
     message: () => {
       if (!getCombinedStateFromControls().loadUtils) {
-        return "Tip: enable loadUtils to see this in action.";
+        return "Tip: enable [loadUtils](#loadUtils) to see this in action.";
       }
       if (!itiController.iti?.getSelectedCountryData()) {
         return "Tip: select a country to see the placeholder update based on this setting.";
@@ -697,7 +771,7 @@ const HINT_CONFIGS = [
     optionKey: "customPlaceholder",
     message: () => {
       if (!getCombinedStateFromControls().loadUtils) {
-        return "Tip: enable loadUtils to see this in action.";
+        return "Tip: enable [loadUtils](#loadUtils) to see this in action.";
       }
       if (!itiController.iti?.getSelectedCountryData()) {
         return "Tip: select a country to see the placeholder update based on this setting.";
@@ -719,10 +793,10 @@ const HINT_CONFIGS = [
       }
       const state = getCombinedStateFromControls();
       if (state.autoPlaceholder === "off") {
-        return "Tip: set autoPlaceholder to \"polite\" or \"aggressive\" to see this in action.";
+        return "Tip: set [autoPlaceholder](#autoPlaceholder) to \"polite\" or \"aggressive\" to see this in action.";
       }
       if (!state.loadUtils) {
-        return "Tip: enable loadUtils to see this in action.";
+        return "Tip: enable [loadUtils](#loadUtils) to see this in action.";
       }
       return `Tip: libphonenumber has no example "${state.placeholderNumberType}" number for ${country.name} — try "MOBILE", "FIXED_LINE", or a different country.`;
     },
@@ -744,7 +818,7 @@ const HINT_CONFIGS = [
     optionKey: "allowedNumberTypes",
     message: () => {
       if (!getCombinedStateFromControls().loadUtils) {
-        return "Tip: enable loadUtils to see this in action.";
+        return "Tip: enable [loadUtils](#loadUtils) to see this in action.";
       }
       return "Tip: enter a valid phone number to see this in action.";
     },
@@ -756,10 +830,10 @@ const HINT_CONFIGS = [
     message: () => {
       const state = getCombinedStateFromControls();
       if (!state.loadUtils) {
-        return "Tip: enable loadUtils to see this in action.";
+        return "Tip: enable [loadUtils](#loadUtils) to see this in action.";
       }
       if (state.strictMode) {
-        return "Tip: disable strictMode to see this in action.";
+        return "Tip: disable [strictMode](#strictMode) to see this in action.";
       }
       return "Tip: enter a phone number with/without an extension to see this in action.";
     },
@@ -771,10 +845,10 @@ const HINT_CONFIGS = [
     message: () => {
       const state = getCombinedStateFromControls();
       if (!state.loadUtils) {
-        return "Tip: enable loadUtils to see this in action.";
+        return "Tip: enable [loadUtils](#loadUtils) to see this in action.";
       }
       if (state.strictMode) {
-        return "Tip: disable strictMode to see this in action.";
+        return "Tip: disable [strictMode](#strictMode) to see this in action.";
       }
       return "Tip: enter a phone number with/without letters to see this in action.";
     },
@@ -790,9 +864,9 @@ const HINT_CONFIGS = [
         return "Warning: your browser's Intl.DisplayNames has no country-name data for this locale — falling back to English.";
       }
       if (!keepDropdownOpenCheckbox.checked) {
-        return "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see this change in action.";
+        return "Tip: in the Live Demo section, enable [Keep dropdown open](#keep-dropdown-open) to see this change in action.";
       }
-      return "Tip: also update i18n to translate the UI strings.";
+      return "Tip: also update [i18n](#i18n) to translate the UI strings.";
     },
     shouldShow: () => {
       const state = getCombinedStateFromControls();
@@ -810,12 +884,12 @@ const HINT_CONFIGS = [
     message: () => {
       const state = getCombinedStateFromControls();
       if (!state.countrySearch) {
-        return "Tip: enable countrySearch to see the search placeholder update based on this setting.";
+        return "Tip: enable [countrySearch](#countrySearch) to see the search placeholder update based on this setting.";
       }
       if (!keepDropdownOpenCheckbox.checked) {
-        return "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see the search placeholder update based on this setting.";
+        return "Tip: in the Live Demo section, enable [Keep dropdown open](#keep-dropdown-open) to see the search placeholder update based on this setting.";
       }
-      return "Tip: also update countryNameLocale to translate the country names.";
+      return "Tip: also update [countryNameLocale](#countryNameLocale) to translate the country names.";
     },
     shouldShow: () => {
       const state = getCombinedStateFromControls();
@@ -882,7 +956,7 @@ function maybeShowHint(config: any) {
   const hint = document.createElement("span");
   hint.className = "iti-playground-hint form-text";
   hint.setAttribute("data-hint-option", optionKey);
-  hint.textContent = messageText;
+  hint.appendChild(renderMarkdownLinks(messageText));
 
   const controlWrapper = control.closest(".iti-playground-control");
   if (!controlWrapper) {

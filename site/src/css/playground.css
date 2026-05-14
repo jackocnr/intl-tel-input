@@ -338,6 +338,11 @@
     top: calc(70px + 1rem);
     max-height: calc(100vh - 70px - 2rem);
     overflow: auto;
+    /* scroll-behavior doesn't inherit into nested scroll containers, so mirror
+       the smooth-scroll Bootstrap sets on :root (also gated on reduced motion). */
+    @media (prefers-reduced-motion: no-preference) {
+      scroll-behavior: smooth;
+    }
   }
 }
 
@@ -546,6 +551,13 @@
 @keyframes iti-hint-fade-in {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+/* Inline links to other options inside hints/notes — visually code-like since
+   they reference camelCase option identifiers, but still clearly clickable. */
+.iti-playground-option-link {
+  font-family: var(--bs-font-monospace);
+  font-size: 0.95em;
 }
 
 .iti-playground pre {
