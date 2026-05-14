@@ -520,7 +520,7 @@ const HINT_CONFIGS = [
       if (!itiController.iti?.getSelectedCountryData()) {
         return "Tip: select a country to see this in action.";
       }
-      return "Tip: enable \"Keep dropdown open\" to see how this updates the dropdown.";
+      return "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see how this updates the dropdown.";
     },
     shouldShow: () => !keepDropdownOpenCheckbox.checked && !itiController.iti?.getSelectedCountryData(),
     alsoShowOnToggleOff: true,

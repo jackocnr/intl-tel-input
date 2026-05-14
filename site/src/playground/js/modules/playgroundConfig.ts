@@ -130,11 +130,11 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     },
     allowNumberExtensions: {
       type: "boolean",
-      tooltip: "Accept number extensions as valid (e.g. x123). Not compatible with strictMode.",
+      tooltip: "Accept number extensions as valid (e.g. \"+1 702 123-1234 ext. 1234\"). Not compatible with strictMode.",
     },
     allowPhonewords: {
       type: "boolean",
-      tooltip: "Accept letters in the number (phonewords) as valid. Not compatible with strictMode.",
+      tooltip: "Accept letters in the number as valid (e.g. \"+1 702 FLOWERS\"). Not compatible with strictMode.",
     },
     autoPlaceholder: {
       type: "select",
@@ -143,13 +143,13 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     },
     countryNameLocale: {
       type: "text",
-      tooltip: "Locale used when generating country names with Intl.DisplayNames (e.g. 'fr' for French).",
+      tooltip: "Locale used when generating country names with Intl.DisplayNames (e.g. \"fr\" for French).",
       placeholder: "e.g. en for English",
       datalist: i18nDatalist,
     },
     countryNameOverrides: {
       type: "json",
-      tooltip: "Override individual country names, keyed by iso2 code.",
+      tooltip: "Override individual country names, keyed by ISO2 code.",
       overridesEditor: countryDatalist,
     },
     countryOrder: {
@@ -170,7 +170,7 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     geoIpLookup: {
       type: "boolean",
       label: "geoIpLookup",
-      tooltip: "Auto-detect the user's country by IP address (async). Requires initialCountry='auto'.",
+      tooltip: "Auto-detect the user's country by IP address (async). Requires initialCountry=\"auto\".",
     },
     excludeCountries: {
       type: "json",
@@ -197,7 +197,7 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     },
     initialCountry: {
       type: "text",
-      tooltip: "Initial selected country (ISO2 code), e.g. 'gb', or else \"auto\" for use with geoIpLookup.",
+      tooltip: "Initial selected country (ISO2 code), e.g. \"gb\", or else \"auto\" for use with geoIpLookup.",
       placeholder: "e.g. gb",
       datalist: initialCountryDatalist,
     },
@@ -208,7 +208,7 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     },
     nationalMode: {
       type: "boolean",
-      tooltip: "Display numbers in national format (instead of international) where applicable.",
+      tooltip: "Display numbers in national format (instead of international) where applicable. Not compatible with separateDialCode.",
     },
     onlyCountries: {
       type: "json",
