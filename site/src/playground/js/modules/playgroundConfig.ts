@@ -119,10 +119,101 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
   };
 
   const optionMeta = {
+    // User Interface Options
     allowDropdown: {
       type: "boolean",
       tooltip: "Allow clicking the selected country to open the dropdown.",
     },
+    countrySearch: {
+      type: "boolean",
+      tooltip: "Enable the search input inside the country dropdown.",
+    },
+    fixDropdownWidth: {
+      type: "boolean",
+      tooltip: "Keep the dropdown width aligned to the input width, as opposed to the width of the longest country name.",
+    },
+    separateDialCode: {
+      type: "boolean",
+      tooltip: "Display the selected country’s dial code next to the input, so it looks like it’s part of the typed number.",
+    },
+    showFlags: {
+      type: "boolean",
+      tooltip: "Show country flags in the dropdown and selected country.",
+    },
+    useFullscreenPopup: {
+      type: "boolean",
+      tooltip: "Use a fullscreen-style country picker instead of the dropdown. Defaults to true on small screens (except on this page, where it is helpful to have it always visible as a dropdown).",
+    },
+
+    // Country Options
+    countryOrder: {
+      type: "json",
+      tooltip: "Custom ordering for countries, given as an array of ISO2 codes. Any countries not listed will appear at the end in default order.",
+      multiCombobox: countryDatalist,
+      draggable: true,
+    },
+    excludeCountries: {
+      type: "json",
+      tooltip: "Exclude specific countries (array of ISO2 codes) from the dropdown.",
+      multiCombobox: countryDatalist,
+    },
+    geoIpLookup: {
+      type: "boolean",
+      label: "geoIpLookup",
+      tooltip: "Auto-detect the user's country by IP address (async). Requires initialCountry=\"auto\".",
+    },
+    initialCountry: {
+      type: "text",
+      tooltip: "Initial selected country (ISO2 code), e.g. \"gb\", or else \"auto\" for use with geoIpLookup.",
+      placeholder: "e.g. gb",
+      datalist: initialCountryDatalist,
+    },
+    onlyCountries: {
+      type: "json",
+      tooltip: "Restrict the dropdown to only these countries (array of ISO2 codes).",
+      multiCombobox: countryDatalist,
+    },
+
+    // Formatting Options
+    formatAsYouType: {
+      type: "boolean",
+      tooltip: "Format the number as the user types.",
+    },
+    formatOnDisplay: {
+      type: "boolean",
+      tooltip: "Format any initial value on initialisation.",
+    },
+    nationalMode: {
+      type: "boolean",
+      tooltip: "Display numbers in national format (instead of international) where applicable. Not compatible with separateDialCode.",
+    },
+    strictMode: {
+      type: "boolean",
+      tooltip: "As the user types in the input, ignore irrelevant characters and cap the number at the maximum valid length.",
+    },
+    strictRejectAnimation: {
+      type: "boolean",
+      tooltip: "When strictMode rejects a whole keystroke or paste, play a subtle animation.",
+    },
+
+    // Placeholder Options
+    autoPlaceholder: {
+      type: "select",
+      tooltip: "Automatically set a placeholder based on the selected country and placeholderNumberType. \"polite\" only shows an example number when there is no manual placeholder set. \"aggressive\" always shows it.",
+      options: AUTO_PLACEHOLDER_OPTIONS,
+    },
+    customPlaceholder: {
+      type: "boolean",
+      label: "customPlaceholder",
+      tooltip: "Customise the auto-generated placeholder.",
+    },
+    placeholderNumberType: {
+      type: "select",
+      tooltip: "Number type used when generating placeholders (e.g. MOBILE).",
+      options: NUMBER_TYPES,
+    },
+
+    // Validation Options
     allowedNumberTypes: {
       type: "multidropdown",
       tooltip: "Restrict the types of numbers that are considered valid.",
@@ -136,11 +227,8 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
       type: "boolean",
       tooltip: "Accept letters in the number as valid (e.g. \"+1 702 FLOWERS\"). Not compatible with strictMode.",
     },
-    autoPlaceholder: {
-      type: "select",
-      tooltip: "Automatically set a placeholder based on the selected country and placeholderNumberType. \"polite\" only shows an example number when there is no manual placeholder set. \"aggressive\" always shows it.",
-      options: AUTO_PLACEHOLDER_OPTIONS,
-    },
+
+    // Translation Options
     countryNameLocale: {
       type: "text",
       tooltip: "Locale used when generating country names with Intl.DisplayNames (e.g. \"fr\" for French).",
@@ -152,93 +240,18 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
       tooltip: "Override individual country names, keyed by ISO2 code.",
       overridesEditor: countryDatalist,
     },
-    countryOrder: {
-      type: "json",
-      tooltip: "Custom ordering for countries, given as an array of ISO2 codes. Any countries not listed will appear at the end in default order.",
-      multiCombobox: countryDatalist,
-      draggable: true,
-    },
-    countrySearch: {
-      type: "boolean",
-      tooltip: "Enable the search input inside the country dropdown.",
-    },
-    customPlaceholder: {
-      type: "boolean",
-      label: "customPlaceholder",
-      tooltip: "Customise the auto-generated placeholder.",
-    },
-    geoIpLookup: {
-      type: "boolean",
-      label: "geoIpLookup",
-      tooltip: "Auto-detect the user's country by IP address (async). Requires initialCountry=\"auto\".",
-    },
-    excludeCountries: {
-      type: "json",
-      tooltip: "Exclude specific countries (array of ISO2 codes) from the dropdown.",
-      multiCombobox: countryDatalist,
-    },
-    fixDropdownWidth: {
-      type: "boolean",
-      tooltip: "Keep the dropdown width aligned to the input width, as opposed to the width of the longest country name.",
-    },
-    formatAsYouType: {
-      type: "boolean",
-      tooltip: "Format the number as the user types.",
-    },
-    formatOnDisplay: {
-      type: "boolean",
-      tooltip: "Format any initial value on initialisation.",
-    },
     i18n: {
       type: "select",
       tooltip: "Translate UI strings (e.g. the country search placeholder) using the provided locales.",
       options: ["", ...(i18nLanguageCodes || [])],
       optionLabels: i18nOptionLabels,
     },
-    initialCountry: {
-      type: "text",
-      tooltip: "Initial selected country (ISO2 code), e.g. \"gb\", or else \"auto\" for use with geoIpLookup.",
-      placeholder: "e.g. gb",
-      datalist: initialCountryDatalist,
-    },
+
+    // Miscellaneous Options
     loadUtils: {
       type: "boolean",
       label: "loadUtils",
       tooltip: "Dynamically load utils.js, required for formatting/validation (async).",
-    },
-    nationalMode: {
-      type: "boolean",
-      tooltip: "Display numbers in national format (instead of international) where applicable. Not compatible with separateDialCode.",
-    },
-    onlyCountries: {
-      type: "json",
-      tooltip: "Restrict the dropdown to only these countries (array of ISO2 codes).",
-      multiCombobox: countryDatalist,
-    },
-    placeholderNumberType: {
-      type: "select",
-      tooltip: "Number type used when generating placeholders (e.g. MOBILE).",
-      options: NUMBER_TYPES,
-    },
-    separateDialCode: {
-      type: "boolean",
-      tooltip: "Display the selected country’s dial code next to the input, so it looks like it’s part of the typed number.",
-    },
-    showFlags: {
-      type: "boolean",
-      tooltip: "Show country flags in the dropdown and selected country.",
-    },
-    strictMode: {
-      type: "boolean",
-      tooltip: "As the user types in the input, ignore irrelevant characters and cap the number at the maximum valid length.",
-    },
-    strictRejectAnimation: {
-      type: "boolean",
-      tooltip: "When strictMode rejects a whole keystroke or paste, play a subtle animation.",
-    },
-    useFullscreenPopup: {
-      type: "boolean",
-      tooltip: "Use a fullscreen-style country picker instead of the dropdown. Defaults to true on small screens (except on this page, where it is helpful to have it always visible as a dropdown).",
     },
   };
 

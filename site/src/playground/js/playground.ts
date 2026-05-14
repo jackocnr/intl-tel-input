@@ -461,35 +461,6 @@ function hasNoBrowserCountryNameData(locale: string): boolean {
 // Contextual hints: shown when toggling an option that has no visible effect
 // until the user takes an additional action (e.g. selecting a country, typing a number).
 const HINT_CONFIGS = [
-  // Country Options
-  {
-    optionKey: "countryOrder",
-    message: "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see these changes in action.",
-    shouldShow: () => !keepDropdownOpenCheckbox.checked,
-  },
-  {
-    optionKey: "excludeCountries",
-    message: "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see these changes in action.",
-    shouldShow: () => !keepDropdownOpenCheckbox.checked,
-  },
-  {
-    optionKey: "geoIpLookup",
-    message: "Tip: set initialCountry to \"auto\" for this to take effect.",
-    shouldShow: () => getCombinedStateFromControls().initialCountry !== "auto",
-  },
-  {
-    optionKey: "initialCountry",
-    message: "Tip: enable geoIpLookup to get this working.",
-    shouldShow: () => {
-      const state = getCombinedStateFromControls();
-      return state.initialCountry === "auto" && !state.geoIpLookup;
-    },
-  },
-  {
-    optionKey: "onlyCountries",
-    message: "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see these changes in action.",
-    shouldShow: () => !keepDropdownOpenCheckbox.checked,
-  },
   // User Interface Options (allowDropdown not needed as always clear)
   {
     optionKey: "countrySearch",
@@ -529,6 +500,83 @@ const HINT_CONFIGS = [
     optionKey: "useFullscreenPopup",
     message: "Tip: click the selected country to open the popup.",
     shouldShow: () => true,
+  },
+  // Country Options
+  {
+    optionKey: "countryOrder",
+    message: "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see these changes in action.",
+    shouldShow: () => !keepDropdownOpenCheckbox.checked,
+  },
+  {
+    optionKey: "excludeCountries",
+    message: "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see these changes in action.",
+    shouldShow: () => !keepDropdownOpenCheckbox.checked,
+  },
+  {
+    optionKey: "geoIpLookup",
+    message: "Tip: set initialCountry to \"auto\" for this to take effect.",
+    shouldShow: () => getCombinedStateFromControls().initialCountry !== "auto",
+  },
+  {
+    optionKey: "initialCountry",
+    message: "Tip: enable geoIpLookup to get this working.",
+    shouldShow: () => {
+      const state = getCombinedStateFromControls();
+      return state.initialCountry === "auto" && !state.geoIpLookup;
+    },
+  },
+  {
+    optionKey: "onlyCountries",
+    message: "Tip: in the Live Demo section, enable \"Keep dropdown open\" to see these changes in action.",
+    shouldShow: () => !keepDropdownOpenCheckbox.checked,
+  },
+  // Formatting Options
+  {
+    optionKey: "formatAsYouType",
+    message: () => {
+      if (!getCombinedStateFromControls().loadUtils) {
+        return "Tip: enable loadUtils to see this in action.";
+      }
+      if (!itiController.iti?.getSelectedCountryData()) {
+        return "Tip: select a country and type a phone number to see this in action.";
+      }
+      return "Tip: type a phone number to see this in action.";
+    },
+    shouldShow: () => true, // always show this as they have to take action
+  },
+  {
+    optionKey: "formatOnDisplay",
+    message: () => {
+      if (!getCombinedStateFromControls().loadUtils) {
+        return "Tip: enable loadUtils to see this in action.";
+      }
+      return "Tip: enter a valid phone number to see this in action.";
+    },
+    shouldShow: () => !getCombinedStateFromControls().loadUtils || !telInput.value,
+  },
+  {
+    optionKey: "nationalMode",
+    message: () => {
+      if (getCombinedStateFromControls().separateDialCode ) {
+        return "Tip: disable separateDialCode to see this in action.";
+      }
+      return "Tip: select a country to see how this option formats the typed number (or placeholder number) differently.";
+    },
+    shouldShow: () => getCombinedStateFromControls().separateDialCode || !itiController.iti?.getSelectedCountryData(),
+    alsoShowOnToggleOff: true,
+  },
+  {
+    optionKey: "strictMode",
+    message: () => {
+      if (!getCombinedStateFromControls().loadUtils) {
+        return "Tip: enable loadUtils to see this in action.";
+      }
+      if (!itiController.iti?.getSelectedCountryData()) {
+        return "Tip: select a country and try typing valid/invalid characters in the input to see this in action.";
+      }
+      return "Tip: try typing valid/invalid characters in the input to see this in action.";
+    },
+    shouldShow: () => true, // always show this as they have to take action
   },
   // Placeholder Options
   {
@@ -602,54 +650,6 @@ const HINT_CONFIGS = [
       return !window.intlTelInput.utils!.getExampleNumber(country.iso2, false, state.placeholderNumberType);
     },
     alsoShowOnToggleOff: true,
-  },
-  // Formatting Options
-  {
-    optionKey: "formatAsYouType",
-    message: () => {
-      if (!getCombinedStateFromControls().loadUtils) {
-        return "Tip: enable loadUtils to see this in action.";
-      }
-      if (!itiController.iti?.getSelectedCountryData()) {
-        return "Tip: select a country and type a phone number to see this in action.";
-      }
-      return "Tip: type a phone number to see this in action.";
-    },
-    shouldShow: () => true, // always show this as they have to take action
-  },
-  {
-    optionKey: "formatOnDisplay",
-    message: () => {
-      if (!getCombinedStateFromControls().loadUtils) {
-        return "Tip: enable loadUtils to see this in action.";
-      }
-      return "Tip: enter a valid phone number to see this in action.";
-    },
-    shouldShow: () => !getCombinedStateFromControls().loadUtils || !telInput.value,
-  },
-  {
-    optionKey: "nationalMode",
-    message: () => {
-      if (getCombinedStateFromControls().separateDialCode ) {
-        return "Tip: disable separateDialCode to see this in action.";
-      }
-      return "Tip: select a country to see how this option formats the typed number (or placeholder number) differently.";
-    },
-    shouldShow: () => getCombinedStateFromControls().separateDialCode || !itiController.iti?.getSelectedCountryData(),
-    alsoShowOnToggleOff: true,
-  },
-  {
-    optionKey: "strictMode",
-    message: () => {
-      if (!getCombinedStateFromControls().loadUtils) {
-        return "Tip: enable loadUtils to see this in action.";
-      }
-      if (!itiController.iti?.getSelectedCountryData()) {
-        return "Tip: select a country and try typing valid/invalid characters in the input to see this in action.";
-      }
-      return "Tip: try typing valid/invalid characters in the input to see this in action.";
-    },
-    shouldShow: () => true, // always show this as they have to take action
   },
   // Validation Options
   {
