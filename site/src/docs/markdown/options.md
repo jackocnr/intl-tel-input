@@ -23,9 +23,9 @@ Control country list behaviour and whether certain UI elements are displayed.
 Type: `boolean`  
 Default: `true`  
 
-Whether or not to allow the dropdown. If disabled, there is no dropdown arrow, and the selected country is not clickable. Also, if [`showFlags`](/docs/options#showflags) is enabled, we display the selected flag on the right instead, because it is just a marker of state. Note that if [`separateDialCode`](#separatedialcode) is enabled, [`allowDropdown`](/docs/options#allowdropdown) is forced to `true` as the dropdown is required when the user types "+" in this case. 
+Whether or not to allow the dropdown. If disabled, there is no dropdown arrow, and the selected country is not clickable. Also, if [`showFlags`](/docs/options#showflags) is enabled, we display the selected flag on the right instead, because it is just a marker of state. Note that if [`separateDialCode`](#separatedialcode) is enabled, `allowDropdown` is forced to `true` as the dropdown is required when the user types "+" in this case. 
 
-Try `intl-tel-input` with [`allowDropdown`](#allowdropdown) disabled in the [Playground](/playground?allowDropdown=false#allowDropdown).
+Try `intl-tel-input` with `allowDropdown` disabled in the [Playground](/playground?allowDropdown=false#allowDropdown).
 
 ###### containerClass
 Type: `string`  
@@ -154,7 +154,7 @@ Play with this option in the [Playground](/playground#geoIpLookup).
 Type: `string`  
 Default: `""`  
 
-Set the initial country selection by specifying its iso2 code, e.g. `"us"` for the United States. You can also set [`initialCountry`](#initialcountry) to `"auto"`, which will look up the user's country based on their IP address (requires the [`geoIpLookup`](#geoiplookup) option - [see example](/examples/vanilla-javascript/lookup-country)). Note: however you use [`initialCountry`](#initialcountry), it will not update the country selection if the input already contains a number with an international dial code. 
+Set the initial country selection by specifying its iso2 code, e.g. `"us"` for the United States. You can also set `initialCountry` to `"auto"`, which will look up the user's country based on their IP address (requires the [`geoIpLookup`](#geoiplookup) option - [see example](/examples/vanilla-javascript/lookup-country)). Note: however you use `initialCountry`, it will not update the country selection if the input already contains a number with an international dial code. 
 
 View `intl-tel-input` with `initialCountry` set to `"de"` (Germany) in the [Playground](/playground?initialCountry=de#initialCountry).
 
@@ -380,7 +380,7 @@ Default: `null`
 
 This is one way to lazy load the included utils.js (to enable formatting/validation, etc) - see [Loading The Utils Script](/docs/utils#loading-the-utils-script) for more options.
 
-The [`loadUtils`](#loadutils) option takes a function that returns a Promise resolving to the utils module. You can `import` the utils module in different ways (examples below): (A) if you use a bundler like Webpack, Vite or Parcel, you can import it directly from the package, or (B) from a URL, either a CDN or your own hosted version of utils.js. _Note: this replaces the `utilsScript` option (now removed)._ 
+The `loadUtils` option takes a function that returns a Promise resolving to the utils module. You can `import` the utils module in different ways (examples below): (A) if you use a bundler like Webpack, Vite or Parcel, you can import it directly from the package, or (B) from a URL, either a CDN or your own hosted version of utils.js. _Note: this replaces the `utilsScript` option (now removed)._ 
 
 (A) with a bundler, import the utils module directly from the package
 ```js
