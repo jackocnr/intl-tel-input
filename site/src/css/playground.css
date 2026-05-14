@@ -360,12 +360,14 @@
 
 /* Briefly highlight the checkbox when the user clicks the selected country
    while the dropdown is being held open — points them at the control that's
-   preventing the click from closing the dropdown. */
-.playground-dropdown-checkbox.is-flashing {
-  animation: iti-keep-dropdown-flash 0.2s ease-out 3;
+   preventing the click from closing the dropdown. Also used to flash a
+   specific option control when the page is linked to via #optionName. */
+.playground-dropdown-checkbox.is-flashing,
+.iti-playground-control.is-flashing {
+  animation: iti-flash-highlight 0.2s ease-out 3;
   border-radius: 0.25rem;
 }
-@keyframes iti-keep-dropdown-flash {
+@keyframes iti-flash-highlight {
   0% {
     background-color: rgba(255, 193, 7, 0.55);
     box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.55);

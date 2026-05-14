@@ -357,17 +357,105 @@ const { resetGroupKeys: optionResetGroupKeys } = renderControls(optionsForm, opt
   },
 });
 
-// If the page is loaded with a hash, the browser can't scroll to it until after
-// the option groups are rendered.
-if (window.location.hash) {
-  window.requestAnimationFrame(() => {
-    const id = window.location.hash.replace(/^#/, "");
-    const el = id ? document.getElementById(id) : null;
-    if (el && typeof el.scrollIntoView === "function") {
-      el.scrollIntoView({ block: "start" });
-    }
-  });
+// Hash-target handling. Two forms are supported:
+//   - group slug (e.g. #user-interface-options) → scroll to the group header
+//   - option name (e.g. #allowDropdown, case-insensitive) → scroll to the parent
+//     group header AND flash the option control to draw the eye to it
+const optionKeyByLower = new Map(
+  Object.keys(optionMeta).map((k) => [k.toLowerCase(), k]),
+);
+
+function findOptionControl(key: string): HTMLElement | null {
+  return optionsForm.querySelector<HTMLElement>(`[data-option='${key}']`)
+    || optionsForm.querySelector<HTMLElement>(`[data-multidropdown='${key}']`);
 }
+
+let optionFlashTimer: number | null = null;
+function startFlash(wrapper: HTMLElement) {
+  wrapper.classList.remove("is-flashing");
+  // Force reflow so the animation restarts cleanly on rapid hashchange events.
+  void wrapper.offsetWidth;
+  wrapper.classList.add("is-flashing");
+  if (optionFlashTimer) {
+    window.clearTimeout(optionFlashTimer);
+  }
+  optionFlashTimer = window.setTimeout(() => {
+    wrapper.classList.remove("is-flashing");
+    optionFlashTimer = null;
+  }, 700);
+}
+
+// Wait until the page has stopped scrolling before invoking `callback`. We poll
+// scrollY for a few stable frames so this works for both instant and smooth
+// scrolls — and fires near-immediately when no scroll is happening.
+function whenScrollSettles(callback: () => void) {
+  let lastY = window.scrollY;
+  let stableFrames = 0;
+  let frameId = 0;
+  let done = false;
+  const finish = () => {
+    if (done) {
+      return;
+    }
+    done = true;
+    window.cancelAnimationFrame(frameId);
+    window.clearTimeout(fallback);
+    callback();
+  };
+  const tick = () => {
+    const y = window.scrollY;
+    if (y === lastY) {
+      stableFrames += 1;
+      if (stableFrames >= 3) {
+        finish();
+        return;
+      }
+    } else {
+      stableFrames = 0;
+      lastY = y;
+    }
+    frameId = window.requestAnimationFrame(tick);
+  };
+  // Safety net: if something keeps the page jittering, flash anyway.
+  const fallback = window.setTimeout(finish, 1500);
+  frameId = window.requestAnimationFrame(tick);
+}
+
+function flashOptionControl(key: string) {
+  const wrapper = findOptionControl(key)?.closest<HTMLElement>(".iti-playground-control");
+  if (!wrapper) {
+    return;
+  }
+  whenScrollSettles(() => startFlash(wrapper));
+}
+
+function handleHashTarget() {
+  const raw = decodeURIComponent(window.location.hash.replace(/^#/, ""));
+  if (!raw) {
+    return;
+  }
+  const matchedOptionKey = optionKeyByLower.get(raw.toLowerCase());
+  if (matchedOptionKey) {
+    const card = findOptionControl(matchedOptionKey)?.closest<HTMLElement>(".card");
+    const title = card?.querySelector<HTMLElement>("[data-role='title']");
+    if (title && typeof title.scrollIntoView === "function") {
+      title.scrollIntoView({ block: "start" });
+    }
+    flashOptionControl(matchedOptionKey);
+    return;
+  }
+  const el = document.getElementById(raw);
+  if (el && typeof el.scrollIntoView === "function") {
+    el.scrollIntoView({ block: "start" });
+  }
+}
+
+// On initial load, the browser can't scroll to the hash until after the option
+// groups are rendered — defer to the next frame.
+if (window.location.hash) {
+  window.requestAnimationFrame(handleHashTarget);
+}
+window.addEventListener("hashchange", handleHashTarget);
 
 renderControls(attrsForm, attributeMeta, {
   idPrefix: "attr",
