@@ -25,7 +25,7 @@ Default: `true`
 
 Whether or not to allow the dropdown. If disabled, there is no dropdown arrow, and the selected country is not clickable. Also, if [`showFlags`](/docs/options#showflags) is enabled, we display the selected flag on the right instead, because it is just a marker of state. Note that if [`separateDialCode`](#separatedialcode) is enabled, [`allowDropdown`](/docs/options#allowdropdown) is forced to `true` as the dropdown is required when the user types "+" in this case. 
 
-Try `intl-tel-input` with [`allowDropdown`](#allowdropdown) disabled in the [Playground](/playground?allowDropdown=false#user-interface-options).
+Try `intl-tel-input` with [`allowDropdown`](#allowdropdown) disabled in the [Playground](/playground?allowDropdown=false#allowDropdown).
 
 ###### containerClass
 Type: `string`  
@@ -39,7 +39,7 @@ Default: `true`
 
 Add a search input to the top of the country list, so users can filter the displayed countries. Matches against country name, iso2 code, dial code, and initials. 
 
-View `intl-tel-input` with this disabled in the [Playground](/playground?countrySearch=false#user-interface-options).
+View `intl-tel-input` with this disabled in the [Playground](/playground?countrySearch=false#countrySearch).
 
 ###### dropdownContainer
 Type: `HTMLElement`  
@@ -58,7 +58,7 @@ Default: `true`
 
 Fix the dropdown width to the input width (rather than being as wide as the longest country name). 
 
-Try `intl-tel-input` with this disabled in the [Playground](/playground?fixDropdownWidth=false#user-interface-options).
+Try `intl-tel-input` with this disabled in the [Playground](/playground?fixDropdownWidth=false#fixDropdownWidth).
 
 ###### searchInputClass
 Type: `string`  
@@ -72,7 +72,7 @@ Default: `true`
 
 Display the selected country's international dial code next to the input, so it looks like it's part of the typed number, but is actually separate (they cannot delete it). This makes it clear to the user which dial code is currently selected and that they are entering their number in international format. _Note: previously named `showSelectedDialCode`._
 
-Play with this option in the [Playground](/playground#user-interface-options). 
+Play with this option in the [Playground](/playground#separateDialCode). 
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="/img/iti-separate-dark.png">
@@ -89,7 +89,7 @@ Default: `true`
 
 Set this to false to hide the flags. Instead, it will show a generic globe icon. 
 
-Try `intl-tel-input` with this disabled in the [Playground](/playground?showFlags=false#user-interface-options).
+Try `intl-tel-input` with this disabled in the [Playground](/playground?showFlags=false#showFlags).
 
 ###### useFullscreenPopup
 Type: `boolean`  
@@ -97,7 +97,7 @@ Default: `true on mobile devices, false otherwise`
 
 Control when the country list appears as a fullscreen popup vs an inline dropdown. By default, it will appear as a fullscreen popup on narrow viewports (or on touch devices with limited vertical space), to make better use of the available space (similar to how a native `<select>` works), and as an inline dropdown on larger screens. 
 
-Try `intl-tel-input` with this option enabled on the [Playground](/playground?useFullscreenPopup=true#user-interface-options).
+Try `intl-tel-input` with this option enabled on the [Playground](/playground?useFullscreenPopup=true#useFullscreenPopup).
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="/img/iti-mobile-dark.png">
@@ -116,7 +116,7 @@ Default: `null`
 
 An array of iso2 codes that is used to order the country list. Any omitted countries will appear after those specified, in alphabetical order, e.g. setting `countryOrder` to `["jp", "kr"]` will result in the list: Japan, South Korea, Afghanistan, Albania, Algeria, etc. _Note: this replaces the legacy `preferredCountries` option, which has now been removed, but you can still re-create the grey divider below the preferred group [with a single CSS rule](/docs/faq#how-do-i-restore-the-preferredcountries-divider)._
 
-Play with the above example in the [Playground](/playground?countryOrder=%5B"jp"%2C"kr"%5D&initialCountry=#country-options).
+Play with the above example in the [Playground](/playground?countryOrder=%5B"jp"%2C"kr"%5D&initialCountry=#countryOrder).
 
 ###### excludeCountries
 Type: `string[]`  
@@ -124,7 +124,7 @@ Default: `null`
 
 An array of iso2 codes to exclude from the country list e.g. `["gb", "us"]`. Also see: [`onlyCountries`](#onlycountries) option.
 
-Try `intl-tel-input` with all "A" countries excluded in the [Playground](/playground?excludeCountries=%5B"af"%2C"al"%2C"dz"%2C"as"%2C"ad"%2C"ao"%2C"ai"%2C"ag"%2C"ar"%2C"am"%2C"aw"%2C"ac"%2C"au"%2C"at"%2C"az"%2C"ax"%5D&initialCountry=#country-options) — the country list now starts at Bahamas.
+Try `intl-tel-input` with all "A" countries excluded in the [Playground](/playground?excludeCountries=%5B"af"%2C"al"%2C"dz"%2C"as"%2C"ad"%2C"ao"%2C"ai"%2C"ag"%2C"ar"%2C"am"%2C"aw"%2C"ac"%2C"au"%2C"at"%2C"az"%2C"ax"%5D&initialCountry=#excludeCountries) — the country list now starts at Bahamas.
 
 ###### geoIpLookup
 Type: `() => Promise<string>`  
@@ -148,7 +148,7 @@ _Tip: store the result in a cookie to avoid repeat lookups!_
 > [!NOTE]  
 > On initialisation, a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) is exposed via the `promise` property on the core library instance (accessible directly with the vanilla JavaScript library, or via a ref in the framework components), so you can `await` it to know when initialisation requests like this have completed.
 
-Play with this option in the [Playground](/playground#country-options).
+Play with this option in the [Playground](/playground#geoIpLookup).
 
 ###### initialCountry
 Type: `string`  
@@ -156,7 +156,7 @@ Default: `""`
 
 Set the initial country selection by specifying its iso2 code, e.g. `"us"` for the United States. You can also set [`initialCountry`](#initialcountry) to `"auto"`, which will look up the user's country based on their IP address (requires the [`geoIpLookup`](#geoiplookup) option - [see example](/examples/vanilla-javascript/lookup-country)). Note: however you use [`initialCountry`](#initialcountry), it will not update the country selection if the input already contains a number with an international dial code. 
 
-View `intl-tel-input` with `initialCountry` set to `"de"` (Germany) in the [Playground](/playground?initialCountry=de#country-options).
+View `intl-tel-input` with `initialCountry` set to `"de"` (Germany) in the [Playground](/playground?initialCountry=de#initialCountry).
 
 > [!WARNING]
 > Only set this if you're sure of the user's country. If set incorrectly and the user auto-fills their national number and submits without checking, the number can pass validation but be stored with the wrong dial code.
@@ -167,7 +167,7 @@ Default: `null`
 
 In the country list, display only the countries you specify here, using their iso2 codes e.g. `["fr", "de", "es"]`. Also see: [`excludeCountries`](#excludecountries) option.
 
-Try `intl-tel-input` with this option set to only European countries in the [Playground](/playground?onlyCountries=%5B"al"%2C"ad"%2C"at"%2C"by"%2C"be"%2C"ba"%2C"bg"%2C"hr"%2C"cz"%2C"dk"%2C"ee"%2C"fo"%2C"fi"%2C"fr"%2C"de"%2C"gi"%2C"gr"%2C"va"%2C"hu"%2C"is"%2C"ie"%2C"it"%2C"lv"%2C"li"%2C"lt"%2C"lu"%2C"mk"%2C"mt"%2C"md"%2C"mc"%2C"me"%2C"nl"%2C"no"%2C"pl"%2C"pt"%2C"ro"%2C"ru"%2C"sm"%2C"rs"%2C"sk"%2C"si"%2C"es"%2C"se"%2C"ch"%2C"ua"%2C"gb"%5D#country-options).
+Try `intl-tel-input` with this option set to only European countries in the [Playground](/playground?onlyCountries=%5B"al"%2C"ad"%2C"at"%2C"by"%2C"be"%2C"ba"%2C"bg"%2C"hr"%2C"cz"%2C"dk"%2C"ee"%2C"fo"%2C"fi"%2C"fr"%2C"de"%2C"gi"%2C"gr"%2C"va"%2C"hu"%2C"is"%2C"ie"%2C"it"%2C"lv"%2C"li"%2C"lt"%2C"lu"%2C"mk"%2C"mt"%2C"md"%2C"mc"%2C"me"%2C"nl"%2C"no"%2C"pl"%2C"pt"%2C"ro"%2C"ru"%2C"sm"%2C"rs"%2C"sk"%2C"si"%2C"es"%2C"se"%2C"ch"%2C"ua"%2C"gb"%5D#onlyCountries).
 
 
 ## Formatting options
@@ -180,7 +180,7 @@ Default: `true`
 
 Automatically format the number as the user types. This feature will be disabled if the user types their own formatting characters. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). _Note: previously named `autoFormat`._
 
-Try `intl-tel-input` with this disabled in the [Playground](/playground?formatAsYouType=false#formatting-options).
+Try `intl-tel-input` with this disabled in the [Playground](/playground?formatAsYouType=false#formatAsYouType).
 
 ###### formatOnDisplay
 Type: `boolean`  
@@ -188,7 +188,7 @@ Default: `true`
 
 Format the input value (according to the [`nationalMode`](#nationalmode) option) during initialisation, when a new country is selected, and when calling [`setNumber`](/docs/methods#setnumber) or [`setCountry`](/docs/methods#setcountry). Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). 
 
-Try toggling this option on/off on an input containing a number in the [Playground](/playground?formatOnDisplay=false&value=%2B447947123123#formatting-options).
+Try toggling this option on/off on an input containing a number in the [Playground](/playground?formatOnDisplay=false&value=%2B447947123123#formatOnDisplay).
 
 ###### nationalMode
 Type: `boolean`  
@@ -196,7 +196,7 @@ Default: `false`
 
 Format numbers in the national format, rather than the international format. This applies to placeholder numbers and when displaying users' existing numbers. Note that it's fine for users to type their numbers in national format - as long as they have selected the right country, you can use [`getNumber`](/docs/methods#getnumber) to extract a full international number.
 
-Try `intl-tel-input` with `separateDialCode` disabled and `nationalMode` enabled in the [Playground](/playground?separateDialCode=false&nationalMode=true#formatting-options).
+Try `intl-tel-input` with `separateDialCode` disabled and `nationalMode` enabled in the [Playground](/playground?separateDialCode=false&nationalMode=true#nationalMode).
 
 ###### strictMode
 Type: `boolean`  
@@ -204,7 +204,7 @@ Default: `true`
 
 As the user types (or pastes) in the input, reject any irrelevant characters. The user can only enter numeric characters and an optional plus at the beginning. Cap the length at the maximum valid number length (this respects [`allowedNumberTypes`](#allowednumbertypes)). Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). 
 
-Play with this option in the [Playground](/playground#formatting-options).
+Play with this option in the [Playground](/playground#strictMode).
 
 > [!IMPORTANT]
 > `strictMode` would silently drop rejected input, so by default we surface that to the user via [`strictRejectAnimation`](#strictrejectanimation), which plays a built-in shake/flash animation. For richer feedback (e.g. a toast explaining _why_ input was rejected), listen for the [`strict:reject`](/docs/vanilla-javascript#strict-reject) event (or use the equivalent `onStrictReject` / `strictReject` callback in the component wrappers). For a live example, try typing an alphabetic character in the telephone input on the [homepage](/), which uses a Bootstrap toast.
@@ -226,7 +226,7 @@ Default: `"polite"`
 
 Set the input's placeholder to an example number for the selected country, and update it if the country changes. You can specify the number type using the [`placeholderNumberType`](#placeholdernumbertype) option. By default, it is set to `"polite"`, which means it will only set the placeholder if the input doesn't already have one. You can also set it to `"aggressive"`, which will replace any existing placeholder, or `"off"`. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). 
 
-Play with this option on an input that contains a placeholder in the [Playground](/playground?initialCountry=gb&placeholder=Phone#placeholder-options).
+Play with this option on an input that contains a placeholder in the [Playground](/playground?initialCountry=gb&placeholder=Phone#autoPlaceholder).
 
 ###### customPlaceholder
 Type: `(exampleNumber: string, selectedCountryData: Country | null) => string`  
@@ -245,7 +245,7 @@ For example, the snippet below masks each digit with an `X`, or falls back to `"
 > [!IMPORTANT]
 > When no country is selected (globe state), `exampleNumber` is an empty string and `selectedCountryData` is `null`, so remember to guard against null when reading properties off it.
 
-View `intl-tel-input` with this enabled in the [Playground](/playground?customPlaceholder=true#placeholder-options).
+View `intl-tel-input` with this enabled in the [Playground](/playground?customPlaceholder=true#customPlaceholder).
 
 ###### placeholderNumberType
 Type: `NumberType`  
@@ -253,7 +253,7 @@ Default: `"MOBILE"`
 
 Set the [number type](/docs/types#numbertype) to use for the generated placeholder numbers. We strongly recommend sticking to `"MOBILE"` (the default), `"FIXED_LINE"`, or `"FIXED_LINE_OR_MOBILE"` — these are the only types with an example number for every country. Other values produce an empty placeholder for any country where libphonenumber has no example (e.g. `"PAGER"` only has examples for ~9% of countries).
 
-View `intl-tel-input` with this set to `"FIXED_LINE"` in the [Playground](/playground?placeholderNumberType=FIXED_LINE#placeholder-options).
+View `intl-tel-input` with this set to `"FIXED_LINE"` in the [Playground](/playground?placeholderNumberType=FIXED_LINE#placeholderNumberType).
 
 > [!TIP]
 > You can either pass a string literal, e.g. `"MOBILE"`, or a [constant](/docs/types#constant-objects), e.g. `intlTelInput.NUMBER_TYPE.MOBILE` — useful where typos in the string literal won't be caught at compile time.
@@ -273,7 +273,7 @@ By default, it's set to `["MOBILE", "FIXED_LINE"]` so [`isValidNumber`](/docs/me
 
 <sup>*</sup>It's best to be as specific as possible, rather than using the catch-all value of `null`. `isValidNumber` works by checking the number's length, and some number types allow very short lengths. For example, Norwegian mobile and landline numbers are 8 digits long, so by default that's the only valid length. But Norwegian UAN numbers can be only 5 digits long, so if you set `allowedNumberTypes` to `null`, validation will pass for any number that is 5-8 digits long.
 
-Play with this option in the [Playground](/playground#validation-options).
+Play with this option in the [Playground](/playground#allowedNumberTypes).
 
 > [!TIP]
 > You can also pass [constants](/docs/types#constant-objects), e.g. `allowedNumberTypes: [intlTelInput.NUMBER_TYPE.MOBILE, intlTelInput.NUMBER_TYPE.FIXED_LINE]` — useful in plain JavaScript where typos in the string literal won't be caught at compile time.
@@ -284,7 +284,7 @@ Default: `false`
 
 Whether or not the validation methods return `true` for numbers containing extensions, e.g. "+1 702 123-1234 ext. 1234". 
 
-Try toggling this option on/off on a number with an extension in the [Playground](/playground?value=%2B447947692123+ext.+12345&strictMode=false#validation-options).
+Try toggling this option on/off on a number with an extension in the [Playground](/playground?value=%2B447947692123+ext.+12345&strictMode=false#allowNumberExtensions).
 
 > [!NOTE]
 > Not compatible with [`strictMode`](#strictmode) (which is enabled by default), as that will prevent the user from typing the extension in the first place. Disable `strictMode` to allow extensions to be entered.
@@ -312,7 +312,7 @@ Default: `"en"`
 
 The locale to pass to `Intl.DisplayNames` to generate the country names. Should adhere to the [BCP 47](https://developer.mozilla.org/en-US/docs/Glossary/BCP_47_language_tag) standard, e.g. `"zh"` (Chinese), or `"zh-Hans"` (Simplified Chinese). To override individual country names, see [`countryNameOverrides`](#countrynameoverrides) below. For translating the other UI strings, like the country search placeholder, see [`i18n`](#i18n) below.
 
-View `intl-tel-input` in Chinese in the [Playground](/playground?countryNameLocale=zh&i18n=zh&initialCountry=cn#translation-options).
+View `intl-tel-input` in Chinese in the [Playground](/playground?countryNameLocale=zh&i18n=zh&initialCountry=cn#countryNameLocale).
 
 ###### countryNameOverrides
 Type: `object`  
@@ -326,7 +326,7 @@ Override individual country names, keyed by iso2 code. Useful when the name prod
 }
 ```
 
-View `intl-tel-input` with the US renamed to "United States of America" in the [Playground](/playground?countryNameOverrides=%7B%22us%22%3A%22United+States+of+America%22%7D&initialCountry=us#translation-options).
+View `intl-tel-input` with the US renamed to "United States of America" in the [Playground](/playground?countryNameOverrides=%7B%22us%22%3A%22United+States+of+America%22%7D&initialCountry=us#countryNameOverrides).
 
 ###### i18n
 Type: `object`  
@@ -342,7 +342,7 @@ import { fr } from "intl-tel-input/i18n";
 
 See the [Localisation docs](/docs/localisation#localising-user-interface-strings) for overriding individual keys, defining custom translations, and the full list of translatable keys. _Note: previously named `localizedCountries`._
 
-View `intl-tel-input` in Chinese in the [Playground](/playground?countryNameLocale=zh&i18n=zh&initialCountry=cn#translation-options).
+View `intl-tel-input` in Chinese in the [Playground](/playground?countryNameLocale=zh&i18n=zh&initialCountry=cn#i18n).
 
 
 ## Miscellaneous options
