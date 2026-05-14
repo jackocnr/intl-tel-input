@@ -9,6 +9,66 @@ const i18nDisplayNames = (() => {
   }
 })();
 
+// English names for the language codes we ship i18n packs for. Used as a
+// fallback when Intl.DisplayNames lacks data for a tag (Chrome on Android
+// uses a reduced ICU build and returns the tag itself for several of these e.g. it returns "bs" instead of "Bosnian").
+const FALLBACK_LANGUAGE_NAMES: Record<string, string> = {
+  ar: "Arabic",
+  bg: "Bulgarian",
+  bn: "Bengali",
+  bs: "Bosnian",
+  ca: "Catalan",
+  cs: "Czech",
+  da: "Danish",
+  de: "German",
+  el: "Greek",
+  en: "English",
+  es: "Spanish",
+  et: "Estonian",
+  fa: "Persian",
+  fi: "Finnish",
+  fil: "Filipino",
+  fr: "French",
+  he: "Hebrew",
+  hi: "Hindi",
+  hr: "Croatian",
+  hu: "Hungarian",
+  hy: "Armenian",
+  id: "Indonesian",
+  is: "Icelandic",
+  it: "Italian",
+  ja: "Japanese",
+  kn: "Kannada",
+  ko: "Korean",
+  lt: "Lithuanian",
+  lv: "Latvian",
+  mk: "Macedonian",
+  mr: "Marathi",
+  ms: "Malay",
+  nl: "Dutch",
+  no: "Norwegian",
+  pl: "Polish",
+  pt: "Portuguese",
+  ro: "Romanian",
+  ru: "Russian",
+  sk: "Slovak",
+  sl: "Slovenian",
+  sq: "Albanian",
+  sr: "Serbian",
+  sv: "Swedish",
+  sw: "Swahili",
+  ta: "Tamil",
+  te: "Telugu",
+  th: "Thai",
+  tr: "Turkish",
+  uk: "Ukrainian",
+  ur: "Urdu",
+  uz: "Uzbek",
+  vi: "Vietnamese",
+  zh: "Chinese",
+  "zh-hk": "Chinese (Hong Kong)",
+};
+
 function toBcp47LanguageTag(code) {
   const raw = String(code || "").trim();
   if (!raw) {
@@ -27,17 +87,27 @@ function toBcp47LanguageTag(code) {
   return raw;
 }
 
+function resolveLanguageName(code) {
+  const tag = toBcp47LanguageTag(code);
+  if (!tag) {
+    return "";
+  }
+  const label = i18nDisplayNames ? i18nDisplayNames.of(tag) : null;
+  // Intl.DisplayNames returns the canonicalized tag itself when no data is
+  // available — fall back to our bundled English name in that case.
+  if (label && label.toLowerCase() !== tag.toLowerCase()) {
+    return label;
+  }
+  return FALLBACK_LANGUAGE_NAMES[String(code).toLowerCase()] || "";
+}
+
 function getLanguageLabel(code) {
   const rawCode = String(code || "").trim();
   if (!rawCode) {
     return "";
   }
-  const tag = toBcp47LanguageTag(code);
-  if (!tag) {
-    return rawCode;
-  }
-  const label = i18nDisplayNames ? i18nDisplayNames.of(tag) : null;
-  return label ? `${label} (${rawCode})` : rawCode;
+  const name = resolveLanguageName(code);
+  return name ? `${name} (${rawCode})` : rawCode;
 }
 
 export function createI18nOptionLabels(languageCodes) {
@@ -55,11 +125,7 @@ function getPlainLanguageLabel(code) {
   if (!rawCode) {
     return "";
   }
-  const tag = toBcp47LanguageTag(code);
-  if (!tag) {
-    return rawCode;
-  }
-  return (i18nDisplayNames ? i18nDisplayNames.of(tag) : null) || rawCode;
+  return resolveLanguageName(code) || rawCode;
 }
 
 export function createI18nDatalist(languageCodes) {
