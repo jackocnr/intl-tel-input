@@ -6,6 +6,111 @@ import { deepClone, parseJsonParam } from "./stateUtils";
 function normalizeForSearch(s: string): string {
   return s.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
 }
+
+// Strip non-letters so separators ("-", ".", "'", "&") collapse to a single space.
+// Lets "St Pierre" match "St. Pierre & Miquelon", "Sant Elena" match "Sant'Elena".
+function normalizeName(s: string): string {
+  return normalizeForSearch(s).replace(/[^\p{L}]+/gu, " ").trim();
+}
+
+type ItemTokens = {
+  value: string;
+  normalisedName: string;
+  words: string[];
+  initials: string;
+};
+
+function buildItemTokens(value: string, label: string): ItemTokens {
+  const normalisedName = normalizeName(label);
+  const words = normalisedName.split(" ").filter(Boolean);
+  return {
+    value: normalizeForSearch(value),
+    normalisedName,
+    words,
+    initials: words.map((w) => w[0] || "").join(""),
+  };
+}
+
+// Prioritised match buckets modelled on core's getMatchedCountries
+// (packages/core/src/js/core/countrySearch.ts): value-exact → name starts-with →
+// name contains → initials → multi-word prefix fallback. Returns visible items in
+// priority order so callers can reorder the menu DOM to match.
+function getMatchedItems<T>(
+  items: Array<{ el: T; tokens: ItemTokens }>,
+  query: string,
+  isExcluded: (el: T) => boolean,
+): { visible: T[]; hidden: T[] } {
+  const lowerQuery = normalizeForSearch(query.trim());
+  const nameQuery = normalizeName(query);
+  // Skip name buckets when the user typed only non-letters — otherwise the empty
+  // nameQuery would match everything via startsWith("").
+  const skipNameBuckets = lowerQuery !== "" && nameQuery === "";
+
+  const valueMatches: T[] = [];
+  const nameStartsWith: T[] = [];
+  const nameContains: T[] = [];
+  const initialsMatches: T[] = [];
+  const remaining: Array<{ el: T; tokens: ItemTokens }> = [];
+  const hidden: T[] = [];
+
+  for (const item of items) {
+    if (isExcluded(item.el)) {
+      hidden.push(item.el);
+      continue;
+    }
+    const t = item.tokens;
+    if (lowerQuery !== "" && t.value === lowerQuery) {
+      valueMatches.push(item.el);
+    } else if (!skipNameBuckets && t.normalisedName.startsWith(nameQuery)) {
+      nameStartsWith.push(item.el);
+    } else if (!skipNameBuckets && t.normalisedName.includes(nameQuery)) {
+      nameContains.push(item.el);
+    } else if (lowerQuery !== "" && t.initials.includes(lowerQuery)) {
+      initialsMatches.push(item.el);
+    } else {
+      remaining.push(item);
+    }
+  }
+
+  // Multi-word fallback: when no name bucket matched, surface items where any
+  // query word is the prefix of any name word. e.g. "Saint Hel" finds "St. Helena".
+  const queryWords = nameQuery.split(" ").filter(Boolean);
+  const doWordFallback =
+    queryWords.length > 1 &&
+    valueMatches.length === 0 &&
+    nameStartsWith.length === 0 &&
+    nameContains.length === 0;
+  const wordMatches: T[] = [];
+  for (const item of remaining) {
+    if (doWordFallback && queryWords.some((qw) => item.tokens.words.some((sw) => sw.startsWith(qw)))) {
+      wordMatches.push(item.el);
+    } else {
+      hidden.push(item.el);
+    }
+  }
+
+  return {
+    visible: [...valueMatches, ...nameStartsWith, ...nameContains, ...initialsMatches, ...wordMatches],
+    hidden,
+  };
+}
+
+// Reorder menu DOM so visible items appear in priority order, then hidden items.
+// emptyEl stays last (it's the "No matches" placeholder).
+function reorderMenu(menu: HTMLElement, visible: HTMLElement[], hidden: HTMLElement[], emptyEl: HTMLElement) {
+  const frag = document.createDocumentFragment();
+  visible.forEach((el) => {
+    el.hidden = false;
+    frag.appendChild(el);
+  });
+  hidden.forEach((el) => {
+    el.hidden = true;
+    frag.appendChild(el);
+  });
+  frag.appendChild(emptyEl);
+  menu.appendChild(frag);
+}
+
 // Add a single event listener for all enable spans
 // Listener toggles the adjacent checkbox
 document.addEventListener("click", function (e) {
@@ -390,6 +495,7 @@ function attachCombobox(
   input.setAttribute("autocomplete", "off");
 
   const optionEls: HTMLLIElement[] = [];
+  const items: Array<{ el: HTMLLIElement; tokens: ItemTokens }> = [];
   options.forEach((opt, i) => {
     const li = document.createElement("li");
     li.className = "iti-playground-combobox-option";
@@ -408,10 +514,10 @@ function attachCombobox(
       labelEl.textContent = opt.label;
       li.appendChild(labelEl);
     }
-    li.dataset.search = normalizeForSearch(`${opt.value} ${opt.label || ""}`);
 
     menu.appendChild(li);
     optionEls.push(li);
+    items.push({ el: li, tokens: buildItemTokens(opt.value, opt.label || "") });
   });
 
   const emptyEl = document.createElement("li");
@@ -438,24 +544,21 @@ function attachCombobox(
     }
   }
 
+  let visibleEls: HTMLLIElement[] = [];
+
   function filter(query: string) {
-    const q = normalizeForSearch(query.trim());
     const excluded = getExcludedValues?.();
-    optionEls.forEach((el) => {
-      const value = (el.dataset.value || "").toLowerCase();
-      if (excluded?.has(value)) {
-        el.hidden = true;
-        return;
-      }
-      const search = el.dataset.search || "";
-      el.hidden = q !== "" && !search.includes(q);
-    });
-    emptyEl.hidden = optionEls.some((el) => !el.hidden);
+    const { visible, hidden } = getMatchedItems(items, query, (el) =>
+      excluded ? excluded.has((el.dataset.value || "").toLowerCase()) : false,
+    );
+    reorderMenu(menu, visible, hidden, emptyEl);
+    visibleEls = visible;
+    emptyEl.hidden = visible.length > 0;
     setActive(-1);
   }
 
   function getVisible() {
-    return optionEls.filter((el) => !el.hidden);
+    return visibleEls;
   }
 
   function open() {
@@ -604,6 +707,7 @@ function attachMultiCombobox(
   container.appendChild(menu);
 
   const optionEls = new Map<string, HTMLLIElement>();
+  const items: Array<{ el: HTMLLIElement; tokens: ItemTokens }> = [];
   options.forEach((opt) => {
     const li = document.createElement("li");
     li.className = "iti-playground-combobox-option";
@@ -621,10 +725,10 @@ function attachMultiCombobox(
       labelEl.textContent = opt.label;
       li.appendChild(labelEl);
     }
-    li.dataset.search = normalizeForSearch(`${opt.value} ${opt.label || ""}`);
 
     menu.appendChild(li);
     optionEls.set(opt.value, li);
+    items.push({ el: li, tokens: buildItemTokens(opt.value, opt.label || "") });
   });
 
   const emptyEl = document.createElement("li");
@@ -692,22 +796,20 @@ function attachMultiCombobox(
     });
   }
 
+  let visibleEls: HTMLLIElement[] = [];
+
   function filterMenu(query: string) {
-    const q = normalizeForSearch(query.trim());
-    optionEls.forEach((el, value) => {
-      if (selected.includes(value)) {
-        el.hidden = true;
-        return;
-      }
-      const search = el.dataset.search || "";
-      el.hidden = q !== "" && !search.includes(q);
-    });
-    emptyEl.hidden = [...optionEls.values()].some((el) => !el.hidden);
+    const { visible, hidden } = getMatchedItems(items, query, (el) =>
+      selected.includes(el.dataset.value || ""),
+    );
+    reorderMenu(menu, visible, hidden, emptyEl);
+    visibleEls = visible;
+    emptyEl.hidden = visible.length > 0;
     setActive(-1);
   }
 
   function getVisible() {
-    return [...optionEls.values()].filter((el) => !el.hidden);
+    return visibleEls;
   }
 
   function setActive(idx: number) {
