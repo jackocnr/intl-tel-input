@@ -157,17 +157,22 @@
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
+  /* Allow shrinking inside the parent .iti-playground-control's 1fr column so
+     the editor stays the same width as sibling controls. */
+  min-width: 0;
 }
 .iti-playground-overrides-rows {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
+  min-width: 0;
 }
 .iti-playground-overrides-row {
   display: grid;
-  grid-template-columns: minmax(10rem, 1fr) minmax(10rem, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
   gap: 0.35rem;
   align-items: start;
+  min-width: 0;
 }
 .iti-playground-overrides-header {
   font-size: 0.85rem;
