@@ -1,6 +1,6 @@
 # Localisation
 
-`intl-tel-input` supports localisation of country names, UI strings, right-to-left layout, and alternative numerals. You can experiment with the different options in the [Playground](/playground?countryNameLocale=ru&i18n=ru#translation-options), or view the [Right to left example](/examples/vanilla-javascript/right-to-left).
+`intl-tel-input` supports localisation of country names, UI strings, right-to-left layout, and alternative numerals. You can experiment with the different options in the [Playground](/playground?i18n=ru#translation-options), or view the [Right to left example](/examples/vanilla-javascript/right-to-left).
 
 ## Contents
 

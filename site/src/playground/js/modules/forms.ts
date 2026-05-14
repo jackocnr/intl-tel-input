@@ -1252,6 +1252,9 @@ export function renderControls(formEl: HTMLElement | null, metaMap: Record<strin
 
   if (!groups) {
     Object.entries(metaMap).forEach(([key, meta]: [string, any]) => {
+      if (meta.hidden) {
+        return;
+      }
       formEl.appendChild(buildControlRow(key, meta, { idPrefix, dataAttr, infoIconTemplate }));
     });
     initTooltips(formEl);
@@ -1260,11 +1263,11 @@ export function renderControls(formEl: HTMLElement | null, metaMap: Record<strin
 
   const resetGroupKeys = new Map();
 
-  const allKeys = Object.keys(metaMap);
+  const allKeys = Object.keys(metaMap).filter((k) => !metaMap[k].hidden);
   const usedKeys = new Set();
 
   groups.forEach(({ title, description, keys, icon }: any, index: number) => {
-    const groupKeys = (Array.isArray(keys) ? keys : []).filter((k: string) => metaMap[k]);
+    const groupKeys = (Array.isArray(keys) ? keys : []).filter((k: string) => metaMap[k] && !metaMap[k].hidden);
     if (groupKeys.length === 0) {
       return;
     }

@@ -62,7 +62,7 @@ export const OPTION_GROUPS = [
     title: "Translation Options",
     icon: "bi-translate",
     description: "Localise country names and the core library UI strings, e.g. the country search placeholder.",
-    keys: ["countryNameLocale", "countryNameOverrides", "i18n"],
+    keys: ["i18n", "countryNameOverrides"],
   },
   {
     title: "Miscellaneous Options",
@@ -72,13 +72,15 @@ export const OPTION_GROUPS = [
   },
 ];
 
-export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOptionLabels, i18nDatalist, initialCountryDatalist, countryDatalist }) {
+export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOptionLabels, initialCountryDatalist, countryDatalist }) {
   const defaultInitOptions = {
     allowDropdown: defaults.allowDropdown,
     allowedNumberTypes: defaults.allowedNumberTypes,
     allowNumberExtensions: defaults.allowNumberExtensions,
     allowPhonewords: defaults.allowPhonewords,
     autoPlaceholder: defaults.autoPlaceholder,
+    // Playground unifies i18n + countryNameLocale into a single "Language" select.
+    // countryNameLocale follows state.i18n (see mirrorLanguage in playground.ts).
     countryNameLocale: defaults.countryNameLocale,
     countryNameOverrides: defaults.countryNameOverrides,
     countryOrder: defaults.countryOrder,
@@ -229,22 +231,24 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     },
 
     // Translation Options
+    i18n: {
+      type: "select",
+      label: "Language",
+      tooltip: "Sets the locale for both the country names via <code>countryNameLocale</code> and UI strings (e.g. the country search placeholder) via <code>i18n</code>.",
+      options: i18nLanguageCodes || [],
+      optionLabels: i18nOptionLabels,
+    },
+    // No form control of its own — value mirrors state.i18n (see mirrorLanguage
+    // in playground.ts). Kept here so init-code generation and state diffing
+    // still treat it as a known option.
     countryNameLocale: {
       type: "text",
-      tooltip: "Locale used when generating country names with Intl.DisplayNames (e.g. \"en\" for English).",
-      placeholder: "e.g. en for English",
-      datalist: i18nDatalist,
+      hidden: true,
     },
     countryNameOverrides: {
       type: "json",
       tooltip: "Override individual country names, keyed by ISO2 code.",
       overridesEditor: countryDatalist,
-    },
-    i18n: {
-      type: "select",
-      tooltip: "Translate UI strings (e.g. the country search placeholder) using the provided locales.",
-      options: ["", ...(i18nLanguageCodes || [])],
-      optionLabels: i18nOptionLabels,
     },
 
     // Miscellaneous Options

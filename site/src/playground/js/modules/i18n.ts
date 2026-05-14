@@ -120,23 +120,6 @@ export function createI18nOptionLabels(languageCodes) {
   return labels;
 }
 
-function getPlainLanguageLabel(code) {
-  const rawCode = String(code || "").trim();
-  if (!rawCode) {
-    return "";
-  }
-  return resolveLanguageName(code) || rawCode;
-}
-
-export function createI18nDatalist(languageCodes) {
-  return (languageCodes || [])
-    .map((code) => ({
-      value: code,
-      label: getPlainLanguageLabel(code),
-    }))
-    .sort((a, b) => a.label.localeCompare(b.label));
-}
-
 export async function resolveI18nSelection(value, { i18nDirHash }) {
   if (value === null || value === undefined) {
     return null;

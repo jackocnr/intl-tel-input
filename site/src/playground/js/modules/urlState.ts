@@ -15,6 +15,11 @@ export function buildShareUrlFromState(
   Object.keys(allMeta).forEach((key) => url.searchParams.delete(key));
 
   Object.entries(allMeta).forEach(([key, meta]: [string, any]) => {
+    // Hidden meta (e.g. shadow options that mirror another) don't get their own
+    // URL param — the param they shadow is the source of truth.
+    if (meta.hidden) {
+      return;
+    }
     const value = state[key];
 
     if (excludeDefaults && isDefaultForKey(key, meta, value, defaultState)) {

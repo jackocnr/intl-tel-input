@@ -4,7 +4,7 @@
 export const playgroundPresets = [
   {
     label: "Chinese UI",
-    href: "/playground?countryNameLocale=zh&i18n=zh&initialCountry=cn#translation-options",
+    href: "/playground?i18n=zh&initialCountry=cn#translation-options",
   },
   {
     label: "No dropdown",

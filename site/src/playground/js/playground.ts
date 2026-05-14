@@ -4,7 +4,7 @@ import {
   I18N_DIR_HASH,
 } from "../../../tmp/playground/playgroundConstants.js";
 
-import { createI18nOptionLabels, createI18nDatalist } from "./modules/i18n";
+import { createI18nOptionLabels } from "./modules/i18n";
 import { renderControls, getStateFromForm, setFormFromState } from "./modules/forms";
 import { renderInitCodeFromState, type Integration } from "./modules/initCode";
 import { createPlaygroundConfig } from "./modules/playgroundConfig";
@@ -274,7 +274,6 @@ if (shareButton) {
 
 const { defaults } = window.intlTelInput;
 const i18nOptionLabels = createI18nOptionLabels(I18N_LANGUAGE_CODES);
-const i18nDatalist = createI18nDatalist(I18N_LANGUAGE_CODES);
 
 //* Datalist of all supported countries (used by countryOrder, excludeCountries, onlyCountries
 //* multi-comboboxes) — labels in English so they stay stable regardless of countryNameLocale.
@@ -303,7 +302,6 @@ const {
   defaults,
   i18nLanguageCodes: I18N_LANGUAGE_CODES,
   i18nOptionLabels,
-  i18nDatalist,
   initialCountryDatalist,
   countryDatalist,
 });
@@ -539,16 +537,24 @@ renderControls(attrsForm, attributeMeta, {
   },
 });
 
+// The playground exposes i18n + countryNameLocale as a single "Language" select,
+// so countryNameLocale isn't read from a form control of its own — keep it in
+// lockstep with state.i18n before passing state downstream.
+function mirrorLanguage(state: Record<string, any>): Record<string, any> {
+  state.countryNameLocale = state.i18n;
+  return state;
+}
+
 function getCombinedStateFromControls() {
-  return {
+  return mirrorLanguage({
     ...getStateFromForm(optionsForm, defaultInitOptions, optionMeta, "data-option"),
     ...getStateFromForm(attrsForm, defaultInputAttributes, attributeMeta, "data-attr"),
-  };
+  });
 }
 
 const initialOptionsState = parseQueryOverrides(playgroundInitialOptions, optionMeta);
 const initialAttrsState = parseQueryOverrides(defaultInputAttributes, attributeMeta);
-const initialState = { ...initialOptionsState, ...initialAttrsState };
+const initialState = mirrorLanguage({ ...initialOptionsState, ...initialAttrsState });
 
 setFormFromState(optionsForm, initialState, optionMeta, "data-option");
 setFormFromState(attrsForm, initialState, attributeMeta, "data-attr");
@@ -857,46 +863,26 @@ const HINT_CONFIGS = [
   },
   // Translation Options
   {
-    optionKey: "countryNameLocale",
-    message: () => {
-      const state = getCombinedStateFromControls();
-      if (hasNoBrowserCountryNameData(state.countryNameLocale)) {
-        return "Warning: your browser's Intl.DisplayNames has no country-name data for this locale — falling back to English.";
-      }
-      if (!keepDropdownOpenCheckbox.checked) {
-        return "Tip: in the Live Demo section, enable [Keep dropdown open](#keep-dropdown-open) to see this change in action.";
-      }
-      return "Tip: also update [i18n](#i18n) to translate the UI strings.";
-    },
-    shouldShow: () => {
-      const state = getCombinedStateFromControls();
-      if (hasNoBrowserCountryNameData(state.countryNameLocale)) {
-        return true;
-      }
-      if (!keepDropdownOpenCheckbox.checked) {
-        return true;
-      }
-      return Boolean(state.countryNameLocale) && state.countryNameLocale !== state.i18n;
-    },
-  },
-  {
     optionKey: "i18n",
     message: () => {
       const state = getCombinedStateFromControls();
+      if (hasNoBrowserCountryNameData(state.i18n)) {
+        return "Warning: your browser's Intl.DisplayNames has no country-name data for this locale — country names will fall back to English.";
+      }
       if (!state.countrySearch) {
         return "Tip: enable [countrySearch](#countrySearch) to see the search placeholder update based on this setting.";
       }
       if (!keepDropdownOpenCheckbox.checked) {
-        return "Tip: in the Live Demo section, enable [Keep dropdown open](#keep-dropdown-open) to see the search placeholder update based on this setting.";
+        return "Tip: in the Live Demo section, enable [Keep dropdown open](#keep-dropdown-open) to see the changes in action.";
       }
-      return "Tip: also update [countryNameLocale](#countryNameLocale) to translate the country names.";
+      return "";
     },
     shouldShow: () => {
       const state = getCombinedStateFromControls();
-      if (!keepDropdownOpenCheckbox.checked || !state.countrySearch) {
+      if (hasNoBrowserCountryNameData(state.i18n)) {
         return true;
       }
-      return Boolean(state.i18n) && state.i18n !== state.countryNameLocale;
+      return !state.countrySearch || !keepDropdownOpenCheckbox.checked;
     },
   },
   // Miscellaneous Options
@@ -1071,7 +1057,7 @@ function resetOptionGroupToDefaults(groupKeys) {
   // Gather attributes too because we pass a single combined state object downstream.
   const attrsState = getStateFromForm(attrsForm, defaultInputAttributes, attributeMeta, "data-attr");
 
-  const state = { ...optionsState, ...attrsState };
+  const state = mirrorLanguage({ ...optionsState, ...attrsState });
   setFormFromState(optionsForm, state, optionMeta, "data-option");
   revalidateCustomInputs();
   renderInitCodeFromState(state, initCodeEl, {
@@ -1110,10 +1096,10 @@ optionsForm.addEventListener("click", (event) => {
 });
 
 function resetAllToDefaults() {
-  const state = {
+  const state = mirrorLanguage({
     ...deepClone(playgroundInitialOptions),
     ...deepClone(defaultInputAttributes),
-  };
+  });
 
   setFormFromState(optionsForm, state, optionMeta, "data-option");
   setFormFromState(attrsForm, state, attributeMeta, "data-attr");
@@ -1146,7 +1132,7 @@ if (resetAttrsButton) {
     // We store both options and attributes in the same state object that is passed downstream,
     // so we must gather the current option settings first.
     const optionsState = getStateFromForm(optionsForm, defaultInitOptions, optionMeta, "data-option");
-    const state = { ...optionsState, ...deepClone(defaultInputAttributes) };
+    const state = mirrorLanguage({ ...optionsState, ...deepClone(defaultInputAttributes) });
     setFormFromState(attrsForm, state, attributeMeta, "data-attr");
     renderInitCodeFromState(state, initCodeEl, {
       defaultInitOptions,
@@ -1200,43 +1186,9 @@ if (initialCountryInput) {
   validateInitialCountryInput(initialCountryInput, { invalidOnly: true });
 }
 
-// --- countryNameLocale input validation ---
-function isValidLocale(value) {
-  try {
-    new Intl.DisplayNames([value], { type: "region" });
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-function validateCountryNameLocaleInput(input, { invalidOnly = false } = {}) {
-  const trimmed = input.value.trim();
-  input.classList.remove("is-valid", "is-invalid");
-  if (trimmed === "") {
-    return;
-  } // empty = neutral
-  if (isValidLocale(trimmed)) {
-    if (!invalidOnly) {
-      input.classList.add("is-valid");
-    }
-  } else {
-    input.classList.add("is-invalid");
-  }
-}
-
-const countryNameLocaleInput = optionsForm.querySelector("[data-option='countryNameLocale']");
-if (countryNameLocaleInput) {
-  countryNameLocaleInput.addEventListener("input", () => validateCountryNameLocaleInput(countryNameLocaleInput));
-  validateCountryNameLocaleInput(countryNameLocaleInput, { invalidOnly: true });
-}
-
 function revalidateCustomInputs() {
   if (initialCountryInput) {
     validateInitialCountryInput(initialCountryInput, { invalidOnly: true });
-  }
-  if (countryNameLocaleInput) {
-    validateCountryNameLocaleInput(countryNameLocaleInput, { invalidOnly: true });
   }
 }
 
