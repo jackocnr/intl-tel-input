@@ -334,7 +334,7 @@ Default: `{}`
 
 Translate the core library's UI strings (country search placeholder, no-results message, ARIA labels). For translating country names, see [`countryNameLocale`](#countrynamelocale) above; to override individual country names, see [`countryNameOverrides`](#countrynameoverrides).
 
-We ship translations for [<!-- I18N_LOCALE_COUNT -->  locales](/docs/localisation#supported-ui-locales) — import one and pass it in as the `i18n` option:
+We ship translations for [<!-- I18N_LOCALE_COUNT -->  locales](/docs/localisation#supported-ui-locales), named using the [BCP 47](https://developer.mozilla.org/en-US/docs/Glossary/BCP_47_language_tag) standard — import one and pass it in as the `i18n` option:
 
 ```js
 import { fr } from "intl-tel-input/i18n";

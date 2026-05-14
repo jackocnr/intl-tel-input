@@ -231,7 +231,7 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     // Translation Options
     countryNameLocale: {
       type: "text",
-      tooltip: "Locale used when generating country names with Intl.DisplayNames (e.g. \"fr\" for French).",
+      tooltip: "Locale used when generating country names with Intl.DisplayNames (e.g. \"en\" for English).",
       placeholder: "e.g. en for English",
       datalist: i18nDatalist,
     },
