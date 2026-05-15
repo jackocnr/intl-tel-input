@@ -90,6 +90,15 @@
   cursor: text;
   min-height: calc(1.5em + 0.75rem + 2px); /* match .form-control */
 }
+/* Single-select: once filled, drop the input-like wrapper so the chip stands
+   on its own — visually distinct from multi-select where the filter persists.
+   Keep min-height so the row doesn't jump between filter/chip states. */
+.iti-playground-single-combobox.is-filled .iti-playground-multi-combobox-control {
+  border: 0;
+  background: transparent;
+  cursor: default;
+  box-shadow: none;
+}
 .iti-playground-multi-combobox-filter {
   flex: 1;
   min-width: 8em;

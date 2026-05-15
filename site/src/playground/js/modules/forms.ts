@@ -1110,6 +1110,7 @@ function attachSingleSelectCombobox(
     }
     if (!selected) {
       filter.hidden = false;
+      container.classList.remove("is-filled");
       return;
     }
     const chip = document.createElement("span");
@@ -1140,6 +1141,7 @@ function attachSingleSelectCombobox(
     control.insertBefore(chip, filter);
     chipEl = chip;
     filter.hidden = true;
+    container.classList.add("is-filled");
   }
 
   function syncMenuSelectionState() {
