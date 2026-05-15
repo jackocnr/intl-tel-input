@@ -1075,7 +1075,6 @@ function resetOptionGroupToDefaults(groupKeys) {
 
   const state = mirrorLanguage({ ...optionsState, ...attrsState });
   setFormFromState(optionsForm, state, optionMeta, "data-option");
-  revalidateCustomInputs();
   renderInitCodeFromState(state, initCodeEl, {
     defaultInitOptions,
     optionMeta,
@@ -1119,7 +1118,6 @@ function resetAllToDefaults() {
 
   setFormFromState(optionsForm, state, optionMeta, "data-option");
   setFormFromState(attrsForm, state, attributeMeta, "data-attr");
-  revalidateCustomInputs();
   renderInitCodeFromState(state, initCodeEl, {
     defaultInitOptions,
     optionMeta,
@@ -1166,46 +1164,6 @@ if (resetAttrsButton) {
 
     flashActionButtonLabel(resetAttrsButton, "Reset!");
   });
-}
-
-function getSupportedCountries() {
-  if (!window.intlTelInput || typeof window.intlTelInput.getCountryData !== "function") {
-    return [];
-  }
-  const data = window.intlTelInput.getCountryData();
-  return Array.isArray(data) ? data : [];
-}
-
-function getValidIso2Set() {
-  return new Set(getSupportedCountries().map((c) => c.iso2));
-}
-
-// --- initialCountry input validation ---
-function validateInitialCountryInput(input, { invalidOnly = false } = {}) {
-  const trimmed = input.value.trim();
-  input.classList.remove("is-valid", "is-invalid");
-  if (trimmed === "") {
-    return;
-  } // empty = neutral
-  if (trimmed.toLowerCase() === "auto" || getValidIso2Set().has(trimmed.toLowerCase())) {
-    if (!invalidOnly) {
-      input.classList.add("is-valid");
-    }
-  } else {
-    input.classList.add("is-invalid");
-  }
-}
-
-const initialCountryInput = optionsForm.querySelector("[data-option='initialCountry']");
-if (initialCountryInput) {
-  initialCountryInput.addEventListener("input", () => validateInitialCountryInput(initialCountryInput));
-  validateInitialCountryInput(initialCountryInput, { invalidOnly: true });
-}
-
-function revalidateCustomInputs() {
-  if (initialCountryInput) {
-    validateInitialCountryInput(initialCountryInput, { invalidOnly: true });
-  }
 }
 
 // Pin the live demo state across reinits, by mirroring user interactions in
@@ -1283,8 +1241,12 @@ function captureSelectedCountryToForm({ requireDropdownInteraction = true } = {}
   if (!input || input.value === iso2) {
     return;
   }
-  input.value = iso2;
-  validateInitialCountryInput(input);
+  const singleCombobox = (input as any).__singleCombobox;
+  if (singleCombobox) {
+    singleCombobox.setValue(iso2);
+  } else {
+    input.value = iso2;
+  }
   syncStateAfterFormEdit();
 }
 

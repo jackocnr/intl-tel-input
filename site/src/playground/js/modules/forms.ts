@@ -448,6 +448,15 @@ function buildControlRow(key: string, meta: any, { idPrefix, dataAttr, infoIconT
     return wrapper;
   }
 
+  if (Array.isArray(meta.singleCombobox) && meta.singleCombobox.length > 0) {
+    const hiddenInput = document.createElement("input");
+    hiddenInput.type = "hidden";
+    hiddenInput.id = `${idPrefix}_${key}`;
+    hiddenInput.setAttribute(dataAttr, key);
+    wrapper.appendChild(attachSingleSelectCombobox(hiddenInput, meta.singleCombobox));
+    return wrapper;
+  }
+
   const input = document.createElement("input");
   input.type = "text";
   input.className = "form-control";
@@ -1016,6 +1025,282 @@ function attachMultiCombobox(
   return container;
 }
 
+// Single-select variant of attachMultiCombobox: chip + filter, but only ever one
+// value at a time. Selecting an option replaces any existing chip; clearing the
+// chip restores the filter. Unlike attachCombobox, free-form text never becomes
+// the value — only a committed pick (click / Enter) updates the hidden input.
+function attachSingleSelectCombobox(
+  hiddenInput: HTMLInputElement,
+  options: Array<{ value: string; label?: string }>,
+): HTMLElement {
+  const container = document.createElement("div");
+  container.className = "iti-playground-multi-combobox iti-playground-single-combobox";
+
+  const control = document.createElement("div");
+  control.className = "iti-playground-multi-combobox-control form-control";
+  container.appendChild(control);
+
+  const filter = document.createElement("input");
+  filter.type = "text";
+  filter.className = "iti-playground-multi-combobox-filter";
+  filter.placeholder = "type to select…";
+  filter.id = `${hiddenInput.id}_filter`;
+  filter.setAttribute("role", "combobox");
+  filter.setAttribute("autocomplete", "off");
+  control.appendChild(filter);
+
+  const menu = document.createElement("ul");
+  menu.className = "iti-playground-combobox-menu iti-playground-multi-combobox-menu";
+  menu.setAttribute("role", "listbox");
+  menu.hidden = true;
+  container.appendChild(menu);
+
+  const optionEls = new Map<string, HTMLLIElement>();
+  const items: Array<{ el: HTMLLIElement; tokens: ItemTokens }> = [];
+  options.forEach((opt) => {
+    const li = document.createElement("li");
+    li.className = "iti-playground-combobox-option";
+    li.dataset.value = opt.value;
+    li.setAttribute("role", "option");
+
+    const valueEl = document.createElement("span");
+    valueEl.className = "iti-playground-combobox-value";
+    valueEl.textContent = opt.value;
+    li.appendChild(valueEl);
+
+    if (opt.label) {
+      const labelEl = document.createElement("span");
+      labelEl.className = "iti-playground-combobox-label";
+      labelEl.textContent = opt.label;
+      li.appendChild(labelEl);
+    }
+
+    menu.appendChild(li);
+    optionEls.set(opt.value, li);
+    items.push({ el: li, tokens: buildItemTokens(opt.value, opt.label || "") });
+  });
+
+  const emptyEl = document.createElement("li");
+  emptyEl.className = "iti-playground-combobox-empty";
+  emptyEl.setAttribute("aria-disabled", "true");
+  emptyEl.textContent = "No matches";
+  emptyEl.hidden = true;
+  menu.appendChild(emptyEl);
+
+  let selected: string | null = null;
+  let activeIndex = -1;
+  let chipEl: HTMLElement | null = null;
+
+  function updateHiddenInput(dispatch = true) {
+    hiddenInput.value = selected ?? "";
+    if (dispatch) {
+      hiddenInput.dispatchEvent(new Event("input", { bubbles: true }));
+      hiddenInput.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+  }
+
+  function getChipLabel(value: string) {
+    return optionEls.get(value)?.querySelector(".iti-playground-combobox-label")?.textContent || value;
+  }
+
+  function renderChip() {
+    if (chipEl) {
+      chipEl.remove();
+      chipEl = null;
+    }
+    if (!selected) {
+      filter.hidden = false;
+      return;
+    }
+    const chip = document.createElement("span");
+    chip.className = "iti-playground-multi-combobox-chip";
+    chip.dataset.value = selected;
+
+    const codeEl = document.createElement("span");
+    codeEl.className = "iti-playground-multi-combobox-chip-code";
+    codeEl.textContent = selected;
+    chip.appendChild(codeEl);
+
+    const labelEl = document.createElement("span");
+    labelEl.className = "iti-playground-multi-combobox-chip-label";
+    labelEl.textContent = getChipLabel(selected);
+    chip.appendChild(labelEl);
+
+    const removeBtn = document.createElement("button");
+    removeBtn.type = "button";
+    removeBtn.className = "iti-playground-multi-combobox-chip-remove";
+    removeBtn.setAttribute("aria-label", `Remove ${selected}`);
+    removeBtn.textContent = "×";
+    removeBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      clearValue();
+    });
+    chip.appendChild(removeBtn);
+
+    control.insertBefore(chip, filter);
+    chipEl = chip;
+    filter.hidden = true;
+  }
+
+  function syncMenuSelectionState() {
+    optionEls.forEach((el, value) => {
+      el.classList.toggle("is-selected", selected === value);
+    });
+  }
+
+  let visibleEls: HTMLLIElement[] = [];
+
+  function filterMenu(query: string) {
+    const { visible, hidden } = getMatchedItems(items, query, () => false);
+    reorderMenu(menu, visible, hidden, emptyEl);
+    visibleEls = visible;
+    emptyEl.hidden = visible.length > 0;
+    setActive(-1);
+  }
+
+  function setActive(idx: number) {
+    visibleEls.forEach((el) => el.classList.remove("is-active"));
+    activeIndex = idx;
+    if (idx >= 0 && idx < visibleEls.length) {
+      visibleEls[idx].classList.add("is-active");
+      visibleEls[idx].scrollIntoView({ block: "nearest" });
+    }
+  }
+
+  function setValue(value: string) {
+    if (!optionEls.has(value)) {
+      return;
+    }
+    selected = value;
+    renderChip();
+    filter.value = "";
+    filterMenu("");
+    syncMenuSelectionState();
+    updateHiddenInput();
+    closeMenu();
+  }
+
+  function clearValue() {
+    if (!selected) {
+      return;
+    }
+    selected = null;
+    renderChip();
+    filter.value = "";
+    filterMenu("");
+    syncMenuSelectionState();
+    updateHiddenInput();
+    filter.focus();
+  }
+
+  function openMenu() {
+    if (filter.hidden) {
+      return;
+    }
+    menu.hidden = false;
+  }
+
+  function closeMenu() {
+    menu.hidden = true;
+    setActive(-1);
+  }
+
+  filter.addEventListener("focus", openMenu);
+  filter.addEventListener("click", openMenu);
+  filter.addEventListener("input", () => {
+    openMenu();
+    filterMenu(filter.value);
+  });
+  filter.addEventListener("keydown", (e) => {
+    switch (e.key) {
+      case "ArrowDown": {
+        e.preventDefault();
+        openMenu();
+        if (visibleEls.length === 0) {
+          return;
+        }
+        setActive(activeIndex < visibleEls.length - 1 ? activeIndex + 1 : 0);
+        break;
+      }
+      case "ArrowUp": {
+        e.preventDefault();
+        openMenu();
+        if (visibleEls.length === 0) {
+          return;
+        }
+        setActive(activeIndex > 0 ? activeIndex - 1 : visibleEls.length - 1);
+        break;
+      }
+      case "Enter":
+        if (!menu.hidden && activeIndex >= 0 && visibleEls[activeIndex]) {
+          e.preventDefault();
+          const value = visibleEls[activeIndex].dataset.value;
+          if (value) {
+            setValue(value);
+          }
+        }
+        break;
+      case "Escape":
+        if (!menu.hidden) {
+          e.preventDefault();
+          closeMenu();
+        }
+        break;
+      case "Backspace":
+        if (filter.value === "" && selected) {
+          e.preventDefault();
+          clearValue();
+        }
+        break;
+    }
+  });
+
+  menu.addEventListener("mousedown", (e) => e.preventDefault());
+  menu.addEventListener("click", (e) => {
+    const li = (e.target as HTMLElement).closest<HTMLLIElement>(".iti-playground-combobox-option");
+    if (li?.dataset.value) {
+      setValue(li.dataset.value);
+    }
+  });
+
+  control.addEventListener("click", (e) => {
+    if (e.target === control && !filter.hidden) {
+      filter.focus();
+    }
+  });
+
+  document.addEventListener("mousedown", (e) => {
+    if (!container.contains(e.target as Node)) {
+      closeMenu();
+    }
+  });
+
+  (hiddenInput as any).__singleCombobox = {
+    setValue(value: unknown) {
+      if (typeof value === "string" && value !== "" && optionEls.has(value)) {
+        selected = value;
+      } else {
+        selected = null;
+      }
+      renderChip();
+      filter.value = "";
+      filterMenu("");
+      syncMenuSelectionState();
+      updateHiddenInput(false);
+    },
+  };
+
+  container.insertBefore(hiddenInput, control);
+
+  if (hiddenInput.value && optionEls.has(hiddenInput.value)) {
+    selected = hiddenInput.value;
+    renderChip();
+    syncMenuSelectionState();
+  }
+
+  return container;
+}
+
 // Row editor for an ISO2-keyed string map (e.g. countryNameOverrides).
 // Each row: country combobox + override-name input + remove button. The hidden
 // input's value is a JSON object `{ iso2: name }`, with empty rows skipped on
@@ -1394,7 +1679,12 @@ export function setFormFromState(formEl: HTMLElement | null, state: Record<strin
     if (meta.type === "boolean") {
       control.checked = Boolean(state[key]);
     } else if (meta.type === "text") {
-      control.value = state[key] ?? "";
+      const singleComboboxApi = (control as any).__singleCombobox;
+      if (singleComboboxApi) {
+        singleComboboxApi.setValue(state[key]);
+      } else {
+        control.value = state[key] ?? "";
+      }
     } else if (meta.type === "number") {
       control.value = state[key] === "" || state[key] === null || state[key] === undefined ? "" : String(state[key]);
     } else if (meta.type === "select") {

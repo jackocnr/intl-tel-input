@@ -167,8 +167,7 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     initialCountry: {
       type: "text",
       tooltip: "Initial selected country (ISO2 code), e.g. \"gb\", or else \"auto\" for use with geoIpLookup.",
-      placeholder: "e.g. gb",
-      datalist: initialCountryDatalist,
+      singleCombobox: initialCountryDatalist,
     },
     onlyCountries: {
       type: "json",
