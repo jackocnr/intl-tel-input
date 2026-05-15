@@ -963,10 +963,13 @@ function maybeShowHint(config: any) {
   }
   controlWrapper.appendChild(hint);
 
+  // Scale timeout with rendered text length: ~5s base, +40ms per readable
+  // character. Strip markdown link syntax so we count only what the user sees.
+  const renderedLength = messageText.replace(MARKDOWN_LINK_PATTERN, "$1").length;
   hintTimers[optionKey] = window.setTimeout(() => {
     hint.remove();
     hintTimers[optionKey] = null;
-  }, 5000);
+  }, Math.max(5000, renderedLength * 40));
 }
 
 const notesContainer = document.getElementById("playgroundNotes");
