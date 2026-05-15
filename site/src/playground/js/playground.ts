@@ -605,8 +605,18 @@ updateUrlFromState(initialState, {
 });
 
 setupStrictRejectToast(telInput, "playgroundStrictRejectToast", "playgroundStrictRejectToastBody", {
-  href: "#formatting-options",
+  href: "#strictMode",
   text: "strictMode",
+});
+
+// Re-trigger scroll+flash when the toast link is clicked and the hash is
+// already set — the browser fires no hashchange in that case.
+document.getElementById("playgroundStrictRejectToastBody")?.addEventListener("click", (event) => {
+  const target = (event.target as HTMLElement | null)?.closest<HTMLAnchorElement>("a[href^='#']");
+  if (target && window.location.hash === new URL(target.href).hash) {
+    event.preventDefault();
+    handleHashTarget();
+  }
 });
 
 // Returns true when the browser's Intl.DisplayNames falls back to English for the
