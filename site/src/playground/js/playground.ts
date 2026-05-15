@@ -25,6 +25,7 @@ const keepDropdownOpenWrapper = keepDropdownOpenCheckbox.closest<HTMLElement>(".
 const keepDropdownOpenInfo = document.querySelector<HTMLElement>("#playgroundKeepDropdownOpenInfo")!;
 const KEEP_DROPDOWN_OPEN_DEFAULT_TOOLTIP = keepDropdownOpenInfo.getAttribute("data-bs-title") ?? "";
 const syncDemoStateCheckbox = document.querySelector<HTMLInputElement>("#playgroundSyncDemoState")!;
+const syncDemoStateWrapper = syncDemoStateCheckbox.closest<HTMLElement>(".form-check")!;
 const optionsForm = document.querySelector<HTMLFormElement>("#playgroundOptions")!;
 const attrsForm = document.querySelector<HTMLFormElement>("#playgroundAttributes")!;
 const resetAllButton = document.querySelector<HTMLButtonElement>("#playgroundResetAll");
@@ -503,16 +504,19 @@ function handleHashTarget() {
     flashOptionControl(matchedOptionKey);
     return;
   }
-  // The Keep-dropdown-open checkbox is treated like an option link: scroll to
-  // the parent group's header (Live Demo) and flash the checkbox.
-  if (raw === keepDropdownOpenWrapper.id) {
-    const title = keepDropdownOpenWrapper.closest<HTMLElement>(".card")?.querySelector<HTMLElement>("h2");
+  // The Live-Demo checkboxes are treated like option links: scroll to the
+  // parent group's header (Live Demo) and flash the checkbox.
+  const liveDemoWrapper = [keepDropdownOpenWrapper, syncDemoStateWrapper].find(
+    (w) => raw === w.id,
+  );
+  if (liveDemoWrapper) {
+    const title = liveDemoWrapper.closest<HTMLElement>(".card")?.querySelector<HTMLElement>("h2");
     if (title && typeof title.scrollIntoView === "function") {
       title.scrollIntoView({ block: "start" });
     }
     whenScrollSettles(
-      () => startFlash(keepDropdownOpenWrapper),
-      findScrollableAncestor(keepDropdownOpenWrapper),
+      () => startFlash(liveDemoWrapper),
+      findScrollableAncestor(liveDemoWrapper),
     );
     return;
   }
@@ -861,7 +865,11 @@ const HINT_CONFIGS = [
       if (state.strictMode) {
         return "Tip: disable [strictMode](#strictMode) to see this in action.";
       }
-      return "Tip: enter a phone number with/without letters to see this in action.";
+      let tip = "Tip: enter a phone number with/without letters to see this in action.";
+      if (syncDemoStateCheckbox.checked) {
+        tip += " Note: with [Sync demo state](#sync-demo-state) on, the typed number survives option changes (e.g. toggling allowPhonewords on/off) — but any phoneword letters get converted to digits when this happens.";
+      }
+      return tip;
     },
     shouldShow: () => true, // always show this as they have to take action
     alsoShowOnToggleOff: true,
