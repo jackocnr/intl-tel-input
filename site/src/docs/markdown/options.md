@@ -289,6 +289,9 @@ Try toggling this option on/off on a number with an extension in the [Playground
 > [!NOTE]
 > Not compatible with [`strictMode`](#strictmode) (which is enabled by default), as that will prevent the user from typing the extension in the first place. Disable `strictMode` to allow extensions to be entered.
 
+> [!NOTE]
+> [`getNumber`](/docs/methods#getnumber) defaults to E.164 format, which strips the extension. Use [`getExtension`](/docs/methods#getextension) to retrieve it separately, or call `getNumber` with `"INTERNATIONAL"`, `"NATIONAL"`, or `"RFC3966"` — those formats include the extension.
+
 ###### allowPhonewords
 Type: `boolean`  
 Default: `false`  

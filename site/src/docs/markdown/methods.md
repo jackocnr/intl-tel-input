@@ -72,6 +72,9 @@ const number = iti.getNumber(); // defaults to "E164" e.g. "+17024181234"
 const number = iti.getNumber("INTERNATIONAL"); // e.g. "+1 702-418-1234"
 ```
 
+> [!NOTE]
+> The `"E164"` format does not include extensions (per the ITU-T E.164 spec), so e.g. `"+1 702 418 1234 ext. 789"` becomes `"+17024181234"`. The `"INTERNATIONAL"`, `"NATIONAL"`, and `"RFC3966"` formats do include the extension. To retrieve the extension on its own, use [`getExtension`](#getextension).
+
 > [!TIP]
 > You can also pass a [constant](/docs/types#constant-objects), e.g. `iti.getNumber(intlTelInput.NUMBER_FORMAT.INTERNATIONAL)` — useful in plain JavaScript where typos in the string literal won't be caught at compile time.
 

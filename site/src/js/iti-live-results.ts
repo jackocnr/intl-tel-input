@@ -16,13 +16,15 @@
       return;
     }
 
-    // Fix live results box width and height to prevent layout shift
+    // Fix live results box width and height to prevent layout shift. Height is
+    // pinned as min-height so the box can grow when there's a second line
+    // (e.g. when an extension is shown alongside the valid number).
     const liveResultsStyle = getComputedStyle(liveResults);
     if (liveResultsStyle.width) {
       liveResults.style.width = liveResultsStyle.width;
     }
     if (liveResultsStyle.height) {
-      liveResults.style.height = liveResultsStyle.height;
+      liveResults.style.minHeight = liveResultsStyle.height;
     }
 
     const setupLiveResults = () => {
@@ -56,7 +58,15 @@
         const iti = getItiInstance();
         if (iti.isValidNumber()) {
           const number = iti.getNumber();
+          // E.164 strips extensions, so surface getExtension() separately when present.
+          const extension = iti.getExtension();
           liveResults.textContent = `Valid number: ${number}`;
+          if (extension) {
+            liveResults.appendChild(document.createElement("br"));
+            liveResults.appendChild(
+              document.createTextNode(`Extension: ${extension}`),
+            );
+          }
           return;
         }
 
