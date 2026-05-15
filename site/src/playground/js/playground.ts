@@ -1296,3 +1296,8 @@ syncDemoStateCheckbox.addEventListener("change", () => {
 
 telInput.addEventListener("countrychange", () => captureSelectedCountryToForm());
 telInput.addEventListener("input", captureTypedNumberToForm);
+// strictMode paste sanitisation runs in the iti's input listener AFTER ours and
+// updates the value silently, so the form-value capture above sees the raw pasted
+// text. The iti dispatches strict:reject AFTER writing the sanitised value, so
+// re-capture from there to pick up the post-strip value.
+telInput.addEventListener("strict:reject", captureTypedNumberToForm);
