@@ -227,7 +227,7 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     },
     allowPhonewords: {
       type: "boolean",
-      tooltip: "Accept letters in the number as valid (e.g. \"+1 702 FLOWERS\"). Not compatible with strictMode.",
+      tooltip: "Accept letters in the number as valid (e.g. \"+1 702 FLOWERS\"). Note: the number must contain at least 3 letters — fewer are treated as typos and stripped. Not compatible with strictMode.",
     },
 
     // Translation Options

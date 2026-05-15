@@ -295,8 +295,9 @@ Default: `false`
 
 Whether or not the validation methods return `true` for numbers containing phonewords, e.g. "+1 702 FLOWERS".
 
-> [!NOTE]  
-> When processing phoneword numbers, the core library will automatically convert them to digits e.g. via [`getNumber`](/docs/methods#getnumber), or when initialising the core library on an input containing a phoneword number.
+When processing phoneword numbers, the core library will automatically convert them to digits e.g. via [`getNumber`](/docs/methods#getnumber), or when initialising the core library on an input containing a phoneword number. 
+
+Note that the number must contain **at least 3 letters** for them to be treated as phoneword digits — fewer are treated as typos and stripped before validation. So e.g. `+44 7947 123ABC` becomes `+44 7947 123222` (valid), but `+44 7947 1234BC` becomes `+44 7947 1234` (invalid — too short).
 
 > [!NOTE]
 > Not compatible with [`strictMode`](#strictmode) (which is enabled by default), as that will prevent the user from typing letters in the first place. Disable `strictMode` to allow phonewords to be entered.
