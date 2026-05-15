@@ -666,7 +666,12 @@ const HINT_CONFIGS = [
   },
   {
     optionKey: "useFullscreenPopup",
-    message: "Tip: click the selected country to open the popup.",
+    message: () => {
+      if (!getCombinedStateFromControls().allowDropdown) {
+        return "Tip: enable [allowDropdown](#allowDropdown) for this to work.";
+      }
+      return "Tip: click the selected country to open the popup.";
+    },
     shouldShow: () => true,
   },
   // Country Options
