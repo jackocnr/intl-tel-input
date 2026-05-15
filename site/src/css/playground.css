@@ -89,6 +89,9 @@
   padding: 0.25rem;
   cursor: text;
   min-height: calc(1.5em + 0.75rem + 2px); /* match .form-control */
+  /* The wrapper itself never focuses (the inner filter does), so BS5's
+     0.15s border/background transition only flashes on filled→empty swaps. */
+  transition: none;
 }
 /* Single-select: once filled, drop the input-like wrapper so the chip stands
    on its own — visually distinct from multi-select where the filter persists.
@@ -554,11 +557,17 @@
 /* contextual hint (shown after toggling certain options) */
 .iti-playground-hint {
   display: block;
-  margin-left: -1.5em;
   animation: iti-hint-fade-in 0.2s ease-out;
 
   @media (min-width: 600px) {
     grid-column: 2;
+  }
+}
+/* On mobile, checkbox controls have BS5's 1.5em left padding (room for the
+   checkbox itself); back the hint out so it aligns with the column edge. */
+.iti-playground-control--check > .iti-playground-hint {
+  margin-left: -1.5em;
+  @media (min-width: 600px) {
     margin-left: 0;
   }
 }

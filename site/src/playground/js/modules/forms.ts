@@ -1192,7 +1192,6 @@ function attachSingleSelectCombobox(
     filterMenu("");
     syncMenuSelectionState();
     updateHiddenInput();
-    filter.focus();
   }
 
   function openMenu() {
