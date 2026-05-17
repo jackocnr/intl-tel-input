@@ -213,14 +213,16 @@ keepDropdownOpenCheckbox.addEventListener("change", () => {
 syncKeepDropdownOpen();
 
 // Flash the "Keep dropdown open" checkbox if the user clicks the selected
-// country while it's on — that click would normally close the dropdown, so
-// the no-op can be confusing without something pointing at the cause.
+// country's primary area (flag + arrow) while it's on — that click would
+// normally close the dropdown, so the no-op can be confusing without
+// something pointing at the cause. Excludes clicks on the separate dial code,
+// where users are often just probing whether the dial code is editable.
 let keepDropdownOpenFlashTimer: number | null = null;
 playgroundContainer.addEventListener("click", (event) => {
   if (!(event.target instanceof Element)) {
     return;
   }
-  if (!event.target.closest(".iti__selected-country")) {
+  if (!event.target.closest(".iti__selected-country-primary")) {
     return;
   }
   if (!keepDropdownOpenCheckbox.checked || keepDropdownOpenCheckbox.disabled) {
