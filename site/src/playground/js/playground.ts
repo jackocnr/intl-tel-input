@@ -737,7 +737,7 @@ const HINT_CONFIGS = [
       if (!getCombinedStateFromControls().loadUtils) {
         return "Tip: enable [loadUtils](#loadUtils) to see this in action.";
       }
-      return "Tip: enter a valid phone number to see this in action.";
+      return "Tip: enter a valid phone number and then toggle this option on/off to see it in action.";
     },
     shouldShow: () => !getCombinedStateFromControls().loadUtils || !telInput.value,
   },
