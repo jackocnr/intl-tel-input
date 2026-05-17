@@ -34,6 +34,7 @@ const docOptionsLayoutDocKeys = [
   "angular_component",
   "svelte_component",
   "theming",
+  "utils",
 ];
 
 const addDocOptionsLayoutPlugin = (md) => {
