@@ -664,9 +664,9 @@ const HINT_CONFIGS = [
       if (!itiController.iti?.getSelectedCountryData()) {
         return "Tip: select a country to see this in action.";
       }
-      return "Tip: with a number already typed, this just shifts the dial code between the input and a label beside it — clear the input to see the typing experience.";
+      return "Tip: by design, the separate dial code is styled to look like part of the typed number, so toggling this option has no visible effect when the value already contains a number.";
     },
-    shouldShow: () => !itiController.iti?.getSelectedCountryData() || Boolean(telInput.value),
+    shouldShow: () => !itiController.iti?.getSelectedCountryData() || getCombinedStateFromControls().value.trim().startsWith("+"),
     alsoShowOnToggleOff: true,
   },
   {
@@ -739,7 +739,11 @@ const HINT_CONFIGS = [
       if (!getCombinedStateFromControls().loadUtils) {
         return "Tip: enable [loadUtils](#loadUtils) to see this in action.";
       }
-      return "Tip: enter a valid phone number and then toggle this option on/off to see it in action.";
+      let tip = "Tip: enter a valid phone number and then toggle this option on/off to see it in action.";
+      if (!syncDemoStateCheckbox.checked) {
+        tip += " Note: enable [Sync demo state](#sync-demo-state) first, otherwise your typed number will be lost when you toggle the option.";
+      }
+      return tip;
     },
     shouldShow: () => !getCombinedStateFromControls().loadUtils || !telInput.value,
   },

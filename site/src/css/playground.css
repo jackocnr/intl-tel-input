@@ -385,6 +385,7 @@
    preventing the click from closing the dropdown. Also used to flash a
    specific option control when the page is linked to via #optionName. */
 .playground-dropdown-checkbox.is-flashing,
+.iti-playground-demo-controls .form-check.is-flashing,
 .iti-playground-control.is-flashing {
   animation: iti-flash-highlight 0.2s ease-out 3;
   border-radius: 0.25rem;
