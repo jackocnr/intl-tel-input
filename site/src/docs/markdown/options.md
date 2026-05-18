@@ -215,7 +215,7 @@ Play with this option in the [Playground](/playground#strictMode).
 Type: `boolean`  
 Default: `true`  
 
-When [`strictMode`](#strictmode) is enabled, play a subtle animation any time a whole keystroke or paste is rejected — a brief shake by default, or a background-colour flash for users with `prefers-reduced-motion`. Partial paste sanitisation (e.g. only some characters stripped) does not trigger it. The flash colour can be customised via the `--iti-strict-reject-flash-color` CSS variable.
+When [`strictMode`](#strictmode) is enabled, play a subtle animation any time a keystroke is rejected, or a paste is rejected entirely — a brief shake by default, or a background-colour flash for users with `prefers-reduced-motion`. Partial paste sanitisation (e.g. only some characters stripped) does not trigger it. The flash colour can be customised via the `--iti-strict-reject-flash-color` CSS variable.
 
 
 ## Placeholder options

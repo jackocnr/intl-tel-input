@@ -194,7 +194,7 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     },
     strictRejectAnimation: {
       type: "boolean",
-      tooltip: "When strictMode rejects a whole keystroke or paste, play a subtle animation.",
+      tooltip: "When strictMode rejects a keystroke, or rejects a paste entirely, play a subtle animation.",
     },
 
     // Placeholder Options
