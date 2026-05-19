@@ -277,6 +277,9 @@ if (shareButton) {
 
 const { defaults } = window.intlTelInput;
 const i18nOptionLabels = createI18nOptionLabels(I18N_LANGUAGE_CODES);
+const i18nLanguageCodesSorted = [...I18N_LANGUAGE_CODES].sort((a, b) =>
+  (i18nOptionLabels[a] || a).localeCompare(i18nOptionLabels[b] || b),
+);
 
 //* Datalist of all supported countries (used by countryOrder, excludeCountries, onlyCountries
 //* multi-comboboxes) — labels in English so they stay stable regardless of countryNameLocale.
@@ -303,7 +306,7 @@ const {
   specialOptionKeys,
 } = createPlaygroundConfig({
   defaults,
-  i18nLanguageCodes: I18N_LANGUAGE_CODES,
+  i18nLanguageCodes: i18nLanguageCodesSorted,
   i18nOptionLabels,
   initialCountryDatalist,
   countryDatalist,
