@@ -318,7 +318,7 @@ Default: `"en"`
 
 The locale to pass to `Intl.DisplayNames` to generate the country names. Should adhere to the [BCP 47](https://developer.mozilla.org/en-US/docs/Glossary/BCP_47_language_tag) standard, e.g. `"zh"` (Chinese), or `"zh-Hans"` (Simplified Chinese). To override individual country names, see [`countryNameOverrides`](#countrynameoverrides) below. For translating the other UI strings, like the country search placeholder, see [`i18n`](#i18n) below.
 
-View `intl-tel-input` in Chinese in the [Playground](/playground?i18n=zh&initialCountry=cn#i18n).
+View `intl-tel-input` in Hindi in the [Playground](/playground?i18n=hi&initialCountry=in#i18n).
 
 ###### countryNameOverrides
 Type: `object`  
@@ -348,7 +348,7 @@ import { fr } from "intl-tel-input/i18n";
 
 See the [Localisation docs](/docs/localisation#localising-user-interface-strings) for overriding individual keys, defining custom translations, and the full list of translatable keys. _Note: previously named `localizedCountries`._
 
-View `intl-tel-input` in Chinese in the [Playground](/playground?i18n=zh&initialCountry=cn#i18n).
+View `intl-tel-input` in Ukrainian in the [Playground](/playground?i18n=uk&initialCountry=ua#i18n).
 
 
 ## Miscellaneous options

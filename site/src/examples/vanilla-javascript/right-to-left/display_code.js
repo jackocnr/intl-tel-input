@@ -8,7 +8,7 @@ intlTelInput(input, {
   i18n: ar,
   // Arabic
   countryNameLocale: "ar",
-  // Egypt
-  initialCountry: "eg",
+  // Palestine
+  initialCountry: "ps",
   loadUtils: () => import("intl-tel-input/utils"),
 });
