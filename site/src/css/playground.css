@@ -516,10 +516,16 @@
       row-gap: 6px;
     }
 
-    /* Overrides-editor variants grow vertically as rows are added; pin the
-       label to the top so it doesn't drift downward with the row count. */
-    &.iti-playground-control--overrides {
+    /* Overrides-editor and multi-combobox variants grow vertically as rows/
+       chips are added; pin the label to the top so it doesn't drift downward. */
+    &.iti-playground-control--overrides,
+    &.iti-playground-control--multi-combobox {
       align-items: start;
+    }
+    /* Nudge the top-pinned label down to align with the first chip row
+       (matches .iti-playground-multi-combobox-control's border + padding-top). */
+    &.iti-playground-control--multi-combobox > .iti-playground-labelgroup {
+      padding-top: calc(0.25rem + 1px);
     }
 
     /* Non-checkbox controls: form-specific tweaks */

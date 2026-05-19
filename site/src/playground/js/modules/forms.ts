@@ -418,6 +418,7 @@ function buildControlRow(key: string, meta: any, { idPrefix, dataAttr, infoIconT
       hiddenInput.type = "hidden";
       hiddenInput.id = `${idPrefix}_${key}`;
       hiddenInput.setAttribute(dataAttr, key);
+      wrapper.classList.add("iti-playground-control--multi-combobox");
       wrapper.appendChild(attachMultiCombobox(hiddenInput, meta.multiCombobox, { draggable: Boolean(meta.draggable) }));
       return wrapper;
     }
