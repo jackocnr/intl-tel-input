@@ -15,6 +15,10 @@ export const playgroundPresets = [
     href: "/playground?showFlags=false&initialCountry=us#user-interface-options",
   },
   {
+    label: "Fullscreen country picker",
+    href: "/playground?useFullscreenPopup=true&initialCountry=us#user-interface-options",
+  },
+  {
     label: "Prioritise US & UK",
     href: "/playground?countryOrder=%5B%22us%22%2C%22gb%22%5D&initialCountry=us#country-options",
   },
@@ -25,6 +29,10 @@ export const playgroundPresets = [
   {
     label: "National format",
     href: "/playground?nationalMode=true&separateDialCode=false&initialCountry=gb#formatting-options",
+  },
+  {
+    label: "Localised country names",
+    href: "/playground?initialCountry=cn&onlyCountries=%5B%22de%22%2C%22es%22%2C%22jp%22%2C%22cn%22%2C%22ru%22%2C%22gr%22%2C%22kr%22%2C%22eg%22%2C%22in%22%2C%22th%22%5D&countryNameOverrides=%7B%22de%22%3A%22Germany%20(Deutschland)%22%2C%22es%22%3A%22Spain%20(Espa%C3%B1a)%22%2C%22jp%22%3A%22Japan%20(%E6%97%A5%E6%9C%AC)%22%2C%22cn%22%3A%22China%20(%E4%B8%AD%E5%9B%BD)%22%2C%22ru%22%3A%22Russia%20(%D0%A0%D0%BE%D1%81%D1%81%D0%B8%D1%8F)%22%2C%22gr%22%3A%22Greece%20(%CE%95%CE%BB%CE%BB%CE%AC%CE%B4%CE%B1)%22%2C%22kr%22%3A%22South%20Korea%20(%ED%95%9C%EA%B5%AD)%22%2C%22eg%22%3A%22Egypt%20(%D9%85%D8%B5%D8%B1)%22%2C%22in%22%3A%22India%20(%E0%A4%AD%E0%A4%BE%E0%A4%B0%E0%A4%A4)%22%2C%22th%22%3A%22Thailand%20(%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B9%80%E0%B8%97%E0%B8%A8%E0%B9%84%E0%B8%97%E0%B8%A2)%22%7D#translation-options",
   },
 ];
 
