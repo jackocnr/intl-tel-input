@@ -38,7 +38,6 @@ import type { ItiEventMap, StrictRejectReason } from "./types/events.js";
 import {
   EVENTS,
   REGEX,
-  INITIAL_COUNTRY,
   DATA_KEYS,
   UK,
   INPUT_TYPES,
@@ -197,9 +196,10 @@ export class Iti {
   }
 
   #createInitPromise(options: AllOptions): Promise<void> {
-    const { initialCountry, geoIpLookup, loadUtils } = options;
+    const { initialCountry, initialCountryLookup, loadUtils } = options;
+    //* Only run the lookup when there is no explicit initialCountry — explicit country wins.
     const needsAutoCountryDeferred =
-      initialCountry === INITIAL_COUNTRY.AUTO && Boolean(geoIpLookup);
+      !initialCountry && Boolean(initialCountryLookup);
     const needsUtilsDeferred = Boolean(loadUtils) && !intlTelInput.utils;
 
     //* These promises get resolved when their individual requests complete.
@@ -275,9 +275,8 @@ export class Iti {
 
     const dialCode = this.#getDialCode(value);
     const isRegionlessNanpNumber = isRegionlessNanp(value);
-    const { initialCountry, geoIpLookup } = this.#options;
-    const isAutoCountry =
-      initialCountry === INITIAL_COUNTRY.AUTO && geoIpLookup;
+    const { initialCountry, initialCountryLookup } = this.#options;
+    const isAutoCountry = !initialCountry && Boolean(initialCountryLookup);
     //* If auto country has already been loaded (e.g. from a previous instance), use it synchronously to avoid a broken initial state.
     const resolvedInitialCountry =
       isAutoCountry && intlTelInput.autoCountry
@@ -333,7 +332,7 @@ export class Iti {
     );
   }
 
-  //* Init requests: utils script / geo ip lookup.
+  //* Init requests: utils script / initial country lookup.
   #startAsyncLoads(): void {
     //* (1) UTILS SCRIPT — deferred only exists when loadUtils was set and utils aren't loaded yet.
     if (this.#utilsDeferred) {
@@ -356,7 +355,7 @@ export class Iti {
       }
     }
 
-    //* (2) AUTO COUNTRY — deferred only exists when initialCountry is "auto" with a geoIpLookup.
+    //* (2) AUTO COUNTRY — deferred only exists when initialCountryLookup is set and no explicit initialCountry was provided.
     if (this.#autoCountryDeferred) {
       //* Don't bother with IP lookup if we already have a selected country.
       if (this.#selectedCountry) {
@@ -367,7 +366,7 @@ export class Iti {
     }
   }
 
-  //* Perform the geo ip lookup.
+  //* Perform the initial country lookup.
   async #loadAutoCountry(): Promise<void> {
     //* 3 options:
     //* 1) Already loaded (we're done)
@@ -386,15 +385,15 @@ export class Iti {
     }
     intlTelInput.startedLoadingAutoCountry = true;
 
-    if (typeof this.#options.geoIpLookup === "function") {
+    if (typeof this.#options.initialCountryLookup === "function") {
       //* Cap the wait so a hanging lookup (e.g. fetch with no timeout against a flaky IP service) doesn't leave the loading spinner up forever.
       let timeoutId: ReturnType<typeof setTimeout> | undefined;
       try {
         const iso2 = await Promise.race([
-          this.#options.geoIpLookup(),
+          this.#options.initialCountryLookup(),
           new Promise<never>((_, reject) => {
             timeoutId = setTimeout(
-              () => reject(new Error("intl-tel-input: geoIpLookup timed out after 10s")),
+              () => reject(new Error("intl-tel-input: initialCountryLookup timed out after 10s")),
               10000,
             );
           }),
@@ -408,8 +407,8 @@ export class Iti {
         }
         intlTelInput.autoCountry = iso2Lower;
         //* Tell all instances the auto country is ready.
-        //* UPDATE: use setTimeout in case their geoIpLookup function resolves straight away
-        //* (e.g. if they have already done the geo ip lookup somewhere else). Using
+        //* UPDATE: use setTimeout in case their initialCountryLookup function resolves straight away
+        //* (e.g. if they have already done the lookup somewhere else). Using
         //* setTimeout means that the current thread of execution will finish before executing
         //* this, which allows the core library to finish initialising.
         setTimeout(() => Iti.forEachInstance("handleAutoCountryLoaded"));
@@ -1295,7 +1294,7 @@ export class Iti {
   //*  INTERNAL METHODS
   //**************************
 
-  //* Called when the geoip call returns.
+  //* Called when the initial country lookup returns.
   #handleAutoCountryLoaded(): void {
     if (!this.#autoCountryDeferred || !intlTelInput.autoCountry) {
       return;
@@ -1317,7 +1316,7 @@ export class Iti {
     this.#autoCountryDeferred.resolve();
   }
 
-  //* Called when the geoip call fails or times out.
+  //* Called when the initial country lookup fails or times out.
   #handleAutoCountryFailure(): void {
     // If instance destroyed, just reject the promise and avoid DOM/state ops
     if (!this.#isActive) {
@@ -1616,7 +1615,7 @@ export class Iti {
   //*  STATIC METHODS
   //********************
 
-  // Internal instance notification used by utils/geoip loaders.
+  // Internal instance notification used by utils/initial-country loaders.
   // Kept public so module-level helpers (e.g. attachUtils) can call it, while still allowing
   // access to private instance methods.
   static forEachInstance<M extends keyof ForEachInstanceArgsMap>(

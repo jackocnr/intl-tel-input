@@ -17,7 +17,7 @@ export const SPECIAL_PLAYGROUND_OPTION_KEYS = [
   "i18n",
   "loadUtils",
   "customPlaceholder",
-  "geoIpLookup",
+  "initialCountryLookup",
 ];
 
 export const OPTION_GROUPS = [
@@ -38,7 +38,7 @@ export const OPTION_GROUPS = [
     title: "Country Options",
     icon: "bi-globe-americas",
     description: "Choose which countries are available, the order they're displayed in, and how the initial country is determined.",
-    keys: ["countryOrder", "excludeCountries", "geoIpLookup", "initialCountry", "onlyCountries"],
+    keys: ["countryOrder", "excludeCountries", "initialCountry", "initialCountryLookup", "onlyCountries"],
   },
   {
     title: "Formatting Options",
@@ -86,7 +86,7 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     countryOrder: defaults.countryOrder,
     countrySearch: defaults.countrySearch,
     customPlaceholder: false, // in playground, this is a checkbox
-    geoIpLookup: false, // in playground, this is a checkbox
+    initialCountryLookup: false, // in playground, this is a checkbox
     excludeCountries: defaults.excludeCountries,
     fixDropdownWidth: defaults.fixDropdownWidth,
     formatAsYouType: defaults.formatAsYouType,
@@ -110,8 +110,7 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
   // playground's behaviour in a fresh install.
   const playgroundInitialOptions = {
     ...defaultInitOptions,
-    geoIpLookup: true,
-    initialCountry: "auto",
+    initialCountryLookup: true,
   };
 
   const defaultInputAttributes = {
@@ -158,15 +157,15 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
       tooltip: "Exclude specific countries (array of ISO2 codes) from the dropdown.",
       multiCombobox: countryDatalist,
     },
-    geoIpLookup: {
-      type: "boolean",
-      label: "geoIpLookup",
-      tooltip: "Auto-detect the user's country by IP address (async). Requires initialCountry=\"auto\".",
-    },
     initialCountry: {
       type: "text",
-      tooltip: "Initial selected country (ISO2 code), e.g. \"gb\", or else \"auto\" for use with geoIpLookup.",
+      tooltip: "Initial selected country (ISO2 code), e.g. \"gb\".",
       singleCombobox: initialCountryDatalist,
+    },
+    initialCountryLookup: {
+      type: "boolean",
+      label: "initialCountryLookup",
+      tooltip: "Auto-detect the user's country (e.g. by IP address) via a custom async function. Ignored when initialCountry is set.",
     },
     onlyCountries: {
       type: "json",

@@ -1,5 +1,4 @@
 import {
-  INITIAL_COUNTRY,
   PLACEHOLDER_MODES,
   NUMBER_TYPE,
   NUMBER_TYPES,
@@ -64,14 +63,14 @@ export const defaults: AllOptions = {
   formatAsYouType: true,
   //* Format the input value during initialisation and on setNumber.
   formatOnDisplay: true,
-  //* geoIp lookup function.
-  geoIpLookup: null,
   //* Inject a hidden input with the name returned from this function, and on submit, populate it with the result of getNumber.
   hiddenInput: null,
   //* Internationalise the core library text e.g. search input placeholder, country names.
   i18n: {},
   //* Initial country.
   initialCountry: "",
+  //* Async lookup function used to determine the initial country (e.g. via IP). Ignored if initialCountry is set.
+  initialCountryLookup: null,
   //* A function to load the utils script.
   loadUtils: null,
   //* National vs international formatting for numbers e.g. placeholders and displaying existing numbers.
@@ -229,8 +228,8 @@ export const validateOptions = (customOptions: unknown): SomeOptions => {
       }
 
       case "customPlaceholder":
-      case "geoIpLookup":
       case "hiddenInput":
+      case "initialCountryLookup":
       case "loadUtils":
         if (value !== null && !isFunction(value)) {
           warnOption(key, "a function or null", value);
@@ -283,12 +282,8 @@ export const validateOptions = (customOptions: unknown): SomeOptions => {
           break;
         }
         const lower = value.toLowerCase();
-        if (lower && lower !== INITIAL_COUNTRY.AUTO && !isIso2(lower)) {
-          warnOption(
-            "initialCountry",
-            "a valid iso2 country code or 'auto'",
-            value,
-          );
+        if (lower && !isIso2(lower)) {
+          warnOption("initialCountry", "a valid iso2 country code", value);
           break;
         }
         validatedOptions[key] = value;
@@ -351,7 +346,7 @@ export const validateOptions = (customOptions: unknown): SomeOptions => {
 export const normaliseOptions = (o: AllOptions): void => {
   //* Lowercase all iso2 codes so consumers can compare directly.
   if (o.initialCountry) {
-    o.initialCountry = o.initialCountry.toLowerCase() as Iso2 | "auto" | "";
+    o.initialCountry = o.initialCountry.toLowerCase() as Iso2 | "";
   }
   if (o.onlyCountries?.length) {
     o.onlyCountries = o.onlyCountries.map((c) => c.toLowerCase() as Iso2);

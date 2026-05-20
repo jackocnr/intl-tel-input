@@ -8,7 +8,7 @@ import IntlTelInput, {
   type StrictRejectSource,
 } from "@intl-tel-input/react";
 import { getErrorMessage } from "../../../js/getErrorMessage";
-import { geoIpLookup } from "../../../js/geoIpLookup";
+import { initialCountryLookup } from "../../../js/initialCountryLookup";
 
 type FormValues = { phone: string };
 
@@ -92,8 +92,7 @@ const App = () => {
                   value={field.value}
                   onChangeNumber={field.onChange}
                   onStrictReject={handleStrictReject}
-                  initialCountry="auto"
-                  geoIpLookup={geoIpLookup}
+                  initialCountryLookup={initialCountryLookup}
                   // @ts-expect-error EJS-templated URL string, resolved at build time.
                   loadUtils={() => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>")}
                   searchInputClass="form-control"

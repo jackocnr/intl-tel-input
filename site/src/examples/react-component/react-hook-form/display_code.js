@@ -3,7 +3,7 @@ import { useForm, Controller, useWatch } from "react-hook-form";
 import IntlTelInput, { intlTelInput } from "@intl-tel-input/react";
 import "intl-tel-input/styles";
 
-const geoIpLookup = async () => {
+const initialCountryLookup = async () => {
   const res = await fetch("https://ipapi.co/json");
   const data = await res.json();
   return data.country_code;
@@ -52,8 +52,7 @@ const App = () => {
             ref={itiRef}
             value={field.value}
             onChangeNumber={field.onChange}
-            initialCountry="auto"
-            geoIpLookup={geoIpLookup}
+            initialCountryLookup={initialCountryLookup}
             loadUtils={() => import("intl-tel-input/utils")}
             inputProps={{
               id: "phone",

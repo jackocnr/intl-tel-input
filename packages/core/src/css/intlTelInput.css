@@ -435,14 +435,14 @@
   /* Offset and sprite size are expressed as multiples of --iti-flag-width / --iti-flag-height
      so consumers can scale the flags by overriding just those two vars.
      The 100 fallback hides all flags when no country class is set (useful for the empty state
-     shown while geoIpLookup is resolving) — done via var()'s fallback rather than as a rule
+     shown while initialCountryLookup is resolving) — done via var()'s fallback rather than as a rule
      default so the country-specific offsets win regardless of source order. */
   background-position: calc(var(--iti-flag-offset, 100) * var(--iti-flag-width)) 0;
   background-size: calc(var(--iti-flag-count) * var(--iti-flag-width))
     var(--iti-flag-height);
 }
 
-/* Loading state (used while geoIpLookup is resolving auto country). */
+/* Loading state (used while initialCountryLookup is resolving the initial country). */
 .iti__loading {
   position: relative;
   background: none;

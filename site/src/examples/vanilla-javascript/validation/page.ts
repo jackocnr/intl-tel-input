@@ -1,6 +1,6 @@
 import { setupStrictRejectToast } from "../../../js/strictRejectToast";
 import { getErrorMessage } from "../../../js/getErrorMessage";
-import { geoIpLookup } from "../../../js/geoIpLookup";
+import { initialCountryLookup } from "../../../js/initialCountryLookup";
 
 const form = document.querySelector<HTMLFormElement>("#form")!;
 const input = document.querySelector<HTMLInputElement>("#phone")!;
@@ -8,8 +8,7 @@ const errorMsg = document.querySelector<HTMLElement>("#error-msg")!;
 const validMsg = document.querySelector<HTMLElement>("#valid-msg")!;
 
 const iti = window.intlTelInput(input, {
-  initialCountry: "auto",
-  geoIpLookup,
+  initialCountryLookup,
   // @ts-expect-error - lodash template tag, resolved at build time
   loadUtils: () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
   searchInputClass: "form-control",

@@ -4,8 +4,8 @@
 // omits for clarity, with a pointer to the full explanation in the docs.
 
 export const NOTE_BODIES = {
-  geoIpLookup:
-    '<code>geoIpLookup</code> here uses ipapi\'s free tier. For production, swap for a paid plan or alternative - see <a href="/docs/options#geoiplookup">docs</a>.',
+  initialCountryLookup:
+    '<code>initialCountryLookup</code> here uses ipapi\'s free tier. For production, swap for a paid plan or alternative - see <a href="/docs/options#initialcountrylookup">docs</a>.',
   deriveErrorMessage:
     '<code>getErrorMessage</code> is up to you - see <a href="/docs/best-practices#show-a-user-facing-error-message">a worked example</a>.',
 };
@@ -45,8 +45,8 @@ export const renderPlaygroundNotesHtml = (keys) =>
 // so notes stay in sync with the code automatically.
 export const deriveNotesFromCode = (code) => {
   const notes = [];
-  if (/\bgeoIpLookup\b/.test(code)) {
-    notes.push("geoIpLookup");
+  if (/\binitialCountryLookup\b/.test(code)) {
+    notes.push("initialCountryLookup");
   }
   if (/\bgetErrorMessage\b/.test(code)) {
     notes.push("deriveErrorMessage");

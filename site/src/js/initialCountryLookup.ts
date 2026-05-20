@@ -2,7 +2,7 @@ import type { Iso2 } from "intl-tel-input";
 
 const STORAGE_KEY = "iti-geoip-country";
 
-export const geoIpLookup = async (): Promise<Iso2> => {
+export const initialCountryLookup = async (): Promise<Iso2> => {
   const cached = sessionStorage.getItem(STORAGE_KEY) as Iso2 | null;
   if (cached) {
     return cached;

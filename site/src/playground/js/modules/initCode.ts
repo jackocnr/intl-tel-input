@@ -18,9 +18,9 @@ const HLJS_LANGUAGE: Record<Integration, string> = {
   svelte: "html",
 };
 
-// geoIpLookup and customPlaceholder both get hoisted to a top-level const (or Angular class field)
+// initialCountryLookup and customPlaceholder both get hoisted to a top-level const (or Angular class field)
 // in every integration, so we store them at zero indentation and let each renderer embed them uniformly.
-const GEO_IP_LOOKUP_BODY = [
+const INITIAL_COUNTRY_LOOKUP_BODY = [
   "async () => {",
   '  const res = await fetch("https://ipapi.co/json");',
   "  const data = await res.json();",
@@ -47,7 +47,7 @@ type SnippetModel = {
   initialValue: string;
   placeholder: string;
   // Non-null when enabled — renderers hoist these to top-level consts (or Angular class fields).
-  geoIpLookup: string | null;
+  initialCountryLookup: string | null;
   customPlaceholder: string | null;
 };
 
@@ -103,7 +103,7 @@ function buildModel(
     i18n,
     initialValue: String(state.value ?? ""),
     placeholder: String(state.placeholder ?? ""),
-    geoIpLookup: state.geoIpLookup ? GEO_IP_LOOKUP_BODY : null,
+    initialCountryLookup: state.initialCountryLookup ? INITIAL_COUNTRY_LOOKUP_BODY : null,
     customPlaceholder: state.customPlaceholder ? CUSTOM_PLACEHOLDER_BODY : null,
   };
 }
@@ -141,8 +141,8 @@ function renderVanilla(model: SnippetModel): string {
   }
   lines.push('import "intl-tel-input/styles";');
   lines.push("");
-  if (model.geoIpLookup) {
-    lines.push(`const geoIpLookup = ${model.geoIpLookup};`);
+  if (model.initialCountryLookup) {
+    lines.push(`const initialCountryLookup = ${model.initialCountryLookup};`);
     lines.push("");
   }
   if (model.customPlaceholder) {
@@ -151,7 +151,7 @@ function renderVanilla(model: SnippetModel): string {
   }
   lines.push('const input = document.querySelector("#phone");');
 
-  const hasGeoIp = !!model.geoIpLookup;
+  const hasGeoIp = !!model.initialCountryLookup;
   const hasCustomPlaceholder = !!model.customPlaceholder;
   if (!model.i18n && !hasGeoIp && !hasCustomPlaceholder && model.options.length === 0) {
     lines.push("const iti = intlTelInput(input);");
@@ -161,7 +161,7 @@ function renderVanilla(model: SnippetModel): string {
       lines.push(`  i18n: ${model.i18n.importName},`);
     }
     if (hasGeoIp) {
-      lines.push("  geoIpLookup,");
+      lines.push("  initialCountryLookup,");
     }
     if (hasCustomPlaceholder) {
       lines.push("  customPlaceholder,");
@@ -228,8 +228,8 @@ function renderReact(model: SnippetModel): string {
   }
   lines.push('import "intl-tel-input/styles";');
   lines.push("");
-  if (model.geoIpLookup) {
-    lines.push(`const geoIpLookup = ${model.geoIpLookup};`);
+  if (model.initialCountryLookup) {
+    lines.push(`const initialCountryLookup = ${model.initialCountryLookup};`);
     lines.push("");
   }
   if (model.customPlaceholder) {
@@ -250,8 +250,8 @@ function renderReact(model: SnippetModel): string {
   if (model.i18n) {
     props.push(`i18n={${model.i18n.importName}}`);
   }
-  if (model.geoIpLookup) {
-    props.push("geoIpLookup={geoIpLookup}");
+  if (model.initialCountryLookup) {
+    props.push("initialCountryLookup={initialCountryLookup}");
   }
   if (model.customPlaceholder) {
     props.push("customPlaceholder={customPlaceholder}");
@@ -310,9 +310,9 @@ function renderVue(model: SnippetModel): string {
     );
   }
   scriptBody.push('import "intl-tel-input/styles";');
-  if (model.geoIpLookup) {
+  if (model.initialCountryLookup) {
     scriptBody.push("");
-    `const geoIpLookup = ${model.geoIpLookup};`
+    `const initialCountryLookup = ${model.initialCountryLookup};`
       .split("\n")
       .forEach((line) => scriptBody.push(line));
   }
@@ -337,8 +337,8 @@ function renderVue(model: SnippetModel): string {
   if (model.i18n) {
     attrs.push(`:i18n="${model.i18n.importName}"`);
   }
-  if (model.geoIpLookup) {
-    attrs.push(':geo-ip-lookup="geoIpLookup"');
+  if (model.initialCountryLookup) {
+    attrs.push(':initial-country-lookup="initialCountryLookup"');
   }
   if (model.customPlaceholder) {
     attrs.push(':custom-placeholder="customPlaceholder"');
@@ -418,9 +418,9 @@ function renderAngular(model: SnippetModel): string {
     classFields.push(`i18n = ${model.i18n.importName};`);
     attrs.push('[i18n]="i18n"');
   }
-  if (model.geoIpLookup) {
-    classFields.push(`geoIpLookup = ${model.geoIpLookup};`);
-    attrs.push('[geoIpLookup]="geoIpLookup"');
+  if (model.initialCountryLookup) {
+    classFields.push(`initialCountryLookup = ${model.initialCountryLookup};`);
+    attrs.push('[initialCountryLookup]="initialCountryLookup"');
   }
   if (model.customPlaceholder) {
     classFields.push(`customPlaceholder = ${model.customPlaceholder};`);
@@ -497,7 +497,7 @@ function renderSvelte(model: SnippetModel): string {
     );
   }
   scriptLines.push('  import "intl-tel-input/styles";');
-  pushSvelteHoistedConst(scriptLines, "geoIpLookup", model.geoIpLookup);
+  pushSvelteHoistedConst(scriptLines, "initialCountryLookup", model.initialCountryLookup);
   pushSvelteHoistedConst(scriptLines, "customPlaceholder", model.customPlaceholder);
   scriptLines.push("</script>");
 
@@ -510,8 +510,8 @@ function renderSvelte(model: SnippetModel): string {
   if (model.i18n) {
     attrs.push(`i18n={${model.i18n.importName}}`);
   }
-  if (model.geoIpLookup) {
-    attrs.push("geoIpLookup={geoIpLookup}");
+  if (model.initialCountryLookup) {
+    attrs.push("initialCountryLookup={initialCountryLookup}");
   }
   if (model.customPlaceholder) {
     attrs.push("customPlaceholder={customPlaceholder}");

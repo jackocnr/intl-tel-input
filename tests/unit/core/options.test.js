@@ -79,13 +79,18 @@ describe("core/options validateOptions", () => {
     expect(() =>
       validateOptions({
         allowDropdown: false,
-        initialCountry: "auto",
+        initialCountry: "us",
         excludeCountries: ["us"],
         allowedNumberTypes: ["MOBILE"],
         autoPlaceholder: "aggressive",
       }),
     ).not.toThrow();
     expect(warnSpy).not.toHaveBeenCalled();
+  });
+
+  test("warns when initialCountry is 'auto' (no longer accepted)", () => {
+    expect(() => validateOptions({ initialCountry: "auto" })).not.toThrow();
+    expect(warnSpy).toHaveBeenCalled();
   });
 
   test("warns on invalid i18n option type", () => {

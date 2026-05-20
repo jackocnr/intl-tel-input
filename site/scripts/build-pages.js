@@ -669,11 +669,11 @@ tasks.push({
   data: () => ({}),
 });
 
-// geo_ip_lookup_js — shared geoIpLookup helper. Same copy-through-tmp pattern.
+// initial_country_lookup_js — shared initialCountryLookup helper. Same copy-through-tmp pattern.
 tasks.push({
-  name: "geo_ip_lookup_js",
-  src: "src/js/geoIpLookup.ts",
-  dest: "tmp/js/geoIpLookup.ts",
+  name: "initial_country_lookup_js",
+  src: "src/js/initialCountryLookup.ts",
+  dest: "tmp/js/initialCountryLookup.ts",
   data: () => ({}),
 });
 
@@ -749,7 +749,7 @@ tasks.push({
       .replace("{{PLAYGROUND_PRESETS}}", renderPlaygroundPresetsPlayground())
       .replace(
         "{{PLAYGROUND_NOTES}}",
-        renderPlaygroundNotesHtml(["geoIpLookup"]),
+        renderPlaygroundNotesHtml(["initialCountryLookup"]),
       ),
     pageType: "playground",
     name: "playground",

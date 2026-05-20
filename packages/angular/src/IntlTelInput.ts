@@ -105,10 +105,10 @@ class IntlTelInput
   @Input() fixDropdownWidth?: AllOptions["fixDropdownWidth"];
   @Input() formatAsYouType?: AllOptions["formatAsYouType"];
   @Input() formatOnDisplay?: AllOptions["formatOnDisplay"];
-  @Input() geoIpLookup?: AllOptions["geoIpLookup"];
   @Input() hiddenInput?: AllOptions["hiddenInput"];
   @Input() i18n?: AllOptions["i18n"];
   @Input() initialCountry?: AllOptions["initialCountry"];
+  @Input() initialCountryLookup?: AllOptions["initialCountryLookup"];
   @Input() loadUtils?: AllOptions["loadUtils"];
   @Input() nationalMode?: AllOptions["nationalMode"];
   @Input() onlyCountries?: AllOptions["onlyCountries"];
@@ -234,10 +234,10 @@ class IntlTelInput
       fixDropdownWidth: this.fixDropdownWidth,
       formatAsYouType: this.formatAsYouType,
       formatOnDisplay: this.formatOnDisplay,
-      geoIpLookup: this.geoIpLookup,
       hiddenInput: this.hiddenInput,
       i18n: this.i18n,
       initialCountry: this.initialCountry,
+      initialCountryLookup: this.initialCountryLookup,
       loadUtils: this.loadUtils,
       nationalMode: this.nationalMode,
       onlyCountries: this.onlyCountries,

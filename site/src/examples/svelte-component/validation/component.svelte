@@ -1,7 +1,7 @@
 <script>
   import IntlTelInput from "@intl-tel-input/svelte";
   import { getErrorMessage } from "../../../js/getErrorMessage";
-  import { geoIpLookup } from "../../../js/geoIpLookup";
+  import { initialCountryLookup } from "../../../js/initialCountryLookup";
 
   let number = $state("");
   let isValid = $state(false);
@@ -67,8 +67,7 @@
         onChangeValidity={(v) => (isValid = v)}
         onChangeErrorCode={(e) => (errorCode = e)}
         onStrictReject={handleStrictReject}
-        initialCountry="auto"
-        {geoIpLookup}
+        {initialCountryLookup}
         loadUtils={() => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>")}
         searchInputClass="form-control"
         inputProps={{

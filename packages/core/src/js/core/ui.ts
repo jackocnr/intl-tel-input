@@ -1042,7 +1042,7 @@ export default class UI {
         checkIcon.appendChild(buildCheckIcon());
         this.#selectedListItemEl = newListItem;
         //* With dropdownAlwaysOpen, the dropdown is visible throughout, so keep the highlighted
-        //* row in sync with the selection (e.g. when geoIpLookup resolves, or the user types a
+        //* row in sync with the selection (e.g. when initialCountryLookup resolves, or the user types a
         //* different dial code) — otherwise it keeps pointing at a stale row.
         if (this.#options.dropdownAlwaysOpen) {
           this.#highlightListItem(newListItem);

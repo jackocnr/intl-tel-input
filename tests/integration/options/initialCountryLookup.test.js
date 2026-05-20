@@ -3,7 +3,7 @@
  */
 import { initIntlTelInput, teardown, oneTickAsync, intlTelInput } from "../helpers/helpers";
 
-describe("geoIpLookup option", () => {
+describe("initialCountryLookup option", () => {
   describe("vanilla", () => {
     let iti, resolved;
 
@@ -24,7 +24,7 @@ describe("geoIpLookup option", () => {
     });
   });
 
-  describe("geoIpLookup failure path", () => {
+  describe("initialCountryLookup failure path", () => {
     let iti, rejected;
 
     beforeEach(async () => {
@@ -32,8 +32,7 @@ describe("geoIpLookup option", () => {
       intlTelInput.startedLoadingAutoCountry = false;
       intlTelInput.autoCountry = undefined;
       const options = {
-        initialCountry: "auto",
-        geoIpLookup: () => new Promise((_, reject) => setTimeout(() => reject(), 0)),
+        initialCountryLookup: () => new Promise((_, reject) => setTimeout(() => reject(), 0)),
       };
       ({ iti } = initIntlTelInput({ options }));
       iti.promise.catch(() => {
@@ -47,21 +46,20 @@ describe("geoIpLookup option", () => {
       intlTelInput.autoCountry = undefined;
     });
 
-    test("iti.promise rejects when geoIpLookup promise rejects", async () => {
+    test("iti.promise rejects when initialCountryLookup promise rejects", async () => {
       await expect(iti.promise).rejects.toBeUndefined();
       expect(rejected).toBe(true);
     });
   });
 
-  describe("geoIpLookup invalid iso2 response", () => {
+  describe("initialCountryLookup invalid iso2 response", () => {
     let iti;
 
     beforeEach(() => {
       intlTelInput.startedLoadingAutoCountry = false;
       intlTelInput.autoCountry = undefined;
       const options = {
-        initialCountry: "auto",
-        geoIpLookup: () => new Promise((resolve) => setTimeout(() => resolve("zz"), 0)),
+        initialCountryLookup: () => new Promise((resolve) => setTimeout(() => resolve("zz"), 0)),
       };
       ({ iti } = initIntlTelInput({ options }));
     });
@@ -77,14 +75,13 @@ describe("geoIpLookup option", () => {
     });
   });
 
-  describe("geoIpLookup and initialCountry=auto", () => {
+  describe("initialCountryLookup resolves successfully", () => {
     let iti, resolved;
 
     beforeEach(async () => {
       resolved = false;
       const options = {
-        initialCountry: "auto",
-        geoIpLookup: () => new Promise((resolve) => setTimeout(() => resolve("gb"), 10)),
+        initialCountryLookup: () => new Promise((resolve) => setTimeout(() => resolve("gb"), 10)),
       };
       ({ iti } = initIntlTelInput({ options }));
       iti.promise.then(() => {
@@ -95,22 +92,21 @@ describe("geoIpLookup option", () => {
 
     afterEach(() => teardown(iti));
 
-    test("iti.promise does not resolve until geoIpLookup complete", async () => {
+    test("iti.promise does not resolve until initialCountryLookup complete", async () => {
       expect(intlTelInput.startedLoadingAutoCountry).toBe(true);
       expect(resolved).toBe(false);
       await iti.promise;
       expect(resolved).toBe(true);
     });
 
-    describe("init a 2nd instance with geoIpLookup", () => {
+    describe("init a 2nd instance with initialCountryLookup", () => {
       let iti2, resolved2;
 
       beforeEach(async () => {
         resolved2 = false;
         await iti.promise; // allow the first instance to resolve before initialising the second
         const options = {
-          initialCountry: "auto",
-          geoIpLookup: () => new Promise((resolve) => setTimeout(() => resolve("gb"), 10)),
+          initialCountryLookup: () => new Promise((resolve) => setTimeout(() => resolve("gb"), 10)),
         };
         ({ iti: iti2 } = initIntlTelInput({ options }));
         iti2.promise.then(() => {
@@ -127,6 +123,37 @@ describe("geoIpLookup option", () => {
     });
   });
 
+  describe("explicit initialCountry overrides initialCountryLookup", () => {
+    let iti, lookupCalled;
+
+    beforeEach(async () => {
+      lookupCalled = false;
+      intlTelInput.startedLoadingAutoCountry = false;
+      intlTelInput.autoCountry = undefined;
+      const options = {
+        initialCountry: "gb",
+        initialCountryLookup: () => {
+          lookupCalled = true;
+          return Promise.resolve("us");
+        },
+      };
+      ({ iti } = initIntlTelInput({ options }));
+      await iti.promise;
+    });
+
+    afterEach(() => {
+      teardown(iti);
+      intlTelInput.startedLoadingAutoCountry = false;
+      intlTelInput.autoCountry = undefined;
+    });
+
+    test("lookup is not called when initialCountry is set", () => {
+      expect(lookupCalled).toBe(false);
+      expect(intlTelInput.startedLoadingAutoCountry).toBe(false);
+      expect(iti.getSelectedCountryData().iso2).toBe("gb");
+    });
+  });
+
   describe("init a 2nd instance after the first lookup fails", () => {
     let iti1, iti2, secondLookupCalled;
 
@@ -137,8 +164,7 @@ describe("geoIpLookup option", () => {
 
       ({ iti: iti1 } = initIntlTelInput({
         options: {
-          initialCountry: "auto",
-          geoIpLookup: () => Promise.reject(),
+          initialCountryLookup: () => Promise.reject(),
         },
       }));
       // Wait for the first lookup to fail.
@@ -146,8 +172,7 @@ describe("geoIpLookup option", () => {
 
       ({ iti: iti2 } = initIntlTelInput({
         options: {
-          initialCountry: "auto",
-          geoIpLookup: () => {
+          initialCountryLookup: () => {
             secondLookupCalled = true;
             return Promise.resolve("gb");
           },
@@ -162,14 +187,14 @@ describe("geoIpLookup option", () => {
       intlTelInput.autoCountry = undefined;
     });
 
-    test("second instance's geoIpLookup is invoked and resolves", async () => {
+    test("second instance's initialCountryLookup is invoked and resolves", async () => {
       await iti2.promise;
       expect(secondLookupCalled).toBe(true);
       expect(intlTelInput.autoCountry).toBe("gb");
     });
   });
 
-  describe("geoIpLookup hangs (never settles)", () => {
+  describe("initialCountryLookup hangs (never settles)", () => {
     let iti, rejected;
 
     beforeEach(() => {
@@ -178,8 +203,7 @@ describe("geoIpLookup option", () => {
       intlTelInput.startedLoadingAutoCountry = false;
       intlTelInput.autoCountry = undefined;
       const options = {
-        initialCountry: "auto",
-        geoIpLookup: () => new Promise(() => {}), // never resolves
+        initialCountryLookup: () => new Promise(() => {}), // never resolves
       };
       ({ iti } = initIntlTelInput({ options }));
       iti.promise.catch(() => {

@@ -126,13 +126,24 @@ An array of iso2 codes to exclude from the country list e.g. `["gb", "us"]`. Als
 
 Try `intl-tel-input` with all "A" countries excluded in the [Playground](/playground?excludeCountries=%5B"af"%2C"al"%2C"dz"%2C"as"%2C"ad"%2C"ao"%2C"ai"%2C"ag"%2C"ar"%2C"am"%2C"aw"%2C"ac"%2C"au"%2C"at"%2C"az"%2C"ax"%5D&initialCountry=#excludeCountries) — the country list now starts at Bahamas.
 
-###### geoIpLookup
+###### initialCountry
+Type: `string`  
+Default: `""`  
+
+Set the initial country selection by specifying its iso2 code, e.g. `"us"` for the United States. If left unset (and no [`initialCountryLookup`](#initialcountrylookup) is provided), the input starts in the empty/globe state. Note: however you use `initialCountry`, it will not update the country selection if the input already contains a number with an international dial code.
+
+View `intl-tel-input` with `initialCountry` set to `"de"` (Germany) in the [Playground](/playground?initialCountry=de#initialCountry).
+
+> [!WARNING]
+> Only set this if you're sure of the user's country. If set incorrectly and the user auto-fills their national number and submits without checking, the number can pass validation but be stored with the wrong dial code.
+
+###### initialCountryLookup
 Type: `() => Promise<string>`  
 Default: `null`  
 
-When setting [`initialCountry`](#initialcountry) to `"auto"`, you must use this option to specify a custom function that calls an IP lookup service to get the user's location and returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) that resolves with the relevant iso2 code (or rejects on error).
+Provide a custom function that calls a lookup service (e.g. an IP geolocation API) to determine the user's country, and returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) that resolves with the relevant iso2 code (or rejects on error). The lookup only runs when [`initialCountry`](#initialcountry) is not set — an explicit `initialCountry` always takes precedence.
 
-Here is an example using the [ipapi](https://ipapi.co/api/?javascript#location-of-clients-ip) service<sup>*</sup> (assign this to `geoIpLookup`):  
+Here is an example using the [ipapi](https://ipapi.co/api/?javascript#location-of-clients-ip) service<sup>*</sup> (assign this to `initialCountryLookup`):
 ```js
 async () => {
   const res = await fetch("https://ipapi.co/json");
@@ -148,18 +159,7 @@ _Tip: store the result in a cookie to avoid repeat lookups!_
 > [!NOTE]  
 > On initialisation, a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) is exposed via the `promise` property on the core library instance (accessible directly with the vanilla JavaScript library, or via a ref in the framework components), so you can `await` it to know when initialisation requests like this have completed.
 
-Play with this option in the [Playground](/playground#geoIpLookup).
-
-###### initialCountry
-Type: `string`  
-Default: `""`  
-
-Set the initial country selection by specifying its iso2 code, e.g. `"us"` for the United States. You can also set `initialCountry` to `"auto"`, which will look up the user's country based on their IP address (requires the [`geoIpLookup`](#geoiplookup) option - [see example](/examples/vanilla-javascript/lookup-country)). Note: however you use `initialCountry`, it will not update the country selection if the input already contains a number with an international dial code. 
-
-View `intl-tel-input` with `initialCountry` set to `"de"` (Germany) in the [Playground](/playground?initialCountry=de#initialCountry).
-
-> [!WARNING]
-> Only set this if you're sure of the user's country. If set incorrectly and the user auto-fills their national number and submits without checking, the number can pass validation but be stored with the wrong dial code.
+Play with this option in the [Playground](/playground#initialCountryLookup).
 
 ###### onlyCountries
 Type: `string[]`  

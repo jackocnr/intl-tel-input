@@ -3,7 +3,7 @@
   import IntlTelInput from "@intl-tel-input/vue";
   import "intl-tel-input/styles";
 
-  const geoIpLookup = async () => {
+  const initialCountryLookup = async () => {
     const res = await fetch("https://ipapi.co/json");
     const data = await res.json();
     return data.country_code;
@@ -49,11 +49,10 @@
       @changeNumber="handleChangeNumber"
       @changeValidity="isValid = $event"
       @changeErrorCode="errorCode = $event"
-      initial-country="auto"
       :separate-dial-code="true"
       :strict-mode="true"
       :strict-reject-animation="true"
-      :geo-ip-lookup="geoIpLookup"
+      :initial-country-lookup="initialCountryLookup"
       :load-utils="() => import('intl-tel-input/utils')"
       :input-props="{
         id: 'phone',

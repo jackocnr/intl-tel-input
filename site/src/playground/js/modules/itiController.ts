@@ -1,6 +1,6 @@
 import type { Iti } from "../../../../../packages/core/dist/js/intlTelInput";
 import { resolveI18nSelection } from "./i18n";
-import { geoIpLookup } from "../../../js/geoIpLookup";
+import { initialCountryLookup } from "../../../js/initialCountryLookup";
 
 function applyInputAttributes(state: any, telInput: HTMLInputElement) {
   if (!state || !telInput) {
@@ -62,8 +62,8 @@ function toInitOptions(
     opts.customPlaceholder = (exampleNumber: string) => (exampleNumber ? exampleNumber.replace(/\d/g, "X") : "Enter number");
   }
 
-  if (state.geoIpLookup) {
-    opts.geoIpLookup = geoIpLookup;
+  if (state.initialCountryLookup) {
+    opts.initialCountryLookup = initialCountryLookup;
   }
 
   if (typeof state.dropdownAlwaysOpen === "boolean") {

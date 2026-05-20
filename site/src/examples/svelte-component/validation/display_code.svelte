@@ -2,7 +2,7 @@
   import IntlTelInput from "@intl-tel-input/svelte";
   import "intl-tel-input/styles";
 
-  const geoIpLookup = async () => {
+  const initialCountryLookup = async () => {
     const res = await fetch("https://ipapi.co/json");
     const data = await res.json();
     return data.country_code;
@@ -43,8 +43,7 @@
     onChangeNumber={handleChangeNumber}
     onChangeValidity={(v) => (isValid = v)}
     onChangeErrorCode={(e) => (errorCode = e)}
-    initialCountry="auto"
-    {geoIpLookup}
+    {initialCountryLookup}
     loadUtils={() => import("intl-tel-input/utils")}
     inputProps={{
       id: "phone",

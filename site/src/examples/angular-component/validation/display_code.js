@@ -11,8 +11,7 @@ import "intl-tel-input/styles";
       <intl-tel-input
         formControlName="phone"
         [inputAttributes]="{ id: 'phone' }"
-        initialCountry="auto"
-        [geoIpLookup]="geoIpLookup"
+        [initialCountryLookup]="initialCountryLookup"
         [loadUtils]="loadUtils"
       />
       <button type="submit">Submit</button>
@@ -33,7 +32,7 @@ export class AppComponent {
 
   loadUtils = () => import("intl-tel-input/utils");
 
-  geoIpLookup = async () => {
+  initialCountryLookup = async () => {
     const res = await fetch("https://ipapi.co/json");
     const data = await res.json();
     return data.country_code;

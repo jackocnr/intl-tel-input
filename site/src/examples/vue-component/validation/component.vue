@@ -2,7 +2,7 @@
   import { computed, ref } from "vue";
   import IntlTelInput from "@intl-tel-input/vue";
   import { getErrorMessage } from "../../../js/getErrorMessage";
-  import { geoIpLookup } from "../../../js/geoIpLookup";
+  import { initialCountryLookup } from "../../../js/initialCountryLookup";
 
   const number = ref("");
   const isValid = ref(false);
@@ -74,11 +74,10 @@
           @changeValidity="isValid = $event"
           @changeErrorCode="errorCode = $event"
           @strictReject="handleStrictReject"
-          initial-country="auto"
           :separate-dial-code="true"
           :strict-mode="true"
           :strict-reject-animation="true"
-          :geo-ip-lookup="geoIpLookup"
+          :initial-country-lookup="initialCountryLookup"
           :load-utils="() => import('<%= cacheBust(`/intl-tel-input/js/utils.js`) %>')"
           search-input-class="form-control"
           :input-props="{

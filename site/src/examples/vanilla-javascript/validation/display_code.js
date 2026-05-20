@@ -5,7 +5,7 @@ const input = document.querySelector("#phone");
 const errorMsg = document.querySelector("#error-msg");
 const validMsg = document.querySelector("#valid-msg");
 
-const geoIpLookup = async () => {
+const initialCountryLookup = async () => {
   const res = await fetch("https://ipapi.co/json");
   const data = await res.json();
   return data.country_code;
@@ -13,8 +13,7 @@ const geoIpLookup = async () => {
 
 // initialise library
 const iti = intlTelInput(input, {
-  initialCountry: "auto",
-  geoIpLookup,
+  initialCountryLookup,
   loadUtils: () => import("intl-tel-input/utils"),
 });
 

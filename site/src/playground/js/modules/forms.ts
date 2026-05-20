@@ -297,7 +297,7 @@ function buildControlRow(key: string, meta: any, { idPrefix, dataAttr, infoIconT
       });
     }
 
-    if (key === "geoIpLookup") {
+    if (key === "initialCountryLookup") {
       return buildBooleanExampleControl(key, meta, {
         idPrefix,
         dataAttr,

@@ -290,11 +290,8 @@ const countryDatalist = (() => {
     .sort((a, b) => a.label.localeCompare(b.label));
 })();
 
-//* Datalist for the initialCountry combobox: "auto" pinned on top, then the country list above.
-const initialCountryDatalist = [
-  { value: "auto", label: "Auto-detect via geoIpLookup" },
-  ...countryDatalist,
-];
+//* Datalist for the initialCountry combobox.
+const initialCountryDatalist = [...countryDatalist];
 
 const {
   defaultInitOptions,
@@ -327,9 +324,9 @@ const itiController = new ItiPlaygroundController({
   specialOptionKeys,
 });
 
-// Track whether an iti init (incl. async geoIpLookup) is in flight, so that
+// Track whether an iti init (incl. async initialCountryLookup) is in flight, so that
 // the demo-state capture below can skip the countrychange events that fire
-// from initial setup / geoIp results — those aren't user-driven selections.
+// from initial setup / lookup results — those aren't user-driven selections.
 let itiInitInProgress = true;
 let itiInitNonce = 0;
 
@@ -340,7 +337,7 @@ function initItiWithState(state) {
   return itiController.initWithState(getFullState(state))
     .then(() => {
       syncKeepDropdownOpen();
-      // Wait for the iti instance's own promise too (resolves after geoIp).
+      // Wait for the iti instance's own promise too (resolves after initialCountryLookup).
       return itiController.iti?.promise?.catch(() => undefined);
     })
     .then(() => {
@@ -705,17 +702,9 @@ const HINT_CONFIGS = [
     shouldShow: () => !keepDropdownOpenCheckbox.checked,
   },
   {
-    optionKey: "geoIpLookup",
-    message: "Tip: set [initialCountry](#initialCountry) to \"auto\" for this to take effect.",
-    shouldShow: () => getCombinedStateFromControls().initialCountry !== "auto",
-  },
-  {
-    optionKey: "initialCountry",
-    message: "Tip: enable [geoIpLookup](#geoIpLookup) to get this working.",
-    shouldShow: () => {
-      const state = getCombinedStateFromControls();
-      return state.initialCountry === "auto" && !state.geoIpLookup;
-    },
+    optionKey: "initialCountryLookup",
+    message: "Tip: clear [initialCountry](#initialCountry) for the lookup to take effect — an explicit initialCountry always wins.",
+    shouldShow: () => Boolean(getCombinedStateFromControls().initialCountry),
   },
   {
     optionKey: "onlyCountries",
@@ -996,7 +985,7 @@ function updateNotesVisibility(state) {
   if (!notesContainer) {
     return;
   }
-  const noteKeys = ["strictMode", "geoIpLookup"];
+  const noteKeys = ["strictMode", "initialCountryLookup"];
   let anyVisible = false;
   noteKeys.forEach((key) => {
     const el = notesContainer.querySelector(`[data-note-for="${key}"]`);
@@ -1239,8 +1228,9 @@ function captureSelectedCountryToForm({ requireDropdownInteraction = true } = {}
     return;
   }
   // Skip countrychange events that fire while the iti instance is still
-  // setting itself up (incl. async geoIp). Otherwise the geoIp result on
-  // first load would silently overwrite the user's initialCountry="auto".
+  // setting itself up (incl. async initialCountryLookup). Otherwise the
+  // lookup result on first load would silently overwrite the playground's
+  // intended initial state.
   if (itiInitInProgress) {
     return;
   }
@@ -1248,7 +1238,7 @@ function captureSelectedCountryToForm({ requireDropdownInteraction = true } = {}
   // typing — in that case the typed number itself is what gets preserved,
   // and the country re-derives from it on the next reinit. Note: with
   // keepDropdownOpen on, the dropdown is "open" from init, so this guard
-  // can't filter out geoIp on its own — itiInitInProgress (above) does that.
+  // can't filter out the lookup on its own — itiInitInProgress (above) does that.
   if (requireDropdownInteraction && !dropdownCurrentlyOpen) {
     return;
   }

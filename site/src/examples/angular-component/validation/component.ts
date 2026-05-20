@@ -10,7 +10,7 @@ import {
 } from "@angular/forms";
 import IntlTelInput, { type StrictRejectDetail } from "@intl-tel-input/angular";
 import { getErrorMessage } from "../../../js/getErrorMessage";
-import { geoIpLookup } from "../../../js/geoIpLookup";
+import { initialCountryLookup } from "../../../js/initialCountryLookup";
 
 @Component({
   selector: "#app",
@@ -43,8 +43,7 @@ import { geoIpLookup } from "../../../js/geoIpLookup";
             formControlName="phone"
             (blur)="enableValidation()"
             (strictReject)="handleStrictReject($event)"
-            initialCountry="auto"
-            [geoIpLookup]="geoIpLookup"
+            [initialCountryLookup]="initialCountryLookup"
             [loadUtils]="loadUtils"
             searchInputClass="form-control"
             [inputAttributes]="inputAttributes"
@@ -74,7 +73,7 @@ export class AppComponent {
   // eslint-disable-next-line class-methods-use-this
   loadUtils = () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>");
 
-  geoIpLookup = geoIpLookup;
+  initialCountryLookup = initialCountryLookup;
 
   fg: FormGroup = new FormGroup({
     phone: new FormControl<string>("", [Validators.required]),

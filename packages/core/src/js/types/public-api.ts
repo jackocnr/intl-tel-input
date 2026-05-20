@@ -79,12 +79,12 @@ export interface AllOptions {
   fixDropdownWidth: boolean;
   formatAsYouType: boolean;
   formatOnDisplay: boolean;
-  geoIpLookup: (() => Promise<Iso2>) | null;
   hiddenInput:
     | ((telInputName: string) => { phone: string; country?: string })
     | null;
   i18n: I18n;
-  initialCountry: Iso2 | "auto" | "";
+  initialCountry: Iso2 | "";
+  initialCountryLookup: (() => Promise<Iso2>) | null;
   loadUtils: UtilsLoader | null;
   nationalMode: boolean;
   onlyCountries: Iso2[] | null;

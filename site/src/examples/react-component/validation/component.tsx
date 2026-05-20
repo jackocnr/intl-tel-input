@@ -6,7 +6,7 @@ import IntlTelInput, {
 } from "@intl-tel-input/react";
 import type { ValidationError } from "intl-tel-input";
 import { getErrorMessage } from "../../../js/getErrorMessage";
-import { geoIpLookup } from "../../../js/geoIpLookup";
+import { initialCountryLookup } from "../../../js/initialCountryLookup";
 
 const App = () => {
   const [number, setNumber] = useState("");
@@ -74,8 +74,7 @@ const App = () => {
             onChangeValidity={setIsValid}
             onChangeErrorCode={setErrorCode}
             onStrictReject={handleStrictReject}
-            initialCountry="auto"
-            geoIpLookup={geoIpLookup}
+            initialCountryLookup={initialCountryLookup}
             // @ts-expect-error EJS-templated URL string, resolved at build time.
             loadUtils={() => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>")}
             searchInputClass="form-control"

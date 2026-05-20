@@ -46,7 +46,7 @@ See the [Hidden input example](/examples/vanilla-javascript/hidden-input).
 Use the [`initialCountry`](/docs/options#initialcountry) option.
 
 - If you already know the user's country, set it to the relevant iso2 code, e.g. `"us"`.
-- Or set it to `"auto"` and provide [`geoIpLookup`](/docs/options#geoiplookup) to detect the user’s country.
+- If you don't, provide [`initialCountryLookup`](/docs/options#initialcountrylookup) to detect the user’s country (e.g. via an IP lookup service).
 
 
 ## Can I translate the UI and country names?
