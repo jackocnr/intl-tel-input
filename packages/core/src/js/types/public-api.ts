@@ -30,12 +30,12 @@ export type ItiUtils = {
     number: string,
     iso2: string | undefined,
   ): ValidationError | null;
-  isPossibleNumber(
+  isValidNumber(
     number: string,
     iso2: string | undefined,
     numberType?: NumberType[] | null,
   ): boolean;
-  isValidNumber(
+  isValidNumberPrecise(
     number: string,
     iso2: string | undefined,
     numberType?: NumberType[] | null,

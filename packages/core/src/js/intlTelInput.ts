@@ -1102,7 +1102,7 @@ export class Iti {
     //* See if adding more digits is still valid to get the true maximum valid length.
     let validNumber = exampleNumber;
     while (
-      intlTelInput.utils.isPossibleNumber(
+      intlTelInput.utils.isValidNumber(
         exampleNumber,
         iso2,
         allowedNumberTypes,
@@ -1537,8 +1537,8 @@ export class Iti {
 
     const check =
       mode === "precise"
-        ? intlTelInput.utils!.isValidNumber
-        : intlTelInput.utils!.isPossibleNumber;
+        ? intlTelInput.utils!.isValidNumberPrecise
+        : intlTelInput.utils!.isValidNumber;
     if (!check(value, iso2, allowedNumberTypes)) {
       return false;
     }

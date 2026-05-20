@@ -109,28 +109,28 @@ Get more information about an invalid number — returns a [`ValidationError`](/
 intlTelInput.utils.getValidationError("702", "us"); // "TOO_SHORT"
 ```
 
-###### utils.isPossibleNumber
+###### utils.isValidNumber
 Type: `(number: string, iso2: string | undefined, numberTypes?: NumberType[] | null) => boolean`  
 
-Check if the given number is possible based on its length. Used by [`iti.isValidNumber()`](/docs/methods#isvalidnumber). Optionally pass an array of [`NumberType`](/docs/types#numbertype) values to restrict the check to specific types. More future-proof than [`utils.isValidNumber`](#utils-isvalidnumber), as country length rules rarely change.
+Check if the given number is valid based on its length. Used by [`iti.isValidNumber()`](/docs/methods#isvalidnumber). Optionally pass an array of [`NumberType`](/docs/types#numbertype) values to restrict the check to specific types. More future-proof than [`utils.isValidNumberPrecise`](#utils-isvalidnumberprecise), as country length rules rarely change. _Note: previously named `utils.isPossibleNumber`._
 
 ```js
-intlTelInput.utils.isPossibleNumber("7024181234", "us"); // true
-intlTelInput.utils.isPossibleNumber("7024181234", "us", ["MOBILE"]); // true
+intlTelInput.utils.isValidNumber("7024181234", "us"); // true
+intlTelInput.utils.isValidNumber("7024181234", "us", ["MOBILE"]); // true
 ```
 
 > [!NOTE]
 > When you pass `["MOBILE"]` or `["FIXED_LINE"]` for the `numberTypes` param, `"FIXED_LINE_OR_MOBILE"` is automatically included — so countries like the US (where the two can't be told apart) still match correctly.
 
-###### utils.isValidNumber
+###### utils.isValidNumberPrecise
 Type: `(number: string, iso2: string | undefined, numberTypes?: NumberType[] | null) => boolean`  
 
-Check if the given number is valid using precise country/area-code matching rules. Used by [`iti.isValidNumberPrecise()`](/docs/methods#isvalidnumberprecise). Optionally pass an array of [`NumberType`](/docs/types#numbertype) values to restrict the check to specific types. Note that these rules change each month for various countries, so the package needs to be kept up-to-date (e.g. via an automated script) — otherwise you may start rejecting valid numbers. For a simpler and more future-proof check, see [`utils.isPossibleNumber`](#utils-ispossiblenumber).
+Check if the given number is valid using precise country/area-code matching rules. Used by [`iti.isValidNumberPrecise()`](/docs/methods#isvalidnumberprecise). Optionally pass an array of [`NumberType`](/docs/types#numbertype) values to restrict the check to specific types. Note that these rules change each month for various countries, so the package needs to be kept up-to-date (e.g. via an automated script) — otherwise you may start rejecting valid numbers. For a simpler and more future-proof check, see [`utils.isValidNumber`](#utils-isvalidnumber). _Note: previously named `utils.isValidNumber`._
 
 ```js
-intlTelInput.utils.isValidNumber("7024181234", "us"); // true
-intlTelInput.utils.isValidNumber("7024181234", "us", ["MOBILE"]); // true
-intlTelInput.utils.isValidNumber("7024181234", "us", ["TOLL_FREE"]); // false
+intlTelInput.utils.isValidNumberPrecise("7024181234", "us"); // true
+intlTelInput.utils.isValidNumberPrecise("7024181234", "us", ["MOBILE"]); // true
+intlTelInput.utils.isValidNumberPrecise("7024181234", "us", ["TOLL_FREE"]); // false
 ```
 
 > [!NOTE]

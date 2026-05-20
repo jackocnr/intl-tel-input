@@ -163,25 +163,27 @@ const getPatchedNumberTypeNames = (numberTypeNames) => {
   return numberTypeNames.concat(additions);
 };
 
-//* Check if given number is valid.
-const isValidNumber = (number, iso2, numberTypeNames) => {
+//* Check if given number is valid using precise country/area-code matching rules.
+//* Mirrors the plugin's iti.isValidNumberPrecise().
+const isValidNumberPrecise = (number, iso2, numberTypeNames) => {
   try {
     const phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
     const numberObj = phoneUtil.parseAndKeepRawInput(number, iso2);
-    const isValidNumber = phoneUtil.isValidNumber(numberObj);
+    const isValid = phoneUtil.isValidNumber(numberObj);
     if (numberTypeNames) {
       const patchedTypeNames = getPatchedNumberTypeNames(numberTypeNames);
       const numberTypes = patchedTypeNames.map((typeName) => numberType[typeName]);
-      return isValidNumber && numberTypes.includes(phoneUtil.getNumberType(numberObj));
+      return isValid && numberTypes.includes(phoneUtil.getNumberType(numberObj));
     }
-    return isValidNumber;
+    return isValid;
   } catch {
     return false;
   }
 };
 
-//* Check if given number is possible.
-const isPossibleNumber = (number, iso2, numberTypeNames) => {
+//* Check if given number is valid based on its length (more future-proof than the precise check).
+//* Mirrors the plugin's iti.isValidNumber().
+const isValidNumber = (number, iso2, numberTypeNames) => {
   try {
     const phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
     const numberObj = phoneUtil.parseAndKeepRawInput(number, iso2);
@@ -217,5 +219,5 @@ goog.exportSymbol("utils.getExtension", getExtension);
 goog.exportSymbol("utils.getNumberType", getNumberType);
 goog.exportSymbol("utils.getValidationError", getValidationError);
 goog.exportSymbol("utils.isValidNumber", isValidNumber);
-goog.exportSymbol("utils.isPossibleNumber", isPossibleNumber);
+goog.exportSymbol("utils.isValidNumberPrecise", isValidNumberPrecise);
 goog.exportSymbol("utils.getCoreNumber", getCoreNumber);
