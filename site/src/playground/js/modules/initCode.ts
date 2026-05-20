@@ -46,7 +46,6 @@ type SnippetModel = {
   i18n: { code: string; importName: string } | null;
   initialValue: string;
   placeholder: string;
-  inputClass: string;
   // Non-null when enabled — renderers hoist these to top-level consts (or Angular class fields).
   geoIpLookup: string | null;
   customPlaceholder: string | null;
@@ -104,7 +103,6 @@ function buildModel(
     i18n,
     initialValue: String(state.value ?? ""),
     placeholder: String(state.placeholder ?? ""),
-    inputClass: String(state.class ?? "").trim(),
     geoIpLookup: state.geoIpLookup ? GEO_IP_LOOKUP_BODY : null,
     customPlaceholder: state.customPlaceholder ? CUSTOM_PLACEHOLDER_BODY : null,
   };
@@ -122,9 +120,6 @@ function escapeHtmlAttr(s: string): string {
 
 function renderVanillaHtml(model: SnippetModel): string {
   const attrs: string[] = ['type="tel"', 'id="phone"'];
-  if (model.inputClass) {
-    attrs.push(`class="${escapeHtmlAttr(model.inputClass)}"`);
-  }
   if (model.placeholder) {
     attrs.push(`placeholder="${escapeHtmlAttr(model.placeholder)}"`);
   }
@@ -242,11 +237,8 @@ function renderReact(model: SnippetModel): string {
     lines.push("");
   }
 
-  // React folds class + placeholder + initial value into a single inputProps object.
+  // React folds placeholder + initial value into a single inputProps object.
   const inputPropsEntries: Array<[string, string]> = [];
-  if (model.inputClass) {
-    inputPropsEntries.push(["className", model.inputClass]);
-  }
   if (model.placeholder) {
     inputPropsEntries.push(["placeholder", model.placeholder]);
   }
@@ -337,9 +329,6 @@ function renderVue(model: SnippetModel): string {
   scriptLines.push("</script>");
 
   const inputPropsEntries: Array<[string, string]> = [];
-  if (model.inputClass) {
-    inputPropsEntries.push(["class", model.inputClass]);
-  }
   if (model.placeholder) {
     inputPropsEntries.push(["placeholder", model.placeholder]);
   }
@@ -444,9 +433,6 @@ function renderAngular(model: SnippetModel): string {
     pushAngularProp(attrs, classFields, key, value, raw),
   );
   const inputAttrEntries: Array<[string, string]> = [];
-  if (model.inputClass) {
-    inputAttrEntries.push(["class", model.inputClass]);
-  }
   if (model.placeholder) {
     inputAttrEntries.push(["placeholder", model.placeholder]);
   }
@@ -516,9 +502,6 @@ function renderSvelte(model: SnippetModel): string {
   scriptLines.push("</script>");
 
   const inputPropsEntries: Array<[string, string]> = [];
-  if (model.inputClass) {
-    inputPropsEntries.push(["class", model.inputClass]);
-  }
   if (model.placeholder) {
     inputPropsEntries.push(["placeholder", model.placeholder]);
   }
