@@ -99,9 +99,9 @@ build({
   outfile: "packages/core/dist/js/data.mjs",
 });
 
-//* packages/core/dist/js/i18n
+//* packages/core/dist/js/locale
 build({
   charset: "utf8",
-  entryPoints: ["packages/core/src/js/i18n/**/*.ts"],
-  outdir: "packages/core/dist/js/i18n",
+  entryPoints: ["packages/core/src/js/locale/**/*.ts"],
+  outdir: "packages/core/dist/js/locale",
 });

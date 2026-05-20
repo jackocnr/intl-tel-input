@@ -22,9 +22,9 @@ declare module "*/utils.js";
 // Stub the generated playground constants module — it's emitted into tmp/
 // at build time so it may not exist when tsc runs.
 declare module "*playgroundConstants.js" {
-  export const I18N_LANGUAGE_CODES: string[];
+  export const LOCALE_CODES: string[];
   export const UTILS_PATH: string;
-  export const I18N_DIR_HASH: string;
+  export const LOCALE_DIR_HASH: string;
 }
 
 export {};

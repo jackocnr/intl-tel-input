@@ -43,7 +43,7 @@ type OptionEntry = {
 
 type SnippetModel = {
   options: OptionEntry[];
-  i18n: { code: string; importName: string } | null;
+  locale: { code: string; importName: string } | null;
   initialValue: string;
   placeholder: string;
   // Non-null when enabled — renderers hoist these to top-level consts (or Angular class fields).
@@ -89,18 +89,18 @@ function buildModel(
     });
   }
 
-  const i18nCode = String(state.i18n ?? "").trim();
-  const hasI18n = Boolean(i18nCode) && i18nCode.toLowerCase() !== "en";
-  const i18n = hasI18n
+  const localeCode = String(state.uiTranslations ?? "").trim();
+  const hasLocale = Boolean(localeCode) && localeCode.toLowerCase() !== "en";
+  const locale = hasLocale
     ? {
-        code: i18nCode,
-        importName: i18nCode.replace(/-([a-z])/g, (_, c) => c.toUpperCase()),
+        code: localeCode,
+        importName: localeCode.replace(/-([a-z])/g, (_, c) => c.toUpperCase()),
       }
     : null;
 
   return {
     options,
-    i18n,
+    locale,
     initialValue: String(state.value ?? ""),
     placeholder: String(state.placeholder ?? ""),
     initialCountryLookup: state.initialCountryLookup ? INITIAL_COUNTRY_LOOKUP_BODY : null,
@@ -134,9 +134,9 @@ function renderVanillaHtml(model: SnippetModel): string {
 function renderVanilla(model: SnippetModel): string {
   const lines: string[] = [];
   lines.push('import intlTelInput from "intl-tel-input";');
-  if (model.i18n) {
+  if (model.locale) {
     lines.push(
-      `import { ${model.i18n.importName} } from "intl-tel-input/i18n";`,
+      `import { ${model.locale.importName} } from "intl-tel-input/locale";`,
     );
   }
   lines.push('import "intl-tel-input/styles";');
@@ -153,12 +153,12 @@ function renderVanilla(model: SnippetModel): string {
 
   const hasGeoIp = !!model.initialCountryLookup;
   const hasCustomPlaceholder = !!model.customPlaceholder;
-  if (!model.i18n && !hasGeoIp && !hasCustomPlaceholder && model.options.length === 0) {
+  if (!model.locale && !hasGeoIp && !hasCustomPlaceholder && model.options.length === 0) {
     lines.push("const iti = intlTelInput(input);");
   } else {
     lines.push("const iti = intlTelInput(input, {");
-    if (model.i18n) {
-      lines.push(`  i18n: ${model.i18n.importName},`);
+    if (model.locale) {
+      lines.push(`  uiTranslations: ${model.locale.importName},`);
     }
     if (hasGeoIp) {
       lines.push("  initialCountryLookup,");
@@ -221,9 +221,9 @@ function formatJsxObjectProp(
 function renderReact(model: SnippetModel): string {
   const lines: string[] = [];
   lines.push('import IntlTelInput from "@intl-tel-input/react";');
-  if (model.i18n) {
+  if (model.locale) {
     lines.push(
-      `import { ${model.i18n.importName} } from "intl-tel-input/i18n";`,
+      `import { ${model.locale.importName} } from "intl-tel-input/locale";`,
     );
   }
   lines.push('import "intl-tel-input/styles";');
@@ -247,8 +247,8 @@ function renderReact(model: SnippetModel): string {
   }
 
   const props: string[] = [];
-  if (model.i18n) {
-    props.push(`i18n={${model.i18n.importName}}`);
+  if (model.locale) {
+    props.push(`uiTranslations={${model.locale.importName}}`);
   }
   if (model.initialCountryLookup) {
     props.push("initialCountryLookup={initialCountryLookup}");
@@ -304,9 +304,9 @@ function renderVue(model: SnippetModel): string {
   // Build script body unindented, then indent each line by 2 spaces on emission.
   const scriptBody: string[] = [];
   scriptBody.push('import IntlTelInput from "@intl-tel-input/vue";');
-  if (model.i18n) {
+  if (model.locale) {
     scriptBody.push(
-      `import { ${model.i18n.importName} } from "intl-tel-input/i18n";`,
+      `import { ${model.locale.importName} } from "intl-tel-input/locale";`,
     );
   }
   scriptBody.push('import "intl-tel-input/styles";');
@@ -334,8 +334,8 @@ function renderVue(model: SnippetModel): string {
   }
 
   const attrs: string[] = [];
-  if (model.i18n) {
-    attrs.push(`:i18n="${model.i18n.importName}"`);
+  if (model.locale) {
+    attrs.push(`:ui-translations="${model.locale.importName}"`);
   }
   if (model.initialCountryLookup) {
     attrs.push(':initial-country-lookup="initialCountryLookup"');
@@ -404,9 +404,9 @@ function renderAngular(model: SnippetModel): string {
   const importLines: string[] = [];
   importLines.push('import { Component } from "@angular/core";');
   importLines.push('import IntlTelInput from "@intl-tel-input/angular";');
-  if (model.i18n) {
+  if (model.locale) {
     importLines.push(
-      `import { ${model.i18n.importName} } from "intl-tel-input/i18n";`,
+      `import { ${model.locale.importName} } from "intl-tel-input/locale";`,
     );
   }
   importLines.push('import "intl-tel-input/styles";');
@@ -414,9 +414,9 @@ function renderAngular(model: SnippetModel): string {
   const attrs: string[] = [];
   const classFields: string[] = [];
 
-  if (model.i18n) {
-    classFields.push(`i18n = ${model.i18n.importName};`);
-    attrs.push('[i18n]="i18n"');
+  if (model.locale) {
+    classFields.push(`uiTranslations = ${model.locale.importName};`);
+    attrs.push('[uiTranslations]="uiTranslations"');
   }
   if (model.initialCountryLookup) {
     classFields.push(`initialCountryLookup = ${model.initialCountryLookup};`);
@@ -491,9 +491,9 @@ function renderSvelte(model: SnippetModel): string {
   const scriptLines: string[] = [];
   scriptLines.push("<script>");
   scriptLines.push('  import IntlTelInput from "@intl-tel-input/svelte";');
-  if (model.i18n) {
+  if (model.locale) {
     scriptLines.push(
-      `  import { ${model.i18n.importName} } from "intl-tel-input/i18n";`,
+      `  import { ${model.locale.importName} } from "intl-tel-input/locale";`,
     );
   }
   scriptLines.push('  import "intl-tel-input/styles";');
@@ -507,8 +507,8 @@ function renderSvelte(model: SnippetModel): string {
   }
 
   const attrs: string[] = [];
-  if (model.i18n) {
-    attrs.push(`i18n={${model.i18n.importName}}`);
+  if (model.locale) {
+    attrs.push(`uiTranslations={${model.locale.importName}}`);
   }
   if (model.initialCountryLookup) {
     attrs.push("initialCountryLookup={initialCountryLookup}");

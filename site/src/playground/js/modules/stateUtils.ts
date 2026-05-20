@@ -74,7 +74,7 @@ export function parseQueryOverrides(defaults, metaMap, { aliases = {} } = {}) {
       next[key] = parseBooleanParam(raw, next[key]);
     } else if (meta.type === "select") {
       // Reject empty or unknown values so the select doesn't end up in a state
-      // with no matching <option> — e.g. ?i18n= would otherwise blank the
+      // with no matching <option> — e.g. ?uiTranslations= would otherwise blank the
       // Language picker instead of falling back to the default.
       if (Array.isArray(meta.options) && meta.options.includes(raw)) {
         next[key] = raw;

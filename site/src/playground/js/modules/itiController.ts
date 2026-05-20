@@ -1,5 +1,5 @@
 import type { Iti } from "../../../../../packages/core/dist/js/intlTelInput";
-import { resolveI18nSelection } from "./i18n";
+import { resolveLocaleSelection } from "./locale";
 import { initialCountryLookup } from "../../../js/initialCountryLookup";
 
 function applyInputAttributes(state: any, telInput: HTMLInputElement) {
@@ -76,16 +76,16 @@ function toInitOptions(
 export class ItiPlaygroundController {
   telInput: HTMLInputElement;
   utilsPath: string;
-  i18nDirHash: string;
+  localeDirHash: string;
   defaultInitOptions: Record<string, any>;
   specialOptionKeys: string[];
   iti: Iti | null;
   initNonce: number;
 
-  constructor({ telInput, utilsPath, i18nDirHash, defaultInitOptions, specialOptionKeys }: { telInput: HTMLInputElement; utilsPath: string; i18nDirHash: string; defaultInitOptions: Record<string, any>; specialOptionKeys: string[] }) {
+  constructor({ telInput, utilsPath, localeDirHash, defaultInitOptions, specialOptionKeys }: { telInput: HTMLInputElement; utilsPath: string; localeDirHash: string; defaultInitOptions: Record<string, any>; specialOptionKeys: string[] }) {
     this.telInput = telInput;
     this.utilsPath = utilsPath;
-    this.i18nDirHash = i18nDirHash;
+    this.localeDirHash = localeDirHash;
     this.defaultInitOptions = defaultInitOptions;
     this.specialOptionKeys = specialOptionKeys;
 
@@ -109,7 +109,7 @@ export class ItiPlaygroundController {
       utilsPath: this.utilsPath,
     });
 
-    const i18n = await resolveI18nSelection(state.i18n, { i18nDirHash: this.i18nDirHash });
+    const uiTranslations = await resolveLocaleSelection(state.uiTranslations, { localeDirHash: this.localeDirHash });
 
     if (nonce !== this.initNonce) {
       return;
@@ -122,7 +122,7 @@ export class ItiPlaygroundController {
     // Clear any padding-left set by the previous init, so switching to a config
     // that doesn't touch padding doesn't inherit stale padding from the old one.
     this.telInput.style.paddingLeft = "";
-    initOptions.i18n = i18n;
+    initOptions.uiTranslations = uiTranslations;
     // we need this bootstrap class, but don't want to bother users with this, so just add it here.
     initOptions.searchInputClass = "form-control";
     this.iti = window.intlTelInput(this.telInput, initOptions);

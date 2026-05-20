@@ -324,9 +324,9 @@ Localise country names and the core library UI strings, e.g. the country search 
 Type: `string`  
 Default: `"en"`  
 
-The locale to pass to `Intl.DisplayNames` to generate the country names. Should adhere to the [BCP 47](https://developer.mozilla.org/en-US/docs/Glossary/BCP_47_language_tag) standard, e.g. `"zh"` (Chinese), or `"zh-Hans"` (Simplified Chinese). To override individual country names, see [`countryNameOverrides`](#countrynameoverrides) below. For translating the other UI strings, like the country search placeholder, see [`i18n`](#i18n) below.
+The locale to pass to `Intl.DisplayNames` to generate the country names. Should adhere to the [BCP 47](https://developer.mozilla.org/en-US/docs/Glossary/BCP_47_language_tag) standard, e.g. `"zh"` (Chinese), or `"zh-Hans"` (Simplified Chinese). To override individual country names, see [`countryNameOverrides`](#countrynameoverrides) below. For translating the other UI strings, like the country search placeholder, see [`uiTranslations`](#uitranslations) below. _Note: previously named `localizedCountries`._
 
-View `intl-tel-input` in Hindi in the [Playground](/playground?i18n=hi&initialCountry=in#i18n).
+View `intl-tel-input` in Hindi in the [Playground](/playground?uiTranslations=hi&initialCountry=in#uiTranslations).
 
 ###### countryNameOverrides
 Type: `object`  
@@ -342,21 +342,21 @@ Override individual country names, keyed by iso2 code. Useful when the name prod
 
 View `intl-tel-input` with the US renamed to "United States of America" in the [Playground](/playground?countryNameOverrides=%7B%22us%22%3A%22United+States+of+America%22%7D&initialCountry=us#countryNameOverrides).
 
-###### i18n
+###### uiTranslations
 Type: `object`  
 Default: `{}`  
 
 Translate the core library's UI strings (country search placeholder, no-results message, ARIA labels). For translating country names, see [`countryNameLocale`](#countrynamelocale) above; to override individual country names, see [`countryNameOverrides`](#countrynameoverrides).
 
-We ship translations for [<!-- I18N_LOCALE_COUNT -->  locales](/docs/localisation#supported-ui-locales), named using the [BCP 47](https://developer.mozilla.org/en-US/docs/Glossary/BCP_47_language_tag) standard — import one and pass it in as the `i18n` option:
+We ship translations for [<!-- LOCALE_COUNT -->  locales](/docs/localisation#supported-ui-locales), named using the [BCP 47](https://developer.mozilla.org/en-US/docs/Glossary/BCP_47_language_tag) standard — import one and pass it in as the `uiTranslations` option:
 
 ```js
-import { fr } from "intl-tel-input/i18n";
+import { fr } from "intl-tel-input/locale";
 ```
 
-See the [Localisation docs](/docs/localisation#localising-user-interface-strings) for overriding individual keys, defining custom translations, and the full list of translatable keys. _Note: previously named `localizedCountries`._
+See the [Localisation docs](/docs/localisation#localising-user-interface-strings) for overriding individual keys, defining custom translations, and the full list of translatable keys. _Note: previously named `i18n`._
 
-View `intl-tel-input` in Ukrainian in the [Playground](/playground?i18n=uk&initialCountry=ua#i18n).
+View `intl-tel-input` in Ukrainian in the [Playground](/playground?uiTranslations=uk&initialCountry=ua#uiTranslations).
 
 
 ## Miscellaneous options

@@ -7,7 +7,7 @@ import { renderPage, renderString } from "./template/render.js";
 import {
   cacheBust,
   getDirHash,
-  getI18nLanguages,
+  getLocales,
   buildOpenGraphMetaTags,
   createMarkdownRenderer,
 } from "./template/utils.js";
@@ -82,7 +82,7 @@ const escapeHtml = (value) =>
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
 
-const createI18nLanguageListText = (languageCodes) => {
+const createLocaleListText = (languageCodes) => {
   const codes = Array.isArray(languageCodes)
     ? languageCodes.filter(Boolean)
     : [];
@@ -637,7 +637,7 @@ tasks.push({
   data: () => ({
     cacheBust,
     getDirHash,
-    i18nLanguages: getI18nLanguages(),
+    locales: getLocales(),
   }),
 });
 
@@ -689,7 +689,7 @@ tasks.push({
       .replace("{{STAT_WEBSITES}}", stats.websites)
       .replace("{{STAT_DOWNLOADS}}", stats.downloads)
       .replace("{{STAT_STARS}}", stats.stars)
-      .replace("{{STAT_LOCALES}}", getI18nLanguages().length)
+      .replace("{{STAT_LOCALES}}", getLocales().length)
       .replace("{{PLAYGROUND_PRESETS}}", renderPlaygroundPresetsHomepage());
     return {
       layoutClass: "iti-layout-no-sidebars",
@@ -942,15 +942,15 @@ for (const { key, title, metaDesc } of docsDefinitions) {
       docKey: key,
       html: (() => {
         let source = fs.readFileSync(mdPath, "utf8");
-        const locales = getI18nLanguages();
+        const locales = getLocales();
         source = source.replaceAll(
-          "<!-- I18N_LOCALE_COUNT -->",
+          "<!-- LOCALE_COUNT -->",
           String(locales.length),
         );
         if (key === "localisation") {
-          const localeList = createI18nLanguageListText(locales);
+          const localeList = createLocaleListText(locales);
           source = source.replace(
-            "<!-- I18N_LOCALE_LIST -->",
+            "<!-- LOCALE_LIST -->",
             `\n${localeList}\n`,
           );
         }

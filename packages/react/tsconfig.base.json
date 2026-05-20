@@ -5,7 +5,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "jsx": "react",
-    "allowJs": true, // allow importing .mjs files e.g. i18n files
+    "allowJs": true, // allow importing .mjs files e.g. locale files
   },
   "include": [
     "src/IntlTelInput.tsx",

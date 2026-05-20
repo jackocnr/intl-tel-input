@@ -104,7 +104,7 @@ class IntlTelInput
   @Input() matchDropdownWidth?: AllOptions["matchDropdownWidth"];
   @Input() formatAsYouType?: AllOptions["formatAsYouType"];
   @Input() hiddenInputs?: AllOptions["hiddenInputs"];
-  @Input() i18n?: AllOptions["i18n"];
+  @Input() uiTranslations?: AllOptions["uiTranslations"];
   @Input() initialCountry?: AllOptions["initialCountry"];
   @Input() initialCountryLookup?: AllOptions["initialCountryLookup"];
   @Input() loadUtils?: AllOptions["loadUtils"];
@@ -232,7 +232,7 @@ class IntlTelInput
       matchDropdownWidth: this.matchDropdownWidth,
       formatAsYouType: this.formatAsYouType,
       hiddenInputs: this.hiddenInputs,
-      i18n: this.i18n,
+      uiTranslations: this.uiTranslations,
       initialCountry: this.initialCountry,
       initialCountryLookup: this.initialCountryLookup,
       loadUtils: this.loadUtils,

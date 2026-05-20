@@ -23,8 +23,8 @@ const entries = [
     output: "packages/core/dist/js/data.d.ts",
   },
   {
-    input: "packages/core/src/js/i18n/index.ts",
-    output: "packages/core/dist/js/i18n.d.ts",
+    input: "packages/core/src/js/locale/index.ts",
+    output: "packages/core/dist/js/locale.d.ts",
   },
 ];
 

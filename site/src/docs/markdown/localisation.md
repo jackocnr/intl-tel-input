@@ -1,6 +1,6 @@
 # Localisation
 
-`intl-tel-input` supports localisation of country names, UI strings, right-to-left layout, and alternative numerals. You can experiment with the different options in the [Playground](/playground?i18n=ru#translation-options), or view the [Right to left example](/examples/vanilla-javascript/right-to-left).
+`intl-tel-input` supports localisation of country names, UI strings, right-to-left layout, and alternative numerals. You can experiment with the different options in the [Playground](/playground?uiTranslations=ru#translation-options), or view the [Right to left example](/examples/vanilla-javascript/right-to-left).
 
 ## Contents
 
@@ -24,15 +24,15 @@ You can also override individual country names via the [`countryNameOverrides`](
 
 ## Localising user interface strings
 
-Use the [`i18n`](/docs/options#i18n) option to translate the user interface strings (e.g. the country search placeholder, no-results message, and various accessibility labels).
+Use the [`uiTranslations`](/docs/options#uitranslations) option to translate the user interface strings (e.g. the country search placeholder, no-results message, and various accessibility labels).
 
-We provide translations for many locales in the `intl-tel-input/i18n` entrypoint — import the one you need and pass it into the [`i18n`](/docs/options#i18n) option:
+We provide translations for many locales in the `intl-tel-input/locale` entrypoint — import the one you need and pass it into the [`uiTranslations`](/docs/options#uitranslations) option:
 
 ```js
-import { fr } from "intl-tel-input/i18n";
+import { fr } from "intl-tel-input/locale";
 ```
 
-You can override one or more keys by spreading the provided translations — pass the following as [`i18n`](/docs/options#i18n):
+You can override one or more keys by spreading the provided translations — pass the following as [`uiTranslations`](/docs/options#uitranslations):
 
 ```js
 {
@@ -44,17 +44,17 @@ You can override one or more keys by spreading the provided translations — pas
 
 ### Supported UI locales
 
-We currently ship user interface translations for the following <!-- I18N_LOCALE_COUNT --> locales:
+We currently ship user interface translations for the following <!-- LOCALE_COUNT --> locales:
 
-<!-- I18N_LOCALE_LIST -->
+<!-- LOCALE_LIST -->
 
 Don't see your locale? It's easy to contribute a new one yourself — see [Adding a new translation](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md#adding-a-new-translation).
 
-Alternatively, you can specify your own translations inline by passing a custom object to the [`i18n`](/docs/options#i18n) option — see the full list of translatable keys below.
+Alternatively, you can specify your own translations inline by passing a custom object to the [`uiTranslations`](/docs/options#uitranslations) option — see the full list of translatable keys below.
 
 ### Translatable keys
 
-Here is the full set of UI strings the [`i18n`](/docs/options#i18n) option accepts, shown with their default English values for reference:
+Here is the full set of UI strings the [`uiTranslations`](/docs/options#uitranslations) option accepts, shown with their default English values for reference:
 
 ```js
 {

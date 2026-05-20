@@ -1,5 +1,5 @@
 import type { Country, Iso2 } from "../data.js";
-import type { I18n } from "../i18n/types.js";
+import type { UiTranslations } from "../locale/types.js";
 import type {
   NUMBER_FORMATS,
   NUMBER_TYPES,
@@ -79,7 +79,7 @@ export interface AllOptions {
   hiddenInputs:
     | ((telInputName: string) => { phone: string; country?: string })
     | null;
-  i18n: I18n;
+  uiTranslations: UiTranslations;
   initialCountry: Iso2 | "";
   initialCountryLookup: (() => Promise<Iso2>) | null;
   loadUtils: UtilsLoader | null;

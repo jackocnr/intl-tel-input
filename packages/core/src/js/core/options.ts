@@ -5,7 +5,7 @@ import {
   NUMBER_TYPES,
   LAYOUT,
 } from "../constants.js";
-import defaultEnglishStrings from "../i18n/en.js";
+import defaultEnglishStrings from "../locale/en.js";
 import { isIso2, type Iso2 } from "../data.js";
 import type { AllOptions, SomeOptions } from "../types/public-api.js";
 
@@ -62,8 +62,8 @@ export const defaults: AllOptions = {
   formatAsYouType: true,
   //* Inject hidden inputs with the names returned from this function, and on submit, populate them with the full number and selected country iso2.
   hiddenInputs: null,
-  //* Internationalise the core library text e.g. search input placeholder, country names.
-  i18n: {},
+  //* Translations for the core library UI strings e.g. search input placeholder, country names.
+  uiTranslations: {},
   //* Initial country.
   initialCountry: "",
   //* Async lookup function used to determine the initial country (e.g. via IP). Ignored if initialCountry is set.
@@ -274,12 +274,12 @@ export const validateOptions = (customOptions: unknown): SomeOptions => {
         break;
       }
 
-      case "i18n":
+      case "uiTranslations":
         if (value && !isPlainObject(value)) {
-          warnOption("i18n", "an object", value);
+          warnOption("uiTranslations", "an object", value);
           break;
         }
-        // don't bother validating the shape of the object, as the standard use is to just pass in one of the provided i18n objects.
+        // don't bother validating the shape of the object, as the standard use is to just pass in one of the provided locale objects.
         validatedOptions[key] = value;
         break;
 
@@ -417,5 +417,5 @@ export const applyOptionSideEffects = (o: AllOptions): void => {
   }
 
   //* Allow overriding the default interface strings.
-  o.i18n = { ...defaultEnglishStrings, ...o.i18n };
+  o.uiTranslations = { ...defaultEnglishStrings, ...o.uiTranslations };
 };

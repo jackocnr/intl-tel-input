@@ -1,10 +1,10 @@
 import {
-  I18N_LANGUAGE_CODES,
+  LOCALE_CODES,
   UTILS_PATH,
-  I18N_DIR_HASH,
+  LOCALE_DIR_HASH,
 } from "../../../tmp/playground/playgroundConstants.js";
 
-import { createI18nOptionLabels } from "./modules/i18n";
+import { createLocaleOptionLabels } from "./modules/locale";
 import { renderControls, getStateFromForm, setFormFromState } from "./modules/forms";
 import { renderInitCodeFromState, type Integration } from "./modules/initCode";
 import { createPlaygroundConfig } from "./modules/playgroundConfig";
@@ -276,9 +276,9 @@ if (shareButton) {
 }
 
 const { defaults, NUMBER_FORMAT, NUMBER_TYPE, PLACEHOLDER_POLICY } = window.intlTelInput;
-const i18nOptionLabels = createI18nOptionLabels(I18N_LANGUAGE_CODES);
-const i18nLanguageCodesSorted = [...I18N_LANGUAGE_CODES].sort((a, b) =>
-  (i18nOptionLabels[a] || a).localeCompare(i18nOptionLabels[b] || b),
+const localeOptionLabels = createLocaleOptionLabels(LOCALE_CODES);
+const localeCodesSorted = [...LOCALE_CODES].sort((a, b) =>
+  (localeOptionLabels[a] || a).localeCompare(localeOptionLabels[b] || b),
 );
 
 //* Datalist of all supported countries (used by countryOrder, excludeCountries, onlyCountries
@@ -306,8 +306,8 @@ const {
   NUMBER_FORMAT,
   NUMBER_TYPE,
   PLACEHOLDER_POLICY,
-  i18nLanguageCodes: i18nLanguageCodesSorted,
-  i18nOptionLabels,
+  localeCodes: localeCodesSorted,
+  localeOptionLabels,
   initialCountryDatalist,
   countryDatalist,
 });
@@ -322,7 +322,7 @@ const playgroundInitialState = createDefaultState(playgroundInitialOptions, defa
 const itiController = new ItiPlaygroundController({
   telInput,
   utilsPath: UTILS_PATH,
-  i18nDirHash: I18N_DIR_HASH,
+  localeDirHash: LOCALE_DIR_HASH,
   defaultInitOptions,
   specialOptionKeys,
 });
@@ -546,11 +546,11 @@ renderControls(attrsForm, attributeMeta, {
   },
 });
 
-// The playground exposes i18n + countryNameLocale as a single "Language" select,
+// The playground exposes uiTranslations + countryNameLocale as a single "Language" select,
 // so countryNameLocale isn't read from a form control of its own — keep it in
-// lockstep with state.i18n before passing state downstream.
+// lockstep with state.uiTranslations before passing state downstream.
 function mirrorLanguage(state: Record<string, any>): Record<string, any> {
-  state.countryNameLocale = state.i18n;
+  state.countryNameLocale = state.uiTranslations;
   return state;
 }
 
@@ -561,7 +561,10 @@ function getCombinedStateFromControls() {
   });
 }
 
-const initialOptionsState = parseQueryOverrides(playgroundInitialOptions, optionMeta);
+const initialOptionsState = parseQueryOverrides(playgroundInitialOptions, optionMeta, {
+  // Legacy URL params still in the wild — map them to the new option keys.
+  aliases: { uiTranslations: "i18n" },
+});
 const initialAttrsState = parseQueryOverrides(defaultInputAttributes, attributeMeta);
 const initialState = mirrorLanguage({ ...initialOptionsState, ...initialAttrsState });
 
@@ -882,10 +885,10 @@ const HINT_CONFIGS = [
   },
   // Translation Options
   {
-    optionKey: "i18n",
+    optionKey: "uiTranslations",
     message: () => {
       const state = getCombinedStateFromControls();
-      if (hasNoBrowserCountryNameData(state.i18n)) {
+      if (hasNoBrowserCountryNameData(state.uiTranslations)) {
         return "Warning: your browser's Intl.DisplayNames has no country-name data for this locale — country names will fall back to English.";
       }
       if (!state.countrySearch) {
@@ -898,7 +901,7 @@ const HINT_CONFIGS = [
     },
     shouldShow: () => {
       const state = getCombinedStateFromControls();
-      if (hasNoBrowserCountryNameData(state.i18n)) {
+      if (hasNoBrowserCountryNameData(state.uiTranslations)) {
         return true;
       }
       return !state.countrySearch || !keepDropdownOpenCheckbox.checked;

@@ -1,5 +1,5 @@
 export const SPECIAL_PLAYGROUND_OPTION_KEYS = [
-  "i18n",
+  "uiTranslations",
   "loadUtils",
   "customPlaceholder",
   "initialCountryLookup",
@@ -47,7 +47,7 @@ export const OPTION_GROUPS = [
     title: "Translation Options",
     icon: "bi-translate",
     description: "Localise country names and the core library UI strings, e.g. the country search placeholder.",
-    keys: ["i18n", "countryNameOverrides"],
+    keys: ["uiTranslations", "countryNameOverrides"],
   },
   {
     title: "Miscellaneous Options",
@@ -62,8 +62,8 @@ export function createPlaygroundConfig({
   NUMBER_FORMAT,
   NUMBER_TYPE,
   PLACEHOLDER_POLICY,
-  i18nLanguageCodes,
-  i18nOptionLabels,
+  localeCodes,
+  localeOptionLabels,
   initialCountryDatalist,
   countryDatalist,
 }) {
@@ -84,8 +84,8 @@ export function createPlaygroundConfig({
     allowedNumberTypes: defaults.allowedNumberTypes,
     allowNumberExtensions: defaults.allowNumberExtensions,
     allowPhonewords: defaults.allowPhonewords,
-    // Playground unifies i18n + countryNameLocale into a single "Language" select.
-    // countryNameLocale follows state.i18n (see mirrorLanguage in playground.ts).
+    // Playground unifies uiTranslations + countryNameLocale into a single "Language" select.
+    // countryNameLocale follows state.uiTranslations (see mirrorLanguage in playground.ts).
     countryNameLocale: defaults.countryNameLocale,
     countryNameOverrides: defaults.countryNameOverrides,
     countryOrder: defaults.countryOrder,
@@ -95,7 +95,7 @@ export function createPlaygroundConfig({
     excludeCountries: defaults.excludeCountries,
     matchDropdownWidth: defaults.matchDropdownWidth,
     formatAsYouType: defaults.formatAsYouType,
-    i18n: "en", // default to English in the Playground
+    uiTranslations: "en", // default to English in the Playground
     initialCountry: defaults.initialCountry,
     loadUtils: true, // in playground, this is a checkbox
     numberDisplayFormat: defaults.numberDisplayFormat,
@@ -230,14 +230,14 @@ export function createPlaygroundConfig({
     },
 
     // Translation Options
-    i18n: {
+    uiTranslations: {
       type: "select",
       label: "Language",
-      tooltip: "Sets the locale for both the country names via <code>countryNameLocale</code> and UI strings (e.g. the country search placeholder) via <code>i18n</code>.",
-      options: i18nLanguageCodes || [],
-      optionLabels: i18nOptionLabels,
+      tooltip: "Sets the locale for both the country names via <code>countryNameLocale</code> and UI strings (e.g. the country search placeholder) via <code>uiTranslations</code>.",
+      options: localeCodes || [],
+      optionLabels: localeOptionLabels,
     },
-    // No form control of its own — value mirrors state.i18n (see mirrorLanguage
+    // No form control of its own — value mirrors state.uiTranslations (see mirrorLanguage
     // in playground.ts). Kept here so init-code generation and state diffing
     // still treat it as a known option.
     countryNameLocale: {

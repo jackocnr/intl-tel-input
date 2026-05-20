@@ -5,7 +5,7 @@
 import UI from "../../../packages/core/src/js/core/ui.ts";
 import { buildSearchTokens } from "../../../packages/core/src/js/core/countrySearch.ts";
 import { CLASSES, ARIA, KEYS } from "../../../packages/core/src/js/constants.ts";
-import defaultEnglishStrings from "../../../packages/core/src/js/i18n/en.ts";
+import defaultEnglishStrings from "../../../packages/core/src/js/locale/en.ts";
 
 // Helper to create a Country-like object
 const makeCountry = (overrides) => ({
@@ -36,7 +36,7 @@ const makeOptions = (overrides = {}) => ({
   matchDropdownWidth: true,
   formatAsYouType: true,
   hiddenInputs: null,
-  i18n: { ...defaultEnglishStrings },
+  uiTranslations: { ...defaultEnglishStrings },
   initialCountry: "",
   initialCountryLookup: null,
   loadUtils: null,

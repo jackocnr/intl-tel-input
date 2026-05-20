@@ -48,7 +48,7 @@ Its country list/search UI includes ARIA attributes to expose state and relation
 - Clear-search button label
 - A live summary of the number of matching results while searching
 
-Translations for these accessibility strings are provided out of the box in [many languages](/docs/localisation#supported-ui-locales), and it's easy to override or add your own with the [`i18n`](/docs/options#i18n) option.
+Translations for these accessibility strings are provided out of the box in [many languages](/docs/localisation#supported-ui-locales), and it's easy to override or add your own with the [`uiTranslations`](/docs/options#uitranslations) option.
 
 
 ## Reduced motion

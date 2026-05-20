@@ -54,7 +54,7 @@ Use the [`initialCountry`](/docs/options#initialcountry) option.
 Yes.
 
 - Country names can be localised using [`countryNameLocale`](/docs/options#countrynamelocale) (uses `Intl.DisplayNames`).
-- UI strings (including accessibility strings) can be translated using [`i18n`](/docs/options#i18n).
+- UI strings (including accessibility strings) can be translated using [`uiTranslations`](/docs/options#uitranslations).
 
 See [Localisation](/docs/localisation) for more information.
 

@@ -164,7 +164,7 @@ export default class UI {
           type: "button",
           class: "iti__selected-country",
           [ARIA.EXPANDED]: "false",
-          [ARIA.LABEL]: this.#options.i18n.noCountrySelected,
+          [ARIA.LABEL]: this.#options.uiTranslations.noCountrySelected,
           [ARIA.HASPOPUP]: "dialog",
           [ARIA.CONTROLS]: `iti-${this.#id}__dropdown-content`,
         },
@@ -242,7 +242,7 @@ export default class UI {
       matchDropdownWidth,
       useFullscreenPopup,
       countrySearch,
-      i18n,
+      uiTranslations,
       dropdownContainer,
       containerClass,
     } = this.#options;
@@ -268,7 +268,7 @@ export default class UI {
         class: "iti__country-list",
         id: `iti-${this.#id}__country-listbox`,
         role: "listbox",
-        [ARIA.LABEL]: i18n.countryListAriaLabel,
+        [ARIA.LABEL]: uiTranslations.countryListAriaLabel,
       },
       this.#dropdownContentEl,
     );
@@ -304,7 +304,7 @@ export default class UI {
   }
 
   #buildSearchUI(): void {
-    const { i18n, searchInputClass } = this.#options;
+    const { uiTranslations, searchInputClass } = this.#options;
 
     // Wrapper so we can position the icons (search + clear)
     const searchWrapper = createEl(
@@ -331,11 +331,11 @@ export default class UI {
         id: `iti-${this.#id}__search-input`, // Chrome says inputs need either a name or an id
         type: "search",
         class: `iti__search-input ${searchInputClass}`,
-        placeholder: i18n.searchPlaceholder,
+        placeholder: uiTranslations.searchPlaceholder,
         // role=combobox + aria-autocomplete=list + aria-activedescendant allows maintaining focus on the search input while allowing users to navigate search results with up/down keyboard keys
         role: "combobox",
         [ARIA.EXPANDED]: "true",
-        [ARIA.LABEL]: i18n.searchPlaceholder,
+        [ARIA.LABEL]: uiTranslations.searchPlaceholder,
         [ARIA.CONTROLS]: `iti-${this.#id}__country-listbox`,
         [ARIA.AUTOCOMPLETE]: "list",
         autocomplete: "off",
@@ -348,7 +348,7 @@ export default class UI {
       {
         type: "button",
         class: `iti__search-clear ${CLASSES.HIDE}`,
-        [ARIA.LABEL]: i18n.clearSearchAriaLabel,
+        [ARIA.LABEL]: uiTranslations.clearSearchAriaLabel,
         tabindex: "-1",
       },
       searchWrapper,
@@ -372,7 +372,7 @@ export default class UI {
       },
       this.#dropdownContentEl!,
     );
-    this.#noResultsMessageEl.textContent = i18n.searchEmptyState ?? null;
+    this.#noResultsMessageEl.textContent = uiTranslations.searchEmptyState ?? null;
   }
 
   #updateInputPaddingAndReveal(): void {
@@ -567,10 +567,10 @@ export default class UI {
 
   //* Update search results text (for a11y).
   #updateSearchResultsA11yText(): void {
-    const { i18n } = this.#options;
+    const { uiTranslations } = this.#options;
     const count = this.#countryListEl!.childElementCount;
     this.#searchResultsLiveRegionEl!.textContent =
-      i18n.searchSummaryAria!(count);
+      uiTranslations.searchSummaryAria!(count);
   }
 
   //* Country search: Filter the countries according to the search query.
@@ -1241,7 +1241,7 @@ export default class UI {
   }
 
   public setCountry(selectedCountryData: SelectedCountryData): void {
-    const { allowDropdown, showFlags, separateDialCode, i18n } = this.#options;
+    const { allowDropdown, showFlags, separateDialCode, uiTranslations } = this.#options;
     const name = selectedCountryData?.name;
     const dialCode = selectedCountryData?.dialCode;
     const iso2 = selectedCountryData?.iso2 ?? "";
@@ -1261,15 +1261,15 @@ export default class UI {
       let flagContent: SVGElement | null = null;
       if (iso2) {
         title = name;
-        ariaLabel = i18n
+        ariaLabel = uiTranslations
           .selectedCountryAriaLabel!.replace("${countryName}", name!)
           .replace("${dialCode}", `+${dialCode}`);
         if (!showFlags) {
           flagContent = buildGlobeIcon();
         }
       } else {
-        title = i18n.noCountrySelected;
-        ariaLabel = i18n.noCountrySelected;
+        title = uiTranslations.noCountrySelected;
+        ariaLabel = uiTranslations.noCountrySelected;
         flagContent = buildGlobeIcon();
       }
       // Note: if auto country loading state is still active at this point, the loading class gets wiped here, which is appropriate as a country has been selected.

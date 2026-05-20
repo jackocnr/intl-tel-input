@@ -71,7 +71,7 @@ type StrictPasteSnapshot = {
 // source file only exposes what's explicitly re-exported. Keep this list in
 // sync with what dist exports; scripts/typecheck-dts.ts is the smoke test.
 export type { Iso2, Country } from "./data.js";
-export type { I18n } from "./i18n/types.js";
+export type { UiTranslations } from "./locale/types.js";
 export type { ForEachInstanceArgsMap } from "./types/forEachInstanceArgsMap.js";
 export type {
   AllOptions,

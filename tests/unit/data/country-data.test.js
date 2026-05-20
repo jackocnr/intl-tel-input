@@ -12,17 +12,17 @@ import allCountries from "../../../packages/core/src/js/data.ts";
 
 describe("data/country-data processAllCountries", () => {
   test("onlyCountries filters list", () => {
-    const out = processAllCountries({ onlyCountries: ["us"], excludeCountries: [], i18n: {} });
+    const out = processAllCountries({ onlyCountries: ["us"], excludeCountries: [], uiTranslations: {} });
     expect(out.every(c => c.iso2 === "us")).toBe(true);
   });
 
   test("excludeCountries removes those entries", () => {
-    const out = processAllCountries({ onlyCountries: [], excludeCountries: ["us"], i18n: {} });
+    const out = processAllCountries({ onlyCountries: [], excludeCountries: ["us"], uiTranslations: {} });
     expect(out.find(c => c.iso2 === "us")).toBeUndefined();
   });
 
   test("no filters returns allCountries ref", () => {
-    const out = processAllCountries({ onlyCountries: [], excludeCountries: [], i18n: {} });
+    const out = processAllCountries({ onlyCountries: [], excludeCountries: [], uiTranslations: {} });
     expect(out.length).toBe(allCountries.length);
   });
 });

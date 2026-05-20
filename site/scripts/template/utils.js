@@ -264,17 +264,17 @@ const cacheBust = (urlPath) => {
   return `${urlPath}?v=${hashFile(resolvedPath)}`;
 };
 
-// Take a URL path to a directory (e.g. "/intl-tel-input/js/i18n"), resolve it to a directory in the build directory, hash all files within that directory recursively, and return the hash to use as a cache-busting query param (e.g. "abc123").
+// Take a URL path to a directory (e.g. "/intl-tel-input/js/locale"), resolve it to a directory in the build directory, hash all files within that directory recursively, and return the hash to use as a cache-busting query param (e.g. "abc123").
 const getDirHash = (urlDirPath) => {
   const resolvedPath = resolveBuildPathFromUrl(urlDirPath);
   return hashDirRecursive(resolvedPath);
 };
 
-const getI18nLanguages = () => {
+const getLocales = () => {
   try {
-    const i18nDir = path.join(BUILD_DIR, "intl-tel-input", "js", "i18n");
+    const localeDir = path.join(BUILD_DIR, "intl-tel-input", "js", "locale");
     return fs
-      .readdirSync(i18nDir)
+      .readdirSync(localeDir)
       .filter((f) => f.endsWith(".js") && f !== "index.js" && f !== "types.js")
       .map((f) => f.replace(/\.js$/, ""))
       .filter(Boolean)
@@ -308,6 +308,6 @@ export {
   createMarkdownRenderer,
   cacheBust,
   getDirHash,
-  getI18nLanguages,
+  getLocales,
   buildOpenGraphMetaTags,
 };

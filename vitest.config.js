@@ -42,7 +42,7 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       include: ["packages/core/src/js/**/*.ts"],
-      exclude: ["packages/core/src/js/i18n/**", "packages/core/src/js/types/**"],
+      exclude: ["packages/core/src/js/locale/**", "packages/core/src/js/types/**"],
       reporter: ["text", "html", "lcov"],
       reportsDirectory: "coverage",
     },

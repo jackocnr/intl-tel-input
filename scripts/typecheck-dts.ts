@@ -11,7 +11,7 @@ import intlTelInput, {
   type AllOptions,
   type Country,
   type ForEachInstanceArgsMap,
-  type I18n,
+  type UiTranslations,
   type IntlTelInputInterface,
   type Iso2,
   type ItiUtils,
@@ -23,7 +23,7 @@ import intlTelInput, {
 
 import utils from "intl-tel-input/utils";
 import { isIso2, iso2Set, rawCountryData } from "intl-tel-input/data";
-import { de, en, fr } from "intl-tel-input/i18n";
+import { de, en, fr } from "intl-tel-input/locale";
 import styles from "intl-tel-input/styles";
 
 const input: HTMLInputElement = document.createElement("input");
@@ -58,7 +58,7 @@ const _countryShape: Country = {
 };
 void _countryShape;
 
-const _translations: I18n = { ...en, ...de, ...fr };
+const _translations: UiTranslations = { ...en, ...de, ...fr };
 void _translations;
 
 const _numberType: NumberType = "MOBILE";

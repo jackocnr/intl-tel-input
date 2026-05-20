@@ -93,8 +93,8 @@ describe("core/options validateOptions", () => {
     expect(warnSpy).toHaveBeenCalled();
   });
 
-  test("warns on invalid i18n option type", () => {
-    expect(() => validateOptions({ i18n: [] })).not.toThrow();
+  test("warns on invalid uiTranslations option type", () => {
+    expect(() => validateOptions({ uiTranslations: [] })).not.toThrow();
     expect(warnSpy).toHaveBeenCalled();
   });
 
