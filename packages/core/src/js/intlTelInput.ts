@@ -1307,7 +1307,10 @@ export class Iti {
     }
 
     //* If still loading, the user hasn't interrupted, so adopt the auto country. Otherwise the user has already selected a country or cleared to globe, so just stash the auto country as a fallback.
-    if (this.#ui.isLoading()) {
+    //* Exception: if the user is focused and has typed a national-format value (no dial code match → no country selected → loading class still set), treat that as an interruption too, otherwise setCountry would reformat their value out from under them.
+    const isFocused = document.activeElement === this.#ui.telInputEl;
+    const hasTypedValue = Boolean(this.#getTelInputValue());
+    if (this.#ui.isLoading() && !(isFocused && hasTypedValue)) {
       this.setCountry(intlTelInput.autoCountry);
     } else {
       this.#fallbackCountryIso2 = intlTelInput.autoCountry;
