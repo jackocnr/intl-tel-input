@@ -28,7 +28,7 @@ export const playgroundPresets = [
   },
   {
     label: "National format",
-    href: "/playground?nationalMode=true&separateDialCode=false&initialCountry=gb#formatting-options",
+    href: "/playground?numberDisplayFormat=NATIONAL&separateDialCode=false&initialCountry=gb#formatting-options",
   },
   {
     label: "Localised country names",

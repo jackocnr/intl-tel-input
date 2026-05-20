@@ -11,7 +11,7 @@ const iti = intlTelInput(input, {
   allowDropdown: false,
   showFlags: false,
   separateDialCode: false,
-  nationalMode: true,
+  numberDisplayFormat: "NATIONAL",
   loadUtils: () => import("intl-tel-input/utils"),
 });
 

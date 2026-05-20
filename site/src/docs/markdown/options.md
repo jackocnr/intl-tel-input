@@ -182,23 +182,21 @@ Automatically format the number as the user types. This feature will be disabled
 
 Try `intl-tel-input` with this disabled in the [Playground](/playground?formatAsYouType=false#formatAsYouType).
 
-###### formatOnDisplay
-Type: `boolean`  
-Default: `true`  
+###### numberDisplayFormat
+Type: `"E164" | "INTERNATIONAL" | "NATIONAL"`  
+Default: `"INTERNATIONAL"`  
 
-Format the input value (according to the [`nationalMode`](#nationalmode) option) during initialisation, when a new country is selected, and when calling [`setNumber`](/docs/methods#setnumber) or [`setCountry`](/docs/methods#setcountry). Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). 
+Controls how numbers are displayed in the input — both the auto-generated placeholder example and any stored value passed in on initialisation or via [`setNumber`](/docs/methods#setnumber). Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script) (otherwise no formatting can happen and the value is shown as-is).
 
-Try toggling this option on/off on an input containing a number in the [Playground](/playground?formatOnDisplay=false&value=%2B447947123123#formatOnDisplay).
+- `"INTERNATIONAL"` (default): formatted with the dial code, e.g. `+44 7740 123456`.
+- `"NATIONAL"`: formatted in the country's national format (no dial code), e.g. `07740 123456`. Forced back to `"INTERNATIONAL"` if [`separateDialCode`](#separatedialcode) is enabled (since the dial code is then part of the typed number) or if the dropdown is shown without flags or a separate dial code (since the user has no way to see the country).
+- `"E164"`: standardised international format with no formatting characters, e.g. `+447740123456`.
 
-###### nationalMode
-Type: `boolean`  
-Default: `false`  
+Note: this is a dev-facing preference for synthetic display. It does **not** override what the user types — if they type a number in national format, it stays in national format. To extract the full international number regardless, use [`getNumber`](/docs/methods#getnumber).
 
-Format numbers in the national format, rather than the international format. This applies to placeholder numbers and when displaying users' existing numbers. 
+> You can also pass a [constant](/docs/types#constant-objects), e.g. `intlTelInput.NUMBER_FORMAT.INTERNATIONAL` — useful in plain JavaScript where typos in the string literal won't be caught at compile time. (Note: only `E164`, `INTERNATIONAL`, and `NATIONAL` are accepted here — `RFC3966` is rejected.)
 
-Note that it's fine for users to type their numbers in national format - as long as they have selected the right country, you can use [`getNumber`](/docs/methods#getnumber) to extract a full international number. Requires [`separateDialCode`](#separatedialcode) to be disabled.
-
-Try `intl-tel-input` with `separateDialCode` disabled and `nationalMode` enabled in the [Playground](/playground?separateDialCode=false&nationalMode=true#nationalMode).
+Try `intl-tel-input` with `separateDialCode` disabled and `numberDisplayFormat` set to `"NATIONAL"` in the [Playground](/playground?separateDialCode=false&numberDisplayFormat=NATIONAL#numberDisplayFormat).
 
 ###### strictMode
 Type: `boolean`  
@@ -359,7 +357,7 @@ Extra features like hidden inputs and loading the utils module.
 Type: `(telInputName: string) => { phone: string, country?: string }`  
 Default: `null`  
 
-Allows the creation of hidden input fields within a form, which, on submit, get populated with (1) the full international telephone number and (2) the selected country's iso2 code. This is useful for old-fashioned, page-load form submissions to ensure the full international number and iso2 code are captured, especially when [`nationalMode`](#nationalmode) or [`separateDialCode`](#separatedialcode) is enabled. [See example](/examples/vanilla-javascript/hidden-input).
+Allows the creation of hidden input fields within a form, which, on submit, get populated with (1) the full international telephone number and (2) the selected country's iso2 code. This is useful for old-fashioned, page-load form submissions to ensure the full international number and iso2 code are captured, especially when [`numberDisplayFormat`](#numberdisplayformat) is `"NATIONAL"` or [`separateDialCode`](#separatedialcode) is enabled. [See example](/examples/vanilla-javascript/hidden-input).
 
 This option accepts a function that receives the name of the main telephone input as an argument. This function should return an object with `phone` and (optionally) `country` properties to specify the names of the hidden inputs for the phone number and iso2 code, respectively.
 

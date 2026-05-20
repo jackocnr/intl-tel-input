@@ -24,7 +24,7 @@ import {
 // - Initialising library with eastern numerals should format the number and set the flag correctly
 // - setNumber with eastern numerals should format the number and set the flag correctly
 // - Typing a different international dial code in eastern numerals should update the selected flag
-// - formatOnDisplay should work with eastern numerals
+// - numberDisplayFormat should work with eastern numerals
 // - formatAsYouType should be disabled with eastern numerals (caret position too complicated)
 // - strictMode should allow typing/pasting eastern numerals
 // - getNumber should work with eastern numerals, preserving the numeral set in the output
@@ -36,7 +36,7 @@ describe("Eastern numerals support", () => {
 
     beforeEach(() => {
       user = userEvent.setup();
-      const options = { separateDialCode: false, nationalMode: true };
+      const options = { separateDialCode: false, numberDisplayFormat: "NATIONAL" };
       ({ iti, input, container } = initIntlTelInput({ options }));
     });
 

@@ -726,28 +726,23 @@ const HINT_CONFIGS = [
     shouldShow: () => true, // always show this as they have to take action
   },
   {
-    optionKey: "formatOnDisplay",
+    optionKey: "numberDisplayFormat",
     message: () => {
-      if (!getCombinedStateFromControls().loadUtils) {
+      const state = getCombinedStateFromControls();
+      if (!state.loadUtils) {
         return "Tip: enable [loadUtils](#loadUtils) to see this in action.";
       }
-      let tip = "Tip: enter a valid phone number and then toggle this option on/off to see it in action.";
-      if (!syncDemoStateCheckbox.checked) {
-        tip += " Note: enable [Sync demo state](#sync-demo-state) first, otherwise your typed number will be lost when you toggle the option.";
+      if (state.separateDialCode && state.numberDisplayFormat === "NATIONAL") {
+        return "Tip: disable [separateDialCode](#separateDialCode) for NATIONAL to take effect (otherwise it falls back to INTERNATIONAL).";
       }
-      return tip;
+      return "Tip: select a country and enter (or set) a number to see how this option formats it differently.";
     },
-    shouldShow: () => !getCombinedStateFromControls().loadUtils || !telInput.value,
-  },
-  {
-    optionKey: "nationalMode",
-    message: () => {
-      if (getCombinedStateFromControls().separateDialCode ) {
-        return "Tip: disable [separateDialCode](#separateDialCode) to see this in action.";
-      }
-      return "Tip: select a country to see how this option formats the typed number (or placeholder number) differently.";
+    shouldShow: () => {
+      const state = getCombinedStateFromControls();
+      return !state.loadUtils
+        || (state.separateDialCode && state.numberDisplayFormat === "NATIONAL")
+        || !itiController.iti?.getSelectedCountryData();
     },
-    shouldShow: () => getCombinedStateFromControls().separateDialCode || !itiController.iti?.getSelectedCountryData(),
     alsoShowOnToggleOff: true,
   },
   {
@@ -832,7 +827,7 @@ const HINT_CONFIGS = [
       if (state.autoPlaceholder === "off" || !state.loadUtils) {
         return true;
       }
-      return !window.intlTelInput.utils!.getExampleNumber(country.iso2, false, state.placeholderNumberType);
+      return !window.intlTelInput.utils!.getExampleNumber(country.iso2, state.placeholderNumberType, "INTERNATIONAL");
     },
     alsoShowOnToggleOff: true,
   },

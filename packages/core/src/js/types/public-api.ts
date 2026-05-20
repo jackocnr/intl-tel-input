@@ -21,9 +21,8 @@ export type ItiUtils = {
   getCoreNumber(number: string, iso2: string | undefined): string;
   getExampleNumber(
     iso2: string | undefined,
-    nationalMode: boolean,
     numberType: NumberType,
-    useE164?: boolean,
+    format: NumberFormat,
   ): string;
   getExtension(number: string, iso2: string | undefined): string;
   getNumberType(number: string, iso2: string | undefined): NumberType | null;
@@ -78,7 +77,6 @@ export interface AllOptions {
   excludeCountries: Iso2[] | null;
   fixDropdownWidth: boolean;
   formatAsYouType: boolean;
-  formatOnDisplay: boolean;
   hiddenInput:
     | ((telInputName: string) => { phone: string; country?: string })
     | null;
@@ -86,7 +84,7 @@ export interface AllOptions {
   initialCountry: Iso2 | "";
   initialCountryLookup: (() => Promise<Iso2>) | null;
   loadUtils: UtilsLoader | null;
-  nationalMode: boolean;
+  numberDisplayFormat: Exclude<NumberFormat, "RFC3966">;
   onlyCountries: Iso2[] | null;
   placeholderNumberType: NumberType;
   searchInputClass: string;

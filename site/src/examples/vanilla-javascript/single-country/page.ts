@@ -57,7 +57,7 @@ const setText = (el: HTMLElement, text: string) => el.textContent = text;
     allowDropdown: false,
     showFlags: false,
     separateDialCode: false,
-    nationalMode: true,
+    numberDisplayFormat: "NATIONAL",
     // @ts-expect-error - lodash template tag, resolved at build time
     loadUtils: () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
   });

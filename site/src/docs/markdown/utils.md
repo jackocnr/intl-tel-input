@@ -15,7 +15,7 @@ Loading the utils script enables the following features:
 * Formatting upon initialisation, as well as with [`getNumber`](/docs/methods#getnumber) and [`setNumber`](/docs/methods#setnumber)
 * Validating with [`isValidNumber`](/docs/methods#isvalidnumber), [`getNumberType`](/docs/methods#getnumbertype) and [`getValidationError`](/docs/methods#getvalidationerror) methods
 * Generating placeholder numbers for every country - even specify the type of number (e.g. mobile) using the [`placeholderNumberType`](/docs/options#placeholdernumbertype) option
-* Extracting the standardised (E.164) international number with [`getNumber`](/docs/methods#getnumber) even when using the [`nationalMode`](/docs/options#nationalmode) option
+* Extracting the standardised (E.164) international number with [`getNumber`](/docs/methods#getnumber) even when using [`numberDisplayFormat`](/docs/options#numberdisplayformat) `"NATIONAL"`
 
 International number formatting/validation is hard (it varies by country/district, and we currently support ~230 countries). The only comprehensive solution we have found is libphonenumber, from which we have precompiled the relevant parts into a single JavaScript file, included in the build directory. Unfortunately, even after modification, it is still ~260KB. See the section below on the best way to load it.
 
@@ -69,14 +69,14 @@ intlTelInput.utils.getCoreNumber("+1 702-418-1234", "us"); // "7024181234"
 ```
 
 ###### utils.getExampleNumber
-Type: `(iso2: string | undefined, nationalMode: boolean, numberType: NumberType, useE164?: boolean) => string`  
+Type: `(iso2: string | undefined, numberType: NumberType, format: NumberFormat) => string`  
 
-Get an example number for the given country and [`NumberType`](/docs/types#numbertype). Pass `nationalMode: true` for national format, `false` for international. Set `useE164: true` to override and return E.164 instead. Returns an empty string if no example exists.
+Get an example number for the given country and [`NumberType`](/docs/types#numbertype), in the given [`NumberFormat`](/docs/types#numberformat). Returns an empty string if no example exists.
 
 ```js
-intlTelInput.utils.getExampleNumber("gb", false, "MOBILE"); // "+44 7400 123456"
-intlTelInput.utils.getExampleNumber("gb", true, "MOBILE"); // "07400 123456"
-intlTelInput.utils.getExampleNumber("gb", false, "MOBILE", true); // "+447400123456"
+intlTelInput.utils.getExampleNumber("gb", "MOBILE", "INTERNATIONAL"); // "+44 7400 123456"
+intlTelInput.utils.getExampleNumber("gb", "MOBILE", "NATIONAL"); // "07400 123456"
+intlTelInput.utils.getExampleNumber("gb", "MOBILE", "E164"); // "+447400123456"
 ```
 
 ###### utils.getExtension

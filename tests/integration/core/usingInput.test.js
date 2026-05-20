@@ -15,7 +15,7 @@ describe("using input", () => {
 
   beforeEach(() => {
     user = userEvent.setup();
-    const options = { separateDialCode: false, strictMode: false, nationalMode: true };
+    const options = { separateDialCode: false, strictMode: false, numberDisplayFormat: "NATIONAL" };
     ({ iti, input, container } = initIntlTelInput({ options }));
   });
 

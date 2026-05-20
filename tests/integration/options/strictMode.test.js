@@ -17,7 +17,7 @@ import {
 
 // NATIONAL MODE ENABLED
 describe("strictMode option", () => {
-  describe("nationalMode=true", () => {
+  describe("numberDisplayFormat=NATIONAL", () => {
     let input, iti, user, container;
 
     beforeEach(() => {
@@ -25,7 +25,7 @@ describe("strictMode option", () => {
       const options = {
         initialCountry: "us",
         strictMode: true,
-        nationalMode: true,
+        numberDisplayFormat: "NATIONAL",
         separateDialCode: false,
       };
       ({ input, iti, container } = initIntlTelInput({ options }));
@@ -263,14 +263,14 @@ describe("strictMode option", () => {
   });
 
   // NATIONAL MODE DISABLED
-  describe("nationalMode=false", () => {
+  describe("numberDisplayFormat=INTERNATIONAL", () => {
     let input, iti, user, container;
 
     beforeEach(() => {
       user = userEvent.setup();
       const options = {
         strictMode: true,
-        nationalMode: false,
+        numberDisplayFormat: "INTERNATIONAL",
       };
       ({ input, iti, container } = initIntlTelInput({ options }));
     });

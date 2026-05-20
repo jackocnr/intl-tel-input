@@ -878,16 +878,29 @@ export class Iti {
   //* Update the input's value to the given number (format first if possible)
   //* NOTE: this is called from setInitialState, handleUtilsLoaded and setNumber.
   #updateValueFromNumber(fullNumber: string): void {
-    const { formatOnDisplay, nationalMode, separateDialCode } = this.#options;
+    const { numberDisplayFormat, separateDialCode } = this.#options;
     let number = fullNumber;
-    if (formatOnDisplay && intlTelInput.utils && this.#selectedCountry) {
+    if (intlTelInput.utils && this.#selectedCountry) {
       const isRegionless = hasRegionlessDialCode(fullNumber);
+      //* Preserve user-typed national format: if no leading `+` and not separateDialCode, keep national.
+      //* numberDisplayFormat is a dev preference for synthetic display (placeholders, setNumber, initial values),
+      //* it shouldn't override what the user actually typed.
+      const preserveUserNational =
+        !number.startsWith("+") && !separateDialCode;
       const useNational =
-        (nationalMode && !isRegionless) ||
-        (!number.startsWith("+") && !separateDialCode);
-      const format = useNational
-        ? NUMBER_FORMAT.NATIONAL
-        : NUMBER_FORMAT.INTERNATIONAL;
+        (numberDisplayFormat === NUMBER_FORMAT.NATIONAL && !isRegionless) ||
+        preserveUserNational;
+      let format: NumberFormat;
+      if (useNational) {
+        format = NUMBER_FORMAT.NATIONAL;
+      } else if (
+        numberDisplayFormat === NUMBER_FORMAT.E164 &&
+        !isRegionless
+      ) {
+        format = NUMBER_FORMAT.E164;
+      } else {
+        format = NUMBER_FORMAT.INTERNATIONAL;
+      }
       number = intlTelInput.utils.formatNumber(
         number,
         this.#selectedCountry?.iso2,
@@ -1083,9 +1096,8 @@ export class Iti {
 
     let exampleNumber = intlTelInput.utils.getExampleNumber(
       iso2,
-      false,
       placeholderNumberType,
-      true,
+      NUMBER_FORMAT.E164,
     );
     //* See if adding more digits is still valid to get the true maximum valid length.
     let validNumber = exampleNumber;
@@ -1113,7 +1125,7 @@ export class Iti {
     const {
       autoPlaceholder,
       placeholderNumberType,
-      nationalMode,
+      numberDisplayFormat,
       customPlaceholder,
     } = this.#options;
     const shouldSetPlaceholder =
@@ -1129,8 +1141,8 @@ export class Iti {
     let placeholder = this.#selectedCountry
       ? intlTelInput.utils.getExampleNumber(
           this.#selectedCountry.iso2,
-          nationalMode,
           placeholderNumberType,
+          numberDisplayFormat,
         )
       : "";
 
@@ -1155,10 +1167,8 @@ export class Iti {
     this.#updateDialCode(dialCode!);
 
     // reformat any existing number to the new country
-    if (this.#options.formatOnDisplay) {
-      const inputValue = this.#getTelInputValue();
-      this.#updateValueFromNumber(inputValue);
-    }
+    const inputValue = this.#getTelInputValue();
+    this.#updateValueFromNumber(inputValue);
 
     //* Focus the input.
     this.#ui.telInputEl.focus();
@@ -1565,10 +1575,8 @@ export class Iti {
     this.#updateSelectedCountry(iso2Lower);
     this.#updateDialCode(this.#selectedCountry?.dialCode || "");
     // reformat
-    if (this.#options.formatOnDisplay) {
-      const inputValue = this.#getTelInputValue();
-      this.#updateValueFromNumber(inputValue);
-    }
+    const inputValue = this.#getTelInputValue();
+    this.#updateValueFromNumber(inputValue);
     this.#dispatchCountryChangeEvent();
     this.#dispatchEvent(EVENTS.INPUT, { isCountryChange: true });
   }

@@ -30,9 +30,9 @@ describe("setNumber method", () => {
     });
   });
 
-  describe("with utils, nationalMode true, separateDialCode false", () => {
+  describe("with utils, numberDisplayFormat=NATIONAL, separateDialCode false", () => {
     let iti, input;
-    const options = { nationalMode: true, separateDialCode: false };
+    const options = { numberDisplayFormat: "NATIONAL", separateDialCode: false };
 
     beforeEach(() => {
       ({ iti, input } = initIntlTelInput({ options }));
@@ -46,9 +46,9 @@ describe("setNumber method", () => {
     });
   });
 
-  describe("with utils, nationalMode false", () => {
+  describe("with utils, numberDisplayFormat=INTERNATIONAL (default)", () => {
     let iti, input;
-    const options = { nationalMode: false };
+    const options = { numberDisplayFormat: "INTERNATIONAL" };
 
     beforeEach(() => {
       ({ iti, input } = initIntlTelInput({ options }));

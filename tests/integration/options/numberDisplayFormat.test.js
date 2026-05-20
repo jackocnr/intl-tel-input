@@ -4,13 +4,13 @@
 import { initIntlTelInput, teardown, checkFlagSelected } from "../helpers/helpers";
 import { userEvent } from "@testing-library/user-event";
 
-describe("nationalMode option", () => {
-  describe("nationalMode=true, empty input", () => {
+describe("numberDisplayFormat option", () => {
+  describe("numberDisplayFormat=NATIONAL, empty input", () => {
     let iti, input, user, container;
 
     beforeEach(() => {
       user = userEvent.setup();
-      const options = { nationalMode: true, separateDialCode: false };
+      const options = { numberDisplayFormat: "NATIONAL", separateDialCode: false };
       ({ iti, input, container } = initIntlTelInput({ options }));
     });
 
@@ -23,12 +23,12 @@ describe("nationalMode option", () => {
     });
   });
 
-  describe("nationalMode=true initialCountry=gb", () => {
+  describe("numberDisplayFormat=NATIONAL initialCountry=gb", () => {
     let iti, input, container, user;
 
     beforeEach(() => {
       user = userEvent.setup();
-      const options = { nationalMode: true, initialCountry: "gb", separateDialCode: false };
+      const options = { numberDisplayFormat: "NATIONAL", initialCountry: "gb", separateDialCode: false };
       ({ iti, input, container } = initIntlTelInput({ options }));
     });
 
@@ -40,12 +40,12 @@ describe("nationalMode option", () => {
     });
   });
 
-  describe("nationalMode=false initialCountry=us", () => {
+  describe("numberDisplayFormat=INTERNATIONAL initialCountry=us", () => {
     let iti, input, container, user;
 
     beforeEach(() => {
       user = userEvent.setup();
-      const options = { nationalMode: false, initialCountry: "us", separateDialCode: false };
+      const options = { numberDisplayFormat: "INTERNATIONAL", initialCountry: "us", separateDialCode: false };
       ({ iti, input, container } = initIntlTelInput({ options }));
     });
 
@@ -60,12 +60,12 @@ describe("nationalMode option", () => {
     });
   });
 
-  describe("nationalMode=false initialCountry=ax", () => {
+  describe("numberDisplayFormat=INTERNATIONAL initialCountry=ax", () => {
     let iti, input, container, user;
 
     beforeEach(() => {
       user = userEvent.setup();
-      const options = { nationalMode: false, initialCountry: "ax", separateDialCode: false };
+      const options = { numberDisplayFormat: "INTERNATIONAL", initialCountry: "ax", separateDialCode: false };
       ({ iti, input, container } = initIntlTelInput({ options }));
     });
 
@@ -78,12 +78,12 @@ describe("nationalMode option", () => {
     });
   });
 
-  describe("nationalMode=false initialCountry=gb", () => {
+  describe("numberDisplayFormat=INTERNATIONAL initialCountry=gb", () => {
     let iti, input, container, user;
 
     beforeEach(() => {
       user = userEvent.setup();
-      const options = { nationalMode: false, initialCountry: "gb", separateDialCode: false };
+      const options = { numberDisplayFormat: "INTERNATIONAL", initialCountry: "gb", separateDialCode: false };
       ({ iti, input, container } = initIntlTelInput({ options }));
     });
 
@@ -112,6 +112,59 @@ describe("nationalMode option", () => {
     test("typing invalid intl dial code should show globe icon", async () => {
       await user.type(input, "+882");
       expect(checkFlagSelected(container, "")).toBe(true);
+    });
+  });
+
+  // Format-on-display behaviour: the input gets formatted on init and on setNumber.
+
+  describe("numberDisplayFormat=E164, separateDialCode=false, valid US intl initial value", () => {
+    let iti, input;
+
+    beforeEach(() => {
+      const options = { numberDisplayFormat: "E164", separateDialCode: false };
+      ({ iti, input } = initIntlTelInput({ inputValue: "+17024181234", options }));
+    });
+
+    afterEach(() => teardown(iti));
+
+    test("displays as unformatted E.164, inc with setNumber", () => {
+      expect(input.value).toEqual("+17024181234");
+      iti.setNumber("+14154181234");
+      expect(input.value).toEqual("+14154181234");
+    });
+  });
+
+  describe("numberDisplayFormat=NATIONAL, separateDialCode=false, valid US intl initial value", () => {
+    let iti, input;
+
+    beforeEach(() => {
+      const options = { numberDisplayFormat: "NATIONAL", separateDialCode: false };
+      ({ iti, input } = initIntlTelInput({ inputValue: "+17024181234", options }));
+    });
+
+    afterEach(() => teardown(iti));
+
+    test("formats to national, inc with setNumber", () => {
+      expect(input.value).toEqual("(702) 418-1234");
+      iti.setNumber("+14154181234");
+      expect(input.value).toEqual("(415) 418-1234");
+    });
+  });
+
+  describe("numberDisplayFormat=INTERNATIONAL (default), separateDialCode=true, valid US intl initial value", () => {
+    let iti, input;
+
+    beforeEach(() => {
+      const options = { numberDisplayFormat: "INTERNATIONAL" };
+      ({ iti, input } = initIntlTelInput({ inputValue: "+17024181234", options }));
+    });
+
+    afterEach(() => teardown(iti));
+
+    test("strips the dial code (since separateDialCode shows it next to the flag), inc with setNumber", () => {
+      expect(input.value).toEqual("702-418-1234");
+      iti.setNumber("+14154181234");
+      expect(input.value).toEqual("415-418-1234");
     });
   });
 });

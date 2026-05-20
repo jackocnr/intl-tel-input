@@ -1,5 +1,6 @@
 import {
   PLACEHOLDER_MODES,
+  NUMBER_FORMAT,
   NUMBER_TYPE,
   NUMBER_TYPES,
   LAYOUT,
@@ -61,8 +62,6 @@ export const defaults: AllOptions = {
   fixDropdownWidth: true,
   //* Format the number as the user types
   formatAsYouType: true,
-  //* Format the input value during initialisation and on setNumber.
-  formatOnDisplay: true,
   //* Inject a hidden input with the name returned from this function, and on submit, populate it with the result of getNumber.
   hiddenInput: null,
   //* Internationalise the core library text e.g. search input placeholder, country names.
@@ -73,8 +72,8 @@ export const defaults: AllOptions = {
   initialCountryLookup: null,
   //* A function to load the utils script.
   loadUtils: null,
-  //* National vs international formatting for numbers e.g. placeholders and displaying existing numbers.
-  nationalMode: false,
+  //* Format used when displaying numbers (placeholder examples and stored values). One of "E164", "INTERNATIONAL", "NATIONAL".
+  numberDisplayFormat: NUMBER_FORMAT.INTERNATIONAL,
   //* Display only these countries.
   onlyCountries: null,
   //* Number type to use for placeholders.
@@ -182,8 +181,6 @@ export const validateOptions = (customOptions: unknown): SomeOptions => {
       case "dropdownAlwaysOpen":
       case "fixDropdownWidth":
       case "formatAsYouType":
-      case "formatOnDisplay":
-      case "nationalMode":
       case "showFlags":
       case "separateDialCode":
       case "strictMode":
@@ -191,6 +188,24 @@ export const validateOptions = (customOptions: unknown): SomeOptions => {
       case "useFullscreenPopup":
         if (typeof value !== "boolean") {
           warnOption(key, "a boolean", value);
+          break;
+        }
+        validatedOptions[key] = value;
+        break;
+
+      case "numberDisplayFormat":
+        if (
+          typeof value !== "string" ||
+          value === NUMBER_FORMAT.RFC3966 ||
+          !(value === NUMBER_FORMAT.E164 ||
+            value === NUMBER_FORMAT.INTERNATIONAL ||
+            value === NUMBER_FORMAT.NATIONAL)
+        ) {
+          warnOption(
+            "numberDisplayFormat",
+            'one of "E164", "INTERNATIONAL", "NATIONAL"',
+            value,
+          );
           break;
         }
         validatedOptions[key] = value;
@@ -381,14 +396,19 @@ export const applyOptionSideEffects = (o: AllOptions): void => {
     o.initialCountry = o.onlyCountries[0];
   }
 
-  //* When separateDialCode enabled, we force nationalMode to false (because the displayed dial code is supposed to be thought of as part of the typed number).
-  if (o.separateDialCode) {
-    o.nationalMode = false;
+  //* When separateDialCode enabled, NATIONAL display is contradictory (the dial code is supposed to be thought of as part of the typed number), so force INTERNATIONAL.
+  if (o.separateDialCode && o.numberDisplayFormat === NUMBER_FORMAT.NATIONAL) {
+    o.numberDisplayFormat = NUMBER_FORMAT.INTERNATIONAL;
   }
 
-  // if there is a country dropdown, but no flags and no separate dial code, then it suggests that there are multiple countries to choose from, but no way to see which one is currently selected, so we force nationalMode to false, as it doesn't make sense to show a national number placeholder if there's no way to see which country is selected
-  if (o.allowDropdown && !o.showFlags && !o.separateDialCode) {
-    o.nationalMode = false;
+  // if there is a country dropdown, but no flags and no separate dial code, then it suggests that there are multiple countries to choose from, but no way to see which one is currently selected, so we force INTERNATIONAL display, as it doesn't make sense to show a national number placeholder if there's no way to see which country is selected
+  if (
+    o.allowDropdown &&
+    !o.showFlags &&
+    !o.separateDialCode &&
+    o.numberDisplayFormat === NUMBER_FORMAT.NATIONAL
+  ) {
+    o.numberDisplayFormat = NUMBER_FORMAT.INTERNATIONAL;
   }
 
   //* If we want a full screen dropdown, we must append it to the body.

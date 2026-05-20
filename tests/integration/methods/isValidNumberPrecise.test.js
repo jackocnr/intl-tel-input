@@ -42,9 +42,9 @@ describe("isValidNumberPrecise", () => {
     });
   });
 
-  describe("nationalMode true", () => {
+  describe("numberDisplayFormat=NATIONAL", () => {
     let iti, input, user, container;
-    const options = { nationalMode: true };
+    const options = { numberDisplayFormat: "NATIONAL" };
 
     beforeEach(() => {
       ({ iti, input, container } = initIntlTelInput({ options }));

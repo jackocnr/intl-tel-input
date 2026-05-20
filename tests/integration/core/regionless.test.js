@@ -7,11 +7,11 @@ import { userEvent } from "@testing-library/user-event";
 describe("regionless (non-geographic) dial codes", () => {
   const regionlessNumber = "+80012345678";
 
-  describe("formatting with nationalMode=true + formatOnDisplay=true", () => {
+  describe("formatting with numberDisplayFormat=NATIONAL", () => {
     let iti, input;
 
     beforeEach(() => {
-      const options = { nationalMode: true, formatOnDisplay: true };
+      const options = { numberDisplayFormat: "NATIONAL" };
       ({ iti, input } = initIntlTelInput({ inputValue: regionlessNumber, options }));
     });
 

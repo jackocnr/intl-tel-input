@@ -15,22 +15,22 @@ describe("core/options applyOptionSideEffects", () => {
     expect(o.initialCountry).toBe("us");
   });
 
-  test("separateDialCode forces nationalMode false", () => {
+  test("separateDialCode forces numberDisplayFormat=NATIONAL back to INTERNATIONAL", () => {
     const o = clone();
     o.separateDialCode = true;
-    o.nationalMode = true;
+    o.numberDisplayFormat = "NATIONAL";
     applyOptionSideEffects(o);
-    expect(o.nationalMode).toBe(false);
+    expect(o.numberDisplayFormat).toBe("INTERNATIONAL");
   });
 
-  test("allowDropdown without flags dial code forces nationalMode false", () => {
+  test("allowDropdown without flags or separateDialCode forces NATIONAL back to INTERNATIONAL", () => {
     const o = clone();
     o.allowDropdown = true;
     o.showFlags = false;
     o.separateDialCode = false;
-    o.nationalMode = true;
+    o.numberDisplayFormat = "NATIONAL";
     applyOptionSideEffects(o);
-    expect(o.nationalMode).toBe(false);
+    expect(o.numberDisplayFormat).toBe("INTERNATIONAL");
   });
 
   test("useFullscreenPopup without container sets dropdownContainer", () => {
@@ -95,6 +95,23 @@ describe("core/options validateOptions", () => {
 
   test("warns on invalid i18n option type", () => {
     expect(() => validateOptions({ i18n: [] })).not.toThrow();
+    expect(warnSpy).toHaveBeenCalled();
+  });
+
+  test("accepts valid numberDisplayFormat values", () => {
+    expect(() => validateOptions({ numberDisplayFormat: "E164" })).not.toThrow();
+    expect(() => validateOptions({ numberDisplayFormat: "INTERNATIONAL" })).not.toThrow();
+    expect(() => validateOptions({ numberDisplayFormat: "NATIONAL" })).not.toThrow();
+    expect(warnSpy).not.toHaveBeenCalled();
+  });
+
+  test("warns on RFC3966 numberDisplayFormat", () => {
+    expect(() => validateOptions({ numberDisplayFormat: "RFC3966" })).not.toThrow();
+    expect(warnSpy).toHaveBeenCalled();
+  });
+
+  test("warns on invalid numberDisplayFormat", () => {
+    expect(() => validateOptions({ numberDisplayFormat: "WHATEVER" })).not.toThrow();
     expect(warnSpy).toHaveBeenCalled();
   });
 });

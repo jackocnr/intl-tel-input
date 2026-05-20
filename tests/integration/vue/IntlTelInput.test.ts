@@ -179,13 +179,13 @@ describe("Vue IntlTelInput wrapper", () => {
     expect(itiRef.value!.instance!.getSelectedCountryData().iso2).toBe("gb");
   });
 
-  test("omitted boolean props do not override library defaults (e.g. nationalMode)", async () => {
+  test("omitted boolean props do not override library defaults", async () => {
     const { container } = render(IntlTelInput, { props: { initialCountry: "us" } });
     await waitFor(() => {
       const input = container.querySelector("input") as HTMLInputElement;
       expect(input.parentElement?.classList.contains("iti")).toBe(true);
     });
-    // If boolean props were coerced to false, nationalMode (default true) would be wrong.
+    // If boolean props were coerced to false, separateDialCode (default true) would be wrong.
     // Assert via behavior: typing a US national number should not auto-prepend the +1 dial code.
     const input = getTelInput();
     input.value = "7024181234";

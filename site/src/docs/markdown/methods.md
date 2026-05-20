@@ -64,7 +64,7 @@ For example, if the input value was `"(702) 555-5555 ext. 1234"`, this would ret
 ###### getNumber
 Type: `(format?: NumberFormat) => string`  
 
-Get the current number in the given [`NumberFormat`](/docs/types#numberformat) (defaults to `"E164"`). Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). _Note that even if [`nationalMode`](/docs/options#nationalmode) is enabled, this can still return a full international number. Also note that this method expects a valid number, and so should only be used after validation._  
+Get the current number in the given [`NumberFormat`](/docs/types#numberformat) (defaults to `"E164"`). Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). _Note that this is independent of [`numberDisplayFormat`](/docs/options#numberdisplayformat) — it always returns the requested format. Also note that this method expects a valid number, and so should only be used after validation._  
 
 ```js
 const number = iti.getNumber(); // defaults to "E164" e.g. "+17024181234"
@@ -135,7 +135,7 @@ Returns: `true`/`false`
 ###### setCountry
 Type: `(iso2?: string) => void`  
 
-Change the selected country. It should be rare, if ever, that you need to do this, as the selected country gets updated automatically when calling [`setNumber`](/docs/methods#setnumber) and passing a number including an international dial code, which is the recommended usage. Note, you can omit the iso2 code argument to set the country to the default empty (globe) state. _Note that if [`formatOnDisplay`](/docs/options#formatondisplay) is enabled, this will attempt to format the number to either national or international format according to the [`nationalMode`](/docs/options#nationalmode) option._  
+Change the selected country. It should be rare, if ever, that you need to do this, as the selected country gets updated automatically when calling [`setNumber`](/docs/methods#setnumber) and passing a number including an international dial code, which is the recommended usage. Note, you can omit the iso2 code argument to set the country to the default empty (globe) state. _If the [utils script](/docs/utils#loading-the-utils-script) is loaded, the input value is reformatted to the new country according to the [`numberDisplayFormat`](/docs/options#numberdisplayformat) option._  
 
 ```js
 iti.setCountry("gb");
@@ -153,7 +153,7 @@ iti.setDisabled(true);
 ###### setNumber
 Type: `(number: string) => void`  
 
-Insert a number, and update the selected country accordingly. _Note that if [`formatOnDisplay`](/docs/options#formatondisplay) is enabled, this will attempt to format the number to either national or international format according to the [`nationalMode`](/docs/options#nationalmode) option._  
+Insert a number, and update the selected country accordingly. _If the [utils script](/docs/utils#loading-the-utils-script) is loaded, the inserted value is formatted according to the [`numberDisplayFormat`](/docs/options#numberdisplayformat) option._  
 
 ```js
 iti.setNumber("+447733123456");

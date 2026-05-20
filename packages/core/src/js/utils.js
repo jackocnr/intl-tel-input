@@ -64,23 +64,15 @@ const formatNumber = (number, iso2, formatName) => {
   }
 };
 
-//* Get an example number for the given country code, by number type name (e.g. "MOBILE").
-const getExampleNumber = (iso2, national, numberTypeName, useE164) => {
+//* Get an example number for the given country code, by number type name (e.g. "MOBILE"), in the given format name (e.g. "INTERNATIONAL").
+const getExampleNumber = (iso2, numberTypeName, formatName) => {
   try {
     const phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
     const numberObj = phoneUtil.getExampleNumberForType(
       iso2,
       numberType[numberTypeName],
     );
-    let format;
-    if (useE164) {
-      format = i18n.phonenumbers.PhoneNumberFormat.E164;
-    } else {
-      format = national
-        ? i18n.phonenumbers.PhoneNumberFormat.NATIONAL
-        : i18n.phonenumbers.PhoneNumberFormat.INTERNATIONAL;
-    }
-    return phoneUtil.format(numberObj, format);
+    return phoneUtil.format(numberObj, numberFormat[formatName]);
   } catch {
     return "";
   }

@@ -104,13 +104,12 @@ class IntlTelInput
   @Input() excludeCountries?: AllOptions["excludeCountries"];
   @Input() fixDropdownWidth?: AllOptions["fixDropdownWidth"];
   @Input() formatAsYouType?: AllOptions["formatAsYouType"];
-  @Input() formatOnDisplay?: AllOptions["formatOnDisplay"];
   @Input() hiddenInput?: AllOptions["hiddenInput"];
   @Input() i18n?: AllOptions["i18n"];
   @Input() initialCountry?: AllOptions["initialCountry"];
   @Input() initialCountryLookup?: AllOptions["initialCountryLookup"];
   @Input() loadUtils?: AllOptions["loadUtils"];
-  @Input() nationalMode?: AllOptions["nationalMode"];
+  @Input() numberDisplayFormat?: AllOptions["numberDisplayFormat"];
   @Input() onlyCountries?: AllOptions["onlyCountries"];
   @Input() placeholderNumberType?: AllOptions["placeholderNumberType"];
   @Input() searchInputClass?: AllOptions["searchInputClass"];
@@ -233,13 +232,12 @@ class IntlTelInput
       excludeCountries: this.excludeCountries,
       fixDropdownWidth: this.fixDropdownWidth,
       formatAsYouType: this.formatAsYouType,
-      formatOnDisplay: this.formatOnDisplay,
       hiddenInput: this.hiddenInput,
       i18n: this.i18n,
       initialCountry: this.initialCountry,
       initialCountryLookup: this.initialCountryLookup,
       loadUtils: this.loadUtils,
-      nationalMode: this.nationalMode,
+      numberDisplayFormat: this.numberDisplayFormat,
       onlyCountries: this.onlyCountries,
       placeholderNumberType: this.placeholderNumberType,
       searchInputClass: this.searchInputClass,

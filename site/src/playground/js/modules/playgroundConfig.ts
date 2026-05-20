@@ -44,7 +44,7 @@ export const OPTION_GROUPS = [
     title: "Formatting Options",
     icon: "bi-magic",
     description: "How numbers are formatted as you type and on initial display.",
-    keys: ["formatAsYouType", "formatOnDisplay", "nationalMode", "strictMode", "strictRejectAnimation"],
+    keys: ["formatAsYouType", "numberDisplayFormat", "strictMode", "strictRejectAnimation"],
   },
   {
     title: "Placeholder Options",
@@ -90,11 +90,10 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     excludeCountries: defaults.excludeCountries,
     fixDropdownWidth: defaults.fixDropdownWidth,
     formatAsYouType: defaults.formatAsYouType,
-    formatOnDisplay: defaults.formatOnDisplay,
     i18n: "en", // default to English in the Playground
     initialCountry: defaults.initialCountry,
     loadUtils: true, // in playground, this is a checkbox
-    nationalMode: defaults.nationalMode,
+    numberDisplayFormat: defaults.numberDisplayFormat,
     onlyCountries: defaults.onlyCountries,
     placeholderNumberType: defaults.placeholderNumberType,
     separateDialCode: defaults.separateDialCode,
@@ -178,13 +177,10 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
       type: "boolean",
       tooltip: "Format the number as the user types.",
     },
-    formatOnDisplay: {
-      type: "boolean",
-      tooltip: "Format any initial value on initialisation.",
-    },
-    nationalMode: {
-      type: "boolean",
-      tooltip: "Display numbers in national format (instead of international) where applicable. Not compatible with separateDialCode.",
+    numberDisplayFormat: {
+      type: "select",
+      tooltip: "How placeholder example numbers and existing stored numbers are displayed. NATIONAL is forced back to INTERNATIONAL when separateDialCode is enabled.",
+      options: ["E164", "INTERNATIONAL", "NATIONAL"],
     },
     strictMode: {
       type: "boolean",

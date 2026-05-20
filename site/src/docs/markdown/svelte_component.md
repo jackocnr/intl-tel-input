@@ -51,7 +51,7 @@ Sets the disabled attribute of both the telephone input and the selected country
 Type: `string`  
 Default: `""`  
 
-The initial value to put in the input. This will get auto-formatted on init (according to `formatOnDisplay` initialisation option). Only used during initialisation — for ongoing reactive updates, use the `value` prop instead.
+The initial value to put in the input. This will get auto-formatted on init (according to the `numberDisplayFormat` initialisation option). Only used during initialisation — for ongoing reactive updates, use the `value` prop instead.
 
 ###### inputProps
 Type: `object`  

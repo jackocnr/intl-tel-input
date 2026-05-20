@@ -55,7 +55,7 @@ Disables both the telephone input and the selected country button. Use this inst
 Type: `object`  
 Default: `{}`  
 
-The props to pass to the input element, e.g. `id`, `className`, `placeholder`, `required`, `onBlur`, `defaultValue` etc. Use `defaultValue` to set the initial value of the input - this will get auto-formatted on init (according to `formatOnDisplay` initialisation option).
+The props to pass to the input element, e.g. `id`, `className`, `placeholder`, `required`, `onBlur`, `defaultValue` etc. Use `defaultValue` to set the initial value of the input - this will get auto-formatted on init (according to the `numberDisplayFormat` initialisation option).
 
 > [!NOTE]
 > The following keys are reserved for the component/core library integration and will be ignored: `type`, `ref`, `onInput`, `value`, `disabled`, `readOnly`. Use the component props (`disabled`, `readOnly`) and the callback props instead.
