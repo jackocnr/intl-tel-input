@@ -141,7 +141,7 @@ View `intl-tel-input` with `initialCountry` set to `"de"` (Germany) in the [Play
 Type: `() => Promise<string>`  
 Default: `null`  
 
-Provide a custom function that calls a lookup service (e.g. an IP geolocation API) to determine the user's country, and returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) that resolves with the relevant iso2 code (or rejects on error). The lookup only runs when [`initialCountry`](#initialcountry) is not set — an explicit `initialCountry` always takes precedence.
+Provide a custom function that calls a lookup service (e.g. an IP geolocation API) to determine the user's country, and returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) that resolves with the relevant iso2 code (or rejects on error). The lookup only runs when [`initialCountry`](#initialcountry) is not set — an explicit `initialCountry` always takes precedence. _Note: previously named `geoIpLookup`._
 
 Here is an example using the [ipapi](https://ipapi.co/api/?javascript#location-of-clients-ip) service<sup>*</sup> (assign this to `initialCountryLookup`):
 ```js
@@ -192,7 +192,7 @@ Controls how numbers are displayed in the input — both the auto-generated plac
 - `"NATIONAL"`: formatted in the country's national format (no dial code), e.g. `07740 123456`. Forced back to `"INTERNATIONAL"` if [`separateDialCode`](#separatedialcode) is enabled (since the dial code is then part of the typed number) or if the dropdown is shown without flags or a separate dial code (since the user has no way to see the country).
 - `"E164"`: standardised international format with no formatting characters, e.g. `+447740123456`.
 
-Note: this is a dev-facing preference for synthetic display. It does **not** override what the user types — if they type a number in national format, it stays in national format. To extract the full international number regardless, use [`getNumber`](/docs/methods#getnumber).
+Note: this is a dev-facing preference for synthetic display. It does **not** override what the user types — if they type a number in national format, it stays in national format. To extract the full international number regardless, use [`getNumber`](/docs/methods#getnumber). _Note: previously covered by `nationalMode` and `formatOnDisplay` options (now removed)._
 
 > [!TIP]
 > You can either pass a string literal, e.g. `"INTERNATIONAL"`, or a [constant](/docs/types#constant-objects), e.g. `intlTelInput.NUMBER_FORMAT.INTERNATIONAL` — useful where typos in the string literal won't be caught at compile time. (Note: only `E164`, `INTERNATIONAL`, and `NATIONAL` are accepted here — `RFC3966` is rejected.)
@@ -250,7 +250,7 @@ Policy for setting the input's placeholder to an example number for the selected
 - `"AGGRESSIVE"`: replace any existing placeholder.
 - `"OFF"`: never set a placeholder.
 
-Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script).
+Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). _Note: previously named `autoPlaceholder`._
 
 > [!TIP]
 > You can either pass a string literal, e.g. `"POLITE"`, or a [constant](/docs/types#constant-objects), e.g. `intlTelInput.PLACEHOLDER_POLICY.POLITE` — useful where typos in the string literal won't be caught at compile time.
