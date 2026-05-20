@@ -31,7 +31,7 @@ Try `intl-tel-input` with `allowDropdown` disabled in the [Playground](/playgrou
 Type: `string`  
 Default: `""`  
 
-Additional class(es) to add to the (injected) wrapper div element `<div class="iti">`.
+Additional class(es) to add to the injected `<div class="iti">` that wraps the input and country selector. Useful for sizing or positioning the whole component.
 
 ###### countrySearch
 Type: `boolean`  
