@@ -13,7 +13,7 @@ export const OPTION_GROUPS = [
     keys: [
       "allowDropdown",
       "countrySearch",
-      "fixDropdownWidth",
+      "matchDropdownWidth",
       "separateDialCode",
       "showFlags",
       "useFullscreenPopup",
@@ -93,7 +93,7 @@ export function createPlaygroundConfig({
     customPlaceholder: false, // in playground, this is a checkbox
     initialCountryLookup: false, // in playground, this is a checkbox
     excludeCountries: defaults.excludeCountries,
-    fixDropdownWidth: defaults.fixDropdownWidth,
+    matchDropdownWidth: defaults.matchDropdownWidth,
     formatAsYouType: defaults.formatAsYouType,
     i18n: "en", // default to English in the Playground
     initialCountry: defaults.initialCountry,
@@ -133,7 +133,7 @@ export function createPlaygroundConfig({
       type: "boolean",
       tooltip: "Enable the search input inside the country dropdown.",
     },
-    fixDropdownWidth: {
+    matchDropdownWidth: {
       type: "boolean",
       tooltip: "Keep the dropdown width aligned to the input width, as opposed to the width of the longest country name.",
     },

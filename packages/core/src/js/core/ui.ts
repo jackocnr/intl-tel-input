@@ -218,13 +218,13 @@ export default class UI {
   }
 
   public ensureDropdownWidthSet(): void {
-    const { fixDropdownWidth, allowDropdown } = this.#options;
+    const { matchDropdownWidth, allowDropdown } = this.#options;
 
-    // Note: fixDropdownWidth is always false if useFullscreenPopup is true
+    // Note: matchDropdownWidth is always false if useFullscreenPopup is true
     // don't re-set it if it's already set
     if (
       !allowDropdown ||
-      !fixDropdownWidth ||
+      !matchDropdownWidth ||
       this.#dropdownContentEl!.style.width
     ) {
       return;
@@ -239,7 +239,7 @@ export default class UI {
 
   #buildDropdownContent(): void {
     const {
-      fixDropdownWidth,
+      matchDropdownWidth,
       useFullscreenPopup,
       countrySearch,
       i18n,
@@ -247,7 +247,7 @@ export default class UI {
       containerClass,
     } = this.#options;
 
-    const extraClasses = fixDropdownWidth ? "" : "iti--flexible-dropdown-width";
+    const extraClasses = matchDropdownWidth ? "" : "iti--flexible-dropdown-width";
     this.#dropdownContentEl = createEl("div", {
       id: `iti-${this.#id}__dropdown-content`,
       class: `iti__dropdown-content ${CLASSES.HIDE} ${extraClasses}`,
@@ -777,7 +777,7 @@ export default class UI {
 
     this.#dropdownAbortController = new AbortController();
 
-    // if fixDropdownWidth enabled, and the width was not set during init (e.g. because input was hidden), then set it now as the input must be visible now.
+    // if matchDropdownWidth enabled, and the width was not set during init (e.g. because input was hidden), then set it now as the input must be visible now.
     this.ensureDropdownWidthSet();
 
     // dropdownContainer is used (1) to show the inline dropdown when dropdownContainer option is set, and (2) to show the fullscreen popup on mobile

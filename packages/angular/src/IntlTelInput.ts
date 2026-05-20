@@ -101,7 +101,7 @@ class IntlTelInput
   @Input() dropdownAlwaysOpen?: AllOptions["dropdownAlwaysOpen"];
   @Input() dropdownContainer?: AllOptions["dropdownContainer"];
   @Input() excludeCountries?: AllOptions["excludeCountries"];
-  @Input() fixDropdownWidth?: AllOptions["fixDropdownWidth"];
+  @Input() matchDropdownWidth?: AllOptions["matchDropdownWidth"];
   @Input() formatAsYouType?: AllOptions["formatAsYouType"];
   @Input() hiddenInputs?: AllOptions["hiddenInputs"];
   @Input() i18n?: AllOptions["i18n"];
@@ -229,7 +229,7 @@ class IntlTelInput
       dropdownAlwaysOpen: this.dropdownAlwaysOpen,
       dropdownContainer: this.dropdownContainer,
       excludeCountries: this.excludeCountries,
-      fixDropdownWidth: this.fixDropdownWidth,
+      matchDropdownWidth: this.matchDropdownWidth,
       formatAsYouType: this.formatAsYouType,
       hiddenInputs: this.hiddenInputs,
       i18n: this.i18n,

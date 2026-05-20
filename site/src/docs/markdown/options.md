@@ -52,13 +52,13 @@ Expects a node, e.g. `document.body`. Instead of putting the country dropdown ma
 
 Play with this option in the [Playground](/playground#user-interface-options).
 
-###### fixDropdownWidth
+###### matchDropdownWidth
 Type: `boolean`  
 Default: `true`  
 
-Fix the dropdown width to the input width (rather than being as wide as the longest country name). 
+Match the dropdown width to the input width. When disabled, the dropdown is as wide as the longest country name. _Note: previously named `fixDropdownWidth`._
 
-Try `intl-tel-input` with this disabled in the [Playground](/playground?fixDropdownWidth=false#fixDropdownWidth).
+Try `intl-tel-input` with this disabled in the [Playground](/playground?matchDropdownWidth=false#matchDropdownWidth).
 
 ###### searchInputClass
 Type: `string`  

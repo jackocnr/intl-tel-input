@@ -656,7 +656,7 @@ const HINT_CONFIGS = [
     alsoShowOnToggleOff: true,
   },
   {
-    optionKey: "fixDropdownWidth",
+    optionKey: "matchDropdownWidth",
     message: "Tip: in the Live Demo section, enable [Keep dropdown open](#keep-dropdown-open) to see this change in action.",
     shouldShow: () => !keepDropdownOpenCheckbox.checked,
     alsoShowOnToggleOff: true,

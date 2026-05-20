@@ -180,15 +180,15 @@ test.describe("visual snapshots - countrySearch=false", () => {
   });
 });
 
-test.describe("visual snapshots - fixDropdownWidth=false", () => {
+test.describe("visual snapshots - matchDropdownWidth=false", () => {
 
   test("dropdown auto-sized to content", async ({ page }) => {
-    await page.goto("/tests-e2e/fixtures/vanilla-fix-dropdown-width-false.html");
+    await page.goto("/tests-e2e/fixtures/vanilla-match-dropdown-width-false.html");
     await expect(page.locator(".iti")).toBeVisible();
 
     await page.locator(".iti__selected-country").click();
     await expect(page.locator(".iti__country-list")).toBeVisible();
 
-    await expect(page).toHaveScreenshot("vanilla-fix-dropdown-width-false.png");
+    await expect(page).toHaveScreenshot("vanilla-match-dropdown-width-false.png");
   });
 });

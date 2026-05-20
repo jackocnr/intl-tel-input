@@ -57,7 +57,7 @@ export const defaults: AllOptions = {
   //* Don't display these countries.
   excludeCountries: null,
   //* Fix the dropdown width to the input width (rather than being as wide as the longest country name).
-  fixDropdownWidth: true,
+  matchDropdownWidth: true,
   //* Format the number as the user types
   formatAsYouType: true,
   //* Inject hidden inputs with the names returned from this function, and on submit, populate them with the full number and selected country iso2.
@@ -179,7 +179,7 @@ export const validateOptions = (customOptions: unknown): SomeOptions => {
       case "allowPhonewords":
       case "countrySearch":
       case "dropdownAlwaysOpen":
-      case "fixDropdownWidth":
+      case "matchDropdownWidth":
       case "formatAsYouType":
       case "showFlags":
       case "separateDialCode":
@@ -383,11 +383,11 @@ export const applyOptionSideEffects = (o: AllOptions): void => {
 
   //* If showing fullscreen popup, do not fix the width.
   if (o.useFullscreenPopup) {
-    o.fixDropdownWidth = false;
+    o.matchDropdownWidth = false;
   } else {
     // if fullscreen popup disabled for whatever reason, but it's still a narrow screen (so full width dropdown wont fit), then the best UX is to fix dropdown width to input width.
     if (isNarrowViewport()) {
-      o.fixDropdownWidth = true;
+      o.matchDropdownWidth = true;
     }
   }
 

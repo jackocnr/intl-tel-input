@@ -3,8 +3,8 @@
  */
 import { initIntlTelInput, teardown, getDropdownElement } from "../helpers/helpers";
 
-// fixDropdownWidth: when true, dropdown should not have flexible width class; when false it should.
-describe("fixDropdownWidth option", () => {
+// matchDropdownWidth: when true, dropdown should not have flexible width class; when false it should.
+describe("matchDropdownWidth option", () => {
   describe("default true", () => {
     let iti, container;
 
@@ -24,7 +24,7 @@ describe("fixDropdownWidth option", () => {
     let iti, container;
 
     beforeEach(() => {
-      const options = { fixDropdownWidth: false };
+      const options = { matchDropdownWidth: false };
       ({ iti, container } = initIntlTelInput({ options }));
     });
 

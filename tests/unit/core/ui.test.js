@@ -33,7 +33,7 @@ const makeOptions = (overrides = {}) => ({
   dropdownAlwaysOpen: false,
   dropdownContainer: null,
   excludeCountries: null,
-  fixDropdownWidth: true,
+  matchDropdownWidth: true,
   formatAsYouType: true,
   hiddenInputs: null,
   i18n: { ...defaultEnglishStrings },

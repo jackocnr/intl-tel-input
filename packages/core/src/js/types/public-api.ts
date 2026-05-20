@@ -74,7 +74,7 @@ export interface AllOptions {
   dropdownAlwaysOpen: boolean;
   dropdownContainer: HTMLElement | null;
   excludeCountries: Iso2[] | null;
-  fixDropdownWidth: boolean;
+  matchDropdownWidth: boolean;
   formatAsYouType: boolean;
   hiddenInputs:
     | ((telInputName: string) => { phone: string; country?: string })
