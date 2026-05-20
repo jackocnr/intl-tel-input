@@ -1345,8 +1345,9 @@ export class Iti {
     }
 
     const inputValue = this.#getTelInputValue();
-    //* If there's an initial value in the input, then format it.
-    if (inputValue) {
+    //* If there's an initial value in the input, then format it — but skip if the user is mid-edit, otherwise we'd reformat their value out from under them and bump the caret.
+    const isFocused = document.activeElement === this.#ui.telInputEl;
+    if (inputValue && !isFocused) {
       this.#updateValueFromNumber(inputValue);
     }
     if (this.#selectedCountry) {
