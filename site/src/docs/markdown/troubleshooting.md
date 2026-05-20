@@ -38,7 +38,7 @@ For the sake of alignment, the default CSS forces the input's vertical margin to
 
 ##### Placeholders
 
-To get the automatic country-specific placeholder numbers, simply omit the placeholder attribute on the `<input>`, or set [`autoPlaceholder`](/docs/options#autoplaceholder) to `"aggressive"` to override any existing placeholder. Note: this requires the utils script to be loaded.
+To get the automatic country-specific placeholder numbers, simply omit the placeholder attribute on the `<input>`, or set [`placeholderNumberPolicy`](/docs/options#placeholdernumberpolicy) to `"AGGRESSIVE"` to override any existing placeholder. Note: this requires the utils script to be loaded.
 
 ## Vanilla JavaScript library specifics
 

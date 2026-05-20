@@ -78,11 +78,14 @@ export const US = {
   DIAL_CODE: "1", // +1 United States
 };
 
-// Placeholder / initial country string values (extracted for typo safety if needed elsewhere later)
-export const PLACEHOLDER_MODES = {
-  AGGRESSIVE: "aggressive",
-  POLITE: "polite",
-  OFF: "off",
+// Public-facing enum constant for placeholderNumberPolicy. Singular to match
+// NUMBER_FORMAT / NUMBER_TYPE / VALIDATION_ERROR. Hand-defined (rather than
+// derived via toEnumObject) because there's no parallel array to be the source
+// of truth.
+export const PLACEHOLDER_POLICY = {
+  AGGRESSIVE: "AGGRESSIVE",
+  POLITE: "POLITE",
+  OFF: "OFF",
 } as const;
 
 // libphonenumber enums - sole source of truth for both the core library (option
@@ -130,7 +133,7 @@ export const VALIDATION_ERRORS = [
 ] as const;
 
 // Convenience constants so consumers can write NUMBER_TYPE.MOBILE instead of
-// the bare string "MOBILE" - typo-safe and matches the PLACEHOLDER_MODES style.
+// the bare string "MOBILE" - typo-safe and matches the PLACEHOLDER_POLICY style.
 // Derived from the arrays above so there's no second list to keep in sync.
 const toEnumObject = <T extends readonly string[]>(
   arr: T,

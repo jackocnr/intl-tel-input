@@ -70,8 +70,8 @@ describe("core/options validateOptions", () => {
     expect(warnSpy).toHaveBeenCalled();
   });
 
-  test("warns on invalid autoPlaceholder", () => {
-    expect(() => validateOptions({ autoPlaceholder: "invalid" })).not.toThrow();
+  test("warns on invalid placeholderNumberPolicy", () => {
+    expect(() => validateOptions({ placeholderNumberPolicy: "invalid" })).not.toThrow();
     expect(warnSpy).toHaveBeenCalled();
   });
 
@@ -82,7 +82,7 @@ describe("core/options validateOptions", () => {
         initialCountry: "us",
         excludeCountries: ["us"],
         allowedNumberTypes: ["MOBILE"],
-        autoPlaceholder: "aggressive",
+        placeholderNumberPolicy: "AGGRESSIVE",
       }),
     ).not.toThrow();
     expect(warnSpy).not.toHaveBeenCalled();

@@ -92,7 +92,6 @@ class IntlTelInput
   @Input() allowedNumberTypes?: AllOptions["allowedNumberTypes"];
   @Input() allowNumberExtensions?: AllOptions["allowNumberExtensions"];
   @Input() allowPhonewords?: AllOptions["allowPhonewords"];
-  @Input() autoPlaceholder?: AllOptions["autoPlaceholder"];
   @Input() containerClass?: AllOptions["containerClass"];
   @Input() countryNameLocale?: AllOptions["countryNameLocale"];
   @Input() countryNameOverrides?: AllOptions["countryNameOverrides"];
@@ -111,6 +110,7 @@ class IntlTelInput
   @Input() loadUtils?: AllOptions["loadUtils"];
   @Input() numberDisplayFormat?: AllOptions["numberDisplayFormat"];
   @Input() onlyCountries?: AllOptions["onlyCountries"];
+  @Input() placeholderNumberPolicy?: AllOptions["placeholderNumberPolicy"];
   @Input() placeholderNumberType?: AllOptions["placeholderNumberType"];
   @Input() searchInputClass?: AllOptions["searchInputClass"];
   @Input() separateDialCode?: AllOptions["separateDialCode"];
@@ -220,7 +220,6 @@ class IntlTelInput
       allowedNumberTypes: this.allowedNumberTypes,
       allowNumberExtensions: this.allowNumberExtensions,
       allowPhonewords: this.allowPhonewords,
-      autoPlaceholder: this.autoPlaceholder,
       containerClass: this.containerClass,
       countryNameLocale: this.countryNameLocale,
       countryNameOverrides: this.countryNameOverrides,
@@ -239,6 +238,7 @@ class IntlTelInput
       loadUtils: this.loadUtils,
       numberDisplayFormat: this.numberDisplayFormat,
       onlyCountries: this.onlyCountries,
+      placeholderNumberPolicy: this.placeholderNumberPolicy,
       placeholderNumberType: this.placeholderNumberType,
       searchInputClass: this.searchInputClass,
       separateDialCode: this.separateDialCode,

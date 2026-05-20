@@ -1,5 +1,5 @@
 import {
-  PLACEHOLDER_MODES,
+  PLACEHOLDER_POLICY,
   NUMBER_FORMAT,
   NUMBER_TYPE,
   NUMBER_TYPES,
@@ -38,8 +38,6 @@ export const defaults: AllOptions = {
   allowNumberExtensions: false,
   // Allow alphanumeric "phonewords" (e.g. +1 800 FLOWERS) as valid numbers
   allowPhonewords: false,
-  //* Add a placeholder in the input with an example number for the selected country.
-  autoPlaceholder: PLACEHOLDER_MODES.POLITE,
   //* Add a custom class to the (injected) container element.
   containerClass: "",
   //* Locale for localising country names via Intl.DisplayNames.
@@ -76,6 +74,8 @@ export const defaults: AllOptions = {
   numberDisplayFormat: NUMBER_FORMAT.INTERNATIONAL,
   //* Display only these countries.
   onlyCountries: null,
+  //* When to set the placeholder to an example number for the selected country: "POLITE" only when the input has no manually-set placeholder, "AGGRESSIVE" always, "OFF" never.
+  placeholderNumberPolicy: PLACEHOLDER_POLICY.POLITE,
   //* Number type to use for placeholders.
   placeholderNumberType: NUMBER_TYPE.MOBILE,
   //* Add custom classes to the search input element.
@@ -112,7 +112,7 @@ const isElLike = (val: unknown): val is HTMLElement => {
   );
 };
 
-const placeholderModeSet = new Set<string>(Object.values(PLACEHOLDER_MODES));
+const placeholderPolicySet = new Set<string>(Object.values(PLACEHOLDER_POLICY));
 
 const warn = (message: string): void => {
   console.warn(`[intl-tel-input] ${message}`);
@@ -211,10 +211,10 @@ export const validateOptions = (customOptions: unknown): SomeOptions => {
         validatedOptions[key] = value;
         break;
 
-      case "autoPlaceholder":
-        if (typeof value !== "string" || !placeholderModeSet.has(value)) {
-          const validModes = Array.from(placeholderModeSet).join(", ");
-          warnOption("autoPlaceholder", `one of ${validModes}`, value);
+      case "placeholderNumberPolicy":
+        if (typeof value !== "string" || !placeholderPolicySet.has(value)) {
+          const validPolicies = Array.from(placeholderPolicySet).join(", ");
+          warnOption("placeholderNumberPolicy", `one of ${validPolicies}`, value);
           break;
         }
         validatedOptions[key] = value;

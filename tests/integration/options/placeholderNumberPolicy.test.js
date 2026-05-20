@@ -4,12 +4,12 @@
 import { userEvent } from "@testing-library/user-event";
 import { initIntlTelInput, teardown, openDropdownSelectCountryAsync } from "../helpers/helpers";
 
-describe("autoPlaceholder option (empty initial placeholder)", () => {
-  describe("autoPlaceholder=off", () => {
+describe("placeholderNumberPolicy option (empty initial placeholder)", () => {
+  describe("placeholderNumberPolicy=OFF", () => {
     let iti, input;
 
     beforeEach(() => {
-      const options = { autoPlaceholder: "off", initialCountry: "af" };
+      const options = { placeholderNumberPolicy: "OFF", initialCountry: "af" };
       ({ iti, input } = initIntlTelInput({ options }));
     });
 
@@ -20,12 +20,12 @@ describe("autoPlaceholder option (empty initial placeholder)", () => {
     });
   });
 
-  describe("autoPlaceholder=polite", () => {
+  describe("placeholderNumberPolicy=POLITE", () => {
     let iti, input, container, user;
 
     beforeEach(() => {
       user = userEvent.setup();
-      const options = { autoPlaceholder: "polite", initialCountry: "af" };
+      const options = { placeholderNumberPolicy: "POLITE", initialCountry: "af" };
       ({ iti, input, container } = initIntlTelInput({ options }));
     });
 
@@ -39,12 +39,12 @@ describe("autoPlaceholder option (empty initial placeholder)", () => {
   });
 });
 
-describe("autoPlaceholder option (existing placeholder)", () => {
-  describe("autoPlaceholder=off", () => {
+describe("placeholderNumberPolicy option (existing placeholder)", () => {
+  describe("placeholderNumberPolicy=OFF", () => {
     let iti, input;
 
     beforeEach(() => {
-      const options = { autoPlaceholder: "off", initialCountry: "af" };
+      const options = { placeholderNumberPolicy: "OFF", initialCountry: "af" };
       ({ iti, input } = initIntlTelInput({ inputValue: "", options }));
       input.setAttribute("placeholder", "lol");
     });
@@ -56,11 +56,11 @@ describe("autoPlaceholder option (existing placeholder)", () => {
     });
   });
 
-  describe("autoPlaceholder=polite", () => {
+  describe("placeholderNumberPolicy=POLITE", () => {
     let iti, input;
 
     beforeEach(() => {
-      const options = { autoPlaceholder: "polite", initialCountry: "af" };
+      const options = { placeholderNumberPolicy: "POLITE", initialCountry: "af" };
       ({ iti, input } = initIntlTelInput({ options }));
       input.setAttribute("placeholder", "lol");
     });
@@ -72,11 +72,11 @@ describe("autoPlaceholder option (existing placeholder)", () => {
     });
   });
 
-  describe("autoPlaceholder=aggressive", () => {
+  describe("placeholderNumberPolicy=AGGRESSIVE", () => {
     let iti, input;
 
     beforeEach(() => {
-      const options = { autoPlaceholder: "aggressive", initialCountry: "af" };
+      const options = { placeholderNumberPolicy: "AGGRESSIVE", initialCountry: "af" };
       // need an existing placeholder BEFORE init so aggressive mode can overwrite it
       input = document.createElement("input");
       input.setAttribute("placeholder", "lol");

@@ -194,7 +194,8 @@ Controls how numbers are displayed in the input — both the auto-generated plac
 
 Note: this is a dev-facing preference for synthetic display. It does **not** override what the user types — if they type a number in national format, it stays in national format. To extract the full international number regardless, use [`getNumber`](/docs/methods#getnumber).
 
-> You can also pass a [constant](/docs/types#constant-objects), e.g. `intlTelInput.NUMBER_FORMAT.INTERNATIONAL` — useful in plain JavaScript where typos in the string literal won't be caught at compile time. (Note: only `E164`, `INTERNATIONAL`, and `NATIONAL` are accepted here — `RFC3966` is rejected.)
+> [!TIP]
+> You can either pass a string literal, e.g. `"INTERNATIONAL"`, or a [constant](/docs/types#constant-objects), e.g. `intlTelInput.NUMBER_FORMAT.INTERNATIONAL` — useful where typos in the string literal won't be caught at compile time. (Note: only `E164`, `INTERNATIONAL`, and `NATIONAL` are accepted here — `RFC3966` is rejected.)
 
 Try `intl-tel-input` with `separateDialCode` disabled and `numberDisplayFormat` set to `"NATIONAL"` in the [Playground](/playground?separateDialCode=false&numberDisplayFormat=NATIONAL#numberDisplayFormat).
 
@@ -220,14 +221,6 @@ When [`strictMode`](#strictmode) is enabled, play a subtle animation any time a 
 
 Configure the automatically generated placeholder numbers.
 
-###### autoPlaceholder
-Type: `string`  
-Default: `"polite"`  
-
-Set the input's placeholder to an example number for the selected country, and update it if the country changes. You can specify the number type using the [`placeholderNumberType`](#placeholdernumbertype) option. By default, it is set to `"polite"`, which means it will only set the placeholder if the input doesn't already have one. You can also set it to `"aggressive"`, which will replace any existing placeholder, or `"off"`. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). 
-
-Play with this option on an input that contains a placeholder in the [Playground](/playground?initialCountry=gb&placeholder=Phone#autoPlaceholder).
-
 ###### customPlaceholder
 Type: `(exampleNumber: string, selectedCountryData: Country | null) => string`  
 Default: `null`  
@@ -246,6 +239,23 @@ For example, the snippet below masks each digit with an `X`, or falls back to `"
 > When no country is selected (globe state), `exampleNumber` is an empty string and `selectedCountryData` is `null`, so remember to guard against null when reading properties off it.
 
 View `intl-tel-input` with this enabled in the [Playground](/playground?customPlaceholder=true#customPlaceholder).
+
+###### placeholderNumberPolicy
+Type: `"POLITE" | "AGGRESSIVE" | "OFF"`  
+Default: `"POLITE"`  
+
+Policy for setting the input's placeholder to an example number for the selected country (auto-updates on country change).
+
+- `"POLITE"` (default): only set the placeholder if the input doesn't already have one.
+- `"AGGRESSIVE"`: replace any existing placeholder.
+- `"OFF"`: never set a placeholder.
+
+Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script).
+
+> [!TIP]
+> You can either pass a string literal, e.g. `"POLITE"`, or a [constant](/docs/types#constant-objects), e.g. `intlTelInput.PLACEHOLDER_POLICY.POLITE` — useful where typos in the string literal won't be caught at compile time.
+
+Play with this option on an input that contains a placeholder in the [Playground](/playground?initialCountry=gb&placeholder=Phone#placeholderNumberPolicy).
 
 ###### placeholderNumberType
 Type: `NumberType`  

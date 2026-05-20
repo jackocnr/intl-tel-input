@@ -3,7 +3,7 @@ import type { I18n } from "../i18n/types.js";
 import type {
   NUMBER_FORMATS,
   NUMBER_TYPES,
-  PLACEHOLDER_MODES,
+  PLACEHOLDER_POLICY,
   VALIDATION_ERRORS,
 } from "../constants.js";
 
@@ -60,7 +60,6 @@ export interface AllOptions {
   allowedNumberTypes: NumberType[] | null;
   allowNumberExtensions: boolean;
   allowPhonewords: boolean;
-  autoPlaceholder: ValueOf<typeof PLACEHOLDER_MODES>;
   containerClass: string;
   countryNameLocale: string;
   countryNameOverrides: Partial<Record<Iso2, string>>;
@@ -86,6 +85,7 @@ export interface AllOptions {
   loadUtils: UtilsLoader | null;
   numberDisplayFormat: Exclude<NumberFormat, "RFC3966">;
   onlyCountries: Iso2[] | null;
+  placeholderNumberPolicy: ValueOf<typeof PLACEHOLDER_POLICY>;
   placeholderNumberType: NumberType;
   searchInputClass: string;
   separateDialCode: boolean;

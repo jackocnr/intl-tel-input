@@ -275,7 +275,7 @@ if (shareButton) {
   });
 }
 
-const { defaults } = window.intlTelInput;
+const { defaults, NUMBER_FORMAT, NUMBER_TYPE, PLACEHOLDER_POLICY } = window.intlTelInput;
 const i18nOptionLabels = createI18nOptionLabels(I18N_LANGUAGE_CODES);
 const i18nLanguageCodesSorted = [...I18N_LANGUAGE_CODES].sort((a, b) =>
   (i18nOptionLabels[a] || a).localeCompare(i18nOptionLabels[b] || b),
@@ -303,6 +303,9 @@ const {
   specialOptionKeys,
 } = createPlaygroundConfig({
   defaults,
+  NUMBER_FORMAT,
+  NUMBER_TYPE,
+  PLACEHOLDER_POLICY,
   i18nLanguageCodes: i18nLanguageCodesSorted,
   i18nOptionLabels,
   initialCountryDatalist,
@@ -760,7 +763,7 @@ const HINT_CONFIGS = [
   },
   // Placeholder Options
   {
-    optionKey: "autoPlaceholder",
+    optionKey: "placeholderNumberPolicy",
     message: () => {
       if (!getCombinedStateFromControls().loadUtils) {
         return "Tip: enable [loadUtils](#loadUtils) to see this in action.";
@@ -781,7 +784,7 @@ const HINT_CONFIGS = [
       if (!itiController.iti?.getSelectedCountryData() || telInput.value) {
         return true;
       }
-      return state.autoPlaceholder === "polite" && state.placeholder;
+      return state.placeholderNumberPolicy === "POLITE" && state.placeholder;
     },
     alsoShowOnToggleOff: true,
   },
@@ -810,8 +813,8 @@ const HINT_CONFIGS = [
         return "Tip: clear the input to see the placeholder update based on this setting.";
       }
       const state = getCombinedStateFromControls();
-      if (state.autoPlaceholder === "off") {
-        return "Tip: set [autoPlaceholder](#autoPlaceholder) to \"polite\" or \"aggressive\" to see this in action.";
+      if (state.placeholderNumberPolicy === "OFF") {
+        return "Tip: set [placeholderNumberPolicy](#placeholderNumberPolicy) to \"POLITE\" or \"AGGRESSIVE\" to see this in action.";
       }
       if (!state.loadUtils) {
         return "Tip: enable [loadUtils](#loadUtils) to see this in action.";
@@ -824,7 +827,7 @@ const HINT_CONFIGS = [
         return true;
       }
       const state = getCombinedStateFromControls();
-      if (state.autoPlaceholder === "off" || !state.loadUtils) {
+      if (state.placeholderNumberPolicy === "OFF" || !state.loadUtils) {
         return true;
       }
       return !window.intlTelInput.utils!.getExampleNumber(country.iso2, state.placeholderNumberType, "INTERNATIONAL");

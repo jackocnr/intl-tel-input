@@ -1,18 +1,3 @@
-const AUTO_PLACEHOLDER_OPTIONS = ["polite", "aggressive", "off"];
-const NUMBER_TYPES = [
-  "FIXED_LINE",
-  "MOBILE",
-  "FIXED_LINE_OR_MOBILE",
-  "TOLL_FREE",
-  "PREMIUM_RATE",
-  "SHARED_COST",
-  "VOIP",
-  "PERSONAL_NUMBER",
-  "PAGER",
-  "UAN",
-  "VOICEMAIL",
-];
-
 export const SPECIAL_PLAYGROUND_OPTION_KEYS = [
   "i18n",
   "loadUtils",
@@ -50,7 +35,7 @@ export const OPTION_GROUPS = [
     title: "Placeholder Options",
     icon: "bi-input-cursor-text",
     description: "Configure the automatically generated placeholder numbers.",
-    keys: ["autoPlaceholder", "customPlaceholder", "placeholderNumberType"],
+    keys: ["customPlaceholder", "placeholderNumberPolicy", "placeholderNumberType"],
   },
   {
     title: "Validation Options",
@@ -72,13 +57,33 @@ export const OPTION_GROUPS = [
   },
 ];
 
-export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOptionLabels, initialCountryDatalist, countryDatalist }) {
+export function createPlaygroundConfig({
+  defaults,
+  NUMBER_FORMAT,
+  NUMBER_TYPE,
+  PLACEHOLDER_POLICY,
+  i18nLanguageCodes,
+  i18nOptionLabels,
+  initialCountryDatalist,
+  countryDatalist,
+}) {
+  // Selectable values for enum-typed options. Sourced from the library's
+  // enum constants so they stay in sync, with non-user-selectable values
+  // filtered out (UNKNOWN isn't a real type; RFC3966 isn't a valid
+  // numberDisplayFormat — it's only valid as an output format on getNumber).
+  const PLACEHOLDER_POLICY_OPTIONS = Object.values(PLACEHOLDER_POLICY);
+  const NUMBER_TYPES = Object.values(NUMBER_TYPE).filter(
+    (t) => t !== NUMBER_TYPE.UNKNOWN,
+  );
+  const NUMBER_DISPLAY_FORMAT_OPTIONS = Object.values(NUMBER_FORMAT).filter(
+    (f) => f !== NUMBER_FORMAT.RFC3966,
+  );
+
   const defaultInitOptions = {
     allowDropdown: defaults.allowDropdown,
     allowedNumberTypes: defaults.allowedNumberTypes,
     allowNumberExtensions: defaults.allowNumberExtensions,
     allowPhonewords: defaults.allowPhonewords,
-    autoPlaceholder: defaults.autoPlaceholder,
     // Playground unifies i18n + countryNameLocale into a single "Language" select.
     // countryNameLocale follows state.i18n (see mirrorLanguage in playground.ts).
     countryNameLocale: defaults.countryNameLocale,
@@ -95,6 +100,7 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     loadUtils: true, // in playground, this is a checkbox
     numberDisplayFormat: defaults.numberDisplayFormat,
     onlyCountries: defaults.onlyCountries,
+    placeholderNumberPolicy: defaults.placeholderNumberPolicy,
     placeholderNumberType: defaults.placeholderNumberType,
     separateDialCode: defaults.separateDialCode,
     showFlags: defaults.showFlags,
@@ -180,7 +186,7 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     numberDisplayFormat: {
       type: "select",
       tooltip: "How placeholder example numbers and existing stored numbers are displayed. NATIONAL is forced back to INTERNATIONAL when separateDialCode is enabled.",
-      options: ["E164", "INTERNATIONAL", "NATIONAL"],
+      options: NUMBER_DISPLAY_FORMAT_OPTIONS,
     },
     strictMode: {
       type: "boolean",
@@ -192,15 +198,15 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     },
 
     // Placeholder Options
-    autoPlaceholder: {
-      type: "select",
-      tooltip: "Automatically set a placeholder based on the selected country and placeholderNumberType. \"polite\" only shows an example number when there is no manual placeholder set. \"aggressive\" always shows it.",
-      options: AUTO_PLACEHOLDER_OPTIONS,
-    },
     customPlaceholder: {
       type: "boolean",
       label: "customPlaceholder",
       tooltip: "Customise the auto-generated placeholder.",
+    },
+    placeholderNumberPolicy: {
+      type: "select",
+      tooltip: "Policy for setting a placeholder based on the selected country and placeholderNumberType. \"POLITE\" only shows an example number when there is no manual placeholder set. \"AGGRESSIVE\" always shows it. \"OFF\" never shows it.",
+      options: PLACEHOLDER_POLICY_OPTIONS,
     },
     placeholderNumberType: {
       type: "select",

@@ -46,13 +46,13 @@ import {
   NUMBER_FORMAT,
   NUMBER_TYPE,
   VALIDATION_ERROR,
-  PLACEHOLDER_MODES,
+  PLACEHOLDER_POLICY,
 } from "./constants.js";
 // Re-export the enum constant objects so consumers can write
-// VALIDATION_ERROR.TOO_SHORT / NUMBER_TYPE.MOBILE / NUMBER_FORMAT.E164 instead
-// of typo-prone bare strings - especially useful in plain JS where the literal
-// union types don't apply.
-export { NUMBER_FORMAT, NUMBER_TYPE, VALIDATION_ERROR } from "./constants.js";
+// VALIDATION_ERROR.TOO_SHORT / NUMBER_TYPE.MOBILE / NUMBER_FORMAT.E164 /
+// PLACEHOLDER_POLICY.POLITE instead of typo-prone bare strings — especially
+// useful in plain JS where the literal union types don't apply.
+export { NUMBER_FORMAT, NUMBER_TYPE, VALIDATION_ERROR, PLACEHOLDER_POLICY } from "./constants.js";
 import { Numerals } from "./core/numerals.js";
 import type { ForEachInstanceArgsMap } from "./types/forEachInstanceArgsMap.js";
 
@@ -1123,15 +1123,15 @@ export class Iti {
   //* Update the input placeholder to an example number from the currently selected country.
   #updatePlaceholder(): void {
     const {
-      autoPlaceholder,
+      placeholderNumberPolicy,
       placeholderNumberType,
       numberDisplayFormat,
       customPlaceholder,
     } = this.#options;
     const shouldSetPlaceholder =
-      autoPlaceholder === PLACEHOLDER_MODES.AGGRESSIVE ||
+      placeholderNumberPolicy === PLACEHOLDER_POLICY.AGGRESSIVE ||
       (!this.#ui.hadInitialPlaceholder &&
-        autoPlaceholder === PLACEHOLDER_MODES.POLITE);
+        placeholderNumberPolicy === PLACEHOLDER_POLICY.POLITE);
 
     if (!intlTelInput.utils || !shouldSetPlaceholder) {
       return;
@@ -1719,6 +1719,7 @@ export interface IntlTelInputInterface {
   NUMBER_FORMAT: typeof NUMBER_FORMAT;
   NUMBER_TYPE: typeof NUMBER_TYPE;
   VALIDATION_ERROR: typeof VALIDATION_ERROR;
+  PLACEHOLDER_POLICY: typeof PLACEHOLDER_POLICY;
 }
 
 //* Convenience wrapper.
@@ -1750,6 +1751,7 @@ const intlTelInput: IntlTelInputInterface = Object.assign(
     NUMBER_FORMAT,
     NUMBER_TYPE,
     VALIDATION_ERROR,
+    PLACEHOLDER_POLICY,
   },
 );
 

@@ -7,7 +7,7 @@ import { initIntlTelInput, teardown, openDropdownSelectCountryAsync } from "../h
 describe("customPlaceholder option", () => {
   let iti, input, container, user;
   const options = {
-    autoPlaceholder: "polite",
+    placeholderNumberPolicy: "POLITE",
     initialCountry: "af",
     customPlaceholder: (p) => `e.g. ${p}`,
   };
@@ -34,7 +34,7 @@ describe("customPlaceholder with empty country (globe state)", () => {
   test("receives null countryData and empty placeholder when no country selected", () => {
     const calls = [];
     const options = {
-      autoPlaceholder: "polite",
+      placeholderNumberPolicy: "POLITE",
       customPlaceholder: (p, countryData) => {
         calls.push({ p, countryData });
         return `pl:${p}`;
