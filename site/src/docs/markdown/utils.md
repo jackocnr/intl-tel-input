@@ -40,7 +40,7 @@ All functions take a lowercase ISO2 country code (e.g. `"us"`), and silently fal
 > [!IMPORTANT]
 > These functions are only available after the utils script has loaded. See [Loading the utils script](#loading-the-utils-script), and either `await iti.promise` (on an instance) or `await intlTelInput.attachUtils(...)` (without one) before calling them.
 
-###### formatNumber
+###### utils.formatNumber
 Type: `(number: string, iso2: string | undefined, format?: NumberFormat) => string`  
 
 Format the given number in the given [`NumberFormat`](/docs/types#numberformat) (defaults to `"E164"`). Returns the original input if it can't be parsed.
@@ -50,7 +50,7 @@ intlTelInput.utils.formatNumber("7024181234", "us", "INTERNATIONAL"); // "+1 702
 intlTelInput.utils.formatNumber("+17024181234", "us"); // "+17024181234"
 ```
 
-###### formatNumberAsYouType
+###### utils.formatNumberAsYouType
 Type: `(number: string, iso2: string | undefined) => string`  
 
 Format a partial number as the user is typing it — used internally by the [`formatAsYouType`](/docs/options#formatasyoutype) option.
@@ -59,7 +59,7 @@ Format a partial number as the user is typing it — used internally by the [`fo
 intlTelInput.utils.formatNumberAsYouType("702418", "us"); // "702-418"
 ```
 
-###### getCoreNumber
+###### utils.getCoreNumber
 Type: `(number: string, iso2: string | undefined) => string`  
 
 Get the [national significant number](https://en.wikipedia.org/wiki/National_significant_number) (NSN) — the number with any international dial code and national prefix stripped off. Returns an empty string if it can't be parsed.
@@ -68,7 +68,7 @@ Get the [national significant number](https://en.wikipedia.org/wiki/National_sig
 intlTelInput.utils.getCoreNumber("+1 702-418-1234", "us"); // "7024181234"
 ```
 
-###### getExampleNumber
+###### utils.getExampleNumber
 Type: `(iso2: string | undefined, nationalMode: boolean, numberType: NumberType, useE164?: boolean) => string`  
 
 Get an example number for the given country and [`NumberType`](/docs/types#numbertype). Pass `nationalMode: true` for national format, `false` for international. Set `useE164: true` to override and return E.164 instead. Returns an empty string if no example exists.
@@ -79,7 +79,7 @@ intlTelInput.utils.getExampleNumber("gb", true, "MOBILE"); // "07400 123456"
 intlTelInput.utils.getExampleNumber("gb", false, "MOBILE", true); // "+447400123456"
 ```
 
-###### getExtension
+###### utils.getExtension
 Type: `(number: string, iso2: string | undefined) => string`  
 
 Get the extension from the given number, or an empty string if there isn't one.
@@ -88,7 +88,7 @@ Get the extension from the given number, or an empty string if there isn't one.
 intlTelInput.utils.getExtension("(702) 555-5555 ext. 1234", "us"); // "1234"
 ```
 
-###### getNumberType
+###### utils.getNumberType
 Type: `(number: string, iso2: string | undefined) => NumberType | null`  
 
 Get the [`NumberType`](/docs/types#numbertype) (fixed-line/mobile/toll-free, etc.) of the given number, or `null` if it can't be determined.
@@ -100,7 +100,7 @@ intlTelInput.utils.getNumberType("7024181234", "us"); // "FIXED_LINE_OR_MOBILE"
 > [!NOTE]
 > In some countries (e.g. the US) there's no way to differentiate between fixed-line and mobile numbers, so in those cases it will return `"FIXED_LINE_OR_MOBILE"`.
 
-###### getValidationError
+###### utils.getValidationError
 Type: `(number: string, iso2: string | undefined) => ValidationError | null`  
 
 Get more information about an invalid number — returns a [`ValidationError`](/docs/types#validationerror) string (e.g. `"TOO_SHORT"`, `"TOO_LONG"`, `"INVALID_COUNTRY_CODE"`), or `null` if it can't be determined. See [Show a user-facing error message](/docs/best-practices#show-a-user-facing-error-message) for a worked example.
@@ -109,20 +109,23 @@ Get more information about an invalid number — returns a [`ValidationError`](/
 intlTelInput.utils.getValidationError("702", "us"); // "TOO_SHORT"
 ```
 
-###### isPossibleNumber
-Type: `(number: string, iso2: string | undefined, numberType?: NumberType[] | null) => boolean`  
+###### utils.isPossibleNumber
+Type: `(number: string, iso2: string | undefined, numberTypes?: NumberType[] | null) => boolean`  
 
-Check if the given number is possible based on its length — the same lightweight check used by [`iti.isValidNumber()`](/docs/methods#isvalidnumber). Optionally pass an array of [`NumberType`](/docs/types#numbertype) values to restrict the check to specific types. More future-proof than [`isValidNumber`](#isvalidnumber), as country length rules rarely change.
+Check if the given number is possible based on its length. Used by [`iti.isValidNumber()`](/docs/methods#isvalidnumber). Optionally pass an array of [`NumberType`](/docs/types#numbertype) values to restrict the check to specific types. More future-proof than [`utils.isValidNumber`](#utils-isvalidnumber), as country length rules rarely change.
 
 ```js
 intlTelInput.utils.isPossibleNumber("7024181234", "us"); // true
 intlTelInput.utils.isPossibleNumber("7024181234", "us", ["MOBILE"]); // true
 ```
 
-###### isValidNumber
-Type: `(number: string, iso2: string | undefined, numberType?: NumberType[] | null) => boolean`  
+> [!NOTE]
+> When you pass `["MOBILE"]` or `["FIXED_LINE"]` for the `numberTypes` param, `"FIXED_LINE_OR_MOBILE"` is automatically included — so countries like the US (where the two can't be told apart) still match correctly.
 
-Check if the given number is valid using precise country/area-code matching rules — the same check used by [`iti.isValidNumberPrecise()`](/docs/methods#isvalidnumberprecise). Optionally pass an array of [`NumberType`](/docs/types#numbertype) values to restrict the check to specific types. Note that these rules change each month for various countries, so the package needs to be kept up-to-date (e.g. via an automated script) — otherwise you may start rejecting valid numbers. For a simpler and more future-proof check, see [`isPossibleNumber`](#ispossiblenumber).
+###### utils.isValidNumber
+Type: `(number: string, iso2: string | undefined, numberTypes?: NumberType[] | null) => boolean`  
+
+Check if the given number is valid using precise country/area-code matching rules. Used by [`iti.isValidNumberPrecise()`](/docs/methods#isvalidnumberprecise). Optionally pass an array of [`NumberType`](/docs/types#numbertype) values to restrict the check to specific types. Note that these rules change each month for various countries, so the package needs to be kept up-to-date (e.g. via an automated script) — otherwise you may start rejecting valid numbers. For a simpler and more future-proof check, see [`utils.isPossibleNumber`](#utils-ispossiblenumber).
 
 ```js
 intlTelInput.utils.isValidNumber("7024181234", "us"); // true
@@ -131,5 +134,5 @@ intlTelInput.utils.isValidNumber("7024181234", "us", ["TOLL_FREE"]); // false
 ```
 
 > [!NOTE]
-> When you pass `["MOBILE"]` or `["FIXED_LINE"]`, `"FIXED_LINE_OR_MOBILE"` is automatically included — so countries like the US (where the two can't be told apart) still match correctly. The same patching applies to [`isPossibleNumber`](#ispossiblenumber).
+> When you pass `["MOBILE"]` or `["FIXED_LINE"]` for the `numberTypes` param, `"FIXED_LINE_OR_MOBILE"` is automatically included — so countries like the US (where the two can't be told apart) still match correctly.
 
