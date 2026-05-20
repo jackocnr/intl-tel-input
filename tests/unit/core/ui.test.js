@@ -35,7 +35,7 @@ const makeOptions = (overrides = {}) => ({
   excludeCountries: null,
   fixDropdownWidth: true,
   formatAsYouType: true,
-  hiddenInput: null,
+  hiddenInputs: null,
   i18n: { ...defaultEnglishStrings },
   initialCountry: "",
   initialCountryLookup: null,
@@ -226,7 +226,7 @@ describe("UI hidden inputs", () => {
     document.body.appendChild(form);
 
     const options = makeOptions({
-      hiddenInput: (name) => ({ phone: `${name}_full`, country: `${name}_country` }),
+      hiddenInputs: (name) => ({ phone: `${name}_full`, country: `${name}_country` }),
     });
     const ui = new UI(input, options, 1);
     const testCountries = countries.map((c) => ({ ...c }));
@@ -238,8 +238,8 @@ describe("UI hidden inputs", () => {
     expect(countryHidden).not.toBeNull();
   });
 
-  test("does not create hidden inputs when hiddenInput is null", () => {
-    const { input } = buildUI({ hiddenInput: null });
+  test("does not create hidden inputs when hiddenInputs is null", () => {
+    const { input } = buildUI({ hiddenInputs: null });
     const hiddenInputs = getWrapper(input).querySelectorAll('input[type="hidden"]');
     expect(hiddenInputs.length).toBe(0);
   });

@@ -77,7 +77,7 @@ export interface AllOptions {
   excludeCountries: Iso2[] | null;
   fixDropdownWidth: boolean;
   formatAsYouType: boolean;
-  hiddenInput:
+  hiddenInputs:
     | ((telInputName: string) => { phone: string; country?: string })
     | null;
   i18n: I18n;

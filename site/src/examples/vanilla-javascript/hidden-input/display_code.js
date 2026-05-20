@@ -13,7 +13,7 @@ const initialCountryLookup = async () => {
 
 // initialise library
 const iti = intlTelInput(input, {
-  hiddenInput: () => ({
+  hiddenInputs: () => ({
     phone: "full_phone",
     country: "country_iso2",
   }),

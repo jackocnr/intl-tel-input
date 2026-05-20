@@ -353,7 +353,7 @@ View `intl-tel-input` in Ukrainian in the [Playground](/playground?i18n=uk&initi
 
 Extra features like hidden inputs and loading the utils module.
 
-###### hiddenInput
+###### hiddenInputs
 Type: `(telInputName: string) => { phone: string, country?: string }`  
 Default: `null`  
 

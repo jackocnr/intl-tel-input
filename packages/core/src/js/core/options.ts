@@ -62,8 +62,8 @@ export const defaults: AllOptions = {
   fixDropdownWidth: true,
   //* Format the number as the user types
   formatAsYouType: true,
-  //* Inject a hidden input with the name returned from this function, and on submit, populate it with the result of getNumber.
-  hiddenInput: null,
+  //* Inject hidden inputs with the names returned from this function, and on submit, populate them with the full number and selected country iso2.
+  hiddenInputs: null,
   //* Internationalise the core library text e.g. search input placeholder, country names.
   i18n: {},
   //* Initial country.
@@ -243,7 +243,7 @@ export const validateOptions = (customOptions: unknown): SomeOptions => {
       }
 
       case "customPlaceholder":
-      case "hiddenInput":
+      case "hiddenInputs":
       case "initialCountryLookup":
       case "loadUtils":
         if (value !== null && !isFunction(value)) {

@@ -9,7 +9,7 @@ const validMsg = document.querySelector<HTMLElement>("#valid-msg")!;
 
 const iti = window.intlTelInput(input, {
   initialCountryLookup,
-  hiddenInput: () => ({ phone: "full_phone", country: "country_iso2" }),
+  hiddenInputs: () => ({ phone: "full_phone", country: "country_iso2" }),
   // @ts-expect-error - lodash template tag, resolved at build time
   loadUtils: () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
   searchInputClass: "form-control",

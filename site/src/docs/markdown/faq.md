@@ -33,7 +33,7 @@ You can always get the E.164 number using [`getNumber`](/docs/methods#getnumber)
 
 ## How do I submit the full international number in a normal HTML form?
 
-Use the [`hiddenInput`](/docs/options#hiddeninput) option.
+Use the [`hiddenInputs`](/docs/options#hiddeninputs) option.
 
 That option listens for the form submit event and injects hidden input(s) containing the full international number (and optionally the selected country's iso2 code), so they’re included in the form post.
 

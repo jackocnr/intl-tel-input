@@ -3,13 +3,13 @@
  */
 import { initIntlTelInput, teardown } from "../helpers/helpers";
 
-describe("hiddenInput option", () => {
+describe("hiddenInputs option", () => {
   describe("valid names", () => {
     let iti, container;
 
     beforeEach(() => {
       const options = {
-        hiddenInput: () => ({
+        hiddenInputs: () => ({
           phone: "phone_full",
           country: "phone_country",
         }),
@@ -32,7 +32,7 @@ describe("hiddenInput option", () => {
 
     beforeEach(() => {
       const options = {
-        hiddenInput: () => ({
+        hiddenInputs: () => ({
           test: "t",
           data: "d",
         }),

@@ -384,13 +384,13 @@ export default class UI {
   }
 
   #buildHiddenInputs(wrapper: HTMLElement): void {
-    const { hiddenInput } = this.#options;
-    if (!hiddenInput) {
+    const { hiddenInputs } = this.#options;
+    if (!hiddenInputs) {
       return;
     }
 
     const telInputName = this.telInputEl.getAttribute("name") || "";
-    const names = hiddenInput(telInputName);
+    const names = hiddenInputs(telInputName);
 
     if (names.phone) {
       const existingInput = this.telInputEl.form?.querySelector(
