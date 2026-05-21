@@ -32,8 +32,8 @@ type ItiProps = SomeOptions & {
   onChangeCountry?: (iso2: string) => void;
   onChangeValidity?: (isValid: boolean) => void;
   onChangeErrorCode?: (errorCode: ValidationError | null) => void;
-  onOpenCountryDropdown?: () => void;
-  onCloseCountryDropdown?: () => void;
+  onOpenCountrySelector?: () => void;
+  onCloseCountrySelector?: () => void;
   onStrictReject?: (source: StrictRejectSource, rejectedInput: string, reason: StrictRejectReason) => void;
   usePreciseValidation?: boolean;
   inputProps?: InputProps;
@@ -54,8 +54,8 @@ const IntlTelInput = forwardRef(function IntlTelInput(
     onChangeCountry = noop,
     onChangeValidity = noop,
     onChangeErrorCode = noop,
-    onOpenCountryDropdown,
-    onCloseCountryDropdown,
+    onOpenCountrySelector,
+    onCloseCountrySelector,
     onStrictReject,
     usePreciseValidation = false,
     inputProps = {},
@@ -78,11 +78,11 @@ const IntlTelInput = forwardRef(function IntlTelInput(
   const pendingUpdateRef = useRef<boolean>(false);
 
   // keep latest pass-through event handlers in refs so listeners registered once always see fresh callbacks
-  const onOpenCountryDropdownRef = useRef(onOpenCountryDropdown);
-  const onCloseCountryDropdownRef = useRef(onCloseCountryDropdown);
+  const onOpenCountrySelectorRef = useRef(onOpenCountrySelector);
+  const onCloseCountrySelectorRef = useRef(onCloseCountrySelector);
   const onStrictRejectRef = useRef(onStrictReject);
-  onOpenCountryDropdownRef.current = onOpenCountryDropdown;
-  onCloseCountryDropdownRef.current = onCloseCountryDropdown;
+  onOpenCountrySelectorRef.current = onOpenCountrySelector;
+  onCloseCountrySelectorRef.current = onCloseCountrySelector;
   onStrictRejectRef.current = onStrictReject;
 
   // expose the instance and input ref to the parent component
@@ -157,19 +157,19 @@ const IntlTelInput = forwardRef(function IntlTelInput(
     itiRef.current = intlTelInput(inputEl, initOptions as SomeOptions);
     libraryInputClassesRef.current = inputEl.className;
 
-    const handleOpen = (): void => onOpenCountryDropdownRef.current?.();
-    const handleClose = (): void => onCloseCountryDropdownRef.current?.();
+    const handleOpen = (): void => onOpenCountrySelectorRef.current?.();
+    const handleClose = (): void => onCloseCountrySelectorRef.current?.();
     const handleStrictReject = (e: Event): void => {
       const { source, rejectedInput, reason } = (e as CustomEvent<StrictRejectDetail>).detail;
       onStrictRejectRef.current?.(source, rejectedInput, reason);
     };
-    inputEl.addEventListener("open:countrydropdown", handleOpen);
-    inputEl.addEventListener("close:countrydropdown", handleClose);
+    inputEl.addEventListener("open:countryselector", handleOpen);
+    inputEl.addEventListener("close:countryselector", handleClose);
     inputEl.addEventListener("strict:reject", handleStrictReject);
 
     return (): void => {
-      inputEl.removeEventListener("open:countrydropdown", handleOpen);
-      inputEl.removeEventListener("close:countrydropdown", handleClose);
+      inputEl.removeEventListener("open:countryselector", handleOpen);
+      inputEl.removeEventListener("close:countryselector", handleClose);
       inputEl.removeEventListener("strict:reject", handleStrictReject);
       itiRef.current?.destroy();
     };

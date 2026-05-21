@@ -124,13 +124,13 @@ Default: `null`
 
 Emitted when the number validity changes. Emits the new validity boolean. Requires the utils script to be loaded (see above).
 
-###### closeCountryDropdown
+###### closeCountrySelector
 Type: `EventEmitter<void>`  
 Default: `null`  
 
 Emitted when the country selector closes.
 
-###### openCountryDropdown
+###### openCountrySelector
 Type: `EventEmitter<void>`  
 Default: `null`  
 

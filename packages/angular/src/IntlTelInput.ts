@@ -123,8 +123,8 @@ class IntlTelInput
   @Output() countryChange = new EventEmitter<string>();
   @Output() validityChange = new EventEmitter<boolean>();
   @Output() errorCodeChange = new EventEmitter<ValidationError | null>();
-  @Output() openCountryDropdown = new EventEmitter<void>();
-  @Output() closeCountryDropdown = new EventEmitter<void>();
+  @Output() openCountrySelector = new EventEmitter<void>();
+  @Output() closeCountrySelector = new EventEmitter<void>();
   @Output() strictReject = new EventEmitter<StrictRejectDetail>();
   @Output() blur = new EventEmitter<FocusEvent>();
   @Output() focus = new EventEmitter<FocusEvent>();
@@ -156,8 +156,8 @@ class IntlTelInput
   // eslint-disable-next-line class-methods-use-this
   private onValidatorChange: () => void = () => {};
 
-  private handleOpenDropdown = (): void => this.openCountryDropdown.emit();
-  private handleCloseDropdown = (): void => this.closeCountryDropdown.emit();
+  private handleOpenDropdown = (): void => this.openCountrySelector.emit();
+  private handleCloseDropdown = (): void => this.closeCountrySelector.emit();
   private handleStrictReject = (e: Event): void => {
     this.strictReject.emit((e as CustomEvent<StrictRejectDetail>).detail);
   };
@@ -170,11 +170,11 @@ class IntlTelInput
     this.libraryInputClasses = this.inputRef.nativeElement.className;
 
     this.inputRef.nativeElement.addEventListener(
-      "open:countrydropdown",
+      "open:countryselector",
       this.handleOpenDropdown,
     );
     this.inputRef.nativeElement.addEventListener(
-      "close:countrydropdown",
+      "close:countryselector",
       this.handleCloseDropdown,
     );
     this.inputRef.nativeElement.addEventListener(
@@ -361,11 +361,11 @@ class IntlTelInput
 
   ngOnDestroy() {
     this.inputRef.nativeElement.removeEventListener(
-      "open:countrydropdown",
+      "open:countryselector",
       this.handleOpenDropdown,
     );
     this.inputRef.nativeElement.removeEventListener(
-      "close:countrydropdown",
+      "close:countryselector",
       this.handleCloseDropdown,
     );
     this.inputRef.nativeElement.removeEventListener(

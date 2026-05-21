@@ -11,19 +11,19 @@ import {
   selectCountryAsync,
 } from "../helpers/helpers";
 
-describe("close:countrydropdown event", () => {
+describe("close:countryselector event", () => {
   let input, iti, mockEventHandler, container, user;
 
   beforeEach(() => {
     user = userEvent.setup();
     input = injectInput();
     mockEventHandler = vi.fn();
-    input.addEventListener("close:countrydropdown", mockEventHandler);
+    input.addEventListener("close:countryselector", mockEventHandler);
     ({ iti, container } = initIntlTelInput({ input }));
   });
 
   afterEach(() => {
-    input.removeEventListener("close:countrydropdown", mockEventHandler);
+    input.removeEventListener("close:countryselector", mockEventHandler);
     teardown(iti);
   });
 

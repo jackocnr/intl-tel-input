@@ -131,13 +131,13 @@ Default: `null`
 
 Emitted when the number validity changes. The handler receives the new validity boolean. Requires the utils script to be loaded (see above).
 
-###### closeCountryDropdown
+###### closeCountrySelector
 Type: `() => void`  
 Default: `null`  
 
 Emitted when the country selector closes.
 
-###### openCountryDropdown
+###### openCountrySelector
 Type: `() => void`  
 Default: `null`  
 

@@ -90,11 +90,11 @@ input.addEventListener("countrychange", (e) => {
 });
 ```
 
-##### open:countrydropdown
+##### open:countryselector
 
 Triggered when the user opens the country selector.
 
-##### close:countrydropdown
+##### close:countryselector
 
 Triggered when the user closes the country selector.
 

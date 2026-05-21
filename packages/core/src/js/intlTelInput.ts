@@ -872,7 +872,7 @@ export class Iti {
       (li) => this.#selectListItem(li),
       () => this.#closeDropdown(),
     );
-    this.#dispatchEvent(EVENTS.OPEN_COUNTRY_DROPDOWN);
+    this.#dispatchEvent(EVENTS.OPEN_COUNTRY_SELECTOR);
   }
 
   //* Update the input's value to the given number (format first if possible)
@@ -1191,7 +1191,7 @@ export class Iti {
     }
 
     this.#ui.closeDropdown();
-    this.#dispatchEvent(EVENTS.CLOSE_COUNTRY_DROPDOWN);
+    this.#dispatchEvent(EVENTS.CLOSE_COUNTRY_SELECTOR);
   }
 
   //* Replace any existing dial code with the new one

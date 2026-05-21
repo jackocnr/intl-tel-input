@@ -3,8 +3,8 @@
 import type { Iso2 } from "./data.js";
 
 export const EVENTS = {
-  OPEN_COUNTRY_DROPDOWN: "open:countrydropdown",
-  CLOSE_COUNTRY_DROPDOWN: "close:countrydropdown",
+  OPEN_COUNTRY_SELECTOR: "open:countryselector",
+  CLOSE_COUNTRY_SELECTOR: "close:countryselector",
   COUNTRY_CHANGE: "countrychange",
   INPUT: "input", // used for synthetic input trigger
   STRICT_REJECT: "strict:reject",

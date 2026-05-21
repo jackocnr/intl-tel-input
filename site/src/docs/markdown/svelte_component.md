@@ -86,13 +86,13 @@ Default: `null`
 
 A handler to be called when the number validity changes. Receives the new validity boolean. Requires the utils script to be loaded (see above).
 
-###### onCloseCountryDropdown
+###### onCloseCountrySelector
 Type: `() => void`  
 Default: `null`  
 
 A handler to be called when the country selector closes.
 
-###### onOpenCountryDropdown
+###### onOpenCountrySelector
 Type: `() => void`  
 Default: `null`  
 

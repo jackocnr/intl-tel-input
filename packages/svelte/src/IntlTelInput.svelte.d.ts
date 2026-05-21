@@ -18,8 +18,8 @@ export type Props = SomeOptions & {
   onChangeCountry?: (iso2: string) => void;
   onChangeValidity?: (isValid: boolean) => void;
   onChangeErrorCode?: (errorCode: ValidationError | null) => void;
-  onOpenCountryDropdown?: () => void;
-  onCloseCountryDropdown?: () => void;
+  onOpenCountrySelector?: () => void;
+  onCloseCountrySelector?: () => void;
   onStrictReject?: (source: StrictRejectSource, rejectedInput: string, reason: StrictRejectReason) => void;
 };
 

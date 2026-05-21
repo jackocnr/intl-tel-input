@@ -42,8 +42,8 @@ const emit = defineEmits<{
   (e: "changeCountry", value: string): void;
   (e: "changeValidity", value: boolean): void;
   (e: "changeErrorCode", value: ValidationError | null): void;
-  (e: "openCountryDropdown"): void;
-  (e: "closeCountryDropdown"): void;
+  (e: "openCountrySelector"): void;
+  (e: "closeCountrySelector"): void;
   (e: "strictReject", source: StrictRejectSource, rejectedInput: string, reason: StrictRejectReason): void;
   (e: "update:modelValue", value: string): void;
 }>();
@@ -182,8 +182,8 @@ const updateCountry = () => {
   updateValue();
 };
 
-const handleOpen = (): void => emit("openCountryDropdown");
-const handleClose = (): void => emit("closeCountryDropdown");
+const handleOpen = (): void => emit("openCountrySelector");
+const handleClose = (): void => emit("closeCountrySelector");
 const handleStrictReject = (e: Event): void => {
   const { source, rejectedInput, reason } = (e as CustomEvent<StrictRejectDetail>).detail;
   emit("strictReject", source, rejectedInput, reason);
@@ -197,8 +197,8 @@ onMounted(() => {
   instance.value = intlTelInput(input.value, initOptions.value);
   libraryInputClasses.value = input.value.className;
 
-  input.value.addEventListener("open:countrydropdown", handleOpen);
-  input.value.addEventListener("close:countrydropdown", handleClose);
+  input.value.addEventListener("open:countryselector", handleOpen);
+  input.value.addEventListener("close:countryselector", handleClose);
   input.value.addEventListener("strict:reject", handleStrictReject);
 
   if (props.disabled) {
@@ -273,8 +273,8 @@ watch(
 
 onUnmounted(() => {
   if (input.value) {
-    input.value.removeEventListener("open:countrydropdown", handleOpen);
-    input.value.removeEventListener("close:countrydropdown", handleClose);
+    input.value.removeEventListener("open:countryselector", handleOpen);
+    input.value.removeEventListener("close:countryselector", handleClose);
     input.value.removeEventListener("strict:reject", handleStrictReject);
   }
   instance.value?.destroy();

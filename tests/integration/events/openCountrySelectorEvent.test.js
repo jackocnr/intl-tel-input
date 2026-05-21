@@ -11,19 +11,19 @@ import {
   getSelectedCountryButton,
 } from "../helpers/helpers";
 
-describe("open:countrydropdown event", () => {
+describe("open:countryselector event", () => {
   let input, iti, mockEventHandler, container, user;
 
   beforeEach(() => {
     user = userEvent.setup();
     input = injectInput();
     mockEventHandler = vi.fn();
-    input.addEventListener("open:countrydropdown", mockEventHandler);
+    input.addEventListener("open:countryselector", mockEventHandler);
     ({ iti, container } = initIntlTelInput({ input }));
   });
 
   afterEach(() => {
-    input.removeEventListener("open:countrydropdown", mockEventHandler);
+    input.removeEventListener("open:countryselector", mockEventHandler);
     teardown(iti);
   });
 

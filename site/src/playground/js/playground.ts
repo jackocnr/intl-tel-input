@@ -1202,10 +1202,10 @@ function updateSyncDemoStateUrlParam(enabled: boolean) {
 }
 
 let dropdownCurrentlyOpen = false;
-telInput.addEventListener("open:countrydropdown", () => {
+telInput.addEventListener("open:countryselector", () => {
   dropdownCurrentlyOpen = true;
 });
-telInput.addEventListener("close:countrydropdown", () => {
+telInput.addEventListener("close:countryselector", () => {
   dropdownCurrentlyOpen = false;
 });
 

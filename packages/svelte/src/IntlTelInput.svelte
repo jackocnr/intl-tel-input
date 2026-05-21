@@ -21,8 +21,8 @@
     onChangeCountry,
     onChangeValidity,
     onChangeErrorCode,
-    onOpenCountryDropdown,
-    onCloseCountryDropdown,
+    onOpenCountrySelector,
+    onCloseCountrySelector,
     onStrictReject,
     ...initOptions
   } = $props() as Props;
@@ -108,8 +108,8 @@
     updateValue();
   };
 
-  const handleOpenDropdown = (): void => onOpenCountryDropdown?.();
-  const handleCloseDropdown = (): void => onCloseCountryDropdown?.();
+  const handleOpenDropdown = (): void => onOpenCountrySelector?.();
+  const handleCloseDropdown = (): void => onCloseCountrySelector?.();
   const handleStrictReject = (e: Event): void => {
     const { source, rejectedInput, reason } = (e as CustomEvent<StrictRejectDetail>).detail;
     onStrictReject?.(source, rejectedInput, reason);
@@ -123,8 +123,8 @@
       if (disabled) instance.setDisabled(disabled);
       if (readonly) instance.setReadonly(readonly);
 
-      inputElement.addEventListener("open:countrydropdown", handleOpenDropdown);
-      inputElement.addEventListener("close:countrydropdown", handleCloseDropdown);
+      inputElement.addEventListener("open:countryselector", handleOpenDropdown);
+      inputElement.addEventListener("close:countryselector", handleCloseDropdown);
       inputElement.addEventListener("strict:reject", handleStrictReject);
 
       lastEmittedCountry = instance.getSelectedCountryData()?.iso2 ?? "";
@@ -153,8 +153,8 @@
 
   onDestroy(() => {
     if (inputElement) {
-      inputElement.removeEventListener("open:countrydropdown", handleOpenDropdown);
-      inputElement.removeEventListener("close:countrydropdown", handleCloseDropdown);
+      inputElement.removeEventListener("open:countryselector", handleOpenDropdown);
+      inputElement.removeEventListener("close:countryselector", handleCloseDropdown);
       inputElement.removeEventListener("strict:reject", handleStrictReject);
     }
     instance?.destroy();
