@@ -19,14 +19,6 @@ _Throughout these docs, "iso2 code" means the two-letter country identifier ([IS
 
 Control country list behaviour and whether certain UI elements are displayed.
 
-###### enableCountrySelector
-Type: `boolean`  
-Default: `true`  
-
-Enable the country selector — the panel (dropdown or fullscreen popup) that opens when the user clicks the selected country button, so they can pick a different country. If disabled, the selected country is no longer clickable, and there is no arrow displayed. _Note: previously named `allowDropdown`._
-
-Try `intl-tel-input` with `enableCountrySelector` disabled in the [Playground](/playground?enableCountrySelector=false#enableCountrySelector).
-
 ###### containerClass
 Type: `string`  
 Default: `""`  
@@ -45,12 +37,20 @@ View `intl-tel-input` with this disabled in the [Playground](/playground?country
 Type: `HTMLElement`  
 Default: `null`  
 
-Expects a node, e.g. `document.body`. Instead of putting the country list markup next to the input, append it to the specified node, and it will then be positioned next to the input using JavaScript (using `position: fixed`). This is useful when the input is inside a container with `overflow: hidden`. _Note: previously named `dropdownContainer`._
+Instead of putting the country list markup next to the input, append it to the specified node (e.g. `document.body`), and it will then be positioned next to the input using JavaScript (using `position: fixed`). This is useful when the input is inside a container with `overflow: hidden`. _Note: previously named `dropdownContainer`._
 
 > [!NOTE]  
 > The positioning is broken by scrolling, so the dropdown will automatically close on the `window` scroll event. This also applies to the fullscreen popup.
 
 Play with this option in the [Playground](/playground#user-interface-options).
+
+###### enableCountrySelector
+Type: `boolean`  
+Default: `true`  
+
+Enable the country selector — the panel (dropdown or fullscreen popup) that opens when the user clicks the selected country button, so they can pick a different country. If disabled, the selected country is no longer clickable, and there is no arrow displayed. _Note: previously named `allowDropdown`._
+
+Try `intl-tel-input` with `enableCountrySelector` disabled in the [Playground](/playground?enableCountrySelector=false#enableCountrySelector).
 
 ###### matchDropdownWidth
 Type: `boolean`  
@@ -87,7 +87,7 @@ Play with this option in the [Playground](/playground#separateDialCode).
 Type: `boolean`  
 Default: `true`  
 
-Set this to false to hide the flags. Instead, it will show a generic globe icon. 
+Display the country flag in the selected country button and next to each country in the list. When disabled, a generic globe icon is shown in place of the selected flag.
 
 Try `intl-tel-input` with this disabled in the [Playground](/playground?showFlags=false#showFlags).
 
@@ -95,7 +95,7 @@ Try `intl-tel-input` with this disabled in the [Playground](/playground?showFlag
 Type: `boolean`  
 Default: `true on mobile devices, false otherwise`  
 
-Control when the country list appears as a fullscreen popup vs an inline dropdown. By default, it will appear as a fullscreen popup on narrow viewports (or on touch devices with limited vertical space), to make better use of the available space (similar to how a native `<select>` works), and as an inline dropdown on larger screens. 
+Control when the country list appears as a fullscreen popup vs an inline dropdown. By default, it will appear as a fullscreen popup on narrow viewports, to make better use of the available space (similar to how a native `<select>` works), and as an inline dropdown on larger screens. 
 
 Try `intl-tel-input` with this option enabled on the [Playground](/playground?useFullscreenPopup=true#useFullscreenPopup).
 
@@ -186,13 +186,13 @@ Try `intl-tel-input` with this disabled in the [Playground](/playground?formatAs
 Type: `"E164" | "INTERNATIONAL" | "NATIONAL"`  
 Default: `"INTERNATIONAL"`  
 
-Controls how numbers are displayed in the input — both the auto-generated placeholder example and any stored value passed in on initialisation or via [`setNumber`](/docs/methods#setnumber). Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script) (otherwise no formatting can happen and the value is shown as-is).
+Controls how numbers are displayed in the input — both the auto-generated placeholder example and any stored value passed in on initialisation or via [`setNumber`](/docs/methods#setnumber).
 
 - `"INTERNATIONAL"` (default): formatted with the dial code, e.g. `+44 7740 123456`.
 - `"NATIONAL"`: formatted in the country's national format (no dial code), e.g. `07740 123456`. Forced back to `"INTERNATIONAL"` if [`separateDialCode`](#separatedialcode) is enabled (since the dial code is then part of the typed number) or if the country selector is enabled without flags or a separate dial code (since the user has no way to see the country).
 - `"E164"`: standardised international format with no formatting characters, e.g. `+447740123456`.
 
-Note: this is a dev-facing preference for synthetic display. It does **not** override what the user types — if they type a number in national format, it stays in national format. To extract the full international number regardless, use [`getNumber`](/docs/methods#getnumber). _Note: previously covered by `nationalMode` and `formatOnDisplay` options (now removed)._
+Note: this is a dev-facing preference for displaying existing numbers. It does **not** override what the user types — if they type a number in national format, it stays in national format. To extract the full international number regardless, use [`getNumber`](/docs/methods#getnumber). Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script) (otherwise no formatting can happen and the value is shown as-is). _Note: previously covered by `nationalMode` and `formatOnDisplay` options (now removed)._
 
 > [!TIP]
 > You can either pass a string literal, e.g. `"INTERNATIONAL"`, or a [constant](/docs/types#constant-objects), e.g. `intlTelInput.NUMBER_FORMAT.INTERNATIONAL` — useful where typos in the string literal won't be caught at compile time. (Note: only `E164`, `INTERNATIONAL`, and `NATIONAL` are accepted here — `RFC3966` is rejected.)

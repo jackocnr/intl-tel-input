@@ -99,7 +99,7 @@ if (numberType === "MOBILE" || numberType === "FIXED_LINE_OR_MOBILE") {
 ###### getSelectedCountry
 Type: `() => Country | null`  
 
-Get the [`Country`](/docs/types#country) for the currently selected country, or `null` if no country is currently selected (e.g. the empty/globe state). _Note: previously named `getSelectedCountryData`._
+Get the currently selected [`Country`](/docs/types#country), or else `null` if no country is currently selected (e.g. the empty/globe state). _Note: previously named `getSelectedCountryData`._
 ```js
 const country = iti.getSelectedCountry();
 ```
@@ -174,7 +174,7 @@ iti.setReadonly(true);
 ###### setSelectedCountry
 Type: `(iso2?: string) => void`  
 
-Change the selected country. It should be rare, if ever, that you need to do this, as the selected country gets updated automatically when calling [`setNumber`](/docs/methods#setnumber) and passing a number including an international dial code, which is the recommended usage. Note, you can omit the iso2 code argument to set the country to the default empty (globe) state. _If the [utils script](/docs/utils#loading-the-utils-script) is loaded, the input value is reformatted to the new country according to the [`numberDisplayFormat`](/docs/options#numberdisplayformat) option._ _Note: previously named `setCountry`._
+Change the selected country by passing the relevant iso2 code, or omit the iso2 code to set it to empty (globe) state. It should be rare, if ever, that you need to do this, as the selected country gets updated automatically when calling [`setNumber`](/docs/methods#setnumber) and when passing a number with an international dial code, which is the recommended usage. _If the [utils script](/docs/utils#loading-the-utils-script) is loaded, the input value is reformatted to the new country according to the [`numberDisplayFormat`](/docs/options#numberdisplayformat) option._ _Note: previously named `setCountry`._
 
 ```js
 iti.setSelectedCountry("gb");
