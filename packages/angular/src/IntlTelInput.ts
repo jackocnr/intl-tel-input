@@ -99,7 +99,7 @@ class IntlTelInput
   @Input() countrySearch?: AllOptions["countrySearch"];
   @Input() customPlaceholder?: AllOptions["customPlaceholder"];
   @Input() dropdownAlwaysOpen?: AllOptions["dropdownAlwaysOpen"];
-  @Input() dropdownContainer?: AllOptions["dropdownContainer"];
+  @Input() countrySelectorParent?: AllOptions["countrySelectorParent"];
   @Input() excludeCountries?: AllOptions["excludeCountries"];
   @Input() matchDropdownWidth?: AllOptions["matchDropdownWidth"];
   @Input() formatAsYouType?: AllOptions["formatAsYouType"];
@@ -227,7 +227,7 @@ class IntlTelInput
       countrySearch: this.countrySearch,
       customPlaceholder: this.customPlaceholder,
       dropdownAlwaysOpen: this.dropdownAlwaysOpen,
-      dropdownContainer: this.dropdownContainer,
+      countrySelectorParent: this.countrySelectorParent,
       excludeCountries: this.excludeCountries,
       matchDropdownWidth: this.matchDropdownWidth,
       formatAsYouType: this.formatAsYouType,

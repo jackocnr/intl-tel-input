@@ -243,7 +243,7 @@ export default class UI {
       useFullscreenPopup,
       countrySearch,
       uiTranslations,
-      dropdownContainer,
+      countrySelectorParent,
       containerClass,
     } = this.#options;
 
@@ -287,8 +287,8 @@ export default class UI {
       }
     }
 
-    //* Create dropdownContainer markup.
-    if (dropdownContainer) {
+    //* Create countrySelectorParent markup.
+    if (countrySelectorParent) {
       const dropdownClasses = buildClassNames({
         iti: true,
         "iti--container": true,
@@ -772,7 +772,7 @@ export default class UI {
     onSelect: (listItem: HTMLElement | null) => void,
     onClose: () => void,
   ): void {
-    const { countrySearch, dropdownAlwaysOpen, dropdownContainer } =
+    const { countrySearch, dropdownAlwaysOpen, countrySelectorParent } =
       this.#options;
 
     this.#dropdownAbortController = new AbortController();
@@ -780,8 +780,8 @@ export default class UI {
     // if matchDropdownWidth enabled, and the width was not set during init (e.g. because input was hidden), then set it now as the input must be visible now.
     this.ensureDropdownWidthSet();
 
-    // dropdownContainer is used (1) to show the inline dropdown when dropdownContainer option is set, and (2) to show the fullscreen popup on mobile
-    if (dropdownContainer) {
+    // countrySelectorParent is used (1) to show the inline dropdown when countrySelectorParent option is set, and (2) to show the fullscreen popup on mobile
+    if (countrySelectorParent) {
       this.#injectAndPositionDetachedDropdown();
     } else {
       // inline dropdown
@@ -852,7 +852,7 @@ export default class UI {
     if (this.#options.countrySearch) {
       this.#bindSearchInputListener(signal);
     }
-    if (!this.#options.useFullscreenPopup && this.#options.dropdownContainer) {
+    if (!this.#options.useFullscreenPopup && this.#options.countrySelectorParent) {
       //* Close on window scroll when the dropdown is detached into an external container
       //* (it stays in its original page position while the page scrolls underneath).
       window.addEventListener("scroll", onClose, { signal });
@@ -1085,7 +1085,7 @@ export default class UI {
 
   // UI: Close the dropdown (DOM + abort dropdown-scoped listeners).
   public closeDropdown(): void {
-    const { countrySearch, dropdownContainer } = this.#options;
+    const { countrySearch, countrySelectorParent } = this.#options;
 
     //* Unbind all dropdown-scoped listeners in one go.
     this.#dropdownAbortController!.abort();
@@ -1110,7 +1110,7 @@ export default class UI {
     this.#dropdownArrowEl!.classList.remove(CLASSES.ARROW_UP);
 
     // Remove dropdown from container if using external container
-    if (dropdownContainer) {
+    if (countrySelectorParent) {
       this.#detachedDropdownEl!.remove();
       this.#detachedDropdownEl!.style.top = "";
       this.#detachedDropdownEl!.style.bottom = "";
@@ -1137,7 +1137,7 @@ export default class UI {
 
   // inject dropdown into container and apply positioning styles
   #injectAndPositionDetachedDropdown(): void {
-    const { dropdownContainer, useFullscreenPopup } = this.#options;
+    const { countrySelectorParent, useFullscreenPopup } = this.#options;
 
     if (useFullscreenPopup) {
       // on wider screens, constrain the popup to the input width instead of full width
@@ -1161,7 +1161,7 @@ export default class UI {
       }
     }
 
-    dropdownContainer!.appendChild(this.#detachedDropdownEl!);
+    countrySelectorParent!.appendChild(this.#detachedDropdownEl!);
   }
 
   // Adjust the fullscreen popup dimensions to match the visual viewport,

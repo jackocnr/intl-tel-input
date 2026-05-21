@@ -31,7 +31,7 @@ const makeOptions = (overrides = {}) => ({
   countrySearch: true,
   customPlaceholder: null,
   dropdownAlwaysOpen: false,
-  dropdownContainer: null,
+  countrySelectorParent: null,
   excludeCountries: null,
   matchDropdownWidth: true,
   formatAsYouType: true,

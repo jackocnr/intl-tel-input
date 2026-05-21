@@ -53,7 +53,7 @@ export const defaults: AllOptions = {
   //* Always show the dropdown
   dropdownAlwaysOpen: false,
   //* Append menu to specified element.
-  dropdownContainer: null,
+  countrySelectorParent: null,
   //* Don't display these countries.
   excludeCountries: null,
   //* Fix the dropdown width to the input width (rather than being as wide as the longest country name).
@@ -253,9 +253,9 @@ export const validateOptions = (customOptions: unknown): SomeOptions => {
         validatedOptions[key] = value;
         break;
 
-      case "dropdownContainer":
+      case "countrySelectorParent":
         if (value !== null && !isElLike(value)) {
-          warnOption("dropdownContainer", "an HTMLElement or null", value);
+          warnOption("countrySelectorParent", "an HTMLElement or null", value);
           break;
         }
         validatedOptions[key] = value;
@@ -412,8 +412,8 @@ export const applyOptionSideEffects = (o: AllOptions): void => {
   }
 
   //* If we want a full screen dropdown, we must append it to the body.
-  if (o.useFullscreenPopup && !o.dropdownContainer) {
-    o.dropdownContainer = document.body;
+  if (o.useFullscreenPopup && !o.countrySelectorParent) {
+    o.countrySelectorParent = document.body;
   }
 
   //* Allow overriding the default interface strings.

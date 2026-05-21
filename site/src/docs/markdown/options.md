@@ -41,11 +41,11 @@ Add a search input to the top of the country list, so users can filter the displ
 
 View `intl-tel-input` with this disabled in the [Playground](/playground?countrySearch=false#countrySearch).
 
-###### dropdownContainer
+###### countrySelectorParent
 Type: `HTMLElement`  
 Default: `null`  
 
-Expects a node, e.g. `document.body`. Instead of putting the country dropdown markup next to the input, append it to the specified node, and it will then be positioned next to the input using JavaScript (using `position: fixed`). This is useful when the input is inside a container with `overflow: hidden`. 
+Expects a node, e.g. `document.body`. Instead of putting the country dropdown markup next to the input, append it to the specified node, and it will then be positioned next to the input using JavaScript (using `position: fixed`). This is useful when the input is inside a container with `overflow: hidden`. _Note: previously named `dropdownContainer`._
 
 > [!NOTE]  
 > The positioning is broken by scrolling, so the dropdown will automatically close on the `window` scroll event. This also applies to the fullscreen popup.

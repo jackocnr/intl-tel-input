@@ -72,7 +72,7 @@ export interface AllOptions {
       ) => string)
     | null;
   dropdownAlwaysOpen: boolean;
-  dropdownContainer: HTMLElement | null;
+  countrySelectorParent: HTMLElement | null;
   excludeCountries: Iso2[] | null;
   matchDropdownWidth: boolean;
   formatAsYouType: boolean;

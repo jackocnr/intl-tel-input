@@ -33,12 +33,12 @@ describe("core/options applyOptionSideEffects", () => {
     expect(o.numberDisplayFormat).toBe("INTERNATIONAL");
   });
 
-  test("useFullscreenPopup without container sets dropdownContainer", () => {
+  test("useFullscreenPopup without container sets countrySelectorParent", () => {
     const o = clone();
     o.useFullscreenPopup = true;
-    o.dropdownContainer = null;
+    o.countrySelectorParent = null;
     applyOptionSideEffects(o);
-    expect(o.dropdownContainer).toBe(document.body);
+    expect(o.countrySelectorParent).toBe(document.body);
   });
 });
 
