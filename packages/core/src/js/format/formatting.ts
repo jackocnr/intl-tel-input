@@ -1,18 +1,18 @@
-import type { ItiUtils, SelectedCountryData } from "../types/public-api.js";
+import type { ItiUtils, SelectedCountry } from "../types/public-api.js";
 
 //* Remove the dial code if separateDialCode is enabled
 export const stripSeparateDialCode = (
   fullNumber: string,
   hasValidDialCode: boolean,
   separateDialCode: boolean,
-  selectedCountryData: SelectedCountryData,
+  selectedCountry: SelectedCountry,
 ): string => {
   if (!separateDialCode || !hasValidDialCode) {
     return fullNumber;
   }
 
   //* In case getDialCode returned an area code as well.
-  const dialCode = `+${selectedCountryData!.dialCode}`;
+  const dialCode = `+${selectedCountry!.dialCode}`;
   //* a lot of numbers will have a space separating the dial code and the main number, and
   //* some NANP numbers will have a hyphen e.g. +1 684-733-1234 - in both cases we want to get rid of it.
   //* NOTE: Don't just trim all non-numerics as may want to preserve an open parenthesis etc.
@@ -28,14 +28,14 @@ export const formatNumberAsYouType = (
   fullNumber: string,
   telInputValue: string,
   utils: ItiUtils | undefined,
-  selectedCountryData: SelectedCountryData,
+  selectedCountry: SelectedCountry,
   separateDialCode: boolean,
 ): string => {
   const result = utils
-    ? utils.formatNumberAsYouType(fullNumber, selectedCountryData?.iso2)
+    ? utils.formatNumberAsYouType(fullNumber, selectedCountry?.iso2)
     : fullNumber;
   //* If separateDialCode and they haven't (re)typed the dial code in the input as well, then remove the dial code.
-  const dialCode = selectedCountryData?.dialCode;
+  const dialCode = selectedCountry?.dialCode;
   if (
     separateDialCode &&
     telInputValue.charAt(0) !== "+" &&

@@ -6,7 +6,7 @@ const country = ref("us");
 const intlTelInputRef = ref(null);
 
 const handleSetCountry = () => {
-  intlTelInputRef.value?.instance?.setCountry("gb");
+  intlTelInputRef.value?.instance?.setSelectedCountry("gb");
 };
 </script>
 

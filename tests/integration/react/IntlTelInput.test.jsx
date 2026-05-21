@@ -71,7 +71,7 @@ describe("React IntlTelInput wrapper", () => {
     );
     await waitFor(() => {
       expect(ref.current.getInstance().getNumber()).toBe("+447733123456");
-      expect(ref.current.getInstance().getSelectedCountryData().iso2).toBe("gb");
+      expect(ref.current.getInstance().getSelectedCountry().iso2).toBe("gb");
     });
   });
 
@@ -132,7 +132,7 @@ describe("React IntlTelInput wrapper", () => {
   test("initOptions are passed through to the library", () => {
     const ref = createRef();
     render(<IntlTelInput ref={ref} initialCountry="gb" />);
-    expect(ref.current.getInstance().getSelectedCountryData().iso2).toBe("gb");
+    expect(ref.current.getInstance().getSelectedCountry().iso2).toBe("gb");
   });
 
   test("re-exports intlTelInput so users can access globals", () => {
@@ -154,10 +154,10 @@ describe("React IntlTelInput wrapper", () => {
   test("initOptions are init-only: changing initialCountry on re-render is a no-op", () => {
     const ref = createRef();
     const { rerender } = render(<IntlTelInput ref={ref} initialCountry="gb" />);
-    expect(ref.current.getInstance().getSelectedCountryData().iso2).toBe("gb");
+    expect(ref.current.getInstance().getSelectedCountry().iso2).toBe("gb");
     rerender(<IntlTelInput ref={ref} initialCountry="fr" />);
     // initOptions snapshot at mount time only; re-rendering does not re-init the library
-    expect(ref.current.getInstance().getSelectedCountryData().iso2).toBe("gb");
+    expect(ref.current.getInstance().getSelectedCountry().iso2).toBe("gb");
   });
 
   test("ref.current stays stable across re-renders", () => {

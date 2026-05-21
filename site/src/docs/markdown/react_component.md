@@ -150,12 +150,12 @@ All of the core library's initialisation options are supported as individual Rea
 > If you're migrating from an older version, the previous `initOptions={{ initialCountry: "us" }}` style is no longer supported — pass each option as its own prop instead.
 
 > [!NOTE]
-> These props are read once at init — changing them later has no effect. For runtime changes, see [Accessing instance methods](#accessing-instance-methods) below (e.g. `getInstance().setCountry("gb")`).
+> These props are read once at init — changing them later has no effect. For runtime changes, see [Accessing instance methods](#accessing-instance-methods) below (e.g. `getInstance().setSelectedCountry("gb")`).
 
 ## Accessing instance methods
 
-You can access all of the core library's [instance methods](/docs/methods#instance-methods) (`setNumber`, `setCountry`, `setPlaceholderNumberType`, etc) by passing a ref into the IntlTelInput component (using the `ref` prop), and then calling `ref.current.getInstance()`, e.g. `ref.current.getInstance().setCountry(...);`. See the [Set Country demo](https://github.com/jackocnr/intl-tel-input/blob/master/packages/react/demo/set-country/SetCountryApp.tsx) for a full example. You can also access the input DOM element in a similar way: `ref.current.getInput()`.
+You can access all of the core library's [instance methods](/docs/methods#instance-methods) (`setNumber`, `setSelectedCountry`, `setPlaceholderNumberType`, etc) by passing a ref into the IntlTelInput component (using the `ref` prop), and then calling `ref.current.getInstance()`, e.g. `ref.current.getInstance().setSelectedCountry(...);`. See the [Set Country demo](https://github.com/jackocnr/intl-tel-input/blob/master/packages/react/demo/set-country/SetCountryApp.tsx) for a full example. You can also access the input DOM element in a similar way: `ref.current.getInput()`.
 
 ## Accessing static methods
 
-You can access all of the core library's [static methods](/docs/methods#static-methods) by importing `intlTelInput` from the same file as the React component, e.g. `import { intlTelInput } from "@intl-tel-input/react"` (note the lower case "i" in "intlTelInput"). You can then use this as you would with the core library directly, e.g. `intlTelInput.getCountryData()` etc.
+You can access all of the core library's [static methods](/docs/methods#static-methods) by importing `intlTelInput` from the same file as the React component, e.g. `import { intlTelInput } from "@intl-tel-input/react"` (note the lower case "i" in "intlTelInput"). You can then use this as you would with the core library directly, e.g. `intlTelInput.getAllCountries()` etc.

@@ -68,7 +68,7 @@ export interface AllOptions {
   customPlaceholder:
     | ((
         selectedCountryPlaceholder: string,
-        selectedCountryData: SelectedCountryData,
+        selectedCountry: SelectedCountry,
       ) => string)
     | null;
   dropdownAlwaysOpen: boolean;
@@ -98,5 +98,5 @@ export interface AllOptions {
 // Partial options accepted by the factory
 export type SomeOptions = Partial<AllOptions>;
 
-// Exposed via getSelectedCountryData and events. Null when no country is selected.
-export type SelectedCountryData = Country | null;
+// Exposed via getSelectedCountry and events. Null when no country is selected.
+export type SelectedCountry = Country | null;

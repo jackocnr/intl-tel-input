@@ -150,7 +150,7 @@ describe("initialCountryLookup option", () => {
     test("lookup is not called when initialCountry is set", () => {
       expect(lookupCalled).toBe(false);
       expect(intlTelInput.startedLoadingAutoCountry).toBe(false);
-      expect(iti.getSelectedCountryData().iso2).toBe("gb");
+      expect(iti.getSelectedCountry().iso2).toBe("gb");
     });
   });
 

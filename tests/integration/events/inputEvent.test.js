@@ -41,8 +41,8 @@ describe("input event", () => {
     expect(event.detail?.isSetNumber).toBeFalsy();
   });
 
-  test("setCountry fires input event with isCountryChange=true", () => {
-    iti.setCountry("fr");
+  test("setSelectedCountry fires input event with isCountryChange=true", () => {
+    iti.setSelectedCountry("fr");
     expect(mockEventHandler).toHaveBeenCalled();
     const event = mockEventHandler.mock.calls.at(-1)[0];
     expect(event.detail).toEqual({ isCountryChange: true });

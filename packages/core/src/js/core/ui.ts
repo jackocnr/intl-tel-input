@@ -1,5 +1,5 @@
 import type { Country, Iso2 } from "../data.js";
-import type { AllOptions, SelectedCountryData } from "../types/public-api.js";
+import type { AllOptions, SelectedCountry } from "../types/public-api.js";
 import { buildClassNames, createEl } from "../helpers/dom.js";
 import {
   buildSearchIcon,
@@ -1240,11 +1240,11 @@ export default class UI {
     }
   }
 
-  public setCountry(selectedCountryData: SelectedCountryData): void {
+  public setSelectedCountry(selectedCountry: SelectedCountry): void {
     const { enableCountrySelector, showFlags, separateDialCode, uiTranslations } = this.#options;
-    const name = selectedCountryData?.name;
-    const dialCode = selectedCountryData?.dialCode;
-    const iso2 = selectedCountryData?.iso2 ?? "";
+    const name = selectedCountry?.name;
+    const dialCode = selectedCountry?.dialCode;
+    const iso2 = selectedCountry?.iso2 ?? "";
 
     if (enableCountrySelector) {
       // Update the selected list item in the country list

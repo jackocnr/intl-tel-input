@@ -285,7 +285,7 @@ const localeCodesSorted = [...LOCALE_CODES].sort((a, b) =>
 //* multi-comboboxes) — labels in English so they stay stable regardless of countryNameLocale.
 const countryDatalist = (() => {
   const englishNames = new Intl.DisplayNames(["en"], { type: "region" });
-  return window.intlTelInput.getCountryData()
+  return window.intlTelInput.getAllCountries()
     .map((c) => ({ value: c.iso2, label: englishNames.of(c.iso2.toUpperCase()) || c.iso2 }))
     .sort((a, b) => a.label.localeCompare(b.label));
 })();
@@ -667,23 +667,23 @@ const HINT_CONFIGS = [
   {
     optionKey: "separateDialCode",
     message: () => {
-      if (!itiController.iti?.getSelectedCountryData()) {
+      if (!itiController.iti?.getSelectedCountry()) {
         return "Tip: select a country to see this in action.";
       }
       return "Tip: by design, the separate dial code is styled to look like part of the typed number, so toggling this option has no visible effect when the value already contains a number.";
     },
-    shouldShow: () => !itiController.iti?.getSelectedCountryData() || getCombinedStateFromControls().value.trim().startsWith("+"),
+    shouldShow: () => !itiController.iti?.getSelectedCountry() || getCombinedStateFromControls().value.trim().startsWith("+"),
     alsoShowOnToggleOff: true,
   },
   {
     optionKey: "showFlags",
     message: () => {
-      if (!itiController.iti?.getSelectedCountryData()) {
+      if (!itiController.iti?.getSelectedCountry()) {
         return "Tip: select a country to see this in action.";
       }
       return "Tip: in the Live Demo section, enable [Keep dropdown open](#keep-dropdown-open) to see how this updates the dropdown.";
     },
-    shouldShow: () => !keepDropdownOpenCheckbox.checked && !itiController.iti?.getSelectedCountryData(),
+    shouldShow: () => !keepDropdownOpenCheckbox.checked && !itiController.iti?.getSelectedCountry(),
     alsoShowOnToggleOff: true,
   },
   {
@@ -724,7 +724,7 @@ const HINT_CONFIGS = [
       if (!getCombinedStateFromControls().loadUtils) {
         return "Tip: enable [loadUtils](#loadUtils) to see this in action.";
       }
-      if (!itiController.iti?.getSelectedCountryData()) {
+      if (!itiController.iti?.getSelectedCountry()) {
         return "Tip: select a country and type a phone number to see this in action.";
       }
       return "Tip: type a phone number to see this in action.";
@@ -747,7 +747,7 @@ const HINT_CONFIGS = [
       const state = getCombinedStateFromControls();
       return !state.loadUtils
         || (state.separateDialCode && state.numberDisplayFormat === "NATIONAL")
-        || !itiController.iti?.getSelectedCountryData();
+        || !itiController.iti?.getSelectedCountry();
     },
     alsoShowOnToggleOff: true,
   },
@@ -757,7 +757,7 @@ const HINT_CONFIGS = [
       if (!getCombinedStateFromControls().loadUtils) {
         return "Tip: enable [loadUtils](#loadUtils) to see this in action.";
       }
-      if (!itiController.iti?.getSelectedCountryData()) {
+      if (!itiController.iti?.getSelectedCountry()) {
         return "Tip: select a country and try typing valid/invalid characters in the input to see this in action.";
       }
       return "Tip: try typing valid/invalid characters in the input to see this in action.";
@@ -771,7 +771,7 @@ const HINT_CONFIGS = [
       if (!getCombinedStateFromControls().loadUtils) {
         return "Tip: enable [loadUtils](#loadUtils) to see this in action.";
       }
-      if (!itiController.iti?.getSelectedCountryData()) {
+      if (!itiController.iti?.getSelectedCountry()) {
         return "Tip: select a country to see the placeholder update based on this setting.";
       }
       if (telInput.value) {
@@ -784,7 +784,7 @@ const HINT_CONFIGS = [
       if (!state.loadUtils) {
         return true;
       }
-      if (!itiController.iti?.getSelectedCountryData() || telInput.value) {
+      if (!itiController.iti?.getSelectedCountry() || telInput.value) {
         return true;
       }
       return state.placeholderNumberPolicy === "POLITE" && state.placeholder;
@@ -797,18 +797,18 @@ const HINT_CONFIGS = [
       if (!getCombinedStateFromControls().loadUtils) {
         return "Tip: enable [loadUtils](#loadUtils) to see this in action.";
       }
-      if (!itiController.iti?.getSelectedCountryData()) {
+      if (!itiController.iti?.getSelectedCountry()) {
         return "Tip: select a country to see the placeholder update based on this setting.";
       }
       return "Tip: clear the input to see the placeholder update based on this setting.";
     },
-    shouldShow: () => !getCombinedStateFromControls().loadUtils || !itiController.iti?.getSelectedCountryData() || telInput.value,
+    shouldShow: () => !getCombinedStateFromControls().loadUtils || !itiController.iti?.getSelectedCountry() || telInput.value,
     alsoShowOnToggleOff: true,
   },
   {
     optionKey: "placeholderNumberType",
     message: () => {
-      const country = itiController.iti?.getSelectedCountryData();
+      const country = itiController.iti?.getSelectedCountry();
       if (!country) {
         return "Tip: select a country to see the placeholder update based on this setting.";
       }
@@ -825,7 +825,7 @@ const HINT_CONFIGS = [
       return `Tip: libphonenumber has no example "${state.placeholderNumberType}" number for ${country.name} — try "MOBILE", "FIXED_LINE", or a different country.`;
     },
     shouldShow: () => {
-      const country = itiController.iti?.getSelectedCountryData();
+      const country = itiController.iti?.getSelectedCountry();
       if (!country || telInput.value) {
         return true;
       }
@@ -1243,7 +1243,7 @@ function captureSelectedCountryToForm({ requireDropdownInteraction = true } = {}
   if (requireDropdownInteraction && !dropdownCurrentlyOpen) {
     return;
   }
-  const iso2 = itiController.iti?.getSelectedCountryData()?.iso2;
+  const iso2 = itiController.iti?.getSelectedCountry()?.iso2;
   if (!iso2) {
     return;
   }

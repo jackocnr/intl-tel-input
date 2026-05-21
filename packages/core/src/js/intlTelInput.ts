@@ -13,7 +13,7 @@ import type {
   ValidationError,
   AllOptions,
   SomeOptions,
-  SelectedCountryData,
+  SelectedCountry,
 } from "./types/public-api.js";
 import { getNumeric } from "./helpers/string.js";
 import UI from "./core/ui.js";
@@ -76,7 +76,7 @@ export type { ForEachInstanceArgsMap } from "./types/forEachInstanceArgsMap.js";
 export type {
   AllOptions,
   SomeOptions,
-  SelectedCountryData,
+  SelectedCountry,
   UtilsLoader,
   ItiUtils,
   ArrayValues,
@@ -180,7 +180,7 @@ export class Iti {
     this.#dialCodeMaxLength = dialCodeMaxLength;
     this.#dialCodeToIso2Map = dialCodeToIso2Map;
 
-    //* Build fast iso2 -> country map for O(1) lookups (used by setCountry).
+    //* Build fast iso2 -> country map for O(1) lookups (used by setSelectedCountry).
     this.#countryByIso2 = new Map(this.#countries.map((c) => [c.iso2, c]));
 
     this.#init();
@@ -536,13 +536,13 @@ export class Iti {
       enableCountrySelector,
       countrySearch,
     } = this.#options;
-    //* This listener receives both native InputEvents (from typing) and synthetic CustomEvents (from setNumber/setCountry), so we read detail via a cast.
+    //* This listener receives both native InputEvents (from typing) and synthetic CustomEvents (from setNumber/setSelectedCountry), so we read detail via a cast.
     const detail = e?.detail as unknown as
       | Record<string, unknown>
       | null
       | undefined;
     //* Skip re-entry from our own synthetic input events fired after a country change —
-    //* selectListItem/setCountry have already done the country + formatting work.
+    //* selectListItem/setSelectedCountry have already done the country + formatting work.
     if (detail?.["isCountryChange"]) {
       return;
     }
@@ -1055,7 +1055,7 @@ export class Iti {
   }
 
   //* Update the selected country, dial code (if separateDialCode), placeholder, title, and selected list item.
-  //* Note: called from setInitialState, updateCountryFromNumber, selectListItem, setCountry.
+  //* Note: called from setInitialState, updateCountryFromNumber, selectListItem, setSelectedCountry.
   #updateSelectedCountry(iso2: Iso2 | ""): boolean {
     const prevIso2 = this.#selectedCountry?.iso2 || "";
 
@@ -1068,7 +1068,7 @@ export class Iti {
       this.#fallbackCountryIso2 = this.#selectedCountry.iso2;
     }
 
-    this.#ui.setCountry(this.#selectedCountry);
+    this.#ui.setSelectedCountry(this.#selectedCountry);
 
     //* Update the input's placeholder.
     this.#updatePlaceholder();
@@ -1195,7 +1195,7 @@ export class Iti {
   }
 
   //* Replace any existing dial code with the new one
-  //* Note: called from selectListItem and setCountry
+  //* Note: called from selectListItem and setSelectedCountry
   #updateDialCode(newDialCodeDigits: string): void {
     const inputValue = this.#getTelInputValue();
     if (!inputValue.startsWith("+")) {
@@ -1317,11 +1317,11 @@ export class Iti {
     }
 
     //* If still loading, the user hasn't interrupted, so adopt the auto country. Otherwise the user has already selected a country or cleared to globe, so just stash the auto country as a fallback.
-    //* Exception: if the user is focused and has typed a national-format value (no dial code match → no country selected → loading class still set), treat that as an interruption too, otherwise setCountry would reformat their value out from under them.
+    //* Exception: if the user is focused and has typed a national-format value (no dial code match → no country selected → loading class still set), treat that as an interruption too, otherwise setSelectedCountry would reformat their value out from under them.
     const isFocused = document.activeElement === this.#ui.telInputEl;
     const hasTypedValue = Boolean(this.#getTelInputValue());
     if (this.#ui.isLoading() && !(isFocused && hasTypedValue)) {
-      this.setCountry(intlTelInput.autoCountry);
+      this.setSelectedCountry(intlTelInput.autoCountry);
     } else {
       this.#fallbackCountryIso2 = intlTelInput.autoCountry;
     }
@@ -1456,7 +1456,7 @@ export class Iti {
   }
 
   //* Get the country data for the currently selected country.
-  public getSelectedCountryData(): SelectedCountryData {
+  public getSelectedCountry(): SelectedCountry {
     return this.#selectedCountry ?? null;
   }
 
@@ -1554,7 +1554,7 @@ export class Iti {
   }
 
   //* Update the selected country, and update the input value accordingly.
-  public setCountry(iso2: Iso2): void {
+  public setSelectedCountry(iso2: Iso2): void {
     if (!this.#isActive) {
       return;
     }
@@ -1705,7 +1705,7 @@ export interface IntlTelInputInterface {
   autoCountry?: Iso2;
   defaults: AllOptions;
   documentReady: () => boolean;
-  getCountryData: () => Country[];
+  getAllCountries: () => Country[];
   getInstance: (input: HTMLInputElement) => Iti | null;
   instances: Map<string, Iti>;
   attachUtils: (source: UtilsLoader) => Promise<boolean | null>;
@@ -1735,8 +1735,8 @@ const intlTelInput: IntlTelInputInterface = Object.assign(
     defaults,
     //* Using a static var like this allows us to mock it in the tests.
     documentReady: (): boolean => document.readyState === "complete",
-    //* Get the country data object.
-    getCountryData: (): Country[] => allCountries,
+    //* Get the full list of all countries the library knows about.
+    getAllCountries: (): Country[] => allCountries,
     //* A getter for the core library instance.
     getInstance: (input: HTMLInputElement): Iti | null => {
       const id = input.dataset[DATA_KEYS.INSTANCE_ID];

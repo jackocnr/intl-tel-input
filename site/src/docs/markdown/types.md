@@ -53,7 +53,7 @@ Returned by [`getValidationError`](/docs/methods#getvalidationerror) and the wra
 See [Show a user-facing error message](/docs/best-practices#show-a-user-facing-error-message) for a worked example.
 
 ## Country
-The shape of each country in the core library's internal data, returned by [`getCountryData`](/docs/methods#getcountrydata) and [`getSelectedCountryData`](/docs/methods#getselectedcountrydata). Properties:
+The shape of each country in the core library's internal data, returned by [`getAllCountries`](/docs/methods#getallcountries) and [`getSelectedCountry`](/docs/methods#getselectedcountry). Properties:
 
 - `name` (`string`): Localised country name (e.g. `"Afghanistan"`). Only populated after the core library has been initialised.
 - `iso2` (`string`): Two-letter [ISO 3166-1 alpha-2 code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) (e.g. `"af"`).

@@ -5,7 +5,7 @@
   let intlTelInputRef = $state();
 
   const handleSetCountry = () => {
-    intlTelInputRef?.getInstance()?.setCountry("gb");
+    intlTelInputRef?.getInstance()?.setSelectedCountry("gb");
   };
 </script>
 

@@ -466,7 +466,7 @@ describe("strictMode option", () => {
 // // NOTE: these take so long they crash travis. BUT they run ok locally, they just take about 60 seconds.
 
 // const { intlTelInput } = require("../helpers/helpers");
-// const allCountries = intlTelInput.getCountryData();
+// const allCountries = intlTelInput.getAllCountries();
 // const iso2Codes = allCountries.map((country) => country.iso2);
 // const countriesAllowingExtraDigit = ["ax", "at", "by", "ba", "bg", "kh", "bq", "cd", "fi", "ga", "id", "ie", "lu", "my", "mm", "nz", "rs", "so", "tk", "tv", "vn", "zw"];
 // const countriesAllowingMultipleExtraDigits = ["at", "id", "mm", "tk"];

@@ -88,7 +88,7 @@ describe("isValidNumber method - NANP Barbados", () => {
 //   stripFormattingChars,
 //   openAndSelectCountryAsync,
 // } = require("../helpers/helpers");
-// const allCountries = intlTelInput.getCountryData();
+// const allCountries = intlTelInput.getAllCountries();
 // const iso2Codes = allCountries.map((country) => country.iso2).filter((iso2) => !countriesAllowingMultipleLessDigits.includes(iso2));
 
 // describe("isValidNumber: each digit of placeholder number", () => {

@@ -408,24 +408,24 @@ describe("UI search clear button", () => {
   });
 });
 
-// ── setCountry ─────────────────────────────────────────────────
-describe("UI.setCountry", () => {
+// ── setSelectedCountry ─────────────────────────────────────────────────
+describe("UI.setSelectedCountry", () => {
   test("updates flag class for selected country", () => {
     const { ui, input } = buildUI();
-    ui.setCountry({ iso2: "gb", dialCode: "44", name: "United Kingdom" });
+    ui.setSelectedCountry({ iso2: "gb", dialCode: "44", name: "United Kingdom" });
     expect(getSelectedFlagEl(input).className).toBe("iti__flag iti__gb");
   });
 
   test("shows globe icon when iso2 is empty", () => {
     const { ui, input } = buildUI();
-    ui.setCountry({ iso2: "", dialCode: "", name: "" });
+    ui.setSelectedCountry({ iso2: "", dialCode: "", name: "" });
     expect(getSelectedFlagEl(input).className).toContain(CLASSES.GLOBE);
     expect(getSelectedFlagEl(input).innerHTML).toContain("iti__globe-svg");
   });
 
   test("sets aria-label on selectedCountry", () => {
     const { ui, input } = buildUI();
-    ui.setCountry({ iso2: "us", dialCode: "1", name: "United States" });
+    ui.setSelectedCountry({ iso2: "us", dialCode: "1", name: "United States" });
     const label = getSelectedCountryEl(input).getAttribute(ARIA.LABEL);
     expect(label).toContain("United States");
     expect(label).toContain("+1");
@@ -433,14 +433,14 @@ describe("UI.setCountry", () => {
 
   test("updates dial code element when separateDialCode enabled", () => {
     const { ui, input } = buildUI({ separateDialCode: true });
-    ui.setCountry({ iso2: "de", dialCode: "49", name: "Germany" });
+    ui.setSelectedCountry({ iso2: "de", dialCode: "49", name: "Germany" });
     const dialCodeEl = getSelectedCountryEl(input).querySelector(".iti__selected-dial-code");
     expect(dialCodeEl.textContent).toBe("+49");
   });
 
   test("marks list item as selected with aria and check icon", () => {
     const { ui, input } = buildUI();
-    ui.setCountry({ iso2: "gb", dialCode: "44", name: "United Kingdom" });
+    ui.setSelectedCountry({ iso2: "gb", dialCode: "44", name: "United Kingdom" });
     const gbItem = getCountryList(input).querySelector("[data-iso2=\"gb\"]");
     expect(gbItem.getAttribute(ARIA.SELECTED)).toBe("true");
     expect(gbItem.querySelector(".iti__country-check")).not.toBeNull();
@@ -448,8 +448,8 @@ describe("UI.setCountry", () => {
 
   test("deselects previous country when selecting a new one", () => {
     const { ui, input } = buildUI();
-    ui.setCountry({ iso2: "us", dialCode: "1", name: "United States" });
-    ui.setCountry({ iso2: "gb", dialCode: "44", name: "United Kingdom" });
+    ui.setSelectedCountry({ iso2: "us", dialCode: "1", name: "United States" });
+    ui.setSelectedCountry({ iso2: "gb", dialCode: "44", name: "United Kingdom" });
 
     const usItem = getCountryList(input).querySelector("[data-iso2=\"us\"]");
     const gbItem = getCountryList(input).querySelector("[data-iso2=\"gb\"]");
@@ -584,9 +584,9 @@ describe("UI with showFlags: false", () => {
     expect(flagEl).toBeNull();
   });
 
-  test("setCountry uses globe class when showFlags is false and iso2 is set", () => {
+  test("setSelectedCountry uses globe class when showFlags is false and iso2 is set", () => {
     const { ui, input } = buildUI({ showFlags: false });
-    ui.setCountry({ iso2: "us", dialCode: "1", name: "United States" });
+    ui.setSelectedCountry({ iso2: "us", dialCode: "1", name: "United States" });
     expect(getSelectedFlagEl(input).className).toContain(CLASSES.GLOBE);
   });
 });

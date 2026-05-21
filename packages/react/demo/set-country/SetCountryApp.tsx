@@ -7,7 +7,7 @@ const App = (): ReactElement => {
   const [country, setCountry] = useState<string>("us");
 
   const handleSetCountry = (): void => {
-    ref.current?.getInstance()?.setCountry("gb");
+    ref.current?.getInstance()?.setSelectedCountry("gb");
   };
 
   return (

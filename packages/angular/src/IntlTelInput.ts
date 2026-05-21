@@ -278,7 +278,7 @@ class IntlTelInput
     }
 
     const num = this.iti.getNumber() ?? "";
-    const countryIso = this.iti.getSelectedCountryData()?.iso2 ?? "";
+    const countryIso = this.iti.getSelectedCountry()?.iso2 ?? "";
 
     let hasChanged = false;
     if (num !== this.lastEmittedNumber) {

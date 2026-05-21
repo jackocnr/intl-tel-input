@@ -70,7 +70,7 @@ describe("Angular IntlTelInput wrapper", () => {
     });
     const instance = component.getInstance()!;
     await waitUntil(() => !!instance.getNumber());
-    expect(instance.getSelectedCountryData()?.iso2).toBe("gb");
+    expect(instance.getSelectedCountry()?.iso2).toBe("gb");
     expect(instance.getNumber()).toBe("+447733123456");
   });
 

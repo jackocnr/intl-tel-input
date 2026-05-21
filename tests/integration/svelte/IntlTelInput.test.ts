@@ -58,11 +58,11 @@ describe("Svelte IntlTelInput wrapper", () => {
   test("initialValue prop sets the initial number on mount", async () => {
     const { component } = render(IntlTelInput, { initialValue: "+447733123456" });
     const getInstance = (component as unknown as {
-      getInstance: () => { getNumber: () => string; getSelectedCountryData: () => { iso2: string } } | undefined;
+      getInstance: () => { getNumber: () => string; getSelectedCountry: () => { iso2: string } } | undefined;
     }).getInstance;
     await waitFor(() => {
       expect(getInstance()?.getNumber()).toBe("+447733123456");
-      expect(getInstance()?.getSelectedCountryData().iso2).toBe("gb");
+      expect(getInstance()?.getSelectedCountry().iso2).toBe("gb");
     });
   });
 

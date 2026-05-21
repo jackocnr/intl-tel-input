@@ -25,7 +25,7 @@ describe("setPlaceholderNumberType method", () => {
 
   test("placeholder updates after switching country", async () => {
     iti.setPlaceholderNumberType("MOBILE");
-    iti.setCountry("us");
+    iti.setSelectedCountry("us");
     expect(input.getAttribute("placeholder")).toEqual("201-555-0123");
   });
 

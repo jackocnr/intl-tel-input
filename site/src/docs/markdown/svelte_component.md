@@ -152,12 +152,12 @@ All of the core library's initialisation options are supported as individual Sve
 > If you're migrating from an older version, the previous `initOptions={{ initialCountry: "us" }}` style is no longer supported — pass each option as its own prop instead.
 
 > [!NOTE]
-> These props are read once at init — changing them later has no effect. For runtime changes, see [Accessing instance methods](#accessing-instance-methods) below (e.g. `getInstance().setCountry("gb")`).
+> These props are read once at init — changing them later has no effect. For runtime changes, see [Accessing instance methods](#accessing-instance-methods) below (e.g. `getInstance().setSelectedCountry("gb")`).
 
 ## Accessing instance methods
 
-You can access all of the core library's [instance methods](/docs/methods#instance-methods) (`setNumber`, `setCountry`, `setPlaceholderNumberType`, etc.) by passing a ref into the IntlTelInput component (using `bind:this`), and then calling the `getInstance()` method, e.g. `ref.getInstance().setCountry(...);`. See the [Set Country demo](https://github.com/jackocnr/intl-tel-input/blob/master/packages/svelte/demo/set-country/App.svelte) for a full example. You can also access the input DOM element via: `ref.getInput()`.
+You can access all of the core library's [instance methods](/docs/methods#instance-methods) (`setNumber`, `setSelectedCountry`, `setPlaceholderNumberType`, etc.) by passing a ref into the IntlTelInput component (using `bind:this`), and then calling the `getInstance()` method, e.g. `ref.getInstance().setSelectedCountry(...);`. See the [Set Country demo](https://github.com/jackocnr/intl-tel-input/blob/master/packages/svelte/demo/set-country/App.svelte) for a full example. You can also access the input DOM element via: `ref.getInput()`.
 
 ## Accessing static methods
 
-You can access all of the core library's [static methods](/docs/methods#static-methods) by importing `intlTelInput` from the same file as the Svelte component, e.g. `import { intlTelInput } from "@intl-tel-input/svelte"` (note the lower case "i" in "intlTelInput"). You can then use this as you would with the core library directly, e.g. `intlTelInput.getCountryData()` etc.
+You can access all of the core library's [static methods](/docs/methods#static-methods) by importing `intlTelInput` from the same file as the Svelte component, e.g. `import { intlTelInput } from "@intl-tel-input/svelte"` (note the lower case "i" in "intlTelInput"). You can then use this as you would with the core library directly, e.g. `intlTelInput.getAllCountries()` etc.

@@ -9,18 +9,18 @@ This page lists the core library's public API methods.
   - [getExtension](#getextension)
   - [getNumber](#getnumber)
   - [getNumberType](#getnumbertype)
-  - [getSelectedCountryData](#getselectedcountrydata)
+  - [getSelectedCountry](#getselectedcountry)
   - [getValidationError](#getvalidationerror)
   - [isValidNumber](#isvalidnumber)
   - [isValidNumberPrecise](#isvalidnumberprecise)
-  - [setCountry](#setcountry)
   - [setDisabled](#setdisabled)
   - [setNumber](#setnumber)
   - [setPlaceholderNumberType](#setplaceholdernumbertype)
   - [setReadonly](#setreadonly)
+  - [setSelectedCountry](#setselectedcountry)
 - [Static methods](#static-methods)
   - [attachUtils](#attachutils)
-  - [getCountryData](#getcountrydata)
+  - [getAllCountries](#getallcountries)
   - [getInstance](#getinstance)
 
 ## Instance Methods
@@ -96,12 +96,12 @@ if (numberType === "MOBILE" || numberType === "FIXED_LINE_OR_MOBILE") {
 > [!NOTE]
 > In some countries (e.g. the US) there's no way to differentiate between fixed-line and mobile numbers, so in those cases it will return `"FIXED_LINE_OR_MOBILE"` — hence the need to check for both values above.
 
-###### getSelectedCountryData
+###### getSelectedCountry
 Type: `() => Country | null`  
 
-Get the [`Country`](/docs/types#country) for the currently selected country, or `null` if no country is currently selected (e.g. the empty/globe state).
+Get the [`Country`](/docs/types#country) for the currently selected country, or `null` if no country is currently selected (e.g. the empty/globe state). _Note: previously named `getSelectedCountryData`._
 ```js
-const countryData = iti.getSelectedCountryData();
+const country = iti.getSelectedCountry();
 ```
 
 ###### getValidationError
@@ -131,15 +131,6 @@ Check if the current number is valid using precise matching rules for each count
 const isValid = iti.isValidNumberPrecise();
 ```
 Returns: `true`/`false`
-
-###### setCountry
-Type: `(iso2?: string) => void`  
-
-Change the selected country. It should be rare, if ever, that you need to do this, as the selected country gets updated automatically when calling [`setNumber`](/docs/methods#setnumber) and passing a number including an international dial code, which is the recommended usage. Note, you can omit the iso2 code argument to set the country to the default empty (globe) state. _If the [utils script](/docs/utils#loading-the-utils-script) is loaded, the input value is reformatted to the new country according to the [`numberDisplayFormat`](/docs/options#numberdisplayformat) option._  
-
-```js
-iti.setCountry("gb");
-```
 
 ###### setDisabled
 Type: `(disabled: boolean) => void`  
@@ -180,6 +171,15 @@ Updates the readonly attribute of the telephone input and disables the selected 
 iti.setReadonly(true);
 ```
 
+###### setSelectedCountry
+Type: `(iso2?: string) => void`  
+
+Change the selected country. It should be rare, if ever, that you need to do this, as the selected country gets updated automatically when calling [`setNumber`](/docs/methods#setnumber) and passing a number including an international dial code, which is the recommended usage. Note, you can omit the iso2 code argument to set the country to the default empty (globe) state. _If the [utils script](/docs/utils#loading-the-utils-script) is loaded, the input value is reformatted to the new country according to the [`numberDisplayFormat`](/docs/options#numberdisplayformat) option._ _Note: previously named `setCountry`._
+
+```js
+iti.setSelectedCountry("gb");
+```
+
 ## Static Methods
 
 ###### attachUtils
@@ -196,13 +196,13 @@ await intlTelInput.attachUtils(loadUtils);
 > [!NOTE]
 > This method should only be called once per page - it will return `null` if utils have already been loaded, or are in the process of being loaded.
 
-###### getCountryData
+###### getAllCountries
 Type: `() => Country[]`  
 
-Retrieve the core library's country data — either to re-use elsewhere (e.g. to generate your own country selector), or alternatively, you could use it to modify the country data. _Note that any modifications must be done before initialising the core library._ See [`Country`](/docs/types#country) for the shape of each entry.
+Retrieve the core library's full list of countries — either to re-use elsewhere (e.g. to generate your own country selector), or alternatively, you could use it to modify the country data. _Note that any modifications must be done before initialising the core library._ See [`Country`](/docs/types#country) for the shape of each entry. _Note: previously named `getCountryData`._
 
 ```js
-const countryData = intlTelInput.getCountryData();
+const countries = intlTelInput.getAllCountries();
 ```
 
 ###### getInstance

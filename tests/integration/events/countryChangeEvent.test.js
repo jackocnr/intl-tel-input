@@ -30,8 +30,8 @@ describe("countrychange event", () => {
     expect(mockEventHandler).not.toHaveBeenCalled();
   });
 
-  test("calling setCountry triggers the event", () => {
-    iti.setCountry("fr");
+  test("calling setSelectedCountry triggers the event", () => {
+    iti.setSelectedCountry("fr");
     expect(mockEventHandler).toHaveBeenCalled();
   });
 
@@ -50,21 +50,21 @@ describe("countrychange event", () => {
     expect(mockEventHandler).toHaveBeenCalled();
   });
 
-  test("fires once per setCountry call in sequence, preserving order", () => {
+  test("fires once per setSelectedCountry call in sequence, preserving order", () => {
     const changes = [];
     input.addEventListener("countrychange", () => {
-      changes.push(iti.getSelectedCountryData().iso2);
+      changes.push(iti.getSelectedCountry().iso2);
     });
-    iti.setCountry("fr");
-    iti.setCountry("gb");
-    iti.setCountry("de");
+    iti.setSelectedCountry("fr");
+    iti.setSelectedCountry("gb");
+    iti.setSelectedCountry("de");
     expect(changes).toEqual(["fr", "gb", "de"]);
   });
 
   test("rapid setNumber calls fire countrychange in order", () => {
     const changes = [];
     input.addEventListener("countrychange", () => {
-      changes.push(iti.getSelectedCountryData().iso2);
+      changes.push(iti.getSelectedCountry().iso2);
     });
     iti.setNumber("+33123");
     iti.setNumber("+44123");
@@ -75,8 +75,8 @@ describe("countrychange event", () => {
   test("does not fire after destroy", () => {
     mockEventHandler.mockClear();
     iti.destroy();
-    // setCountry is a no-op after destroy, so no event should fire
-    iti.setCountry("fr");
+    // setSelectedCountry is a no-op after destroy, so no event should fire
+    iti.setSelectedCountry("fr");
     expect(mockEventHandler).not.toHaveBeenCalled();
   });
 });

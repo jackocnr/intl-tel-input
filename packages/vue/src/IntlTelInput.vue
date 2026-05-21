@@ -174,7 +174,7 @@ const updateCountry = () => {
   if (!instance.value?.isActive()) {
     return;
   }
-  const country = instance.value.getSelectedCountryData()?.iso2 ?? "";
+  const country = instance.value.getSelectedCountry()?.iso2 ?? "";
   if (country !== lastEmittedCountry.value) {
     lastEmittedCountry.value = country;
     emit("changeCountry", country);
@@ -208,7 +208,7 @@ onMounted(() => {
     instance.value.setReadonly(props.readonly);
   }
 
-  lastEmittedCountry.value = instance.value.getSelectedCountryData()?.iso2 ?? "";
+  lastEmittedCountry.value = instance.value.getSelectedCountry()?.iso2 ?? "";
 
   // wait for utils to load before calling methods that require it (getNumber, setNumber, isValidNumber, etc.)
   instance.value.promise.then(() => {

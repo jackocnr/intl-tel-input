@@ -38,7 +38,7 @@ describe("getNumber method", () => {
     afterEach(() => teardown(iti));
 
     test("American Samoa national -> full intl", async () => {
-      iti.setCountry("as");
+      iti.setSelectedCountry("as");
       await user.type(input, "6847331234");
       expect(iti.getNumber()).toEqual("+16847331234");
     });

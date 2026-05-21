@@ -16,7 +16,7 @@ import intlTelInput, {
   type Iso2,
   type ItiUtils,
   type NumberType,
-  type SelectedCountryData,
+  type SelectedCountry,
   type SomeOptions,
   type UtilsLoader,
 } from "intl-tel-input";
@@ -29,7 +29,7 @@ import styles from "intl-tel-input/styles";
 const input: HTMLInputElement = document.createElement("input");
 const options: SomeOptions = { initialCountry: "gb", separateDialCode: true };
 const iti: Iti = intlTelInput(input, options);
-const selected: SelectedCountryData = iti.getSelectedCountryData();
+const selected: SelectedCountry = iti.getSelectedCountry();
 void selected;
 
 const iface: IntlTelInputInterface = intlTelInput;

@@ -96,7 +96,7 @@ const IntlTelInput = forwardRef(function IntlTelInput(
       return;
     }
     lastEmittedNumberRef.current = itiRef.current.getNumber() ?? "";
-    lastEmittedCountryRef.current = itiRef.current.getSelectedCountryData()?.iso2 ?? "";
+    lastEmittedCountryRef.current = itiRef.current.getSelectedCountry()?.iso2 ?? "";
     const isValid = (usePreciseValidation
       ? itiRef.current.isValidNumberPrecise()
       : itiRef.current.isValidNumber()) ?? false;
@@ -115,7 +115,7 @@ const IntlTelInput = forwardRef(function IntlTelInput(
       return;
     }
     const num = itiRef.current.getNumber() ?? "";
-    const countryIso = itiRef.current.getSelectedCountryData()?.iso2 ?? "";
+    const countryIso = itiRef.current.getSelectedCountry()?.iso2 ?? "";
     // note: this number will be in standard E164 format, but any container component can use
     // intlTelInput.utils.formatNumber() to convert this to another format
     // as well as intlTelInput.utils.getNumberType() etc. if need be

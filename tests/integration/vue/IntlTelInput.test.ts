@@ -147,7 +147,7 @@ describe("Vue IntlTelInput wrapper", () => {
   });
 
   test("modelValue takes precedence over initialValue when both are provided", async () => {
-    const itiRef = ref<{ instance: { getSelectedCountryData: () => { iso2: string } } | null } | null>(null);
+    const itiRef = ref<{ instance: { getSelectedCountry: () => { iso2: string } } | null } | null>(null);
     const Wrapper = defineComponent({
       setup() {
         return () => h(IntlTelInput, {
@@ -160,11 +160,11 @@ describe("Vue IntlTelInput wrapper", () => {
     render(Wrapper);
     await waitFor(() => expect(itiRef.value?.instance).toBeTruthy());
     // +44 means GB, so modelValue wins over initialValue (+33 = FR)
-    expect(itiRef.value!.instance!.getSelectedCountryData().iso2).toBe("gb");
+    expect(itiRef.value!.instance!.getSelectedCountry().iso2).toBe("gb");
   });
 
   test("falls back to initialValue when modelValue is null/undefined", async () => {
-    const itiRef = ref<{ instance: { getSelectedCountryData: () => { iso2: string } } | null } | null>(null);
+    const itiRef = ref<{ instance: { getSelectedCountry: () => { iso2: string } } | null } | null>(null);
     const Wrapper = defineComponent({
       setup() {
         return () => h(IntlTelInput, {
@@ -176,7 +176,7 @@ describe("Vue IntlTelInput wrapper", () => {
     });
     render(Wrapper);
     await waitFor(() => expect(itiRef.value?.instance).toBeTruthy());
-    expect(itiRef.value!.instance!.getSelectedCountryData().iso2).toBe("gb");
+    expect(itiRef.value!.instance!.getSelectedCountry().iso2).toBe("gb");
   });
 
   test("omitted boolean props do not override library defaults", async () => {

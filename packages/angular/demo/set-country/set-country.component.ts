@@ -33,6 +33,6 @@ export class AppComponent {
   }
 
   handleSetCountry(): void {
-    this.telInput?.getInstance()?.setCountry('gb');
+    this.telInput?.getInstance()?.setSelectedCountry('gb');
   }
 }

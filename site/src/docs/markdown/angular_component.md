@@ -90,7 +90,7 @@ All of the core library's initialisation options are supported as individual Ang
 > If you're migrating from an older version, the previous `[initOptions]="{ initialCountry: 'us' }"` style is no longer supported — pass each option as its own input instead.
 
 > [!NOTE]
-> These inputs are read once at init — changing them later has no effect. For runtime changes, see [Accessing instance methods](#accessing-instance-methods) below (e.g. `getInstance().setCountry("gb")`).
+> These inputs are read once at init — changing them later has no effect. For runtime changes, see [Accessing instance methods](#accessing-instance-methods) below (e.g. `getInstance().setSelectedCountry("gb")`).
 
 
 ## Form integration (ngModel / formControl)
@@ -207,11 +207,11 @@ export class MyComponent implements AfterViewInit, OnDestroy {
 
 ## Accessing instance methods
 
-You can access all of the core library's [instance methods](/docs/methods#instance-methods) (`setNumber`, `setCountry`, `setPlaceholderNumberType`, etc.) by using a ViewChild reference into the IntlTelInput component (using the `#ref` prop), and then calling `this.ref.getInstance()`, e.g. `this.ref.getInstance().setCountry(...);`. See the [Set Country demo](https://github.com/jackocnr/intl-tel-input/blob/master/packages/angular/demo/set-country/set-country.component.ts) for a full example. You can also access the input DOM element in a similar way: `this.ref.getInput()`.
+You can access all of the core library's [instance methods](/docs/methods#instance-methods) (`setNumber`, `setSelectedCountry`, `setPlaceholderNumberType`, etc.) by using a ViewChild reference into the IntlTelInput component (using the `#ref` prop), and then calling `this.ref.getInstance()`, e.g. `this.ref.getInstance().setSelectedCountry(...);`. See the [Set Country demo](https://github.com/jackocnr/intl-tel-input/blob/master/packages/angular/demo/set-country/set-country.component.ts) for a full example. You can also access the input DOM element in a similar way: `this.ref.getInput()`.
 
 > [!IMPORTANT]
 > You must use `ngAfterViewInit` (not `ngOnInit` or `constructor`) to access instance or input methods, as the component needs to be fully initialised first.
 
 ## Accessing static methods
 
-You can access all of the core library's [static methods](/docs/methods#static-methods) by importing `intlTelInput` from the same file as the Angular component, e.g. `import { intlTelInput } from "@intl-tel-input/angular"` (note the lower case "i" in "intlTelInput"). You can then use this as you would with the core library directly, e.g. `intlTelInput.getCountryData()` etc.
+You can access all of the core library's [static methods](/docs/methods#static-methods) by importing `intlTelInput` from the same file as the Angular component, e.g. `import { intlTelInput } from "@intl-tel-input/angular"` (note the lower case "i" in "intlTelInput"). You can then use this as you would with the core library directly, e.g. `intlTelInput.getAllCountries()` etc.

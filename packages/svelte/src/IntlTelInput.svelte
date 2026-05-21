@@ -100,7 +100,7 @@
     if (!instance?.isActive()) {
       return;
     }
-    const country = instance.getSelectedCountryData()?.iso2 ?? "";
+    const country = instance.getSelectedCountry()?.iso2 ?? "";
     if (country !== lastEmittedCountry) {
       lastEmittedCountry = country;
       onChangeCountry?.(country);
@@ -127,7 +127,7 @@
       inputElement.addEventListener("close:countryselector", handleCloseCountrySelector);
       inputElement.addEventListener("strict:reject", handleStrictReject);
 
-      lastEmittedCountry = instance.getSelectedCountryData()?.iso2 ?? "";
+      lastEmittedCountry = instance.getSelectedCountry()?.iso2 ?? "";
       hasInitialized = true;
 
       // wait for utils to load before calling methods that require it (getNumber, setNumber, isValidNumber, etc.)
