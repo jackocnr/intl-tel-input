@@ -40,7 +40,7 @@ for (const t of targets) {
     test("opens dropdown and selects a different country", async ({ page }) => {
       await gotoTarget(page, t);
       await page.locator(".iti__selected-country").click();
-      await expect(page.locator(".iti__dropdown-content")).toBeVisible();
+      await expect(page.locator(".iti__country-selector")).toBeVisible();
       await page.locator('li[data-iso2="gb"]').first().click();
       await expect(page.locator(".iti__selected-country")).toHaveAttribute("title", /United Kingdom/);
     });
@@ -48,9 +48,9 @@ for (const t of targets) {
     test("dropdown closes when clicking outside", async ({ page }) => {
       await gotoTarget(page, t);
       await page.locator(".iti__selected-country").click();
-      await expect(page.locator(".iti__dropdown-content")).toBeVisible();
+      await expect(page.locator(".iti__country-selector")).toBeVisible();
       await page.locator("body").click({ position: { x: 5, y: 5 } });
-      await expect(page.locator(".iti__dropdown-content")).not.toBeVisible();
+      await expect(page.locator(".iti__country-selector")).not.toBeVisible();
     });
   });
 }

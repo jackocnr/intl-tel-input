@@ -1,7 +1,7 @@
 :root {
   --iti-hover-color: rgba(0, 0, 0, 0.05);
   --iti-border-color: #ccc;
-  --iti-dropdown-bg: white;
+  --iti-country-selector-bg: white;
   --iti-icon-color: #555;
   --iti-spacer-horizontal: 10px;
   --iti-flag-width: 24px;
@@ -86,15 +86,15 @@
   margin-top: 4px;
   transform: rotate(-135deg);
 }
-.iti__dropdown-content {
+.iti__country-selector {
   border-radius: 3px;
-  background-color: var(--iti-dropdown-bg);
+  background-color: var(--iti-country-selector-bg);
 }
-.iti--inline-dropdown .iti__dropdown-content {
+.iti--inline-country-selector .iti__country-selector {
   border: var(--iti-border-width) solid var(--iti-border-color);
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
 }
-.iti--inline-dropdown:not(.iti--container) .iti__dropdown-content {
+.iti--inline-country-selector:not(.iti--detached-country-selector) .iti__country-selector {
   position: absolute;
   z-index: 2;
   left: 0;
@@ -186,7 +186,7 @@
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
 }
-.iti--inline-dropdown .iti__country-list {
+.iti--inline-country-selector .iti__country-list {
   max-height: 185px;
 }
 .iti--flexible-dropdown-width .iti__country-list {
@@ -231,28 +231,28 @@
 .iti__country-list .iti__flag {
   flex-shrink: 0;
 }
-.iti--allow-dropdown .iti__country-container:has(+ input[disabled]) button.iti__selected-country,
-.iti--allow-dropdown .iti__country-container:has(+ input[readonly]) button.iti__selected-country {
+.iti--enable-country-selector .iti__country-container:has(+ input[disabled]) button.iti__selected-country,
+.iti--enable-country-selector .iti__country-container:has(+ input[readonly]) button.iti__selected-country {
   cursor: not-allowed;
 }
-.iti--allow-dropdown .iti__country-container:has(+ input[disabled]) button.iti__selected-country .iti__arrow,
-.iti--allow-dropdown .iti__country-container:has(+ input[readonly]) button.iti__selected-country .iti__arrow {
+.iti--enable-country-selector .iti__country-container:has(+ input[disabled]) button.iti__selected-country .iti__arrow,
+.iti--enable-country-selector .iti__country-container:has(+ input[readonly]) button.iti__selected-country .iti__arrow {
   visibility: hidden;
 }
-.iti--allow-dropdown .iti__country-container:not(:has(+ input[disabled])):not(:has(+ input[readonly])) .iti__selected-country-primary:hover,
-.iti--allow-dropdown .iti__country-container:not(:has(+ input[disabled])):not(:has(+ input[readonly])) .iti__selected-country:has(+ .iti__dropdown-content:hover) .iti__selected-country-primary {
+.iti--enable-country-selector .iti__country-container:not(:has(+ input[disabled])):not(:has(+ input[readonly])) .iti__selected-country-primary:hover,
+.iti--enable-country-selector .iti__country-container:not(:has(+ input[disabled])):not(:has(+ input[readonly])) .iti__selected-country:has(+ .iti__country-selector:hover) .iti__selected-country-primary {
   background-color: var(--iti-hover-color);
 }
 .iti .iti__selected-dial-code {
   margin-left: 4px;
 }
-.iti--container {
+.iti--detached-country-selector {
   position: fixed;
   top: -1000px;
   left: -1000px;
   z-index: 1060;
 }
-.iti--container:hover {
+.iti--detached-country-selector:hover {
   cursor: pointer;
 }
 .iti__hide {
@@ -262,7 +262,7 @@
   visibility: hidden;
 }
 
-.iti--fullscreen-popup.iti--container {
+.iti--fullscreen-popup.iti--detached-country-selector {
   background-color: rgba(0, 0, 0, 0.5);
   top: 0;
   bottom: 0;
@@ -274,7 +274,7 @@
   flex-direction: column;
   justify-content: flex-start;
 }
-.iti--fullscreen-popup .iti__dropdown-content {
+.iti--fullscreen-popup .iti__country-selector {
   display: flex;
   flex-direction: column;
   max-height: 100%;

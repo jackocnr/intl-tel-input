@@ -87,7 +87,7 @@ If you have `countrySearch` enabled (the default), use this version, which hides
 
 ```css
 /* Replace "us" with the iso2 code of the last country in your preferred group */
-.iti__dropdown-content:has(.iti__search-input:placeholder-shown) .iti__country[data-iso2="us"] {
+.iti__country-selector:has(.iti__search-input:placeholder-shown) .iti__country[data-iso2="us"] {
   border-bottom: 1px solid var(--iti-border-color);
 }
 ```

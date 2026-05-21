@@ -112,7 +112,7 @@ export const isDropdownOpen = (container) => {
 };
 
 export const getDropdownElement = (container) => {
-  return container.querySelector(".iti__dropdown-content");
+  return container.querySelector(".iti__country-selector");
 };
 
 export const getSearchInput = (container) => {

@@ -23,7 +23,7 @@ Default: `#ccc`
 
 Dropdown border and the divider under the country search input.
 
-###### --iti-dropdown-bg
+###### --iti-country-selector-bg
 Default: `white`  
 
 Dropdown background.
@@ -114,7 +114,7 @@ Dark mode example (with screenshot below):
 @media (prefers-color-scheme: dark) {
   :root {
     --iti-border-color: #495057;
-    --iti-dropdown-bg: #212529;
+    --iti-country-selector-bg: #212529;
     --iti-icon-color: #dee2e6;
     --iti-hover-color: #30363d;
   }

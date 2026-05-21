@@ -30,7 +30,7 @@ input[type="tel"] {
   border-top-left-radius: var(--bs-border-radius);
   border-bottom-left-radius: var(--bs-border-radius);
 }
-.iti__dropdown-content,
+.iti__country-selector,
 .iti__search-input {
   border-radius: var(--bs-border-radius);
 }
@@ -42,7 +42,7 @@ input[type="tel"] {
 
   /* core library overrides (NOTE: the bootstrap vars handle dark mode automatically) */
   --iti-border-color: var(--bs-border-color);
-  --iti-dropdown-bg: var(--bs-body-bg);
+  --iti-country-selector-bg: var(--bs-body-bg);
   --iti-icon-color: var(--bs-body-color);
   --iti-hover-color: #f8f9fa;
 

@@ -2,11 +2,11 @@
 
 :root {
   /* rgba is needed for the selected country hover state to blend in with the border-highlighting some browsers give the input on focus.
-     Used as the bg color for both the selected country and the dropdown items, on hover. */
+     Used as the bg color for both the selected country and the country list items, on hover. */
   --iti-hover-color: rgba(0, 0, 0, 0.05);
-  /* Used for both the dropdown border, and the divider under the country search input. */
+  /* Used for both the country selector border, and the divider under the country search input. */
   --iti-border-color: #ccc;
-  --iti-dropdown-bg: white;
+  --iti-country-selector-bg: white;
   /* icons include: arrow icon, globe icon, search icon, clear icon, check icon */
   --iti-icon-color: #555;
   /* horizontal spacing around the flag, country name, search icon, clear icon, check icon etc */
@@ -20,7 +20,7 @@
   --iti-clear-icon-size: 15px;
   /* This border width is used for the popup and divider, but it is also assumed to be the border width of the input, which we do not control. */
   --iti-border-width: 1px;
-  /* Dropdown arrow */
+  /* Arrow */
   --iti-arrow-size: 5px;
   --iti-arrow-width: 1.5px; /* thickness */
   --iti-arrow-padding: 7px;
@@ -51,7 +51,7 @@
   input.iti__tel-input[type="text"],
   input.iti__tel-input[type="tel"] {
     position: relative;
-    /* Input is bottom level, below selected country and dropdown. */
+    /* Input is bottom level, below selected country and country selector. */
     z-index: 0;
 
     /* By default the input is inline, which means any inherited line-height will make the wrapper (and hence the selected country) taller than the input. Block is a better default in this case, given it should fill the wrapper. */
@@ -139,17 +139,17 @@
   transform: rotate(-135deg);
 }
 
-/* The dropdown. */
-.iti__dropdown-content {
+/* The country selector. */
+.iti__country-selector {
   border-radius: 3px;
-  background-color: var(--iti-dropdown-bg);
+  background-color: var(--iti-country-selector-bg);
 
-  .iti--inline-dropdown & {
+  .iti--inline-country-selector & {
     border: var(--iti-border-width) solid var(--iti-border-color);
     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
   }
   /* Note: don't apply these styles when using countrySelectorParent, as that uses pos:fixed and so this (child) doesn't need pos:absolute */
-  .iti--inline-dropdown:not(.iti--container) & {
+  .iti--inline-country-selector:not(.iti--detached-country-selector) & {
     position: absolute;
     /* Popup so render above everything else. */
     z-index: 2;
@@ -278,7 +278,7 @@
      Stackoverflow question about it: https://stackoverflow.com/questions/33601165/scrolling-slow-on-mobile-ios-when-using-overflowscroll */
   -webkit-overflow-scrolling: touch;
 
-  .iti--inline-dropdown & {
+  .iti--inline-country-selector & {
     max-height: 185px;
   }
 }
@@ -293,7 +293,7 @@
   }
 }
 
-/* Each country item in dropdown (we must have separate class to differentiate from dividers). */
+/* Each country item in the list (we must have separate class to differentiate from dividers). */
 .iti__country {
   /* Note: decided not to use line-height here for alignment because it causes issues e.g. large font-sizes will overlap, and also looks bad if one country overflows onto 2 lines. */
   display: flex;
@@ -337,7 +337,7 @@
   }
 }
 
-.iti--allow-dropdown {
+.iti--enable-country-selector {
   /* If the adjacent input is disabled/readonly, ensure the country button doesn't look clickable. */
   .iti__country-container:has(+ input[disabled]),
   .iti__country-container:has(+ input[readonly]) {
@@ -350,18 +350,18 @@
     }
   }
 
-  /* Only show hover background colour when you hover (1) selected flag/arrow or (2) dropdown contents, but NOT when you hover the selected dial code, which would feel weird.
+  /* Only show hover background colour when you hover (1) selected flag/arrow or (2) country selector contents, but NOT when you hover the selected dial code, which would feel weird.
      Only apply when the input is NOT disabled/readonly. */
   .iti__country-container:not(:has(+ input[disabled])):not(:has(+ input[readonly])) {
     .iti__selected-country-primary:hover,
-    .iti__selected-country:has(+ .iti__dropdown-content:hover) .iti__selected-country-primary {
+    .iti__selected-country:has(+ .iti__country-selector:hover) .iti__selected-country-primary {
       background-color: var(--iti-hover-color);
     }
   }
 }
 
 /* If countrySelectorParent option is set, increase z-index to prevent display issues. */
-.iti--container {
+.iti--detached-country-selector {
   position: fixed;
   top: -1000px;
   left: -1000px;
@@ -378,14 +378,14 @@
   display: none;
 }
 
-/* Need this during init, to get the height of the dropdown. */
+/* Need this during init, to get the height of the country list. */
 .iti__v-hide {
   visibility: hidden;
 }
 
 /* Overrides for mobile popup. */
 .iti--fullscreen-popup {
-  &.iti--container {
+  &.iti--detached-country-selector {
     background-color: rgba(0, 0, 0, 0.5);
     top: 0;
     bottom: 0;
@@ -400,7 +400,7 @@
     justify-content: flex-start;
   }
 
-  .iti__dropdown-content {
+  .iti__country-selector {
     display: flex;
     flex-direction: column;
     max-height: 100%;
@@ -417,7 +417,7 @@
   .iti__country {
     padding-left: 10px;
     padding-right: 10px;
-    /* Increase line height because dropdown copy is v likely to overflow on mobile and when it does it needs to be well spaced. */
+    /* Increase line height because country list copy is v likely to overflow on mobile and when it does it needs to be well spaced. */
     line-height: 1.5em;
   }
 }
@@ -470,7 +470,7 @@
 }
 
 /* Subtle visual feedback when strictMode rejects the whole input. Opt-in via the strictRejectAnimation option.
-   Targets the input and selected-country button (not the wrapper), so an open dropdown doesn't shake along with them. */
+   Targets the input and selected-country button (not the wrapper), so an open dropdown (e.g. with dropdownAlwaysOpen) doesn't shake along with them. */
 .iti__strict-reject-animation {
   .iti__tel-input,
   .iti__selected-country {

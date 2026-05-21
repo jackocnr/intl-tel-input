@@ -364,7 +364,7 @@
 }
 
 .iti-playground--keep-dropdown-open {
-  .iti__dropdown-content.iti__hide {
+  .iti__country-selector.iti__hide {
     display: block !important;
   }
 

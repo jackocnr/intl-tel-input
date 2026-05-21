@@ -126,9 +126,9 @@ export default class UI {
     const parentClasses = buildClassNames({
       iti: true,
       "iti--input-container": true,
-      "iti--allow-dropdown": enableCountrySelector,
+      "iti--enable-country-selector": enableCountrySelector,
       "iti--show-flags": showFlags,
-      "iti--inline-dropdown": !useFullscreenPopup,
+      "iti--inline-country-selector": !useFullscreenPopup,
       [containerClass]: Boolean(containerClass),
     });
     const wrapper = createEl("div", { class: parentClasses });
@@ -166,7 +166,7 @@ export default class UI {
           [ARIA.EXPANDED]: "false",
           [ARIA.LABEL]: this.#options.uiTranslations.noCountrySelected,
           [ARIA.HASPOPUP]: "dialog",
-          [ARIA.CONTROLS]: `iti-${this.#id}__dropdown-content`,
+          [ARIA.CONTROLS]: `iti-${this.#id}__country-selector`,
         },
         this.#countryContainerEl,
       );
@@ -249,8 +249,8 @@ export default class UI {
 
     const extraClasses = matchDropdownWidth ? "" : "iti--flexible-dropdown-width";
     this.#dropdownContentEl = createEl("div", {
-      id: `iti-${this.#id}__dropdown-content`,
-      class: `iti__dropdown-content ${CLASSES.HIDE} ${extraClasses}`,
+      id: `iti-${this.#id}__country-selector`,
+      class: `iti__country-selector ${CLASSES.HIDE} ${extraClasses}`,
       role: "dialog",
       [ARIA.MODAL]: "true",
     });
@@ -291,9 +291,9 @@ export default class UI {
     if (countrySelectorParent) {
       const dropdownClasses = buildClassNames({
         iti: true,
-        "iti--container": true,
+        "iti--detached-country-selector": true,
         "iti--fullscreen-popup": useFullscreenPopup,
-        "iti--inline-dropdown": !useFullscreenPopup,
+        "iti--inline-country-selector": !useFullscreenPopup,
         [containerClass]: Boolean(containerClass),
       });
       this.#detachedDropdownEl = createEl("div", { class: dropdownClasses });
@@ -551,7 +551,7 @@ export default class UI {
 
     // it needs these classes on the container to get the correct height
     const tempContainer = createEl("div", {
-      class: "iti iti--inline-dropdown",
+      class: "iti iti--inline-country-selector",
     });
     tempContainer.appendChild(this.#dropdownContentEl!);
 

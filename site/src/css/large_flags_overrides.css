@@ -18,6 +18,6 @@
 .iti__search-input {
   font-size: inherit !important; /* bootstrap override */
 }
-.iti--inline-dropdown .iti__country-list {
+.iti--inline-country-selector .iti__country-list {
   max-height: 210px;
 }

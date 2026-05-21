@@ -34,7 +34,7 @@ describe("containerClass option", () => {
     test("adds class to popup container", async () => {
       await clickSelectedCountryAsync(container, user);
       const root = container.ownerDocument; // access the root document without using a global
-      expect(root.querySelector(".iti--container").classList).toContain("cpc");
+      expect(root.querySelector(".iti--detached-country-selector").classList).toContain("cpc");
     });
   });
 });
