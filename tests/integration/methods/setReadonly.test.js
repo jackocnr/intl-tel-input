@@ -7,7 +7,7 @@ import {
   initIntlTelInput,
   teardown,
   clickSelectedCountryAsync,
-  isDropdownOpen,
+  isCountrySelectorOpen,
 } from "../helpers/helpers";
 
 describe("setReadonly method", () => {
@@ -27,7 +27,7 @@ describe("setReadonly method", () => {
 
   test("disables clicking selected country to open dropdown", async () => {
     await clickSelectedCountryAsync(container, user);
-    expect(isDropdownOpen(container)).toBe(false);
+    expect(isCountrySelectorOpen(container)).toBe(false);
   });
 
   describe("then calling setReadonly(false)", () => {
@@ -41,7 +41,7 @@ describe("setReadonly method", () => {
 
     test("re-enables clicking selected country to open dropdown", async () => {
       await clickSelectedCountryAsync(container, user);
-      expect(isDropdownOpen(container)).toBe(true);
+      expect(isCountrySelectorOpen(container)).toBe(true);
     });
   });
 });

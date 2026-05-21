@@ -6,7 +6,7 @@ import {
   teardown,
   clickSelectedCountryAsync,
   getCountryListElement,
-  isDropdownOpen,
+  isCountrySelectorOpen,
   selectCountryAsync,
 } from "../helpers/helpers";
 import { userEvent } from "@testing-library/user-event";
@@ -33,12 +33,12 @@ describe("countrySelectorParent option", () => {
       });
 
       test("opens dropdown", async () => {
-        expect(isDropdownOpen(container)).toBeTruthy();
+        expect(isCountrySelectorOpen(container)).toBeTruthy();
       });
 
       test("selecting a country closes dropdown", async () => {
         await selectCountryAsync(container, "gb", user);
-        expect(isDropdownOpen(container)).toBeFalsy();
+        expect(isCountrySelectorOpen(container)).toBeFalsy();
       });
     });
   });

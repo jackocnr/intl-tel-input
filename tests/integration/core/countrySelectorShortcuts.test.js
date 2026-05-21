@@ -7,13 +7,13 @@ import {
   initIntlTelInput,
   teardown,
   getSelectedCountryButton,
-  isDropdownOpen,
+  isCountrySelectorOpen,
   clickSelectedCountryAsync,
   checkFlagSelected,
   getHighlightedItemCode,
 } from "../helpers/helpers";
 
-describe("dropdown shortcuts", () => {
+describe("country selector shortcuts", () => {
   let iti, input, user, container;
   beforeEach(() => {
     user = userEvent.setup();
@@ -31,27 +31,27 @@ describe("dropdown shortcuts", () => {
     });
 
     test("dropdown is not already open", () => {
-      expect(isDropdownOpen(container)).toBe(false);
+      expect(isCountrySelectorOpen(container)).toBe(false);
     });
 
     test("pressing UP opens the dropdown", async () => {
       await user.keyboard("{ArrowUp}");
-      expect(isDropdownOpen(container)).toBe(true);
+      expect(isCountrySelectorOpen(container)).toBe(true);
     });
 
     test("pressing DOWN opens the dropdown", async () => {
       await user.keyboard("{ArrowDown}");
-      expect(isDropdownOpen(container)).toBe(true);
+      expect(isCountrySelectorOpen(container)).toBe(true);
     });
 
     test("pressing SPACE opens the dropdown", async () => {
       await user.keyboard(" ");
-      expect(isDropdownOpen(container)).toBe(true);
+      expect(isCountrySelectorOpen(container)).toBe(true);
     });
 
     test("pressing ENTER opens the dropdown", async () => {
       await user.keyboard("{Enter}");
-      expect(isDropdownOpen(container)).toBe(true);
+      expect(isCountrySelectorOpen(container)).toBe(true);
     });
   });
 
@@ -61,24 +61,24 @@ describe("dropdown shortcuts", () => {
     });
 
     test("shows the dropdown and highlights the first country in the list", () => {
-      expect(isDropdownOpen(container)).toBe(true);
+      expect(isCountrySelectorOpen(container)).toBe(true);
       expect(getHighlightedItemCode(container)).toEqual("af");
     });
 
     test("pressing ESCAPE closes the dropdown", async () => {
       await user.keyboard("{Escape}");
-      expect(isDropdownOpen(container)).toBe(false);
+      expect(isCountrySelectorOpen(container)).toBe(false);
     });
 
     test("pressing TAB closes the dropdown and focuses the input", async () => {
       await user.keyboard("{Tab}");
-      expect(isDropdownOpen(container)).toBe(false);
+      expect(isCountrySelectorOpen(container)).toBe(false);
       expect(input).toHaveFocus();
     });
 
     test("pressing ENTER closes the dropdown and updates the selected country", async () => {
       await user.keyboard("{Enter}");
-      expect(isDropdownOpen(container)).toBe(false);
+      expect(isCountrySelectorOpen(container)).toBe(false);
       expect(checkFlagSelected(container, "af")).toBe(true);
     });
 
@@ -98,7 +98,7 @@ describe("dropdown shortcuts", () => {
 
       test("pressing ENTER closes the dropdown and updates the selected country", async () => {
         await user.keyboard("{Enter}");
-        expect(isDropdownOpen(container)).toBe(false);
+        expect(isCountrySelectorOpen(container)).toBe(false);
         expect(checkFlagSelected(container, "ax")).toBe(true);
       });
     });

@@ -7,7 +7,7 @@ import {
   initIntlTelInput,
   teardown,
   checkFlagSelected,
-  openDropdownSelectCountryAsync,
+  openAndSelectCountryAsync,
 } from "../helpers/helpers";
 
 describe("using input", () => {
@@ -50,7 +50,7 @@ describe("using input", () => {
     });
 
     test("then changing the flag updates and re-formats the number correctly", async () => {
-      await openDropdownSelectCountryAsync(container, "zw", user);
+      await openAndSelectCountryAsync(container, "zw", user);
       expect(input.value).toBe("09 876 5432");
     });
   });
@@ -65,7 +65,7 @@ describe("using input", () => {
     });
 
     test("then changing the flag updates and re-formats the whole number correctly", async () => {
-      await openDropdownSelectCountryAsync(container, "zw", user);
+      await openAndSelectCountryAsync(container, "zw", user);
       expect(input.value).toBe("09 876 5432");
     });
   });
@@ -94,7 +94,7 @@ describe("using input", () => {
 
   describe("selecting Canada and then typing a regionless NANP number", () => {
     beforeEach(async () => {
-      await openDropdownSelectCountryAsync(container, "ca", user);
+      await openAndSelectCountryAsync(container, "ca", user);
       await user.type(input, "8005551212");
     });
 

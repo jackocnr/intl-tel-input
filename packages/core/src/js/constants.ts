@@ -148,7 +148,7 @@ export const VALIDATION_ERROR = toEnumObject(VALIDATION_ERRORS);
 
 // Data-* keys used on DOM nodes
 export const DATA_KEYS = {
-  // e.g. <li data-iso2="us"> for country items in dropdown
+  // e.g. <li data-iso2="us"> for country items in the country list
   ISO2: "iso2",
   DIAL_CODE: "dialCode",
   // e.g. <input data-intl-tel-input-id="0"> on the input element

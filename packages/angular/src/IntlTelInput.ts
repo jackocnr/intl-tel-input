@@ -156,8 +156,8 @@ class IntlTelInput
   // eslint-disable-next-line class-methods-use-this
   private onValidatorChange: () => void = () => {};
 
-  private handleOpenDropdown = (): void => this.openCountrySelector.emit();
-  private handleCloseDropdown = (): void => this.closeCountrySelector.emit();
+  private handleOpenCountrySelector = (): void => this.openCountrySelector.emit();
+  private handleCloseCountrySelector = (): void => this.closeCountrySelector.emit();
   private handleStrictReject = (e: Event): void => {
     this.strictReject.emit((e as CustomEvent<StrictRejectDetail>).detail);
   };
@@ -171,11 +171,11 @@ class IntlTelInput
 
     this.inputRef.nativeElement.addEventListener(
       "open:countryselector",
-      this.handleOpenDropdown,
+      this.handleOpenCountrySelector,
     );
     this.inputRef.nativeElement.addEventListener(
       "close:countryselector",
-      this.handleCloseDropdown,
+      this.handleCloseCountrySelector,
     );
     this.inputRef.nativeElement.addEventListener(
       "strict:reject",
@@ -362,11 +362,11 @@ class IntlTelInput
   ngOnDestroy() {
     this.inputRef.nativeElement.removeEventListener(
       "open:countryselector",
-      this.handleOpenDropdown,
+      this.handleOpenCountrySelector,
     );
     this.inputRef.nativeElement.removeEventListener(
       "close:countryselector",
-      this.handleCloseDropdown,
+      this.handleCloseCountrySelector,
     );
     this.inputRef.nativeElement.removeEventListener(
       "strict:reject",

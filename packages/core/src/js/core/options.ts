@@ -44,9 +44,9 @@ export const defaults: AllOptions = {
   countryNameLocale: "en",
   //* Override individual country names by iso2 code.
   countryNameOverrides: {},
-  //* The order of the countries in the dropdown. Defaults to alphabetical.
+  //* The order of the countries in the country list. Defaults to alphabetical.
   countryOrder: null,
-  //* Add a country search input at the top of the dropdown.
+  //* Add a country search input at the top of the country selector.
   countrySearch: true,
   //* Modify the auto placeholder.
   customPlaceholder: null,
@@ -84,7 +84,7 @@ export const defaults: AllOptions = {
   separateDialCode: true,
   //* When strictMode rejects a key (etc), play a short feedback animation
   strictRejectAnimation: true,
-  //* Show flags - for both the selected country, and in the country dropdown
+  //* Show flags - for both the selected country, and in the country list
   showFlags: true,
   //* Only allow certain chars e.g. a plus followed by numeric digits, and cap at max valid length.
   strictMode: true,
@@ -401,7 +401,7 @@ export const applyOptionSideEffects = (o: AllOptions): void => {
     o.numberDisplayFormat = NUMBER_FORMAT.INTERNATIONAL;
   }
 
-  // if there is a country dropdown, but no flags and no separate dial code, then it suggests that there are multiple countries to choose from, but no way to see which one is currently selected, so we force INTERNATIONAL display, as it doesn't make sense to show a national number placeholder if there's no way to see which country is selected
+  // if there is a country selector, but no flags and no separate dial code, then it suggests that there are multiple countries to choose from, but no way to see which one is currently selected, so we force INTERNATIONAL display, as it doesn't make sense to show a national number placeholder if there's no way to see which country is selected
   if (
     o.enableCountrySelector &&
     !o.showFlags &&
@@ -411,7 +411,7 @@ export const applyOptionSideEffects = (o: AllOptions): void => {
     o.numberDisplayFormat = NUMBER_FORMAT.INTERNATIONAL;
   }
 
-  //* If we want a full screen dropdown, we must append it to the body.
+  //* If we want a fullscreen popup, we must append it to the body.
   if (o.useFullscreenPopup && !o.countrySelectorParent) {
     o.countrySelectorParent = document.body;
   }

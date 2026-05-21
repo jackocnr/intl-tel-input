@@ -7,7 +7,7 @@ import {
   injectInput,
   initIntlTelInput,
   teardown,
-  openDropdownSelectCountryAsync,
+  openAndSelectCountryAsync,
 } from "../helpers/helpers";
 
 describe("countrychange event", () => {
@@ -41,7 +41,7 @@ describe("countrychange event", () => {
   });
 
   test("selecting Afghanistan triggers the event", async () => {
-    await openDropdownSelectCountryAsync(container, "af", user);
+    await openAndSelectCountryAsync(container, "af", user);
     expect(mockEventHandler).toHaveBeenCalled();
   });
 

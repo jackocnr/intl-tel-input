@@ -237,7 +237,7 @@ export class Iti {
     this.#startAsyncLoads();
 
     if (this.#options.dropdownAlwaysOpen) {
-      this.#openDropdown();
+      this.#openCountrySelector();
     }
   }
 
@@ -319,10 +319,10 @@ export class Iti {
     this.#bindAllTelInputListeners();
 
     if (this.#options.enableCountrySelector) {
-      this.#ui.bindAllInitialDropdownListeners(
+      this.#ui.bindAllInitialCountrySelectorListeners(
         this.#abortController!.signal,
-        () => this.#openDropdown(),
-        () => this.#closeDropdown(),
+        () => this.#openCountrySelector(),
+        () => this.#closeCountrySelector(),
       );
     }
     this.#ui.bindHiddenInputSubmitListener(
@@ -424,8 +424,8 @@ export class Iti {
     }
   }
 
-  #openDropdownWithPlus(): void {
-    this.#openDropdown();
+  #openCountrySelectorWithPlus(): void {
+    this.#openCountrySelector();
     this.#ui.prefillSearchWithPlus();
   }
 
@@ -448,7 +448,7 @@ export class Iti {
   //* Android workaround for handling plus when separateDialCode enabled (as impossible to handle with keydown/keyup, for which e.key always returns "Unidentified", see https://stackoverflow.com/q/59584061/217866)
   #handleAndroidPlusKey(inputValue: string): void {
     this.#removeJustTypedChar(inputValue);
-    this.#openDropdownWithPlus();
+    this.#openCountrySelectorWithPlus();
   }
 
   //* Android strictMode workaround: the keydown-based filter can't block these because e.key is "Unidentified" on Android virtual keyboards, so strip them here on input.
@@ -638,10 +638,10 @@ export class Iti {
       return;
     }
 
-    //* If separateDialCode, handle the plus key differently: open dropdown and put plus in the search input instead.
+    //* If separateDialCode, handle the plus key differently: open the country selector and put plus in the search input instead.
     if (separateDialCode && enableCountrySelector && countrySearch && e.key === "+") {
       e.preventDefault();
-      this.#openDropdownWithPlus();
+      this.#openCountrySelectorWithPlus();
       return;
     }
     //* If strictMode disabled: do nothing, else: enforce strictMode by preventing invalid characters.
@@ -862,15 +862,15 @@ export class Iti {
     this.#ui.telInputEl.dispatchEvent(e);
   }
 
-  //* Open the dropdown. Bail if already open — otherwise the existing AbortController gets overwritten
-  //* and its listeners leak. Reachable via openDropdownWithPlus when dropdownAlwaysOpen is set
-  #openDropdown(): void {
-    if (this.#ui.isDropdownOpen()) {
+  //* Open the country selector. Bail if already open — otherwise the existing AbortController gets overwritten
+  //* and its listeners leak. Reachable via openCountrySelectorWithPlus when dropdownAlwaysOpen is set
+  #openCountrySelector(): void {
+    if (this.#ui.isCountrySelectorOpen()) {
       return;
     }
-    this.#ui.openDropdown(
+    this.#ui.openCountrySelector(
       (li) => this.#selectListItem(li),
-      () => this.#closeDropdown(),
+      () => this.#closeCountrySelector(),
     );
     this.#dispatchEvent(EVENTS.OPEN_COUNTRY_SELECTOR);
   }
@@ -1153,7 +1153,7 @@ export class Iti {
     this.#ui.telInputEl.setAttribute("placeholder", placeholder);
   }
 
-  //* Called when the user selects a list item from the dropdown (no-op if listItem is null).
+  //* Called when the user selects a list item from the country list (no-op if listItem is null).
   #selectListItem(listItem: HTMLElement | null): void {
     if (!listItem) {
       return;
@@ -1161,7 +1161,7 @@ export class Iti {
     //* Update selected country and active list item.
     const iso2 = listItem.dataset[DATA_KEYS.ISO2] as Iso2;
     const countryChanged = this.#updateSelectedCountry(iso2);
-    this.#closeDropdown();
+    this.#closeCountrySelector();
 
     const dialCode = listItem.dataset[DATA_KEYS.DIAL_CODE];
     this.#updateDialCode(dialCode!);
@@ -1180,17 +1180,17 @@ export class Iti {
     }
   }
 
-  //* Close the dropdown and unbind any listeners.
-  #closeDropdown(isDestroy?: boolean): void {
-    // we call closeDropdown in places where it might not even be open e.g. in destroy()
+  //* Close the country selector and unbind any listeners.
+  #closeCountrySelector(isDestroy?: boolean): void {
+    // we call closeCountrySelector in places where it might not even be open e.g. in destroy()
     if (
-      !this.#ui.isDropdownOpen() ||
+      !this.#ui.isCountrySelectorOpen() ||
       (this.#options.dropdownAlwaysOpen && !isDestroy)
     ) {
       return;
     }
 
-    this.#ui.closeDropdown();
+    this.#ui.closeCountrySelector();
     this.#dispatchEvent(EVENTS.CLOSE_COUNTRY_SELECTOR);
   }
 
@@ -1393,8 +1393,8 @@ export class Iti {
     this.#isActive = false;
 
     if (this.#options.enableCountrySelector) {
-      //* Make sure the dropdown is closed (and unbind listeners).
-      this.#closeDropdown(true);
+      //* Make sure the country selector is closed (and unbind listeners).
+      this.#closeCountrySelector(true);
     }
 
     //* Abort all listeners registered via the main controller
@@ -1607,7 +1607,7 @@ export class Iti {
     this.#updatePlaceholder();
   }
 
-  // Set the disabled state of the input and dropdown.
+  // Set the disabled state of the input and country selector.
   public setDisabled(disabled: boolean): void {
     if (!this.#isActive) {
       return;
@@ -1615,7 +1615,7 @@ export class Iti {
     this.#ui.setDisabled(disabled);
   }
 
-  // Set the readonly state of the input and dropdown.
+  // Set the readonly state of the input and country selector.
   public setReadonly(readonly: boolean): void {
     if (!this.#isActive) {
       return;

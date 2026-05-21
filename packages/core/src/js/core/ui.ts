@@ -37,8 +37,8 @@ export default class UI {
   #selectedCountryEl?: HTMLElement;
   #selectedFlagEl?: HTMLElement;
   #selectedDialCodeEl?: HTMLElement;
-  #dropdownArrowEl?: HTMLElement;
-  #dropdownContentEl?: HTMLElement;
+  #arrowEl?: HTMLElement;
+  #countrySelectorEl?: HTMLElement;
   #searchIconEl?: HTMLElement;
   #searchInputEl?: HTMLInputElement;
   #searchClearButtonEl?: HTMLButtonElement;
@@ -47,11 +47,11 @@ export default class UI {
   #hiddenInputCountryEl?: HTMLInputElement;
   #noResultsMessageEl?: HTMLElement;
   #searchResultsLiveRegionEl?: HTMLElement;
-  #detachedDropdownEl?: HTMLElement;
+  #detachedCountrySelectorEl?: HTMLElement;
   #selectedListItemEl: HTMLElement | null = null;
   #highlightedListItemEl: HTMLElement | null = null;
   readonly #listItemByIso2: Map<Iso2, HTMLElement> = new Map();
-  #dropdownAbortController: AbortController | null = null;
+  #countrySelectorAbortController: AbortController | null = null;
   #resizeObserver?: ResizeObserver;
 
   // public
@@ -86,7 +86,7 @@ export default class UI {
     }
   }
 
-  //* Generate all of the markup for the core library: the selected country overlay, and the dropdown.
+  //* Generate all of the markup for the core library: the selected country overlay, and the country selector.
   public buildMarkup(
     countries: Country[],
     searchTokens: SearchTokensMap,
@@ -132,7 +132,7 @@ export default class UI {
       [containerClass]: Boolean(containerClass),
     });
     const wrapper = createEl("div", { class: parentClasses });
-    // if the page is RTL, then add dir=LTR to the wrapper, as numbers are still written LTR, so the input should be LTR, but we also need to display any separate dial code to the left as well (but we then make the dropdown content RTL)
+    // if the page is RTL, then add dir=LTR to the wrapper, as numbers are still written LTR, so the input should be LTR, but we also need to display any separate dial code to the left as well (but we then make the country selector RTL)
     if (this.#isRTL) {
       wrapper.setAttribute("dir", "ltr");
     }
@@ -197,7 +197,7 @@ export default class UI {
     );
 
     if (enableCountrySelector) {
-      this.#dropdownArrowEl = createEl(
+      this.#arrowEl = createEl(
         "div",
         { class: "iti__arrow", [ARIA.HIDDEN]: "true" },
         selectedCountryPrimary,
@@ -213,7 +213,7 @@ export default class UI {
     }
 
     if (enableCountrySelector) {
-      this.#buildDropdownContent();
+      this.#buildCountrySelector();
     }
   }
 
@@ -225,7 +225,7 @@ export default class UI {
     if (
       !enableCountrySelector ||
       !matchDropdownWidth ||
-      this.#dropdownContentEl!.style.width
+      this.#countrySelectorEl!.style.width
     ) {
       return;
     }
@@ -233,11 +233,11 @@ export default class UI {
     const inputWidth = this.telInputEl.offsetWidth;
     // dont fix dropdown width if input width is zero (e.g. it's hidden during init)
     if (inputWidth > 0) {
-      this.#dropdownContentEl!.style.width = `${inputWidth}px`;
+      this.#countrySelectorEl!.style.width = `${inputWidth}px`;
     }
   }
 
-  #buildDropdownContent(): void {
+  #buildCountrySelector(): void {
     const {
       matchDropdownWidth,
       useFullscreenPopup,
@@ -248,14 +248,14 @@ export default class UI {
     } = this.#options;
 
     const extraClasses = matchDropdownWidth ? "" : "iti--flexible-dropdown-width";
-    this.#dropdownContentEl = createEl("div", {
+    this.#countrySelectorEl = createEl("div", {
       id: `iti-${this.#id}__country-selector`,
       class: `iti__country-selector ${CLASSES.HIDE} ${extraClasses}`,
       role: "dialog",
       [ARIA.MODAL]: "true",
     });
     if (this.#isRTL) {
-      this.#dropdownContentEl.setAttribute("dir", "rtl");
+      this.#countrySelectorEl.setAttribute("dir", "rtl");
     }
 
     if (countrySearch) {
@@ -270,7 +270,7 @@ export default class UI {
         role: "listbox",
         [ARIA.LABEL]: uiTranslations.countryListAriaLabel,
       },
-      this.#dropdownContentEl,
+      this.#countrySelectorEl,
     );
     this.#appendListItems();
 
@@ -283,23 +283,23 @@ export default class UI {
       this.#inlineDropdownHeight = this.#getHiddenInlineDropdownHeight();
       // fix the dropdown height when using countrySearch so when dropdown is positioned above input, and you type in the search input and the country list changes, the search input doesn't jump up/down. (NOTE: the country list just has a max-height as it may only be needed to show a few items e.g. from onlyCountries, or from filtering with a search query)
       if (countrySearch) {
-        this.#dropdownContentEl.style.height = `${this.#inlineDropdownHeight}px`;
+        this.#countrySelectorEl.style.height = `${this.#inlineDropdownHeight}px`;
       }
     }
 
     //* Create countrySelectorParent markup.
     if (countrySelectorParent) {
-      const dropdownClasses = buildClassNames({
+      const wrapperClasses = buildClassNames({
         iti: true,
         "iti--detached-country-selector": true,
         "iti--fullscreen-popup": useFullscreenPopup,
         "iti--inline-country-selector": !useFullscreenPopup,
         [containerClass]: Boolean(containerClass),
       });
-      this.#detachedDropdownEl = createEl("div", { class: dropdownClasses });
-      this.#detachedDropdownEl.appendChild(this.#dropdownContentEl);
+      this.#detachedCountrySelectorEl = createEl("div", { class: wrapperClasses });
+      this.#detachedCountrySelectorEl.appendChild(this.#countrySelectorEl);
     } else {
-      this.#countryContainerEl!.appendChild(this.#dropdownContentEl!);
+      this.#countryContainerEl!.appendChild(this.#countrySelectorEl!);
     }
   }
 
@@ -310,7 +310,7 @@ export default class UI {
     const searchWrapper = createEl(
       "div",
       { class: "iti__search-input-wrapper" },
-      this.#dropdownContentEl!,
+      this.#countrySelectorEl!,
     );
 
     // Search (magnifying glass) icon SVG
@@ -360,7 +360,7 @@ export default class UI {
     this.#searchResultsLiveRegionEl = createEl(
       "span",
       { class: "iti__a11y-text" },
-      this.#dropdownContentEl!,
+      this.#countrySelectorEl!,
     );
 
     // Visible no-results message (hidden by default)
@@ -370,7 +370,7 @@ export default class UI {
         class: `iti__no-results ${CLASSES.HIDE}`,
         [ARIA.HIDDEN]: "true", // all a11y messaging happens in this.#searchResultsLiveRegionEl
       },
-      this.#dropdownContentEl!,
+      this.#countrySelectorEl!,
     );
     this.#noResultsMessageEl.textContent = uiTranslations.searchEmptyState ?? null;
   }
@@ -547,21 +547,21 @@ export default class UI {
   #getHiddenInlineDropdownHeight(): number {
     const body = UI.#getBody();
     // it's safe to remove the hide class as the dropdown has not yet been added to the DOM
-    this.#dropdownContentEl!.classList.remove(CLASSES.HIDE);
+    this.#countrySelectorEl!.classList.remove(CLASSES.HIDE);
 
     // it needs these classes on the container to get the correct height
     const tempContainer = createEl("div", {
       class: "iti iti--inline-country-selector",
     });
-    tempContainer.appendChild(this.#dropdownContentEl!);
+    tempContainer.appendChild(this.#countrySelectorEl!);
 
     tempContainer.style.visibility = "hidden";
     body.appendChild(tempContainer);
-    const height = this.#dropdownContentEl!.offsetHeight;
+    const height = this.#countrySelectorEl!.offsetHeight;
     body.removeChild(tempContainer);
     tempContainer.style.visibility = "";
 
-    this.#dropdownContentEl!.classList.add(CLASSES.HIDE);
+    this.#countrySelectorEl!.classList.add(CLASSES.HIDE);
     return height > 0 ? height : LAYOUT.FALLBACK_DROPDOWN_HEIGHT;
   }
 
@@ -593,8 +593,8 @@ export default class UI {
   }
 
   //* Pre-fill the search input with "+" and show all countries
-  //* (used when user types "+" in the phone input to open the dropdown).
-  //* Explicitly focus the search input (openDropdown skips this when
+  //* (used when user types "+" in the phone input to open the country selector).
+  //* Explicitly focus the search input (openCountrySelector skips this when
   //* dropdownAlwaysOpen, but here we need focus to redirect subsequent keystrokes).
   public prefillSearchWithPlus(): void {
     this.#searchInputEl!.value = "+";
@@ -700,22 +700,22 @@ export default class UI {
     );
   }
 
-  //* Wire up triggers that open/close the dropdown: label click (focus input or swallow repeat click),
+  //* Wire up triggers that open/close the country selector: label click (focus input or swallow repeat click),
   //* selected-country click (open), and keydown on countryContainer (open on arrow/space/enter, close on tab).
-  public bindAllInitialDropdownListeners(
+  public bindAllInitialCountrySelectorListeners(
     signal: AbortSignal,
     onOpen: () => void,
     onClose: () => void,
   ): void {
     //* Hack for input nested inside label (valid markup): clicking the selected country to open the
-    //* dropdown would otherwise trigger a 2nd click on the input which would close it again.
+    //* country selector would otherwise trigger a 2nd click on the input which would close it again.
     const label = this.telInputEl.closest("label");
     if (label) {
       label.addEventListener(
         "click",
         (e: Event): void => {
-          //* If the dropdown is closed, focus the input; otherwise ignore the click.
-          if (!this.isDropdownOpen()) {
+          //* If the country selector is closed, focus the input; otherwise ignore the click.
+          if (!this.isCountrySelectorOpen()) {
             this.telInputEl.focus();
           } else {
             e.preventDefault();
@@ -725,12 +725,12 @@ export default class UI {
       );
     }
 
-    //* Open dropdown on click (unless already open, or input is disabled/readonly).
+    //* Open the country selector on click (unless already open, or input is disabled/readonly).
     this.#selectedCountryEl!.addEventListener(
       "click",
       (): void => {
         if (
-          !this.isDropdownOpen() &&
+          !this.isCountrySelectorOpen() &&
           !this.telInputEl.disabled &&
           !this.telInputEl.readOnly
         ) {
@@ -740,7 +740,7 @@ export default class UI {
       { signal },
     );
 
-    //* Open dropdown if selected country is focused and they press up/down/space/enter; close on tab.
+    //* Open the country selector if selected country is focused and they press up/down/space/enter; close on tab.
     this.#countryContainerEl!.addEventListener(
       "keydown",
       (e: KeyboardEvent): void => {
@@ -751,13 +751,13 @@ export default class UI {
           KEYS.ENTER,
         ] as string[];
 
-        if (!this.isDropdownOpen() && openKeys.includes(e.key)) {
+        if (!this.isCountrySelectorOpen() && openKeys.includes(e.key)) {
           //* Prevent form submit on ENTER, and prevent document from re-handling this event.
           e.preventDefault();
           e.stopPropagation();
           onOpen();
         }
-        //* Allow tabbing out of the dropdown area.
+        //* Allow tabbing out of the country selector area.
         if (e.key === KEYS.TAB) {
           onClose();
         }
@@ -766,35 +766,35 @@ export default class UI {
     );
   }
 
-  //* Open the dropdown: create a fresh AbortController, do the DOM work, and wire up all
-  //* dropdown-open listeners (which invoke the caller's onSelect / onClose callbacks).
-  public openDropdown(
+  //* Open the country selector: create a fresh AbortController, do the DOM work, and wire up all
+  //* open-state listeners (which invoke the caller's onSelect / onClose callbacks).
+  public openCountrySelector(
     onSelect: (listItem: HTMLElement | null) => void,
     onClose: () => void,
   ): void {
     const { countrySearch, dropdownAlwaysOpen, countrySelectorParent } =
       this.#options;
 
-    this.#dropdownAbortController = new AbortController();
+    this.#countrySelectorAbortController = new AbortController();
 
     // if matchDropdownWidth enabled, and the width was not set during init (e.g. because input was hidden), then set it now as the input must be visible now.
     this.ensureDropdownWidthSet();
 
-    // countrySelectorParent is used (1) to show the inline dropdown when countrySelectorParent option is set, and (2) to show the fullscreen popup on mobile
+    // detached wrapper is used (1) to show the inline country selector when countrySelectorParent option is set, and (2) to show the fullscreen popup on mobile
     if (countrySelectorParent) {
-      this.#injectAndPositionDetachedDropdown();
+      this.#injectAndPositionDetachedCountrySelector();
     } else {
-      // inline dropdown
-      const positionBelow = this.#shouldPositionInlineDropdownBelowInput();
+      // inline country selector
+      const positionBelow = this.#shouldPositionInlineCountrySelectorBelowInput();
       const distance = this.telInputEl.offsetHeight + LAYOUT.DROPDOWN_MARGIN;
       if (positionBelow) {
-        this.#dropdownContentEl!.style.top = `${distance}px`;
+        this.#countrySelectorEl!.style.top = `${distance}px`;
       } else {
-        this.#dropdownContentEl!.style.bottom = `${distance}px`;
+        this.#countrySelectorEl!.style.bottom = `${distance}px`;
       }
     }
 
-    this.#dropdownContentEl!.classList.remove(CLASSES.HIDE);
+    this.#countrySelectorEl!.classList.remove(CLASSES.HIDE);
     this.#selectedCountryEl!.setAttribute(ARIA.EXPANDED, "true");
 
     //* Highlight the selected country (or fall back to the first item) and scroll it into view.
@@ -812,7 +812,7 @@ export default class UI {
     // so the popup resizes to stay above the keyboard.
     if (
       this.#options.useFullscreenPopup &&
-      this.#detachedDropdownEl &&
+      this.#detachedCountrySelectorEl &&
       window.visualViewport
     ) {
       window.visualViewport.addEventListener(
@@ -824,36 +824,36 @@ export default class UI {
             this.#scrollCountryListToItem(this.#highlightedListItemEl);
           }
         },
-        { signal: this.#dropdownAbortController.signal },
+        { signal: this.#countrySelectorAbortController.signal },
       );
     }
 
     // Update the arrow.
-    this.#dropdownArrowEl!.classList.add(CLASSES.ARROW_UP);
+    this.#arrowEl!.classList.add(CLASSES.ARROW_UP);
 
-    this.#bindDropdownOpenListeners(onSelect, onClose);
+    this.#bindCountrySelectorOpenListeners(onSelect, onClose);
   }
 
-  //* Wire up all listeners needed while the dropdown is open: list-item hover (highlight),
+  //* Wire up all listeners needed while the country selector is open: list-item hover (highlight),
   //* list-item click & enter key (select), click-off & escape (close), search input (filter),
-  //* (when countrySearch disabled) typed-char hidden search, and (when dropdown is in an external
-  //* container) close on window scroll.
-  #bindDropdownOpenListeners(
+  //* (when countrySearch disabled) typed-char hidden search, and (when the country selector is in an
+  //* external container) close on window scroll.
+  #bindCountrySelectorOpenListeners(
     onSelect: (listItem: HTMLElement | null) => void,
     onClose: () => void,
   ): void {
-    const signal = this.#dropdownAbortController!.signal;
+    const signal = this.#countrySelectorAbortController!.signal;
     this.#bindListItemHover(signal);
     this.#bindListItemClick(signal, onSelect);
     if (!this.#options.dropdownAlwaysOpen) {
       this.#bindOutsideClickToClose(signal, onClose);
     }
-    this.#bindDropdownKeydownListener(signal, onSelect, onClose);
+    this.#bindCountrySelectorKeydownListener(signal, onSelect, onClose);
     if (this.#options.countrySearch) {
       this.#bindSearchInputListener(signal);
     }
     if (!this.#options.useFullscreenPopup && this.#options.countrySelectorParent) {
-      //* Close on window scroll when the dropdown is detached into an external container
+      //* Close on window scroll when the country selector is detached into an external container
       //* (it stays in its original page position while the page scrolls underneath).
       window.addEventListener("scroll", onClose, { signal });
     }
@@ -895,14 +895,14 @@ export default class UI {
     );
   }
 
-  //* Invoke onClickOff when the user clicks anywhere outside the dropdown.
+  //* Invoke onClickOff when the user clicks anywhere outside the country selector.
   #bindOutsideClickToClose(signal: AbortSignal, onClickOff: () => void): void {
-    //* Use setTimeout to bind this listener after the current thread of execution, which is where the opening click is happening (otherwise it would immediately trigger onClickOff so the dropdown would never open).
+    //* Use setTimeout to bind this listener after the current thread of execution, which is where the opening click is happening (otherwise it would immediately trigger onClickOff so the country selector would never open).
     setTimeout(() => {
       document.documentElement.addEventListener(
         "click",
         (e: MouseEvent): void => {
-          if (!this.#dropdownContentEl!.contains(e.target as Node)) {
+          if (!this.#countrySelectorEl!.contains(e.target as Node)) {
             onClickOff();
           }
         },
@@ -911,10 +911,10 @@ export default class UI {
     }, 0);
   }
 
-  //* Keyboard navigation while the dropdown is open: arrow keys navigate, hidden-search keys filter,
-  //* and enter/escape invoke the caller's callbacks (which handle country selection / dropdown close).
+  //* Keyboard navigation while the country selector is open: arrow keys navigate, hidden-search keys filter,
+  //* and enter/escape invoke the caller's callbacks (which handle country selection / close).
   //* Uses keydown rather than keypress so non-char keys (arrow, esc) fire and so holding a key repeats.
-  #bindDropdownKeydownListener(
+  #bindCountrySelectorKeydownListener(
     signal: AbortSignal,
     onEnter: (highlightedListItem: HTMLElement | null) => void,
     onEscape: () => void,
@@ -965,8 +965,8 @@ export default class UI {
     };
     //* Catches keystrokes while the selected-country button is focused (e.g. countrySearch disabled, or dropdownAlwaysOpen).
     this.#selectedCountryEl?.addEventListener("keydown", handleKeydown, { signal });
-    //* Catches keystrokes from the search input and country list (which both live inside dropdownContent).
-    this.#dropdownContentEl?.addEventListener("keydown", handleKeydown, { signal });
+    //* Catches keystrokes from the search input and country list (which both live inside the country selector).
+    this.#countrySelectorEl?.addEventListener("keydown", handleKeydown, { signal });
   }
 
   //* Wire up country search input listener: typing filters the list, the clear button resets it.
@@ -1015,7 +1015,7 @@ export default class UI {
     }
   }
 
-  // Update the selected list item in the dropdown
+  // Update the selected list item in the country list
   #updateSelectedListItem(iso2: Iso2 | ""): void {
     // if the existing selected item is different to the new country, set aria-selected to false
     if (
@@ -1041,7 +1041,7 @@ export default class UI {
         );
         checkIcon.appendChild(buildCheckIcon());
         this.#selectedListItemEl = newListItem;
-        //* With dropdownAlwaysOpen, the dropdown is visible throughout, so keep the highlighted
+        //* With dropdownAlwaysOpen, the country selector is visible throughout, so keep the highlighted
         //* row in sync with the selection (e.g. when initialCountryLookup resolves, or the user types a
         //* different dial code) — otherwise it keeps pointing at a stale row.
         if (this.#options.dropdownAlwaysOpen) {
@@ -1083,15 +1083,15 @@ export default class UI {
     this.#updateSearchResultsA11yText();
   }
 
-  // UI: Close the dropdown (DOM + abort dropdown-scoped listeners).
-  public closeDropdown(): void {
+  // UI: Close the country selector (DOM + abort scoped listeners).
+  public closeCountrySelector(): void {
     const { countrySearch, countrySelectorParent } = this.#options;
 
-    //* Unbind all dropdown-scoped listeners in one go.
-    this.#dropdownAbortController!.abort();
-    this.#dropdownAbortController = null;
+    //* Unbind all country-selector-scoped listeners in one go.
+    this.#countrySelectorAbortController!.abort();
+    this.#countrySelectorAbortController = null;
 
-    this.#dropdownContentEl!.classList.add(CLASSES.HIDE);
+    this.#countrySelectorEl!.classList.add(CLASSES.HIDE);
     this.#selectedCountryEl!.setAttribute(ARIA.EXPANDED, "false");
 
     if (countrySearch) {
@@ -1099,7 +1099,7 @@ export default class UI {
       // Clear the search query so it starts fresh next time.
       this.#searchInputEl!.value = "";
       this.#applySearchFilter();
-      // only clear the highlighted item if countrySearch is enabled as this gets reset each time the dropdown is opened
+      // only clear the highlighted item if countrySearch is enabled as this gets reset each time the country selector is opened
       if (this.#highlightedListItemEl) {
         this.#highlightedListItemEl.classList.remove(CLASSES.HIGHLIGHT);
         this.#highlightedListItemEl = null;
@@ -1107,22 +1107,22 @@ export default class UI {
     }
 
     // Update the arrow.
-    this.#dropdownArrowEl!.classList.remove(CLASSES.ARROW_UP);
+    this.#arrowEl!.classList.remove(CLASSES.ARROW_UP);
 
-    // Remove dropdown from container if using external container
+    // Remove country selector from container if using external container
     if (countrySelectorParent) {
-      this.#detachedDropdownEl!.remove();
-      this.#detachedDropdownEl!.style.top = "";
-      this.#detachedDropdownEl!.style.bottom = "";
-      this.#detachedDropdownEl!.style.paddingLeft = "";
-      this.#detachedDropdownEl!.style.paddingRight = "";
+      this.#detachedCountrySelectorEl!.remove();
+      this.#detachedCountrySelectorEl!.style.top = "";
+      this.#detachedCountrySelectorEl!.style.bottom = "";
+      this.#detachedCountrySelectorEl!.style.paddingLeft = "";
+      this.#detachedCountrySelectorEl!.style.paddingRight = "";
     } else {
-      this.#dropdownContentEl!.style.top = "";
-      this.#dropdownContentEl!.style.bottom = "";
+      this.#countrySelectorEl!.style.top = "";
+      this.#countrySelectorEl!.style.bottom = "";
     }
   }
 
-  #shouldPositionInlineDropdownBelowInput(): boolean {
+  #shouldPositionInlineCountrySelectorBelowInput(): boolean {
     // for testing, it's helpful for it to always be shown below.
     if (this.#options.dropdownAlwaysOpen) {
       return true;
@@ -1135,49 +1135,49 @@ export default class UI {
     );
   }
 
-  // inject dropdown into container and apply positioning styles
-  #injectAndPositionDetachedDropdown(): void {
+  // inject the country selector into its detached wrapper and apply positioning styles
+  #injectAndPositionDetachedCountrySelector(): void {
     const { countrySelectorParent, useFullscreenPopup } = this.#options;
 
     if (useFullscreenPopup) {
       // on wider screens, constrain the popup to the input width instead of full width
       if (window.innerWidth >= LAYOUT.NARROW_VIEWPORT_WIDTH) {
         const inputPos = this.telInputEl.getBoundingClientRect();
-        this.#detachedDropdownEl!.style.paddingLeft = `${inputPos.left}px`;
-        this.#detachedDropdownEl!.style.paddingRight = `${window.innerWidth - inputPos.right}px`;
+        this.#detachedCountrySelectorEl!.style.paddingLeft = `${inputPos.left}px`;
+        this.#detachedCountrySelectorEl!.style.paddingRight = `${window.innerWidth - inputPos.right}px`;
       }
     } else {
-      // inline dropdown
+      // inline country selector
       // remember this inputPos is relative to the viewport, not the page
       const inputPos = this.telInputEl.getBoundingClientRect();
-      this.#detachedDropdownEl!.style.left = `${inputPos.left}px`;
-      const positionBelow = this.#shouldPositionInlineDropdownBelowInput();
+      this.#detachedCountrySelectorEl!.style.left = `${inputPos.left}px`;
+      const positionBelow = this.#shouldPositionInlineCountrySelectorBelowInput();
       if (positionBelow) {
-        this.#detachedDropdownEl!.style.top = `${inputPos.bottom + LAYOUT.DROPDOWN_MARGIN}px`;
+        this.#detachedCountrySelectorEl!.style.top = `${inputPos.bottom + LAYOUT.DROPDOWN_MARGIN}px`;
       } else {
         // unset the default top:-1000px in the CSS
-        this.#detachedDropdownEl!.style.top = "unset";
-        this.#detachedDropdownEl!.style.bottom = `${window.innerHeight - inputPos.top + LAYOUT.DROPDOWN_MARGIN}px`;
+        this.#detachedCountrySelectorEl!.style.top = "unset";
+        this.#detachedCountrySelectorEl!.style.bottom = `${window.innerHeight - inputPos.top + LAYOUT.DROPDOWN_MARGIN}px`;
       }
     }
 
-    countrySelectorParent!.appendChild(this.#detachedDropdownEl!);
+    countrySelectorParent!.appendChild(this.#detachedCountrySelectorEl!);
   }
 
   // Adjust the fullscreen popup dimensions to match the visual viewport,
   // so it stays above the virtual keyboard on mobile devices.
   #adjustFullscreenPopupToViewport(): void {
     const vv = window.visualViewport;
-    if (!vv || !this.#detachedDropdownEl) {
+    if (!vv || !this.#detachedCountrySelectorEl) {
       return;
     }
     const virtualKeyboardHeight = window.innerHeight - vv.height;
-    this.#detachedDropdownEl.style.bottom = `${virtualKeyboardHeight}px`;
+    this.#detachedCountrySelectorEl.style.bottom = `${virtualKeyboardHeight}px`;
   }
 
-  // UI: Whether the dropdown is currently open (visible).
-  public isDropdownOpen(): boolean {
-    return !this.#dropdownContentEl!.classList.contains(CLASSES.HIDE);
+  // UI: Whether the country selector is currently open (visible).
+  public isCountrySelectorOpen(): boolean {
+    return !this.#countrySelectorEl!.classList.contains(CLASSES.HIDE);
   }
 
   // Toggle the loading spinner on the selected flag (used during auto-country geoIP lookup).
@@ -1213,7 +1213,7 @@ export default class UI {
     return this.#selectedFlagEl!.classList.contains(CLASSES.LOADING);
   }
 
-  // Set the disabled state of the input and dropdown.
+  // Set the disabled state of the input and country selector.
   public setDisabled(disabled: boolean): void {
     this.telInputEl.disabled = disabled;
     if (this.#selectedCountryEl) {
@@ -1226,12 +1226,12 @@ export default class UI {
     }
   }
 
-  // Set the readonly state of the input and dropdown.
+  // Set the readonly state of the input and country selector.
   public setReadonly(readonly: boolean): void {
     this.telInputEl.readOnly = readonly;
     if (this.#selectedCountryEl) {
       if (readonly) {
-        // readonly doesn't have any effect on the dropdown button/div, so we use disabled instead
+        // readonly doesn't have any effect on the selected country button/div, so we use disabled instead
         // selectedCountryEl can be a button or a div, which doesn't support the disabled property, so we use the attribute
         this.#selectedCountryEl.setAttribute("disabled", "true");
       } else {
@@ -1247,7 +1247,7 @@ export default class UI {
     const iso2 = selectedCountryData?.iso2 ?? "";
 
     if (enableCountrySelector) {
-      // Update the selected list item in the dropdown
+      // Update the selected list item in the country list
       this.#updateSelectedListItem(iso2);
     }
 

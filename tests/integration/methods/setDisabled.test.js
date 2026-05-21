@@ -7,7 +7,7 @@ import {
   initIntlTelInput,
   teardown,
   clickSelectedCountryAsync,
-  isDropdownOpen,
+  isCountrySelectorOpen,
   getSelectedCountryButton,
 } from "../helpers/helpers";
 
@@ -30,7 +30,7 @@ describe("setDisabled method", () => {
 
   test("disables clicking selected country to open dropdown", async () => {
     await clickSelectedCountryAsync(container, user);
-    expect(isDropdownOpen(container)).toBe(false);
+    expect(isCountrySelectorOpen(container)).toBe(false);
   });
 
   test("disables focusing the selected country", async () => {
@@ -50,7 +50,7 @@ describe("setDisabled method", () => {
 
     test("re-enables clicking selected flag to open dropdown", async () => {
       await clickSelectedCountryAsync(container, user);
-      expect(isDropdownOpen(container)).toBe(true);
+      expect(isCountrySelectorOpen(container)).toBe(true);
     });
 
     test("re-enables focusing the selected country", async () => {

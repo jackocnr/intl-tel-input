@@ -1,7 +1,7 @@
 /**
  * @vitest-environment jsdom
  */
-import { initIntlTelInput, teardown, getDropdownElement } from "../helpers/helpers";
+import { initIntlTelInput, teardown, getCountrySelectorElement } from "../helpers/helpers";
 
 // matchDropdownWidth: when true, dropdown should not have flexible width class; when false it should.
 describe("matchDropdownWidth option", () => {
@@ -15,7 +15,7 @@ describe("matchDropdownWidth option", () => {
     afterEach(() => teardown(iti));
 
     test("no flexible width class", async () => {
-      const dropdown = getDropdownElement(container);
+      const dropdown = getCountrySelectorElement(container);
       expect(dropdown.classList).not.toContain("iti--flexible-dropdown-width");
     });
   });
@@ -31,7 +31,7 @@ describe("matchDropdownWidth option", () => {
     afterEach(() => teardown(iti));
 
     test("adds flexible width class", async () => {
-      const dropdown = getDropdownElement(container);
+      const dropdown = getCountrySelectorElement(container);
       expect(dropdown.classList).toContain("iti--flexible-dropdown-width");
     });
   });

@@ -108,8 +108,8 @@
     updateValue();
   };
 
-  const handleOpenDropdown = (): void => onOpenCountrySelector?.();
-  const handleCloseDropdown = (): void => onCloseCountrySelector?.();
+  const handleOpenCountrySelector = (): void => onOpenCountrySelector?.();
+  const handleCloseCountrySelector = (): void => onCloseCountrySelector?.();
   const handleStrictReject = (e: Event): void => {
     const { source, rejectedInput, reason } = (e as CustomEvent<StrictRejectDetail>).detail;
     onStrictReject?.(source, rejectedInput, reason);
@@ -123,8 +123,8 @@
       if (disabled) instance.setDisabled(disabled);
       if (readonly) instance.setReadonly(readonly);
 
-      inputElement.addEventListener("open:countryselector", handleOpenDropdown);
-      inputElement.addEventListener("close:countryselector", handleCloseDropdown);
+      inputElement.addEventListener("open:countryselector", handleOpenCountrySelector);
+      inputElement.addEventListener("close:countryselector", handleCloseCountrySelector);
       inputElement.addEventListener("strict:reject", handleStrictReject);
 
       lastEmittedCountry = instance.getSelectedCountryData()?.iso2 ?? "";
@@ -153,8 +153,8 @@
 
   onDestroy(() => {
     if (inputElement) {
-      inputElement.removeEventListener("open:countryselector", handleOpenDropdown);
-      inputElement.removeEventListener("close:countryselector", handleCloseDropdown);
+      inputElement.removeEventListener("open:countryselector", handleOpenCountrySelector);
+      inputElement.removeEventListener("close:countryselector", handleCloseCountrySelector);
       inputElement.removeEventListener("strict:reject", handleStrictReject);
     }
     instance?.destroy();

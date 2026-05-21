@@ -8,8 +8,8 @@ import {
   checkFlagSelected,
   getArrowElement,
   clickSelectedCountryAsync,
-  isDropdownOpen,
-  getDropdownElement,
+  isCountrySelectorOpen,
+  getCountrySelectorElement,
   getSelectedCountryButton,
 } from "../helpers/helpers";
 import { userEvent } from "@testing-library/user-event";
@@ -40,7 +40,7 @@ describe("enableCountrySelector option", () => {
 
     test("clicking selected flag does not show dropdown", async () => {
       await clickSelectedCountryAsync(container, user);
-      expect(getDropdownElement(container)).toBeFalsy();
+      expect(getCountrySelectorElement(container)).toBeFalsy();
     });
 
     test("still updates flag when typing", async () => {
@@ -81,7 +81,7 @@ describe("enableCountrySelector option", () => {
 
     test("clicking selected flag shows dropdown", async () => {
       await clickSelectedCountryAsync(container, user);
-      expect(isDropdownOpen(container)).toBeTruthy();
+      expect(isCountrySelectorOpen(container)).toBeTruthy();
     });
   });
 });

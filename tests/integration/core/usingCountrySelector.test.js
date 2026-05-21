@@ -7,16 +7,16 @@ import {
   initIntlTelInput,
   teardown,
   clickSelectedCountryAsync,
-  isDropdownOpen,
+  isCountrySelectorOpen,
   getSelectedCountryButton,
   getHighlightedItemCode,
   selectCountryAsync,
   checkFlagSelected,
   injectInput,
-  getDropdownElement,
+  getCountrySelectorElement,
 } from "../helpers/helpers";
 
-describe("using dropdown", () => {
+describe("using country selector", () => {
   let iti, user, container, input;
 
   beforeEach(() => {
@@ -34,25 +34,25 @@ describe("using dropdown", () => {
     expect(selectedCountry).toHaveFocus();
   });
 
-  describe("clicking the selected flag to open the dropdown", () => {
+  describe("clicking the selected flag to open the country selector", () => {
     beforeEach(async () => {
       await clickSelectedCountryAsync(container, user);
     });
 
     test("opens the dropdown with the top item highlighted", () => {
-      expect(isDropdownOpen(container)).toBe(true);
+      expect(isCountrySelectorOpen(container)).toBe(true);
       const highlightedItemCode = getHighlightedItemCode(container);
       expect(highlightedItemCode).toBe("af");
     });
 
     test("clicking it again closes the dropdown", async () => {
       await clickSelectedCountryAsync(container, user);
-      expect(isDropdownOpen(container)).toBe(false);
+      expect(isCountrySelectorOpen(container)).toBe(false);
     });
 
     test("clicking off closes the dropdown", async () => {
       await user.click(document.body);
-      expect(isDropdownOpen(container)).toBe(false);
+      expect(isCountrySelectorOpen(container)).toBe(false);
     });
 
     describe("selecting a new country item", () => {
@@ -76,7 +76,7 @@ describe("using dropdown", () => {
   // these tests should be the opposite of the RTL ones below
   test("does not add dir attributes by default", () => {
     expect(container.getAttribute("dir")).toBe(null);
-    const dropdownContent = getDropdownElement(container);
+    const dropdownContent = getCountrySelectorElement(container);
     expect(dropdownContent.getAttribute("dir")).toBe(null);
     const firstDialCode = dropdownContent.querySelector(".iti__dial-code");
     expect(firstDialCode.getAttribute("dir")).toBe(null);
@@ -99,14 +99,14 @@ describe("with RTL context", () => {
   test("does add dir attributes by default", () => {
     // we add dir=LTR to the container, dir=RTL to the dropdown, and dir=LTR on the dial codes in the country list
     expect(container.getAttribute("dir")).toBe("ltr");
-    const dropdownContent = getDropdownElement(container);
+    const dropdownContent = getCountrySelectorElement(container);
     expect(dropdownContent.getAttribute("dir")).toBe("rtl");
     const firstDialCode = dropdownContent.querySelector(".iti__dial-code");
     expect(firstDialCode.getAttribute("dir")).toBe("ltr");
   });
 });
 
-describe("using dropdown: disabled input", () => {
+describe("using country selector: disabled input", () => {
   let iti, user, container, input;
 
   beforeEach(() => {
@@ -127,6 +127,6 @@ describe("using dropdown: disabled input", () => {
 
   test("clicking the selected flag does not open the dropdown", async () => {
     await clickSelectedCountryAsync(container, user);
-    expect(isDropdownOpen(container)).toBe(false);
+    expect(isCountrySelectorOpen(container)).toBe(false);
   });
 });

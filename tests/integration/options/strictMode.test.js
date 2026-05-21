@@ -10,7 +10,7 @@ import {
   stripFormattingChars,
   selectCountryAndTypePlaceholderNumberAsync,
   checkFlagSelected,
-  isDropdownOpen,
+  isCountrySelectorOpen,
   pasteIntoInput,
 } from "../helpers/helpers";
 
@@ -377,7 +377,7 @@ describe("strictMode option", () => {
       await user.click(input);
 
       expect(pasteIntoInput(input, "+")).toBe(true);
-      expect(isDropdownOpen(container)).toBe(false);
+      expect(isCountrySelectorOpen(container)).toBe(false);
       expect(input.value).toBe("+");
     });
 

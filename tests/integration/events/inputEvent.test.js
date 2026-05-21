@@ -7,7 +7,7 @@ import {
   injectInput,
   initIntlTelInput,
   teardown,
-  openDropdownSelectCountryAsync,
+  openAndSelectCountryAsync,
 } from "../helpers/helpers";
 
 describe("input event", () => {
@@ -49,7 +49,7 @@ describe("input event", () => {
   });
 
   test("selecting a country from the dropdown fires input event with isCountryChange=true", async () => {
-    await openDropdownSelectCountryAsync(container, "af", user);
+    await openAndSelectCountryAsync(container, "af", user);
     expect(mockEventHandler).toHaveBeenCalled();
     const event = mockEventHandler.mock.calls.at(-1)[0];
     expect(event.detail).toEqual({ isCountryChange: true });

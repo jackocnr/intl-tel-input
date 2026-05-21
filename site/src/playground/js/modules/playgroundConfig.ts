@@ -9,7 +9,7 @@ export const OPTION_GROUPS = [
   {
     title: "User Interface Options",
     icon: "bi-window",
-    description: "Control dropdown behaviour and whether certain UI elements are displayed.",
+    description: "Control country selector behaviour and whether certain UI elements are displayed.",
     keys: [
       "enableCountrySelector",
       "countrySearch",
@@ -131,7 +131,7 @@ export function createPlaygroundConfig({
     },
     countrySearch: {
       type: "boolean",
-      tooltip: "Enable the search input inside the country dropdown.",
+      tooltip: "Enable the search input inside the country selector.",
     },
     matchDropdownWidth: {
       type: "boolean",
@@ -143,7 +143,7 @@ export function createPlaygroundConfig({
     },
     showFlags: {
       type: "boolean",
-      tooltip: "Show country flags in the dropdown and selected country.",
+      tooltip: "Show country flags in the country list and selected country.",
     },
     useFullscreenPopup: {
       type: "boolean",
@@ -159,7 +159,7 @@ export function createPlaygroundConfig({
     },
     excludeCountries: {
       type: "json",
-      tooltip: "Exclude specific countries (array of ISO2 codes) from the dropdown.",
+      tooltip: "Exclude specific countries (array of ISO2 codes) from the country list.",
       multiCombobox: countryDatalist,
     },
     initialCountry: {
@@ -174,7 +174,7 @@ export function createPlaygroundConfig({
     },
     onlyCountries: {
       type: "json",
-      tooltip: "Restrict the dropdown to only these countries (array of ISO2 codes).",
+      tooltip: "Restrict the country list to only these countries (array of ISO2 codes).",
       multiCombobox: countryDatalist,
     },
 

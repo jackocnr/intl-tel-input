@@ -2,7 +2,7 @@
  * @vitest-environment jsdom
  */
 import { userEvent } from "@testing-library/user-event";
-import { initIntlTelInput, teardown, openDropdownSelectCountryAsync } from "../helpers/helpers";
+import { initIntlTelInput, teardown, openAndSelectCountryAsync } from "../helpers/helpers";
 
 describe("placeholderNumberPolicy option (empty initial placeholder)", () => {
   describe("placeholderNumberPolicy=OFF", () => {
@@ -33,7 +33,7 @@ describe("placeholderNumberPolicy option (empty initial placeholder)", () => {
 
     test("sets and updates placeholder", async () => {
       expect(input.getAttribute("placeholder")).toEqual("70 123 4567");
-      await openDropdownSelectCountryAsync(container, "gb", user);
+      await openAndSelectCountryAsync(container, "gb", user);
       expect(input.getAttribute("placeholder")).toEqual("7400 123456");
     });
   });

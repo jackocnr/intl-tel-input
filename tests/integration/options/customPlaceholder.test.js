@@ -2,7 +2,7 @@
  * @vitest-environment jsdom
  */
 import { userEvent } from "@testing-library/user-event";
-import { initIntlTelInput, teardown, openDropdownSelectCountryAsync } from "../helpers/helpers";
+import { initIntlTelInput, teardown, openAndSelectCountryAsync } from "../helpers/helpers";
 
 describe("customPlaceholder option", () => {
   let iti, input, container, user;
@@ -21,7 +21,7 @@ describe("customPlaceholder option", () => {
 
   test("customises placeholder and updates on country change", async () => {
     expect(input.getAttribute("placeholder")).toEqual("e.g. 70 123 4567");
-    await openDropdownSelectCountryAsync(container, "gb", user);
+    await openAndSelectCountryAsync(container, "gb", user);
     expect(input.getAttribute("placeholder")).toEqual("e.g. 7400 123456");
   });
 });

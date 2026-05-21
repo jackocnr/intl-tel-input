@@ -4,7 +4,7 @@
 import {
   initIntlTelInput,
   teardown,
-  isDropdownOpen,
+  isCountrySelectorOpen,
   selectCountryAsync,
   clickSelectedCountryAsync,
 } from "../helpers/helpers";
@@ -21,16 +21,16 @@ describe("dropdownAlwaysOpen option", () => {
   afterEach(() => teardown(iti));
 
   test("dropdown is open on init", () => {
-    expect(isDropdownOpen(container)).toBe(true);
+    expect(isCountrySelectorOpen(container)).toBe(true);
   });
 
   test("selecting a country does not close the dropdown", async () => {
     await selectCountryAsync(container, "gb", user);
-    expect(isDropdownOpen(container)).toBe(true);
+    expect(isCountrySelectorOpen(container)).toBe(true);
   });
 
   test("clicking selected country does not close the dropdown", async () => {
     await clickSelectedCountryAsync(container, user);
-    expect(isDropdownOpen(container)).toBe(true);
+    expect(isCountrySelectorOpen(container)).toBe(true);
   });
 });

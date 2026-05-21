@@ -86,7 +86,7 @@ describe("isValidNumber method - NANP Barbados", () => {
 
 // const {
 //   stripFormattingChars,
-//   openDropdownSelectCountryAsync,
+//   openAndSelectCountryAsync,
 // } = require("../helpers/helpers");
 // const allCountries = intlTelInput.getCountryData();
 // const iso2Codes = allCountries.map((country) => country.iso2).filter((iso2) => !countriesAllowingMultipleLessDigits.includes(iso2));
@@ -108,7 +108,7 @@ describe("isValidNumber method - NANP Barbados", () => {
 //   });
 
 //   test.each(iso2Codes)("returns false until full placeholder number is typed: %s", async (iso2) => {
-//     await openDropdownSelectCountryAsync(container, iso2, user);
+//     await openAndSelectCountryAsync(container, iso2, user);
 //     const placeholder = input.getAttribute("placeholder");
 //     const digits = stripFormattingChars(placeholder);
 //     // type each digit one at a time, checking isValidNumber after each

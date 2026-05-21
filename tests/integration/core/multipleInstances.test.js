@@ -8,9 +8,9 @@ import {
   teardown,
   getCountryListLength,
   checkFlagSelected,
-  openDropdownSelectCountryAsync,
+  openAndSelectCountryAsync,
   clickSelectedCountryAsync,
-  isDropdownOpen,
+  isCountrySelectorOpen,
 } from "../helpers/helpers";
 
 describe("multiple instances", () => {
@@ -37,7 +37,7 @@ describe("multiple instances", () => {
   });
 
   test("selecting a country in the first instance dropdown only updates the selected country for that instance", async () => {
-    await openDropdownSelectCountryAsync(container1, "cn", user);
+    await openAndSelectCountryAsync(container1, "cn", user);
 
     expect(checkFlagSelected(container1, "cn")).toBe(true);
     expect(checkFlagSelected(container2, "")).toBe(true);
@@ -56,15 +56,15 @@ describe("multiple instances", () => {
     });
 
     test("only opens the dropdown on that instance", () => {
-      expect(isDropdownOpen(container1)).toBe(true);
-      expect(isDropdownOpen(container2)).toBe(false);
+      expect(isCountrySelectorOpen(container1)).toBe(true);
+      expect(isCountrySelectorOpen(container2)).toBe(false);
     });
 
     test("then clicking open dropdown on the second instance will close the first and open the second", async () => {
       await clickSelectedCountryAsync(container2, user);
 
-      expect(isDropdownOpen(container1)).toBe(false);
-      expect(isDropdownOpen(container2)).toBe(true);
+      expect(isCountrySelectorOpen(container1)).toBe(false);
+      expect(isCountrySelectorOpen(container2)).toBe(true);
     });
   });
 });

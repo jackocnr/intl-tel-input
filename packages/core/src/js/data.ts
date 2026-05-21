@@ -1,4 +1,4 @@
-//* Array of country objects for the country dropdown.
+//* Array of country objects for the country list.
 // By default, it's sorted in English alphabetical order, on country name.
 
 //* Criteria for the core library to support a given country/territory:

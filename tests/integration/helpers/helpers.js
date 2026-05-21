@@ -107,11 +107,11 @@ export const getSelectedDialCodeText = (container) => {
   return container.querySelector(".iti__selected-dial-code").textContent;
 };
 
-export const isDropdownOpen = (container) => {
-  return !getDropdownElement(container).classList.contains("iti__hide");
+export const isCountrySelectorOpen = (container) => {
+  return !getCountrySelectorElement(container).classList.contains("iti__hide");
 };
 
-export const getDropdownElement = (container) => {
+export const getCountrySelectorElement = (container) => {
   return container.querySelector(".iti__country-selector");
 };
 
@@ -145,13 +145,13 @@ export const selectCountryAsync = async (container, iso2, user) => {
   await user.click(countryItem);
 };
 
-export const openDropdownSelectCountryAsync = async (container, iso2, user) => {
+export const openAndSelectCountryAsync = async (container, iso2, user) => {
   await clickSelectedCountryAsync(container, user);
   await selectCountryAsync(container, iso2, user);
 };
 
 export const selectCountryAndTypePlaceholderNumberAsync = async (container, iso2, user, input) => {
-  await openDropdownSelectCountryAsync(container, iso2, user);
+  await openAndSelectCountryAsync(container, iso2, user);
   const placeholderNumberClean = await typePlaceholderNumberAsync(user, input);
   return placeholderNumberClean;
 };

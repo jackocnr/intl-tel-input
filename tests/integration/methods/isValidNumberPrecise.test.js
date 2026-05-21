@@ -1,7 +1,7 @@
 /**
  * @vitest-environment jsdom
  */
-import { initIntlTelInput, teardown, openDropdownSelectCountryAsync, intlTelInput } from "../helpers/helpers";
+import { initIntlTelInput, teardown, openAndSelectCountryAsync, intlTelInput } from "../helpers/helpers";
 import { userEvent } from "@testing-library/user-event";
 
 describe("isValidNumberPrecise", () => {
@@ -59,19 +59,19 @@ describe("isValidNumberPrecise", () => {
     });
 
     test("wrong country selected", async () => {
-      await openDropdownSelectCountryAsync(container, "us", user, input);
+      await openAndSelectCountryAsync(container, "us", user, input);
       await user.type(input, "07733 123456"); // gb number
       expect(iti.isValidNumberPrecise()).toBe(false);
     });
 
     test("correct country selected, valid number", async () => {
-      await openDropdownSelectCountryAsync(container, "gb", user, input);
+      await openAndSelectCountryAsync(container, "gb", user, input);
       await user.type(input, "07733 123456");
       expect(iti.isValidNumberPrecise()).toBe(true);
     });
 
     test("correct country selected, number too short", async () => {
-      await openDropdownSelectCountryAsync(container, "gb", user, input);
+      await openAndSelectCountryAsync(container, "gb", user, input);
       await user.type(input, "07733 123");
       expect(iti.isValidNumberPrecise()).toBe(false);
     });
