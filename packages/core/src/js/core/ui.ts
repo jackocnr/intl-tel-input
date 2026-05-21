@@ -155,7 +155,7 @@ export default class UI {
       wrapper,
     );
 
-    //* Selected country (displayed on left of input while enableCountrySelector is enabled, otherwise to right)
+    //* Selected country: clickable <button> when enableCountrySelector is enabled, otherwise a non-interactive <div>. Always shown on the left of the input, even in RTL mode.
     //* https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only
     if (enableCountrySelector) {
       this.#selectedCountryEl = createEl(

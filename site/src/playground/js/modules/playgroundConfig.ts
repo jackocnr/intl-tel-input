@@ -127,7 +127,7 @@ export function createPlaygroundConfig({
     // User Interface Options
     enableCountrySelector: {
       type: "boolean",
-      tooltip: "Show the country selector (clickable flag/dial code that opens the country list). When disabled, no flag or dial code is shown alongside the input.",
+      tooltip: "Enable the country selector — the panel (dropdown or fullscreen popup) that lets the user pick a country. When disabled, the selected country button becomes a static, non-clickable display.",
     },
     countrySearch: {
       type: "boolean",

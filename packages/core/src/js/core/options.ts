@@ -30,7 +30,7 @@ const computeDefaultUseFullscreenPopup = (): boolean => {
 };
 
 export const defaults: AllOptions = {
-  //* Whether or not to show the country selector (clickable flag/dial code that opens the country list).
+  //* Whether or not to enable the country selector — the panel (dropdown or fullscreen popup) that opens when the user clicks the selected country button.
   enableCountrySelector: true,
   //* The number type to enforce during validation.
   allowedNumberTypes: [NUMBER_TYPE.MOBILE, NUMBER_TYPE.FIXED_LINE],

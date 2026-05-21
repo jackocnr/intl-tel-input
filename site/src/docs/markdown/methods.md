@@ -199,7 +199,7 @@ await intlTelInput.attachUtils(loadUtils);
 ###### getCountryData
 Type: `() => Country[]`  
 
-Retrieve the core library's country data — either to re-use elsewhere (e.g. to generate your own country dropdown), or alternatively, you could use it to modify the country data. _Note that any modifications must be done before initialising the core library._ See [`Country`](/docs/types#country) for the shape of each entry.
+Retrieve the core library's country data — either to re-use elsewhere (e.g. to generate your own country selector), or alternatively, you could use it to modify the country data. _Note that any modifications must be done before initialising the core library._ See [`Country`](/docs/types#country) for the shape of each entry.
 
 ```js
 const countryData = intlTelInput.getCountryData();

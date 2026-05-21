@@ -88,13 +88,13 @@ A handler to be called when the number validity changes. Receives the new validi
 Type: `() => void`  
 Default: `null`  
 
-A handler to be called when the country dropdown closes.
+A handler to be called when the country selector closes.
 
 ###### onOpenCountryDropdown
 Type: `() => void`  
 Default: `null`  
 
-A handler to be called when the country dropdown opens.
+A handler to be called when the country selector opens.
 
 ###### onStrictReject
 Type: `(source: "key" | "paste", rejectedInput: string, reason: "invalid" | "max-length") => void`  
@@ -140,7 +140,7 @@ Optional controlled value. If provided, the component becomes controlled — whe
 
 ## Initialisation options
 
-All of the core library's initialisation options are supported as individual React props using the same option name. There are dozens of options — country picker, formatting, validation, placeholders, localisation, and more — see the full list on the [Initialisation options](/docs/options) page, or try them interactively in the [playground](/playground). For example:
+All of the core library's initialisation options are supported as individual React props using the same option name. There are dozens of options — country selector, formatting, validation, placeholders, localisation, and more — see the full list on the [Initialisation options](/docs/options) page, or try them interactively in the [playground](/playground). For example:
 
 ```js
 <IntlTelInput initialCountry="us" />

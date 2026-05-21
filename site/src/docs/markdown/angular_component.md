@@ -80,7 +80,7 @@ By default, we use `isValidNumber` for validation, but if you'd rather use `isVa
 
 ## Initialisation options
 
-All of the core library's initialisation options are supported as individual Angular component inputs using the same option name. There are dozens of options — country picker, formatting, validation, placeholders, localisation, and more — see the full list on the [Initialisation options](/docs/options) page, or try them interactively in the [playground](/playground). For example:
+All of the core library's initialisation options are supported as individual Angular component inputs using the same option name. There are dozens of options — country selector, formatting, validation, placeholders, localisation, and more — see the full list on the [Initialisation options](/docs/options) page, or try them interactively in the [playground](/playground). For example:
 
 ```html
 <intl-tel-input initialCountry="us" />
@@ -128,13 +128,13 @@ Emitted when the number validity changes. Emits the new validity boolean. Requir
 Type: `EventEmitter<void>`  
 Default: `null`  
 
-Emitted when the country dropdown closes.
+Emitted when the country selector closes.
 
 ###### openCountryDropdown
 Type: `EventEmitter<void>`  
 Default: `null`  
 
-Emitted when the country dropdown opens.
+Emitted when the country selector opens.
 
 ###### strictReject
 Type: `EventEmitter<{ source: "key" | "paste", rejectedInput: string, reason: "invalid" | "max-length" }>`  

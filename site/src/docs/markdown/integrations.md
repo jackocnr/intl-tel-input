@@ -2,7 +2,7 @@
 
 ## Choose your integration
 
-`intl-tel-input` comes in two flavours: a **vanilla JavaScript library** and a set of native **framework components**. Both offer the same core features — country picker, formatting and validation — so pick the one that matches your stack. Internally, both are powered by the same shared engine (referred to throughout these docs as the **core library**) — the vanilla JS library exposes it directly, while the framework components wrap it.
+`intl-tel-input` comes in two flavours: a **vanilla JavaScript library** and a set of native **framework components**. Both offer the same core features — country selector, formatting and validation — so pick the one that matches your stack. Internally, both are powered by the same shared engine (referred to throughout these docs as the **core library**) — the vanilla JS library exposes it directly, while the framework components wrap it.
 
 <div class="iti-integration-choice row g-4 my-4">
   <div class="col-md-6">

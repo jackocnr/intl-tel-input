@@ -68,7 +68,7 @@ See [Best practices](/docs/best-practices) for general advice on loading the uti
 
 ## Initialisation options
 
-The library has dozens of options for customising its behaviour — country picker, formatting, validation, placeholders, localisation, and more. See the full list on the [Initialisation options](/docs/options) page, or try them interactively in the [playground](/playground).
+The library has dozens of options for customising its behaviour — country selector, formatting, validation, placeholders, localisation, and more. See the full list on the [Initialisation options](/docs/options) page, or try them interactively in the [playground](/playground).
 
 
 ## Methods
@@ -92,11 +92,11 @@ input.addEventListener("countrychange", (e) => {
 
 ##### open:countrydropdown
 
-Triggered when the user opens the dropdown.
+Triggered when the user opens the country selector.
 
 ##### close:countrydropdown
 
-Triggered when the user closes the dropdown.
+Triggered when the user closes the country selector.
 
 ##### strict:reject
 

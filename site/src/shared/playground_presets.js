@@ -7,7 +7,7 @@ export const playgroundPresets = [
     href: "/playground?uiTranslations=zh&initialCountry=cn#translation-options",
   },
   {
-    label: "No dropdown",
+    label: "No country selector",
     href: "/playground?keepDropdownOpen=false&enableCountrySelector=false&initialCountry=us#user-interface-options",
   },
   {
@@ -15,7 +15,7 @@ export const playgroundPresets = [
     href: "/playground?showFlags=false&initialCountry=us#user-interface-options",
   },
   {
-    label: "Fullscreen country picker",
+    label: "Fullscreen country selector",
     href: "/playground?useFullscreenPopup=true&initialCountry=us#user-interface-options",
   },
   {

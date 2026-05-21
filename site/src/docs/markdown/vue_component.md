@@ -90,7 +90,7 @@ The component supports `v-model` for two-way binding. When the bound value chang
 
 ## Initialisation options
 
-All of the core library's initialisation options are supported as individual Vue component props using the same option name. There are dozens of options — country picker, formatting, validation, placeholders, localisation, and more — see the full list on the [Initialisation options](/docs/options) page, or try them interactively in the [playground](/playground). For example:
+All of the core library's initialisation options are supported as individual Vue component props using the same option name. There are dozens of options — country selector, formatting, validation, placeholders, localisation, and more — see the full list on the [Initialisation options](/docs/options) page, or try them interactively in the [playground](/playground). For example:
 
 ```js
 <IntlTelInput initialCountry="us" />
@@ -135,13 +135,13 @@ Emitted when the number validity changes. The handler receives the new validity 
 Type: `() => void`  
 Default: `null`  
 
-Emitted when the country dropdown closes.
+Emitted when the country selector closes.
 
 ###### openCountryDropdown
 Type: `() => void`  
 Default: `null`  
 
-Emitted when the country dropdown opens.
+Emitted when the country selector opens.
 
 ###### strictReject
 Type: `(source: "key" | "paste", rejectedInput: string, reason: "invalid" | "max-length") => void`  

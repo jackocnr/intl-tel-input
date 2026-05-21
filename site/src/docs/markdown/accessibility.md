@@ -33,7 +33,7 @@ Example:
 
 ## Keyboard support
 
-The country selector is fully keyboard-operable: Up/Down/Space/Enter to open and navigate, Esc to close, Enter to select. With country search enabled, users can type to filter; otherwise typing jumps to matching countries like a native `<select>`.
+The country selector is fully keyboard-operable: focus the selected country button and press Up/Down/Space/Enter to open it, then use Up/Down to navigate, Enter to select, and Esc to close. With country search enabled, users can type to filter; otherwise typing jumps to matching countries like a native `<select>`.
 
 
 ## Screen reader support

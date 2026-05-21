@@ -23,7 +23,7 @@ Control country list behaviour and whether certain UI elements are displayed.
 Type: `boolean`  
 Default: `true`  
 
-Show the country selector (clickable flag/dial code that opens the country list). If disabled, there is no dropdown arrow, and the selected country is not clickable. Also, if [`showFlags`](/docs/options#showflags) is enabled, we display the selected flag on the right instead, because it is just a marker of state. Note that if [`separateDialCode`](#separatedialcode) is enabled, `enableCountrySelector` is forced to `true` as the dropdown is required when the user types "+" in this case. _Note: previously named `allowDropdown`._
+Enable the country selector — the panel (dropdown or fullscreen popup) that opens when the user clicks the selected country button, so they can pick a different country. If disabled, the selected country is no longer clickable, and there is no arrow displayed. _Note: previously named `allowDropdown`._
 
 Try `intl-tel-input` with `enableCountrySelector` disabled in the [Playground](/playground?enableCountrySelector=false#enableCountrySelector).
 
@@ -31,7 +31,7 @@ Try `intl-tel-input` with `enableCountrySelector` disabled in the [Playground](/
 Type: `string`  
 Default: `""`  
 
-Additional class(es) to add to the injected `<div class="iti">` that wraps the input and country selector. Useful for sizing or positioning the whole component.
+Additional class(es) to add to the injected `<div class="iti">` that wraps the input and selected country. Useful for sizing or positioning the whole component.
 
 ###### countrySearch
 Type: `boolean`  
@@ -45,7 +45,7 @@ View `intl-tel-input` with this disabled in the [Playground](/playground?country
 Type: `HTMLElement`  
 Default: `null`  
 
-Expects a node, e.g. `document.body`. Instead of putting the country dropdown markup next to the input, append it to the specified node, and it will then be positioned next to the input using JavaScript (using `position: fixed`). This is useful when the input is inside a container with `overflow: hidden`. _Note: previously named `dropdownContainer`._
+Expects a node, e.g. `document.body`. Instead of putting the country list markup next to the input, append it to the specified node, and it will then be positioned next to the input using JavaScript (using `position: fixed`). This is useful when the input is inside a container with `overflow: hidden`. _Note: previously named `dropdownContainer`._
 
 > [!NOTE]  
 > The positioning is broken by scrolling, so the dropdown will automatically close on the `window` scroll event. This also applies to the fullscreen popup.
@@ -189,7 +189,7 @@ Default: `"INTERNATIONAL"`
 Controls how numbers are displayed in the input — both the auto-generated placeholder example and any stored value passed in on initialisation or via [`setNumber`](/docs/methods#setnumber). Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script) (otherwise no formatting can happen and the value is shown as-is).
 
 - `"INTERNATIONAL"` (default): formatted with the dial code, e.g. `+44 7740 123456`.
-- `"NATIONAL"`: formatted in the country's national format (no dial code), e.g. `07740 123456`. Forced back to `"INTERNATIONAL"` if [`separateDialCode`](#separatedialcode) is enabled (since the dial code is then part of the typed number) or if the dropdown is shown without flags or a separate dial code (since the user has no way to see the country).
+- `"NATIONAL"`: formatted in the country's national format (no dial code), e.g. `07740 123456`. Forced back to `"INTERNATIONAL"` if [`separateDialCode`](#separatedialcode) is enabled (since the dial code is then part of the typed number) or if the country selector is enabled without flags or a separate dial code (since the user has no way to see the country).
 - `"E164"`: standardised international format with no formatting characters, e.g. `+447740123456`.
 
 Note: this is a dev-facing preference for synthetic display. It does **not** override what the user types — if they type a number in national format, it stays in national format. To extract the full international number regardless, use [`getNumber`](/docs/methods#getnumber). _Note: previously covered by `nationalMode` and `formatOnDisplay` options (now removed)._
