@@ -93,13 +93,13 @@ test.describe("visual snapshots - separateDialCode", () => {
   });
 });
 
-test.describe("visual snapshots - allowDropdown=false", () => {
+test.describe("visual snapshots - enableCountrySelector=false", () => {
 
   test("initial render", async ({ page }) => {
-    await page.goto("/tests-e2e/fixtures/vanilla-allow-dropdown-false.html");
+    await page.goto("/tests-e2e/fixtures/vanilla-enable-country-selector-false.html");
     await expect(page.locator(".iti")).toBeVisible();
 
-    await expect(page).toHaveScreenshot("vanilla-allow-dropdown-false.png");
+    await expect(page).toHaveScreenshot("vanilla-enable-country-selector-false.png");
   });
 });
 

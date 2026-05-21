@@ -56,7 +56,7 @@ export type ValueOf<T> = T[keyof T];
 
 // All configurable options
 export interface AllOptions {
-  allowDropdown: boolean;
+  enableCountrySelector: boolean;
   allowedNumberTypes: NumberType[] | null;
   allowNumberExtensions: boolean;
   allowPhonewords: boolean;

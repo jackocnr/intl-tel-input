@@ -20,7 +20,7 @@ const makeCountry = (overrides) => ({
 
 // Helper: minimal merged options (mirrors what applyOptionSideEffects produces)
 const makeOptions = (overrides = {}) => ({
-  allowDropdown: true,
+  enableCountrySelector: true,
   allowedNumberTypes: ["MOBILE", "FIXED_LINE"],
   allowNumberExtensions: false,
   allowPhonewords: false,
@@ -146,15 +146,15 @@ describe("UI.buildMarkup", () => {
     expect(input.classList.contains("iti__tel-input")).toBe(true);
   });
 
-  test("creates selectedCountry button when allowDropdown is true", () => {
-    const { input } = buildUI({ allowDropdown: true });
+  test("creates selectedCountry button when enableCountrySelector is true", () => {
+    const { input } = buildUI({ enableCountrySelector: true });
     const selectedCountryEl = getSelectedCountryEl(input);
     expect(selectedCountryEl.tagName).toBe("BUTTON");
     expect(selectedCountryEl.getAttribute(ARIA.HASPOPUP)).toBe("dialog");
   });
 
-  test("creates selectedCountry div when allowDropdown is false", () => {
-    const { input } = buildUI({ allowDropdown: false, showFlags: true });
+  test("creates selectedCountry div when enableCountrySelector is false", () => {
+    const { input } = buildUI({ enableCountrySelector: false, showFlags: true });
     expect(getSelectedCountryEl(input).tagName).toBe("DIV");
   });
 
@@ -194,9 +194,9 @@ describe("UI.buildMarkup", () => {
     expect(input.parentNode.classList.contains("my-class")).toBe(true);
   });
 
-  test("no countryContainer when allowDropdown, showFlags, separateDialCode all false", () => {
+  test("no countryContainer when enableCountrySelector, showFlags, separateDialCode all false", () => {
     const { input } = buildUI({
-      allowDropdown: false,
+      enableCountrySelector: false,
       showFlags: false,
       separateDialCode: false,
     });
@@ -209,8 +209,8 @@ describe("UI.buildMarkup", () => {
     expect(dialCodeEl).not.toBeNull();
   });
 
-  test("does not create dropdown arrow when allowDropdown is false", () => {
-    const { input } = buildUI({ allowDropdown: false, showFlags: true });
+  test("does not create dropdown arrow when enableCountrySelector is false", () => {
+    const { input } = buildUI({ enableCountrySelector: false, showFlags: true });
     const arrow = getSelectedCountryEl(input).querySelector(".iti__arrow");
     expect(arrow).toBeNull();
   });

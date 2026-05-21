@@ -14,13 +14,13 @@ import {
 } from "../helpers/helpers";
 import { userEvent } from "@testing-library/user-event";
 
-describe("allowDropdown option", () => {
-  describe("allowDropdown=false", () => {
+describe("enableCountrySelector option", () => {
+  describe("enableCountrySelector=false", () => {
     let iti, container, input, user;
 
     beforeEach(() => {
       user = userEvent.setup();
-      const options = { allowDropdown: false, separateDialCode: false };
+      const options = { enableCountrySelector: false, separateDialCode: false };
       ({ iti, container, input } = initIntlTelInput({ options }));
     });
 
@@ -50,12 +50,12 @@ describe("allowDropdown option", () => {
     });
   });
 
-  describe("allowDropdown=true", () => {
+  describe("enableCountrySelector=true", () => {
     let iti, container, input, user;
 
     beforeEach(() => {
       user = userEvent.setup();
-      const options = { allowDropdown: true, separateDialCode: false };
+      const options = { enableCountrySelector: true, separateDialCode: false };
       ({ iti, container, input } = initIntlTelInput({ options }));
     });
 

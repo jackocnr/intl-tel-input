@@ -23,9 +23,9 @@ describe("core/options applyOptionSideEffects", () => {
     expect(o.numberDisplayFormat).toBe("INTERNATIONAL");
   });
 
-  test("allowDropdown without flags or separateDialCode forces NATIONAL back to INTERNATIONAL", () => {
+  test("enableCountrySelector without flags or separateDialCode forces NATIONAL back to INTERNATIONAL", () => {
     const o = clone();
-    o.allowDropdown = true;
+    o.enableCountrySelector = true;
     o.showFlags = false;
     o.separateDialCode = false;
     o.numberDisplayFormat = "NATIONAL";
@@ -78,7 +78,7 @@ describe("core/options validateOptions", () => {
   test("accepts a minimal valid options object", () => {
     expect(() =>
       validateOptions({
-        allowDropdown: false,
+        enableCountrySelector: false,
         initialCountry: "us",
         excludeCountries: ["us"],
         allowedNumberTypes: ["MOBILE"],

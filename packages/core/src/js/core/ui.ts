@@ -119,14 +119,14 @@ export default class UI {
   }
 
   #createWrapperAndInsert(): HTMLElement {
-    const { allowDropdown, showFlags, containerClass, useFullscreenPopup } =
+    const { enableCountrySelector, showFlags, containerClass, useFullscreenPopup } =
       this.#options;
 
     //* Containers (mostly for positioning).
     const parentClasses = buildClassNames({
       iti: true,
       "iti--input-container": true,
-      "iti--allow-dropdown": allowDropdown,
+      "iti--allow-dropdown": enableCountrySelector,
       "iti--show-flags": showFlags,
       "iti--inline-dropdown": !useFullscreenPopup,
       [containerClass]: Boolean(containerClass),
@@ -141,10 +141,10 @@ export default class UI {
   }
 
   #buildCountryContainer(wrapper: HTMLElement): void {
-    const { allowDropdown, separateDialCode, showFlags } = this.#options;
+    const { enableCountrySelector, separateDialCode, showFlags } = this.#options;
 
     //* If we don't need a countryContainer
-    if (!allowDropdown && !showFlags && !separateDialCode) {
+    if (!enableCountrySelector && !showFlags && !separateDialCode) {
       return;
     }
 
@@ -155,9 +155,9 @@ export default class UI {
       wrapper,
     );
 
-    //* Selected country (displayed on left of input while allowDropdown is enabled, otherwise to right)
+    //* Selected country (displayed on left of input while enableCountrySelector is enabled, otherwise to right)
     //* https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only
-    if (allowDropdown) {
+    if (enableCountrySelector) {
       this.#selectedCountryEl = createEl(
         "button",
         {
@@ -182,7 +182,7 @@ export default class UI {
       );
     }
 
-    // The element that gets a grey background on hover (if allowDropdown enabled)
+    // The element that gets a grey background on hover (if enableCountrySelector enabled)
     const selectedCountryPrimary = createEl(
       "div",
       { class: "iti__selected-country-primary" },
@@ -196,7 +196,7 @@ export default class UI {
       selectedCountryPrimary,
     );
 
-    if (allowDropdown) {
+    if (enableCountrySelector) {
       this.#dropdownArrowEl = createEl(
         "div",
         { class: "iti__arrow", [ARIA.HIDDEN]: "true" },
@@ -212,18 +212,18 @@ export default class UI {
       );
     }
 
-    if (allowDropdown) {
+    if (enableCountrySelector) {
       this.#buildDropdownContent();
     }
   }
 
   public ensureDropdownWidthSet(): void {
-    const { matchDropdownWidth, allowDropdown } = this.#options;
+    const { matchDropdownWidth, enableCountrySelector } = this.#options;
 
     // Note: matchDropdownWidth is always false if useFullscreenPopup is true
     // don't re-set it if it's already set
     if (
-      !allowDropdown ||
+      !enableCountrySelector ||
       !matchDropdownWidth ||
       this.#dropdownContentEl!.style.width
     ) {
@@ -1241,12 +1241,12 @@ export default class UI {
   }
 
   public setCountry(selectedCountryData: SelectedCountryData): void {
-    const { allowDropdown, showFlags, separateDialCode, uiTranslations } = this.#options;
+    const { enableCountrySelector, showFlags, separateDialCode, uiTranslations } = this.#options;
     const name = selectedCountryData?.name;
     const dialCode = selectedCountryData?.dialCode;
     const iso2 = selectedCountryData?.iso2 ?? "";
 
-    if (allowDropdown) {
+    if (enableCountrySelector) {
       // Update the selected list item in the dropdown
       this.#updateSelectedListItem(iso2);
     }

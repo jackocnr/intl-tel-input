@@ -11,7 +11,7 @@ export const OPTION_GROUPS = [
     icon: "bi-window",
     description: "Control dropdown behaviour and whether certain UI elements are displayed.",
     keys: [
-      "allowDropdown",
+      "enableCountrySelector",
       "countrySearch",
       "matchDropdownWidth",
       "separateDialCode",
@@ -80,7 +80,7 @@ export function createPlaygroundConfig({
   );
 
   const defaultInitOptions = {
-    allowDropdown: defaults.allowDropdown,
+    enableCountrySelector: defaults.enableCountrySelector,
     allowedNumberTypes: defaults.allowedNumberTypes,
     allowNumberExtensions: defaults.allowNumberExtensions,
     allowPhonewords: defaults.allowPhonewords,
@@ -125,9 +125,9 @@ export function createPlaygroundConfig({
 
   const optionMeta = {
     // User Interface Options
-    allowDropdown: {
+    enableCountrySelector: {
       type: "boolean",
-      tooltip: "Allow clicking the selected country to open the dropdown.",
+      tooltip: "Show the country selector (clickable flag/dial code that opens the country list). When disabled, no flag or dial code is shown alongside the input.",
     },
     countrySearch: {
       type: "boolean",

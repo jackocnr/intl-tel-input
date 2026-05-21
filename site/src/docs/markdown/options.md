@@ -19,13 +19,13 @@ _Throughout these docs, "iso2 code" means the two-letter country identifier ([IS
 
 Control country list behaviour and whether certain UI elements are displayed.
 
-###### allowDropdown
+###### enableCountrySelector
 Type: `boolean`  
 Default: `true`  
 
-Whether or not to allow the dropdown. If disabled, there is no dropdown arrow, and the selected country is not clickable. Also, if [`showFlags`](/docs/options#showflags) is enabled, we display the selected flag on the right instead, because it is just a marker of state. Note that if [`separateDialCode`](#separatedialcode) is enabled, `allowDropdown` is forced to `true` as the dropdown is required when the user types "+" in this case. 
+Show the country selector (clickable flag/dial code that opens the country list). If disabled, there is no dropdown arrow, and the selected country is not clickable. Also, if [`showFlags`](/docs/options#showflags) is enabled, we display the selected flag on the right instead, because it is just a marker of state. Note that if [`separateDialCode`](#separatedialcode) is enabled, `enableCountrySelector` is forced to `true` as the dropdown is required when the user types "+" in this case. _Note: previously named `allowDropdown`._
 
-Try `intl-tel-input` with `allowDropdown` disabled in the [Playground](/playground?allowDropdown=false#allowDropdown).
+Try `intl-tel-input` with `enableCountrySelector` disabled in the [Playground](/playground?enableCountrySelector=false#enableCountrySelector).
 
 ###### containerClass
 Type: `string`  
@@ -81,7 +81,7 @@ Play with this option in the [Playground](/playground#separateDialCode).
 </picture>
 
 > [!NOTE]  
-> If the user tries to type a new dial code (as well as the displayed one), we automatically open the country list and focus the search input, so the dial code appears there instead - this way, if they type +54, then Argentina will be highlighted in the country list, and they can simply press Enter to select it, updating the displayed dial code (this feature requires [`allowDropdown`](#allowdropdown) and [`countrySearch`](#countrysearch) to be enabled).
+> If the user tries to type a new dial code (as well as the displayed one), we automatically open the country list and focus the search input, so the dial code appears there instead - this way, if they type +54, then Argentina will be highlighted in the country list, and they can simply press Enter to select it, updating the displayed dial code (this feature requires [`enableCountrySelector`](#enablecountryselector) and [`countrySearch`](#countrysearch) to be enabled).
 
 ###### showFlags
 Type: `boolean`  

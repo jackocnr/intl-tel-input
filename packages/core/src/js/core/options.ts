@@ -30,8 +30,8 @@ const computeDefaultUseFullscreenPopup = (): boolean => {
 };
 
 export const defaults: AllOptions = {
-  //* Whether or not to allow the dropdown.
-  allowDropdown: true,
+  //* Whether or not to show the country selector (clickable flag/dial code that opens the country list).
+  enableCountrySelector: true,
   //* The number type to enforce during validation.
   allowedNumberTypes: [NUMBER_TYPE.MOBILE, NUMBER_TYPE.FIXED_LINE],
   //* Whether or not to allow extensions after the main number.
@@ -174,7 +174,7 @@ export const validateOptions = (customOptions: unknown): SomeOptions => {
     }
 
     switch (key) {
-      case "allowDropdown":
+      case "enableCountrySelector":
       case "allowNumberExtensions":
       case "allowPhonewords":
       case "countrySearch":
@@ -378,7 +378,7 @@ export const normaliseOptions = (o: AllOptions): void => {
 export const applyOptionSideEffects = (o: AllOptions): void => {
   if (o.dropdownAlwaysOpen) {
     o.useFullscreenPopup = false;
-    o.allowDropdown = true;
+    o.enableCountrySelector = true;
   }
 
   //* If showing fullscreen popup, do not fix the width.
@@ -403,7 +403,7 @@ export const applyOptionSideEffects = (o: AllOptions): void => {
 
   // if there is a country dropdown, but no flags and no separate dial code, then it suggests that there are multiple countries to choose from, but no way to see which one is currently selected, so we force INTERNATIONAL display, as it doesn't make sense to show a national number placeholder if there's no way to see which country is selected
   if (
-    o.allowDropdown &&
+    o.enableCountrySelector &&
     !o.showFlags &&
     !o.separateDialCode &&
     o.numberDisplayFormat === NUMBER_FORMAT.NATIONAL

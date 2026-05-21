@@ -54,7 +54,7 @@ const setText = (el: HTMLElement, text: string) => el.textContent = text;
 
   const iti = window.intlTelInput(input, {
     onlyCountries: [code as Iso2],
-    allowDropdown: false,
+    enableCountrySelector: false,
     showFlags: false,
     separateDialCode: false,
     numberDisplayFormat: "NATIONAL",

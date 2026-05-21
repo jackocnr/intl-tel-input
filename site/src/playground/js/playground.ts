@@ -114,8 +114,8 @@ function getKeepDropdownOpenDisabledReason(state) {
   if (state.useFullscreenPopup) {
     return "Disabled because useFullscreenPopup is on — the dropdown becomes a modal popup.";
   }
-  if (!state.allowDropdown) {
-    return "Disabled because allowDropdown is off — there is no dropdown to keep open.";
+  if (!state.enableCountrySelector) {
+    return "Disabled because enableCountrySelector is off — there is no dropdown to keep open.";
   }
   return null;
 }
@@ -363,7 +363,7 @@ const { resetGroupKeys: optionResetGroupKeys } = renderControls(optionsForm, opt
 
 // Hash-target handling. Two forms are supported:
 //   - group slug (e.g. #user-interface-options) → scroll to the group header
-//   - option name (e.g. #allowDropdown, case-insensitive) → scroll to the parent
+//   - option name (e.g. #enableCountrySelector, case-insensitive) → scroll to the parent
 //     group header AND flash the option control to draw the eye to it
 const optionKeyByLower = new Map(
   Object.keys(optionMeta).map((k) => [k.toLowerCase(), k]),
@@ -563,7 +563,7 @@ function getCombinedStateFromControls() {
 
 const initialOptionsState = parseQueryOverrides(playgroundInitialOptions, optionMeta, {
   // Legacy URL params still in the wild — map them to the new option keys.
-  aliases: { uiTranslations: "i18n" },
+  aliases: { uiTranslations: "i18n", enableCountrySelector: "allowDropdown" },
 });
 const initialAttrsState = parseQueryOverrides(defaultInputAttributes, attributeMeta);
 const initialState = mirrorLanguage({ ...initialOptionsState, ...initialAttrsState });
@@ -651,7 +651,7 @@ function hasNoBrowserCountryNameData(locale: string): boolean {
 // Contextual hints: shown when toggling an option that has no visible effect
 // until the user takes an additional action (e.g. selecting a country, typing a number).
 const HINT_CONFIGS = [
-  // User Interface Options (allowDropdown not needed as always clear)
+  // User Interface Options (enableCountrySelector not needed as always clear)
   {
     optionKey: "countrySearch",
     message: "Tip: in the Live Demo section, enable [Keep dropdown open](#keep-dropdown-open) to see this change in action.",
@@ -689,8 +689,8 @@ const HINT_CONFIGS = [
   {
     optionKey: "useFullscreenPopup",
     message: () => {
-      if (!getCombinedStateFromControls().allowDropdown) {
-        return "Tip: enable [allowDropdown](#allowDropdown) for this to work.";
+      if (!getCombinedStateFromControls().enableCountrySelector) {
+        return "Tip: enable [enableCountrySelector](#enableCountrySelector) for this to work.";
       }
       return "Tip: click the selected country to open the popup.";
     },

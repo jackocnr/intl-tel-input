@@ -152,8 +152,8 @@ describe("separateDialCode option", () => {
     });
   });
 
-  //* Regression: typing "+" with separateDialCode enabled (and allowDropdown or countrySearch disabled, so the keydown handler doesn't intercept it) should not erase the character when strictMode is off.
-  describe("typing plus with allowDropdown=false", () => {
+  //* Regression: typing "+" with separateDialCode enabled (and enableCountrySelector or countrySearch disabled, so the keydown handler doesn't intercept it) should not erase the character when strictMode is off.
+  describe("typing plus with enableCountrySelector=false", () => {
     let input, iti, user;
 
     beforeEach(() => {
@@ -161,7 +161,7 @@ describe("separateDialCode option", () => {
       const options = {
         initialCountry: "gb",
         separateDialCode: true,
-        allowDropdown: false,
+        enableCountrySelector: false,
         strictMode: false,
       };
       ({ input, iti } = initIntlTelInput({ options }));

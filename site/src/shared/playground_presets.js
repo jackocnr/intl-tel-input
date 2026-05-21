@@ -8,7 +8,7 @@ export const playgroundPresets = [
   },
   {
     label: "No dropdown",
-    href: "/playground?keepDropdownOpen=false&allowDropdown=false&initialCountry=us#user-interface-options",
+    href: "/playground?keepDropdownOpen=false&enableCountrySelector=false&initialCountry=us#user-interface-options",
   },
   {
     label: "No flags",

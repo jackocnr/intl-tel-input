@@ -318,7 +318,7 @@ export class Iti {
   #initListeners(): void {
     this.#bindAllTelInputListeners();
 
-    if (this.#options.allowDropdown) {
+    if (this.#options.enableCountrySelector) {
       this.#ui.bindAllInitialDropdownListeners(
         this.#abortController!.signal,
         () => this.#openDropdown(),
@@ -533,7 +533,7 @@ export class Iti {
       strictMode,
       formatAsYouType,
       separateDialCode,
-      allowDropdown,
+      enableCountrySelector,
       countrySearch,
     } = this.#options;
     //* This listener receives both native InputEvents (from typing) and synthetic CustomEvents (from setNumber/setCountry), so we read detail via a cast.
@@ -556,7 +556,7 @@ export class Iti {
       !isPaste &&
       e?.data === "+" &&
       separateDialCode &&
-      allowDropdown &&
+      enableCountrySelector &&
       countrySearch
     ) {
       this.#handleAndroidPlusKey(inputValue);
@@ -631,7 +631,7 @@ export class Iti {
   //* On keydown event: (1) if strictMode then prevent invalid characters, (2) if separateDialCode then handle plus key
   //* Note that this fires BEFORE the input is updated.
   #handleKeydownEvent = (e: KeyboardEvent): void => {
-    const { strictMode, separateDialCode, allowDropdown, countrySearch } =
+    const { strictMode, separateDialCode, enableCountrySelector, countrySearch } =
       this.#options;
     //* Only interested in actual character presses, rather than ctrl, alt, command, arrow keys, delete/backspace, cut/copy/paste etc.
     if (!e.key || e.key.length !== 1 || e.altKey || e.ctrlKey || e.metaKey) {
@@ -639,7 +639,7 @@ export class Iti {
     }
 
     //* If separateDialCode, handle the plus key differently: open dropdown and put plus in the search input instead.
-    if (separateDialCode && allowDropdown && countrySearch && e.key === "+") {
+    if (separateDialCode && enableCountrySelector && countrySearch && e.key === "+") {
       e.preventDefault();
       this.#openDropdownWithPlus();
       return;
@@ -1392,7 +1392,7 @@ export class Iti {
     }
     this.#isActive = false;
 
-    if (this.#options.allowDropdown) {
+    if (this.#options.enableCountrySelector) {
       //* Make sure the dropdown is closed (and unbind listeners).
       this.#closeDropdown(true);
     }

@@ -88,7 +88,7 @@ class IntlTelInput
   @Input() readonly: boolean = false;
 
   // Library initialisation options (one @Input per option)
-  @Input() allowDropdown?: AllOptions["allowDropdown"];
+  @Input() enableCountrySelector?: AllOptions["enableCountrySelector"];
   @Input() allowedNumberTypes?: AllOptions["allowedNumberTypes"];
   @Input() allowNumberExtensions?: AllOptions["allowNumberExtensions"];
   @Input() allowPhonewords?: AllOptions["allowPhonewords"];
@@ -216,7 +216,7 @@ class IntlTelInput
 
   private buildInitOptions(): SomeOptions {
     const options: Partial<AllOptions> = {
-      allowDropdown: this.allowDropdown,
+      enableCountrySelector: this.enableCountrySelector,
       allowedNumberTypes: this.allowedNumberTypes,
       allowNumberExtensions: this.allowNumberExtensions,
       allowPhonewords: this.allowPhonewords,
