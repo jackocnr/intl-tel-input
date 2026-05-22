@@ -4,7 +4,6 @@
 
 - [General](#general)
   - [Full-width input](#full-width-input)
-  - [Country selector parent not closing on scroll](#country-selector-parent-not-closing-on-scroll)
   - [Input margin](#input-margin)
   - [Placeholders](#placeholders)
 - [Vanilla JavaScript library specifics](#vanilla-javascript-library-specifics)
@@ -20,16 +19,6 @@ If you want your input to be full-width, you need to set the container to be the
 
 ```css
 .iti { width: 100%; }
-```
-
-##### Country selector parent not closing on scroll
-
-If you are using the [`countrySelectorParent`](/docs/options#countryselectorparent) option and you have a scrolling container other than `window` which is causing problems by not closing the dropdown on scroll, simply listen for the scroll event on that element, and trigger a scroll event on `window`, which in turn will close the dropdown, e.g.
-
-```js
-scrollingElement.addEventListener("scroll", () => {
-  window.dispatchEvent(new Event("scroll"));
-});
 ```
 
 ##### Input margin

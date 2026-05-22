@@ -373,6 +373,22 @@
   }
 }
 
+/* CSS Anchor Positioning: when supported, the browser keeps the detached country selector
+   anchored to the input on the compositor (no JS scroll/resize listeners needed) and flips it
+   above the input automatically via @position-try when there isn't room below. In unsupporting
+   browsers anchor() is invalid so these declarations are dropped, and ui.ts falls back to
+   JS-driven positioning (which sets inline top/left, overriding the offscreen defaults above). */
+.iti--detached-country-selector {
+  top: calc(anchor(bottom) + 3px);
+  left: anchor(left);
+  position-try-fallbacks: --iti-flip-above;
+}
+
+@position-try --iti-flip-above {
+  top: auto;
+  bottom: calc(anchor(top) + 3px);
+}
+
 /* Put these at the end, so they override other classes with display:flex etc. */
 .iti__hide {
   display: none;

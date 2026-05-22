@@ -23,6 +23,10 @@ import {
 } from "./countrySearch.js";
 import { Numerals } from "./numerals.js";
 
+//* Feature-detect CSS Anchor Positioning.
+const supportsCssAnchor =
+  typeof CSS !== "undefined" && CSS.supports("anchor-name: --x");
+
 export default class UI {
   // private
   readonly #options: AllOptions;
@@ -298,6 +302,9 @@ export default class UI {
       });
       this.#detachedCountrySelectorEl = createEl("div", { class: wrapperClasses });
       this.#detachedCountrySelectorEl.appendChild(this.#countrySelectorEl);
+      if (!useFullscreenPopup) {
+        this.#setupCssAnchorPositioning();
+      }
     } else {
       this.#countryContainerEl!.appendChild(this.#countrySelectorEl!);
     }
@@ -780,12 +787,12 @@ export default class UI {
     // if matchDropdownWidth enabled, and the width was not set during init (e.g. because input was hidden), then set it now as the input must be visible now.
     this.ensureDropdownWidthSet();
 
-    // detached wrapper is used (1) to show the inline country selector when countrySelectorParent option is set, and (2) to show the fullscreen popup on mobile
+    // countrySelectorParent can be used for both a detached dropdown and the fullscreen popup
     if (countrySelectorParent) {
       this.#injectAndPositionDetachedCountrySelector();
     } else {
-      // inline country selector
-      const positionBelow = this.#shouldPositionInlineCountrySelectorBelowInput();
+      // inline dropdown
+      const positionBelow = this.#shouldPositionDropdownBelowInput();
       const distance = this.telInputEl.offsetHeight + LAYOUT.DROPDOWN_MARGIN;
       if (positionBelow) {
         this.#countrySelectorEl!.style.top = `${distance}px`;
@@ -837,7 +844,7 @@ export default class UI {
   //* Wire up all listeners needed while the country selector is open: list-item hover (highlight),
   //* list-item click & enter key (select), click-off & escape (close), search input (filter),
   //* (when countrySearch disabled) typed-char hidden search, and (when the country selector is in an
-  //* external container) close on window scroll.
+  //* external container) update (fixed) position on scroll/resize.
   #bindCountrySelectorOpenListeners(
     onSelect: (listItem: HTMLElement | null) => void,
     onClose: () => void,
@@ -852,10 +859,16 @@ export default class UI {
     if (this.#options.countrySearch) {
       this.#bindSearchInputListener(signal);
     }
-    if (!this.#options.useFullscreenPopup && this.#options.countrySelectorParent) {
-      //* Close on window scroll when the country selector is detached into an external container
-      //* (it stays in its original page position while the page scrolls underneath).
-      window.addEventListener("scroll", onClose, { signal });
+    if (
+      !this.#options.useFullscreenPopup &&
+      this.#options.countrySelectorParent &&
+      !supportsCssAnchor
+    ) {
+      //* For browsers that support it, we fix the detached dropdown to the input using CSS Anchor Positioning.
+      //* For older browsers, we position the dropdown next to the input using fixed coordinates.
+      //* Any scroll desyncs the two, so close on scroll. A document-level capture listener catches scroll on any
+      //* element (scroll events don't bubble, but the capture phase still fires).
+      document.addEventListener("scroll", onClose, { signal, capture: true, passive: true });
     }
   }
 
@@ -1122,7 +1135,7 @@ export default class UI {
     }
   }
 
-  #shouldPositionInlineCountrySelectorBelowInput(): boolean {
+  #shouldPositionDropdownBelowInput(): boolean {
     // for testing, it's helpful for it to always be shown below.
     if (this.#options.dropdownAlwaysOpen) {
       return true;
@@ -1146,13 +1159,12 @@ export default class UI {
         this.#detachedCountrySelectorEl!.style.paddingLeft = `${inputPos.left}px`;
         this.#detachedCountrySelectorEl!.style.paddingRight = `${window.innerWidth - inputPos.right}px`;
       }
-    } else {
-      // inline country selector
-      // remember this inputPos is relative to the viewport, not the page
+    } else if (!supportsCssAnchor) {
+      //* For browsers that support it, we fix the detached dropdown to the input using CSS Anchor Positioning.
+      //* For older browsers, we position the dropdown next to the input using fixed coordinates.
       const inputPos = this.telInputEl.getBoundingClientRect();
       this.#detachedCountrySelectorEl!.style.left = `${inputPos.left}px`;
-      const positionBelow = this.#shouldPositionInlineCountrySelectorBelowInput();
-      if (positionBelow) {
+      if (this.#shouldPositionDropdownBelowInput()) {
         this.#detachedCountrySelectorEl!.style.top = `${inputPos.bottom + LAYOUT.DROPDOWN_MARGIN}px`;
       } else {
         // unset the default top:-1000px in the CSS
@@ -1162,6 +1174,21 @@ export default class UI {
     }
 
     countrySelectorParent!.appendChild(this.#detachedCountrySelectorEl!);
+  }
+
+  //* Wire up CSS Anchor Positioning between the input and the detached country selector using a
+  //* unique anchor name per instance. Called once at build time — the matching styles in
+  //* intlTelInput.css only take effect in browsers that support anchor(); elsewhere these
+  //* properties are inert. We append our name to any existing anchor-name (read via
+  //* getComputedStyle so we pick up CSS-defined values), so consumer-set anchors on the input
+  //* are preserved. Caveat: this snapshots the consumer's value once — if they later change
+  //* anchor-name via CSS (e.g. a class swap), our inline write will shadow the change.
+  #setupCssAnchorPositioning(): void {
+    const anchorName = `--iti-anchor-${this.#id}`;
+    const existing = getComputedStyle(this.telInputEl).anchorName;
+    this.telInputEl.style.anchorName =
+      existing && existing !== "none" ? `${existing}, ${anchorName}` : anchorName;
+    this.#detachedCountrySelectorEl!.style.positionAnchor = anchorName;
   }
 
   // Adjust the fullscreen popup dimensions to match the visual viewport,

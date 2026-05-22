@@ -37,10 +37,7 @@ View `intl-tel-input` with this disabled in the [Playground](/playground?country
 Type: `HTMLElement`  
 Default: `null`  
 
-Instead of putting the country list markup next to the input, append it to the specified node (e.g. `document.body`), and it will then be positioned next to the input using JavaScript (using `position: fixed`). This is useful when the input is inside a container with `overflow: hidden`. _Note: previously named `dropdownContainer`._
-
-> [!NOTE]  
-> The fixed positioning is broken by scrolling, so the dropdown will automatically close on the `window` scroll event.
+Instead of putting the country selector markup next to the input, append it to the specified node (e.g. `document.body`), and it will then be positioned next to the input using JavaScript (using `position: fixed`). This is useful when the input is inside a container with `overflow: hidden` which would otherwise cut off the country selector. The country selector will automatically reposition itself on scroll or resize to stay anchored to the input. _Note: previously named `dropdownContainer`._
 
 Play with this option in the [Playground](/playground#user-interface-options).
 
