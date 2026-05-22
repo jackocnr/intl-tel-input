@@ -1,6 +1,7 @@
 import type { Country, Iso2 } from "../data.js";
 import type { UiTranslations } from "../locale/types.js";
 import type {
+  COUNTRY_SELECTOR_MODES,
   NUMBER_FORMATS,
   NUMBER_TYPES,
   PLACEHOLDER_POLICY,
@@ -54,7 +55,7 @@ export type ValidationError = ArrayValues<typeof VALIDATION_ERRORS>;
 
 export type ValueOf<T> = T[keyof T];
 
-export type CountrySelectorMode = "OFF" | "DROPDOWN" | "FULLSCREEN" | "AUTO";
+export type CountrySelectorMode = ArrayValues<typeof COUNTRY_SELECTOR_MODES>;
 
 // All configurable options
 export interface AllOptions {

@@ -63,4 +63,4 @@ The shape of each country in the core library's internal data, returned by [`get
 - `nationalPrefix` (`string | null`): The trunk prefix used for domestic calls (e.g. `"0"` in the UK), or `null` if none.
 
 ## Constant objects
-`intlTelInput.NUMBER_FORMAT`, `intlTelInput.NUMBER_TYPE`, `intlTelInput.VALIDATION_ERROR`, and `intlTelInput.PLACEHOLDER_POLICY` are constant objects whose values are exactly the string unions above (e.g. `intlTelInput.VALIDATION_ERROR.TOO_SHORT === "TOO_SHORT"`). Use them when you want typo-safe property access — e.g. as keys in a lookup table, especially in plain JavaScript where typed string literals don't help.
+`intlTelInput.NUMBER_FORMAT`, `intlTelInput.NUMBER_TYPE`, `intlTelInput.VALIDATION_ERROR`, `intlTelInput.PLACEHOLDER_POLICY`, and `intlTelInput.COUNTRY_SELECTOR_MODE` are constant objects whose values are exactly the string unions above (e.g. `intlTelInput.VALIDATION_ERROR.TOO_SHORT === "TOO_SHORT"`). Use them when you want typo-safe property access — e.g. as keys in a lookup table, especially in plain JavaScript where typed string literals don't help.

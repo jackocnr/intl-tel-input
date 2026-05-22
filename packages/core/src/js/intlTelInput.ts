@@ -47,12 +47,20 @@ import {
   NUMBER_TYPE,
   VALIDATION_ERROR,
   PLACEHOLDER_POLICY,
+  COUNTRY_SELECTOR_MODE,
 } from "./constants.js";
 // Re-export the enum constant objects so consumers can write
 // VALIDATION_ERROR.TOO_SHORT / NUMBER_TYPE.MOBILE / NUMBER_FORMAT.E164 /
-// PLACEHOLDER_POLICY.POLITE instead of typo-prone bare strings — especially
-// useful in plain JS where the literal union types don't apply.
-export { NUMBER_FORMAT, NUMBER_TYPE, VALIDATION_ERROR, PLACEHOLDER_POLICY } from "./constants.js";
+// PLACEHOLDER_POLICY.POLITE / COUNTRY_SELECTOR_MODE.DROPDOWN instead of
+// typo-prone bare strings — especially useful in plain JS where the literal
+// union types don't apply.
+export {
+  NUMBER_FORMAT,
+  NUMBER_TYPE,
+  VALIDATION_ERROR,
+  PLACEHOLDER_POLICY,
+  COUNTRY_SELECTOR_MODE,
+} from "./constants.js";
 import { Numerals } from "./core/numerals.js";
 import type { ForEachInstanceArgsMap } from "./types/forEachInstanceArgsMap.js";
 
@@ -318,7 +326,7 @@ export class Iti {
   #initListeners(): void {
     this.#bindAllTelInputListeners();
 
-    if (this.#options.countrySelectorMode !== "OFF") {
+    if (this.#options.countrySelectorMode !== COUNTRY_SELECTOR_MODE.OFF) {
       this.#ui.bindAllInitialCountrySelectorListeners(
         this.#abortController!.signal,
         () => this.openCountrySelector(),
@@ -556,7 +564,7 @@ export class Iti {
       !isPaste &&
       e?.data === "+" &&
       separateDialCode &&
-      countrySelectorMode !== "OFF" &&
+      countrySelectorMode !== COUNTRY_SELECTOR_MODE.OFF &&
       countrySearch
     ) {
       this.#handleAndroidPlusKey(inputValue);
@@ -639,7 +647,7 @@ export class Iti {
     }
 
     //* If separateDialCode, handle the plus key differently: open the country selector and put plus in the search input instead.
-    if (separateDialCode && countrySelectorMode !== "OFF" && countrySearch && e.key === "+") {
+    if (separateDialCode && countrySelectorMode !== COUNTRY_SELECTOR_MODE.OFF && countrySearch && e.key === "+") {
       e.preventDefault();
       this.#openCountrySelectorWithPlus();
       return;
@@ -1400,7 +1408,7 @@ export class Iti {
     }
     this.#isActive = false;
 
-    if (this.#options.countrySelectorMode !== "OFF") {
+    if (this.#options.countrySelectorMode !== COUNTRY_SELECTOR_MODE.OFF) {
       //* Make sure the country selector is closed (and unbind listeners).
       this.#closeCountrySelectorInternal(true);
     }
@@ -1728,6 +1736,7 @@ export interface IntlTelInputInterface {
   NUMBER_TYPE: typeof NUMBER_TYPE;
   VALIDATION_ERROR: typeof VALIDATION_ERROR;
   PLACEHOLDER_POLICY: typeof PLACEHOLDER_POLICY;
+  COUNTRY_SELECTOR_MODE: typeof COUNTRY_SELECTOR_MODE;
 }
 
 //* Convenience wrapper.
@@ -1760,6 +1769,7 @@ const intlTelInput: IntlTelInputInterface = Object.assign(
     NUMBER_TYPE,
     VALIDATION_ERROR,
     PLACEHOLDER_POLICY,
+    COUNTRY_SELECTOR_MODE,
   },
 );
 

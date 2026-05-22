@@ -53,8 +53,8 @@ export const TIMINGS = {
 // TODO: find a way to pull these out of the CSS, so there's a single source of truth.
 export const LAYOUT = {
   NARROW_VIEWPORT_WIDTH: 500, // keep in sync with .iti__country-list CSS media query
-  FALLBACK_SELECTED_WITH_DIAL_WIDTH: 78, // px width fallback when separateDialCode enabled
-  FALLBACK_SELECTED_NO_DIAL_WIDTH: 42, // px width fallback when no separate dial code
+  FALLBACK_SELECTED_COUNTRY_WITH_DIAL_WIDTH: 78, // px width fallback when separateDialCode enabled
+  FALLBACK_SELECTED_COUNTRY_NO_DIAL_WIDTH: 42, // px width fallback when no separate dial code
   INPUT_PADDING_EXTRA_LEFT: 6, // px gap between selected country container and input text
   DROPDOWN_MARGIN: 3, // px margin between dropdown and tel input
   FALLBACK_DROPDOWN_HEIGHT: 200, // px height fallback for dropdown
@@ -88,6 +88,15 @@ export const PLACEHOLDER_POLICY = {
   POLITE: "POLITE",
   OFF: "OFF",
 } as const;
+
+// Valid values for the countrySelectorMode option. The COUNTRY_SELECTOR_MODE
+// enum object is derived from this array (below, alongside NUMBER_FORMAT etc).
+export const COUNTRY_SELECTOR_MODES = [
+  "OFF",
+  "DROPDOWN",
+  "FULLSCREEN",
+  "AUTO",
+] as const;
 
 // libphonenumber enums - sole source of truth for both the core library (option
 // validation, public types) and utils.js (which builds its int maps from
@@ -146,6 +155,7 @@ const toEnumObject = <T extends readonly string[]>(
 export const NUMBER_FORMAT = toEnumObject(NUMBER_FORMATS);
 export const NUMBER_TYPE = toEnumObject(NUMBER_TYPES);
 export const VALIDATION_ERROR = toEnumObject(VALIDATION_ERRORS);
+export const COUNTRY_SELECTOR_MODE = toEnumObject(COUNTRY_SELECTOR_MODES);
 
 // Data-* keys used on DOM nodes
 export const DATA_KEYS = {

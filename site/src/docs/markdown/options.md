@@ -46,6 +46,9 @@ Controls the country selector — the panel that opens when the user clicks the 
 
 _Note: this replaces the previous `allowDropdown` and `useFullscreenPopup` boolean options._
 
+> [!TIP]
+> You can either pass a string literal, e.g. `"DROPDOWN"`, or a [constant](/docs/types#constant-objects), e.g. `intlTelInput.COUNTRY_SELECTOR_MODE.DROPDOWN` — useful where typos in the string literal won't be caught at compile time.
+
 Try `intl-tel-input` with this option set to `"OFF"` in the [Playground](/playground?countrySelectorMode=OFF#countrySelectorMode).
 
 _Here's what the fullscreen popup looks like on mobile:_
