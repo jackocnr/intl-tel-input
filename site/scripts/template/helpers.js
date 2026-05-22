@@ -5,6 +5,13 @@ import { renderString } from "./render.js";
 
 const readFile = (p) => fs.readFileSync(p, "utf8");
 
+const libraryVersion = (() => {
+  const [major, minor] = JSON.parse(
+    readFile("../packages/core/package.json"),
+  ).version.split(".");
+  return Number(minor) > 0 ? `${major}.${minor}` : major;
+})();
+
 // Common partials shared by every "page" wrapper template (homepage, playground,
 // 404, examples, docs). The partials may themselves be lodash templates that
 // need rendering with the supplied `data` (e.g. cacheBust references).
@@ -34,7 +41,10 @@ const readItiScript = () => readFile("tmp/shared/iti_script.html");
 // All three reference page context (pageType, name, dropdown data) so they
 // need to be rendered per page rather than read as static strings.
 const readNavPartials = (data) => ({
-  header_nav: renderString(readFile("src/shared/header_nav.html.ejs"), data),
+  header_nav: renderString(readFile("src/shared/header_nav.html.ejs"), {
+    ...data,
+    libraryVersion,
+  }),
   mobile_nav: renderString(readFile("src/shared/mobile_nav.html.ejs"), data),
   page_pagination: renderString(
     readFile("src/shared/page_pagination.html.ejs"),

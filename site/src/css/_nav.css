@@ -377,6 +377,24 @@
   margin-right: 10px;
 }
 
+/* Version badge next to header brand */
+.iti-header-nav-version {
+  margin-top: 1px;
+  margin-left: 0.5rem;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.25;
+  color: rgba(255, 255, 255, 0.75);
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--bs-border-radius);
+  text-decoration: none;
+}
+.iti-header-nav-version:hover,
+.iti-header-nav-version:focus {
+  background: rgba(0, 0, 0, 0.15);
+}
+
 /* Chevron used by all three navs (header dropdown, mobile, context) */
 .iti-nav-chevron {
   margin: 0px 0 3px 6px;

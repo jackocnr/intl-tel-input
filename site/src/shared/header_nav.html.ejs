@@ -27,10 +27,18 @@
     </div>
 
     <!-- HEADER BRAND (MOBILE: CENTERED, DESKTOP: LHS) -->
-    <a class="navbar-brand me-0 d-flex align-items-center" href="/">
-      <img src="/img/logo-white.png" alt="intl-tel-input logo" width="25" height="25" class="iti-logo">
-      intl-tel-input
-    </a>
+    <div class="d-flex align-items-center">
+      <a class="navbar-brand me-0 d-flex align-items-center" href="/">
+        <img src="/img/logo-white.png" alt="intl-tel-input logo" width="25" height="25" class="iti-logo">
+        intl-tel-input
+      </a>
+      <a
+        class="iti-header-nav-version"
+        href="https://github.com/jackocnr/intl-tel-input/releases"
+        rel="noopener"
+        aria-label="View release notes on GitHub"
+      >v<%= libraryVersion %></a>
+    </div>
 
     <!-- HEADER SEARCH TRIGGER ICON (MOBILE: RHS ICON, DESKTOP: HIDDEN) -->
     <div class="d-flex align-items-center">
