@@ -3,14 +3,6 @@
 `intl-tel-input` aims to be accessible out of the box, but good accessibility also depends on how you integrate it into your form.
 
 
-## Contents
-
-- [Accessible naming](#accessible-naming)
-- [Keyboard support](#keyboard-support)
-- [Screen reader support](#screen-reader-support)
-- [Reduced motion](#reduced-motion)
-
-
 ## Accessible naming
 
 Make sure the telephone input has an *accessible name* — a human-readable description that assistive technologies (like screen readers) can announce to identify the field.

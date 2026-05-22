@@ -2,29 +2,6 @@
 
 This page lists the core library's public API methods.
 
-## Contents
-
-- [Instance methods](#instance-methods)
-  - [closeCountrySelector](#closecountryselector)
-  - [destroy](#destroy)
-  - [getExtension](#getextension)
-  - [getNumber](#getnumber)
-  - [getNumberType](#getnumbertype)
-  - [getSelectedCountry](#getselectedcountry)
-  - [getValidationError](#getvalidationerror)
-  - [isValidNumber](#isvalidnumber)
-  - [isValidNumberPrecise](#isvalidnumberprecise)
-  - [openCountrySelector](#opencountryselector)
-  - [setDisabled](#setdisabled)
-  - [setNumber](#setnumber)
-  - [setPlaceholderNumberType](#setplaceholdernumbertype)
-  - [setReadonly](#setreadonly)
-  - [setSelectedCountry](#setselectedcountry)
-- [Static methods](#static-methods)
-  - [attachUtils](#attachutils)
-  - [getAllCountries](#getallcountries)
-  - [getInstance](#getinstance)
-
 ## Instance Methods
 
 These methods are called on the core library instance. The examples below all use a variable named `iti` for the instance — how you get hold of it depends on the integration:

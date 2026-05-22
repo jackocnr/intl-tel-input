@@ -2,16 +2,6 @@
 
 General advice for getting the most out of `intl-tel-input`, whether you're using the [vanilla JavaScript library](/docs/vanilla-javascript) or one of the framework components ([React](/docs/react-component), [Vue](/docs/vue-component), [Angular](/docs/angular-component), [Svelte](/docs/svelte-component)).
 
-## Contents
-
-- [Load the utils module](#load-the-utils-module)
-- [Store and restore numbers in E.164 format](#store-and-restore-numbers-in-e164-format)
-- [Validate before saving](#validate-before-saving)
-- [Keep strict mode on, with rejection feedback](#keep-strict-mode-on-with-rejection-feedback)
-- [Set the initial country](#set-the-initial-country)
-- [Translate the UI](#translate-the-ui)
-
-
 ## Load the utils module
 
 Load [`utils.js`](/docs/utils#loading-the-utils-script) to enable formatting, validation, and generating placeholder numbers.

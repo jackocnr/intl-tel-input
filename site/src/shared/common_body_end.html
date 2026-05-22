@@ -79,4 +79,63 @@
   } else {
     initFeedbackBtn();
   }
+
+  // Right-sidebar "On this page" TOC: highlight the link for the section
+  // currently nearest the top of the viewport.
+  function initTocScrollSpy() {
+    const toc = document.querySelector('.iti-toc');
+    if (!toc) return;
+    const links = Array.from(toc.querySelectorAll('a[href^="#"]'));
+    const sections = links
+      .map((link) => {
+        const id = decodeURIComponent(link.getAttribute('href').slice(1));
+        const el = id ? document.getElementById(id) : null;
+        return el ? { link, el } : null;
+      })
+      .filter(Boolean);
+    if (!sections.length) return;
+
+    // Offset to clear the sticky header before treating a section as "current".
+    const HEADER_OFFSET = 100;
+
+    const setActive = (i) => {
+      sections.forEach((s, idx) => s.link.classList.toggle('active', idx === i));
+    };
+
+    const update = () => {
+      const scrollY = window.scrollY || window.pageYOffset;
+      const threshold = scrollY + HEADER_OFFSET;
+      let activeIdx = 0;
+      for (let i = 0; i < sections.length; i++) {
+        const top = sections[i].el.getBoundingClientRect().top + scrollY;
+        if (top <= threshold) activeIdx = i;
+        else break;
+      }
+      // At very bottom: force last item active so we don't get stuck on the
+      // last section whose top scrolled past, even if shorter than the viewport.
+      const atBottom =
+        scrollY + window.innerHeight >=
+        document.documentElement.scrollHeight - 2;
+      if (atBottom) activeIdx = sections.length - 1;
+      setActive(activeIdx);
+    };
+
+    let rafId = null;
+    const schedule = () => {
+      if (rafId !== null) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        update();
+      });
+    };
+
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule, { passive: true });
+    update();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTocScrollSpy);
+  } else {
+    initTocScrollSpy();
+  }
 </script>

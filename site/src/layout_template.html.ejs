@@ -20,8 +20,11 @@
     </div>
   </main>
 
-  <!-- RIGHT SIDEBAR (UNUSED) -->
+  <!-- RIGHT SIDEBAR (DESKTOP: PAGE-LEVEL CONTENTS, MOBILE: HIDDEN) -->
   <aside class="iti-right-sidebar">
+    <% if (typeof right_sidebar !== 'undefined' && right_sidebar) { %>
+      <%= right_sidebar %>
+    <% } %>
   </aside>
 </div>
 

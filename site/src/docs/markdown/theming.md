@@ -2,13 +2,6 @@
 
 The core library exposes a set of CSS variables (all prefixed `--iti-`) that you can override on `:root` (or any ancestor of the input) to customise colours, spacing, and icon sizes.
 
-## Contents
-
-- [Supported CSS variables](#supported-css-variables)
-- [Dark mode](#dark-mode)
-- [Scaling down the flag images](#scaling-down-the-flag-images)
-
-
 ## Supported CSS variables
 
 ##### Colour variables

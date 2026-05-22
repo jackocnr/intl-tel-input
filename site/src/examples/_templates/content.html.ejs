@@ -2,6 +2,7 @@
 <h1><%= content_title %></h1>
 
 <div class="section">
+  <h2 id="overview">Overview</h2>
   <% if (desc.charAt(0) === '<') { %>
     <%= desc %>
   <% } else { %>
@@ -10,7 +11,7 @@
 </div>
 
 <div class="section demo" <% if (typeof isRtl !== 'undefined') { %>dir="rtl"<% } %>>
-  <h2>Demo</h2>
+  <h2 id="demo">Demo</h2>
   <% if (typeof demo_note !== 'undefined') { %>
     <%= demo_note %>
   <% } %>
@@ -19,13 +20,13 @@
 
 <% if (typeof hideMarkupSection === 'undefined') { %>
 <div class="section">
-  <h2>Html</h2>
+  <h2 id="html">Html</h2>
   <pre><code class="language-html"><%- display_markup %></code></pre>
 </div>
 <% } %>
 
 <div class="section">
-  <h2>JavaScript</h2>
+  <h2 id="javascript">JavaScript</h2>
   <% if (typeof notesHtml !== 'undefined' && notesHtml) { %>
     <%= notesHtml %>
   <% } %>

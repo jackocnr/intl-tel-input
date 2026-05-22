@@ -141,6 +141,75 @@ const notFoundTitle = "404 - Page not found | intl-tel-input";
 const notFoundMetaDesc = "Page not found.";
 const notFoundCanonicalUrl = "https://intl-tel-input.com/404";
 
+const tocHeadingHtml =
+  '<h6 class="mt-4 mb-2 text-uppercase iti-nav-heading">On this page</h6>';
+
+const renderTocLink = (id, label) =>
+  `<a href="#${id}">${escapeHtml(label)}</a>`;
+
+// Build the right-sidebar "On this page" block from a list of {id, label} items.
+const buildContentsSidebar = (items) => {
+  if (!items || !items.length) {
+    return "";
+  }
+  const lis = items
+    .map(({ id, label }) => `<li>${renderTocLink(id, label)}</li>`)
+    .join("");
+  return `${tocHeadingHtml}<ul class="iti-toc">${lis}</ul>`;
+};
+
+// Scan rendered docs HTML for all section headings (<h2>–<h6>) with IDs and
+// return them as {level, id, label} items for the right-sidebar TOC. Strips
+// inner HTML tags (markdown-it-anchor wraps the heading text in an anchor
+// span) to recover the plain-text label.
+const extractDocsHeadings = (html) => {
+  const headings = [];
+  const re = /<h([2-6])\s+id="([^"]+)"[^>]*>([\s\S]*?)<\/h\1>/g;
+  let m;
+  while ((m = re.exec(html)) !== null) {
+    const level = Number(m[1]);
+    const id = m[2];
+    const label = m[3].replace(/<[^>]+>/g, "").trim();
+    if (id && label) {
+      headings.push({ level, id, label });
+    }
+  }
+  return headings;
+};
+
+// Build a nested <ul> tree for the docs right-sidebar TOC from a flat list of
+// {level, id, label} headings. Headings are nested based on their relative
+// levels: each heading deeper than the current open level opens a new nested
+// <ul>; siblings at the same level share a parent <ul>. Skipped levels (e.g.
+// h2 -> h6 with no h3/h4/h5 in between) collapse to a single nesting step, so
+// "deepest in the source so far" is what matters, not absolute heading level.
+const buildDocsContentsSidebar = (items) => {
+  if (!items.length) {
+    return "";
+  }
+  let html = "";
+  const stack = [];
+  for (const item of items) {
+    while (stack.length && stack[stack.length - 1] > item.level) {
+      html += "</li></ul>";
+      stack.pop();
+    }
+    if (stack.length && stack[stack.length - 1] === item.level) {
+      html += "</li>";
+    } else {
+      const cls = stack.length === 0 ? ' class="iti-toc"' : "";
+      html += `<ul${cls}>`;
+      stack.push(item.level);
+    }
+    html += `<li>${renderTocLink(item.id, item.label)}`;
+  }
+  while (stack.length) {
+    html += "</li></ul>";
+    stack.pop();
+  }
+  return `${tocHeadingHtml}${html}`;
+};
+
 // Cache-bust task helper: in-place template substitution on a built CSS file.
 const cssCacheBust = (key, file) => ({
   name: key,
@@ -575,6 +644,12 @@ for (const def of exampleDefinitions) {
   });
 
   // 5. Example layout (wraps content in src/layout_template.html.ejs).
+  const tocItems = [
+    { id: "overview", label: "Overview" },
+    { id: "demo", label: "Demo" },
+    ...(content.hideMarkupSection ? [] : [{ id: "html", label: "Html" }]),
+    { id: "javascript", label: "JavaScript" },
+  ];
   tasks.push({
     name: `${key}_layout`,
     src: "src/layout_template.html.ejs",
@@ -584,6 +659,7 @@ for (const def of exampleDefinitions) {
         showLeftSidebar: true,
         layoutClass: "iti-layout-both-sidebars",
         nav: fs.readFileSync("src/examples/_templates/nav.html.ejs", "utf8"),
+        right_sidebar: buildContentsSidebar(tocItems),
         content: fs.readFileSync(contentDest, "utf8"),
         name: key,
         pageType: "examples",
@@ -963,22 +1039,26 @@ for (const { key, title, metaDesc } of docsDefinitions) {
     name: `docs_layout_${key}`,
     src: "src/layout_template.html.ejs",
     dest: `tmp/docs/${key}_layout.html`,
-    data: () => ({
-      showLeftSidebar: true,
-      layoutClass: "iti-layout-both-sidebars",
-      nav: fs.readFileSync("src/docs/docs_nav_template.html.ejs", "utf8"),
-      content: fs.readFileSync(`tmp/docs/${key}_content.html`, "utf8"),
-      name: key,
-      pageType: "docs",
-      docsDropdownPages,
-      examplesDropdownSections,
-      ...readNavPartials({
-        pageType: "docs",
+    data: () => {
+      const content = fs.readFileSync(`tmp/docs/${key}_content.html`, "utf8");
+      return {
+        showLeftSidebar: true,
+        layoutClass: "iti-layout-both-sidebars",
+        nav: fs.readFileSync("src/docs/docs_nav_template.html.ejs", "utf8"),
+        right_sidebar: buildDocsContentsSidebar(extractDocsHeadings(content)),
+        content,
         name: key,
+        pageType: "docs",
         docsDropdownPages,
         examplesDropdownSections,
-      }),
-    }),
+        ...readNavPartials({
+          pageType: "docs",
+          name: key,
+          docsDropdownPages,
+          examplesDropdownSections,
+        }),
+      };
+    },
   });
 
   tasks.push({

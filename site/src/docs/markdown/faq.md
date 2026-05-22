@@ -1,17 +1,5 @@
 # FAQ
 
-## Contents
-
-- [Do I need the utils script?](#do-i-need-the-utils-script)
-- [What format should I store phone numbers in?](#what-format-should-i-store-phone-numbers-in)
-- [How do I submit the full international number in a normal HTML form?](#how-do-i-submit-the-full-international-number-in-a-normal-html-form)
-- [How do I set the initial country?](#how-do-i-set-the-initial-country)
-- [Can I translate the UI and country names?](#can-i-translate-the-ui-and-country-names)
-- [How do I validate a number?](#how-do-i-validate-a-number)
-- [How do I restore the preferredCountries divider?](#how-do-i-restore-the-preferredcountries-divider)
-- [Something looks broken — where should I look first?](#something-looks-broken--where-should-i-look-first)
-
-
 ## Do I need the utils script?
 
 It depends on which features you want.

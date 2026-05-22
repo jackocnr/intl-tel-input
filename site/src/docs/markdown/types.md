@@ -2,14 +2,6 @@
 
 Reference for the public types and constant objects exposed by the core library. Methods, options, and component docs link here instead of restating the values inline.
 
-## Contents
-
-- [NumberFormat](#numberformat)
-- [NumberType](#numbertype)
-- [ValidationError](#validationerror)
-- [Country](#country)
-- [Constant objects](#constant-objects)
-
 ## NumberFormat
 Format passed to [`getNumber`](/docs/methods#getnumber). One of:
 

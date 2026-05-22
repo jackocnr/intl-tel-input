@@ -2,16 +2,6 @@
 
 An Angular component for the `intl-tel-input` library. See a live demo on the [Validation](/examples/angular-component/validation) example page.
 
-## Contents
-
-- [Installation](#installation)
-- [Props](#props)
-- [Initialisation options](#initialisation-options)
-- [Form integration](#form-integration-ngmodel-formcontrol)
-- [Events](#events)
-- [Accessing instance methods](#accessing-instance-methods)
-- [Accessing static methods](#accessing-static-methods)
-
 ## Installation
 
 First, install the package: 

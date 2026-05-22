@@ -2,14 +2,6 @@
 
 A Svelte 5 component for the `intl-tel-input` library. See a live demo on the [Validation](/examples/svelte-component/validation) example page.
 
-## Contents
-
-- [Installation](#installation)
-- [Props](#props)
-- [Initialisation options](#initialisation-options)
-- [Accessing instance methods](#accessing-instance-methods)
-- [Accessing static methods](#accessing-static-methods)
-
 ## Installation
 
 First, install the package: 

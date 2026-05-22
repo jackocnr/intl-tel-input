@@ -4,17 +4,6 @@ The options below are shared across the [vanilla JavaScript library](/docs/vanil
 
 _Throughout these docs, "iso2 code" means the two-letter country identifier ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2), e.g. `"gb"`), and "dial code" means the international calling prefix (e.g. `+44`)._
 
-## Contents
-
-- [User interface options](#user-interface-options)
-- [Country options](#country-options)
-- [Formatting options](#formatting-options)
-- [Placeholder options](#placeholder-options)
-- [Validation options](#validation-options)
-- [Translation options](#translation-options)
-- [Miscellaneous options](#miscellaneous-options)
-
-
 ## User interface options
 
 Control country list behaviour and whether certain UI elements are displayed.

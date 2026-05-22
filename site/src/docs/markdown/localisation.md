@@ -2,14 +2,6 @@
 
 `intl-tel-input` supports localisation of country names, UI strings, right-to-left layout, and alternative numerals. You can experiment with the different options in the [Playground](/playground?uiTranslations=ru#translation-options), or view the [Right to left example](/examples/vanilla-javascript/right-to-left).
 
-## Contents
-
-- [Localising country names](#localising-country-names)
-- [Localising user interface strings](#localising-user-interface-strings)
-- [Right-to-left (RTL) languages](#right-to-left-rtl-languages)
-- [Alternative numerals](#alternative-numerals)
-
-
 ## Localising country names
 
 Country names are generated using the native `Intl.DisplayNames` API, which supports hundreds of locales out of the box. Use the [`countryNameLocale`](/docs/options#countrynamelocale) option to specify the locale — a BCP 47 language tag, e.g. `"fr"` for French.

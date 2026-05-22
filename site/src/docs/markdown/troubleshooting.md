@@ -1,16 +1,5 @@
 # Troubleshooting
 
-## Contents
-
-- [General](#general)
-  - [Full-width input](#full-width-input)
-  - [Input margin](#input-margin)
-  - [Placeholders](#placeholders)
-- [Vanilla JavaScript library specifics](#vanilla-javascript-library-specifics)
-  - [Displaying error messages](#displaying-error-messages)
-  - [Dropdown position](#dropdown-position)
-
-
 ## General
 
 ##### Full-width input

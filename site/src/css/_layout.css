@@ -40,12 +40,59 @@
       margin-left: -0.25rem;
       overflow-y: auto;
     }
+    /* Right sidebar additionally lets an active TOC link's bold text extend
+       horizontally past the sidebar's right edge. overflow-x: clip preserves
+       overflow-y: auto's vertical scroll; overflow-clip-margin grants the
+       extra room for the overflowing text to render visibly. */
+    .iti-right-sidebar {
+      overflow-x: clip;
+      overflow-clip-margin: 200px;
+    }
   }
 }
 .iti-main {
   grid-area: main;
   min-width: 0;
   padding-bottom: 30px;
+}
+
+/* =========================
+   RIGHT-SIDEBAR PAGE-LEVEL CONTENTS (TOC)
+   ========================= */
+.iti-toc,
+.iti-toc ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.iti-toc ul {
+  margin-left: 0.75rem;
+}
+.iti-toc a {
+  display: block;
+  padding: 0.15rem 1rem;
+  line-height: 1.5;
+  color: var(--bs-body-color);
+  opacity: 0.7;
+  text-decoration: none;
+  border-left: 2px solid transparent;
+}
+.iti-toc a:hover,
+.iti-toc a:focus {
+  color: var(--bs-body-color);
+  opacity: 1;
+  border-left-color: rgb(var(--header-bg-color-rgb));
+}
+.iti-toc a.active {
+  color: var(--bs-body-color);
+  opacity: 1;
+  font-weight: 700;
+  /* Widen the active link past the sidebar so bold text has more horizontal
+     room and (in most cases) doesn't have to push a word onto a new line.
+     The extra width overflows into the gutter — allowed via overflow-x: clip
+     + overflow-clip-margin on .iti-right-sidebar. Long labels still wrap. */
+  width: calc(100% + 15px);
+  border-left-color: rgb(var(--header-bg-color-rgb));
 }
 
 /* Sticky-footer layout: ensure short pages still fill the viewport so any

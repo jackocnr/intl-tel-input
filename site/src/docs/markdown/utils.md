@@ -2,12 +2,6 @@
 
 The utils script is a custom build of Google's [libphonenumber](https://github.com/google/libphonenumber) that powers all formatting, validation, and placeholder generation in the core library.
 
-## Contents
-
-- [Overview](#overview)
-- [Loading the utils script](#loading-the-utils-script)
-- [Utility functions](#utility-functions)
-
 ## Overview
 
 Loading the utils script enables the following features:

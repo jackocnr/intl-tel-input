@@ -3,14 +3,6 @@
 How to get up and running with the vanilla JavaScript library. See a live demo on the [Validation](/examples/vanilla-javascript/validation) example page.
 
 
-## Contents
-- [Installation](#installation)
-- [Initialisation options](#initialisation-options)
-- [Methods](#methods)
-- [Events](#events)
-- [Next steps](#next-steps)
-
-
 ## Installation
 
 There are two ways to install the library: [using a bundler](#using-a-bundler) (e.g. Vite, webpack), or [using a script tag](#using-a-script-tag) (e.g. via a CDN).

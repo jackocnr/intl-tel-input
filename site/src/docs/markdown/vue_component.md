@@ -2,15 +2,6 @@
 
 A Vue component for the `intl-tel-input` library. See a live demo on the [Validation](/examples/vue-component/validation) example page.
 
-## Contents
-
-- [Installation](#installation)
-- [Props](#props)
-- [Initialisation options](#initialisation-options)
-- [Events](#events)
-- [Accessing instance methods](#accessing-instance-methods)
-- [Accessing static methods](#accessing-static-methods)
-
 ## Installation
 
 First, install the package: 
