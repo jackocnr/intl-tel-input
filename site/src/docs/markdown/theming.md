@@ -21,12 +21,12 @@ Hover background for the selected-country button and country list items.
 ###### --iti-border-color
 Default: `#ccc`  
 
-Dropdown border and the divider under the country search input.
+Country selector border and the divider under the country search input.
 
 ###### --iti-country-selector-bg
 Default: `white`  
 
-Dropdown background.
+Country selector background.
 
 ###### --iti-icon-color
 Default: `#555`  
@@ -48,14 +48,14 @@ Horizontal spacing around the flag, country name, and icons.
 ###### --iti-border-width
 Default: `1px`  
 
-Border width used for the dropdown and divider. Should match your input's border width.
+Border width used for the country selector and divider. Should match your input's border width.
 
 ###### --iti-mobile-popup-margin
 Default: `30px`  
 
 Margin around the fullscreen popup on mobile.
 
-##### Dropdown arrow variables
+##### Arrow variables
 
 ###### --iti-arrow-size
 Default: `5px`  

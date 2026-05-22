@@ -44,7 +44,7 @@ Controls the country selector — the panel that opens when the user clicks the 
 * `"AUTO"` — pick `"FULLSCREEN"` on narrow viewports and `"DROPDOWN"` otherwise.
 * `"OFF"` — the country selector is disabled entirely. The selected country is no longer clickable, and there is no arrow is shown.
 
-_Note: this replaces the previous `enableCountrySelector` and `useFullscreenPopup` boolean options._
+_Note: this replaces the previous `allowDropdown` and `useFullscreenPopup` boolean options._
 
 Try `intl-tel-input` with this option set to `"OFF"` in the [Playground](/playground?countrySelectorMode=OFF#countrySelectorMode).
 

@@ -50,6 +50,7 @@ export const TIMINGS = {
 } as const;
 
 // Layout / sizing fallbacks (used when measuring elements fails e.g., hidden containers)
+// TODO: find a way to pull these out of the CSS, so there's a single source of truth.
 export const LAYOUT = {
   NARROW_VIEWPORT_WIDTH: 500, // keep in sync with .iti__country-list CSS media query
   FALLBACK_SELECTED_WITH_DIAL_WIDTH: 78, // px width fallback when separateDialCode enabled
