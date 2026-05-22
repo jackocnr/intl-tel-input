@@ -8,7 +8,7 @@ export const playgroundPresets = [
   },
   {
     label: "No country selector",
-    href: "/playground?keepDropdownOpen=false&enableCountrySelector=false&initialCountry=us#user-interface-options",
+    href: "/playground?keepDropdownOpen=false&countrySelectorMode=OFF&initialCountry=us#user-interface-options",
   },
   {
     label: "No flags",
@@ -16,7 +16,7 @@ export const playgroundPresets = [
   },
   {
     label: "Fullscreen country selector",
-    href: "/playground?useFullscreenPopup=true&initialCountry=us#user-interface-options",
+    href: "/playground?countrySelectorMode=FULLSCREEN&initialCountry=us#user-interface-options",
   },
   {
     label: "Prioritise US & UK",

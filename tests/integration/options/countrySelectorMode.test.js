@@ -14,13 +14,13 @@ import {
 } from "../helpers/helpers";
 import { userEvent } from "@testing-library/user-event";
 
-describe("enableCountrySelector option", () => {
-  describe("enableCountrySelector=false", () => {
+describe("countrySelectorMode option", () => {
+  describe("countrySelectorMode='OFF'", () => {
     let iti, container, input, user;
 
     beforeEach(() => {
       user = userEvent.setup();
-      const options = { enableCountrySelector: false, separateDialCode: false };
+      const options = { countrySelectorMode: "OFF", separateDialCode: false };
       ({ iti, container, input } = initIntlTelInput({ options }));
     });
 
@@ -50,12 +50,12 @@ describe("enableCountrySelector option", () => {
     });
   });
 
-  describe("enableCountrySelector=true", () => {
+  describe("countrySelectorMode='DROPDOWN'", () => {
     let iti, container, input, user;
 
     beforeEach(() => {
       user = userEvent.setup();
-      const options = { enableCountrySelector: true, separateDialCode: false };
+      const options = { countrySelectorMode: "DROPDOWN", separateDialCode: false };
       ({ iti, container, input } = initIntlTelInput({ options }));
     });
 
@@ -79,9 +79,31 @@ describe("enableCountrySelector option", () => {
       expect(checkFlagSelected(container, "gb")).toBe(true);
     });
 
-    test("clicking selected flag shows dropdown", async () => {
+    test("clicking selected flag shows dropdown inline", async () => {
       await clickSelectedCountryAsync(container, user);
       expect(isCountrySelectorOpen(container)).toBeTruthy();
+      const root = container.ownerDocument;
+      expect(root.querySelector(".iti--fullscreen-popup")).toBeFalsy();
+    });
+  });
+
+  describe("countrySelectorMode='FULLSCREEN'", () => {
+    let iti, container, user;
+
+    beforeEach(() => {
+      user = userEvent.setup();
+      const options = { countrySelectorMode: "FULLSCREEN" };
+      ({ iti, container } = initIntlTelInput({ options }));
+    });
+
+    afterEach(() => teardown(iti));
+
+    test("attaches the country list to document.body on open", async () => {
+      const root = container.ownerDocument;
+      expect(getCountryListElement(root)).toBeFalsy();
+      await clickSelectedCountryAsync(container, user);
+      expect(getCountryListElement(root)).toBeTruthy();
+      expect(root.querySelector(".iti--fullscreen-popup")).toBeTruthy();
     });
   });
 });

@@ -22,7 +22,7 @@ describe("showFlags option", () => {
     let iti, container;
 
     beforeEach(() => {
-      const options = { showFlags: false, enableCountrySelector: true };
+      const options = { showFlags: false, countrySelectorMode: "DROPDOWN" };
       ({ iti, container } = initIntlTelInput({ options, inputValue: "+447947123123" }));
     });
     afterEach(() => teardown(iti));

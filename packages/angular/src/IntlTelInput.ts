@@ -88,7 +88,7 @@ class IntlTelInput
   @Input() readonly: boolean = false;
 
   // Library initialisation options (one @Input per option)
-  @Input() enableCountrySelector?: AllOptions["enableCountrySelector"];
+  @Input() countrySelectorMode?: AllOptions["countrySelectorMode"];
   @Input() allowedNumberTypes?: AllOptions["allowedNumberTypes"];
   @Input() allowNumberExtensions?: AllOptions["allowNumberExtensions"];
   @Input() allowPhonewords?: AllOptions["allowPhonewords"];
@@ -99,7 +99,7 @@ class IntlTelInput
   @Input() countrySearch?: AllOptions["countrySearch"];
   @Input() customPlaceholder?: AllOptions["customPlaceholder"];
   @Input() dropdownAlwaysOpen?: AllOptions["dropdownAlwaysOpen"];
-  @Input() countrySelectorParent?: AllOptions["countrySelectorParent"];
+  @Input() dropdownParent?: AllOptions["dropdownParent"];
   @Input() excludeCountries?: AllOptions["excludeCountries"];
   @Input() matchDropdownWidth?: AllOptions["matchDropdownWidth"];
   @Input() formatAsYouType?: AllOptions["formatAsYouType"];
@@ -117,7 +117,6 @@ class IntlTelInput
   @Input() showFlags?: AllOptions["showFlags"];
   @Input() strictMode?: AllOptions["strictMode"];
   @Input() strictRejectAnimation?: AllOptions["strictRejectAnimation"];
-  @Input() useFullscreenPopup?: AllOptions["useFullscreenPopup"];
 
   @Output() numberChange = new EventEmitter<string>();
   @Output() countryChange = new EventEmitter<string>();
@@ -216,7 +215,7 @@ class IntlTelInput
 
   private buildInitOptions(): SomeOptions {
     const options: Partial<AllOptions> = {
-      enableCountrySelector: this.enableCountrySelector,
+      countrySelectorMode: this.countrySelectorMode,
       allowedNumberTypes: this.allowedNumberTypes,
       allowNumberExtensions: this.allowNumberExtensions,
       allowPhonewords: this.allowPhonewords,
@@ -227,7 +226,7 @@ class IntlTelInput
       countrySearch: this.countrySearch,
       customPlaceholder: this.customPlaceholder,
       dropdownAlwaysOpen: this.dropdownAlwaysOpen,
-      countrySelectorParent: this.countrySelectorParent,
+      dropdownParent: this.dropdownParent,
       excludeCountries: this.excludeCountries,
       matchDropdownWidth: this.matchDropdownWidth,
       formatAsYouType: this.formatAsYouType,
@@ -245,7 +244,6 @@ class IntlTelInput
       showFlags: this.showFlags,
       strictMode: this.strictMode,
       strictRejectAnimation: this.strictRejectAnimation,
-      useFullscreenPopup: this.useFullscreenPopup,
     };
 
     return Object.fromEntries(

@@ -8,7 +8,7 @@ const validMsg = document.querySelector("#valid-msg");
 // initialise library
 const iti = intlTelInput(input, {
   onlyCountries: ["us"],
-  enableCountrySelector: false,
+  countrySelectorMode: "OFF",
   showFlags: false,
   separateDialCode: false,
   numberDisplayFormat: "NATIONAL",

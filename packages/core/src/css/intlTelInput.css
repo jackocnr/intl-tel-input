@@ -148,7 +148,7 @@
     border: var(--iti-border-width) solid var(--iti-border-color);
     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
   }
-  /* Note: don't apply these styles when using countrySelectorParent, as that uses pos:fixed and so this (child) doesn't need pos:absolute */
+  /* Note: don't apply these styles when using dropdownParent, as that uses pos:fixed and so this (child) doesn't need pos:absolute */
   .iti--inline-country-selector:not(.iti--detached-country-selector) & {
     position: absolute;
     /* Popup so render above everything else. */
@@ -360,7 +360,7 @@
   }
 }
 
-/* If countrySelectorParent option is set, increase z-index to prevent display issues. */
+/* When the country selector is rendered detached (fullscreen, or dropdown with dropdownParent set), increase z-index to prevent display issues. */
 .iti--detached-country-selector {
   position: fixed;
   top: -1000px;

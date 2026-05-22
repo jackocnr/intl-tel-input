@@ -7,7 +7,11 @@ import {
 } from "../constants.js";
 import defaultEnglishStrings from "../locale/en.js";
 import { isIso2, type Iso2 } from "../data.js";
-import type { AllOptions, SomeOptions } from "../types/public-api.js";
+import type {
+  AllOptions,
+  CountrySelectorMode,
+  SomeOptions,
+} from "../types/public-api.js";
 
 // Helper for media query evaluation
 const mediaQuery = (q: string): boolean =>
@@ -18,20 +22,29 @@ const mediaQuery = (q: string): boolean =>
 const isNarrowViewport = () =>
   mediaQuery(`(max-width: ${LAYOUT.NARROW_VIEWPORT_WIDTH}px)`);
 
-//* Helper to decide whether to use fullscreen popup by default
-const computeDefaultUseFullscreenPopup = (): boolean => {
+//* Heuristic for resolving countrySelectorMode "AUTO" to "FULLSCREEN" or "DROPDOWN".
+const resolveAutoCountrySelectorMode = (): "FULLSCREEN" | "DROPDOWN" => {
   if (typeof navigator !== "undefined" && typeof window !== "undefined") {
     const isShortViewport = mediaQuery("(max-height: 600px)");
     const isCoarsePointer = mediaQuery("(pointer: coarse)");
-    /* Heuristic rationale: If narrow width OR (coarse pointer with constrained height) we  prefer fullscreen for usability. Coarse pointer usually implies touch (phones/tablets, some hybrids) where larger touch targets help (and virtual keyboards may be used, which consume more vertical space). */
-    return isNarrowViewport() || (isCoarsePointer && isShortViewport);
+    /* Heuristic rationale: If narrow width OR (coarse pointer with constrained height) we prefer fullscreen for usability. Coarse pointer usually implies touch (phones/tablets, some hybrids) where larger touch targets help (and virtual keyboards may be used, which consume more vertical space). */
+    if (isNarrowViewport() || (isCoarsePointer && isShortViewport)) {
+      return "FULLSCREEN";
+    }
   }
-  return false;
+  return "DROPDOWN";
 };
 
+const COUNTRY_SELECTOR_MODES: readonly CountrySelectorMode[] = [
+  "OFF",
+  "DROPDOWN",
+  "FULLSCREEN",
+  "AUTO",
+];
+
 export const defaults: AllOptions = {
-  //* Whether or not to enable the country selector — the panel (dropdown or fullscreen popup) that opens when the user clicks the selected country button.
-  enableCountrySelector: true,
+  //* How the country selector is displayed. "DROPDOWN" vs "FULLSCREEN", or "AUTO" to decide itself, or "OFF".
+  countrySelectorMode: "AUTO",
   //* The number type to enforce during validation.
   allowedNumberTypes: [NUMBER_TYPE.MOBILE, NUMBER_TYPE.FIXED_LINE],
   //* Whether or not to allow extensions after the main number.
@@ -52,8 +65,8 @@ export const defaults: AllOptions = {
   customPlaceholder: null,
   //* Always show the dropdown
   dropdownAlwaysOpen: false,
-  //* Append menu to specified element.
-  countrySelectorParent: null,
+  //* Optional DOM element to append the dropdown to (used to escape ancestors with overflow:hidden, or to mount in a custom container). Only consulted in dropdown rendering; ignored when the country selector renders as a fullscreen popup.
+  dropdownParent: null,
   //* Don't display these countries.
   excludeCountries: null,
   //* Fix the dropdown width to the input width (rather than being as wide as the longest country name).
@@ -88,8 +101,6 @@ export const defaults: AllOptions = {
   showFlags: true,
   //* Only allow certain chars e.g. a plus followed by numeric digits, and cap at max valid length.
   strictMode: true,
-  //* Use full screen popup instead of dropdown for country list.
-  useFullscreenPopup: computeDefaultUseFullscreenPopup(),
 };
 
 const toString = (val: unknown): string => JSON.stringify(val);
@@ -174,7 +185,6 @@ export const validateOptions = (customOptions: unknown): SomeOptions => {
     }
 
     switch (key) {
-      case "enableCountrySelector":
       case "allowNumberExtensions":
       case "allowPhonewords":
       case "countrySearch":
@@ -185,9 +195,23 @@ export const validateOptions = (customOptions: unknown): SomeOptions => {
       case "separateDialCode":
       case "strictMode":
       case "strictRejectAnimation":
-      case "useFullscreenPopup":
         if (typeof value !== "boolean") {
           warnOption(key, "a boolean", value);
+          break;
+        }
+        validatedOptions[key] = value;
+        break;
+
+      case "countrySelectorMode":
+        if (
+          typeof value !== "string" ||
+          !(COUNTRY_SELECTOR_MODES as readonly string[]).includes(value)
+        ) {
+          warnOption(
+            "countrySelectorMode",
+            `one of ${COUNTRY_SELECTOR_MODES.map((m) => `"${m}"`).join(", ")}`,
+            value,
+          );
           break;
         }
         validatedOptions[key] = value;
@@ -253,9 +277,9 @@ export const validateOptions = (customOptions: unknown): SomeOptions => {
         validatedOptions[key] = value;
         break;
 
-      case "countrySelectorParent":
+      case "dropdownParent":
         if (value !== null && !isElLike(value)) {
-          warnOption("countrySelectorParent", "an HTMLElement or null", value);
+          warnOption("dropdownParent", "an HTMLElement or null", value);
           break;
         }
         validatedOptions[key] = value;
@@ -376,13 +400,18 @@ export const normaliseOptions = (o: AllOptions): void => {
 
 // Apply option side-effects (mutates the passed object)
 export const applyOptionSideEffects = (o: AllOptions): void => {
+  //* Resolve "AUTO" to a concrete mode based on the current viewport. Downstream code only ever sees "OFF", "DROPDOWN", or "FULLSCREEN".
+  if (o.countrySelectorMode === "AUTO") {
+    o.countrySelectorMode = resolveAutoCountrySelectorMode();
+  }
+
+  //* dropdownAlwaysOpen requires the dropdown rendering (fullscreen popup doesn't support always-open, and we need the country selector to exist).
   if (o.dropdownAlwaysOpen) {
-    o.useFullscreenPopup = false;
-    o.enableCountrySelector = true;
+    o.countrySelectorMode = "DROPDOWN";
   }
 
   //* If showing fullscreen popup, do not fix the width.
-  if (o.useFullscreenPopup) {
+  if (o.countrySelectorMode === "FULLSCREEN") {
     o.matchDropdownWidth = false;
   } else {
     // if fullscreen popup disabled for whatever reason, but it's still a narrow screen (so full width dropdown wont fit), then the best UX is to fix dropdown width to input width.
@@ -403,17 +432,12 @@ export const applyOptionSideEffects = (o: AllOptions): void => {
 
   // if there is a country selector, but no flags and no separate dial code, then it suggests that there are multiple countries to choose from, but no way to see which one is currently selected, so we force INTERNATIONAL display, as it doesn't make sense to show a national number placeholder if there's no way to see which country is selected
   if (
-    o.enableCountrySelector &&
+    o.countrySelectorMode !== "OFF" &&
     !o.showFlags &&
     !o.separateDialCode &&
     o.numberDisplayFormat === NUMBER_FORMAT.NATIONAL
   ) {
     o.numberDisplayFormat = NUMBER_FORMAT.INTERNATIONAL;
-  }
-
-  //* If we want a fullscreen popup, we must append it to the body.
-  if (o.useFullscreenPopup && !o.countrySelectorParent) {
-    o.countrySelectorParent = document.body;
   }
 
   //* Allow overriding the default interface strings.

@@ -23,9 +23,9 @@ describe("core/options applyOptionSideEffects", () => {
     expect(o.numberDisplayFormat).toBe("INTERNATIONAL");
   });
 
-  test("enableCountrySelector without flags or separateDialCode forces NATIONAL back to INTERNATIONAL", () => {
+  test("countrySelectorMode!=OFF without flags or separateDialCode forces NATIONAL back to INTERNATIONAL", () => {
     const o = clone();
-    o.enableCountrySelector = true;
+    o.countrySelectorMode = "DROPDOWN";
     o.showFlags = false;
     o.separateDialCode = false;
     o.numberDisplayFormat = "NATIONAL";
@@ -33,12 +33,19 @@ describe("core/options applyOptionSideEffects", () => {
     expect(o.numberDisplayFormat).toBe("INTERNATIONAL");
   });
 
-  test("useFullscreenPopup without container sets countrySelectorParent", () => {
+  test("countrySelectorMode 'AUTO' resolves to 'DROPDOWN' or 'FULLSCREEN'", () => {
     const o = clone();
-    o.useFullscreenPopup = true;
-    o.countrySelectorParent = null;
+    o.countrySelectorMode = "AUTO";
     applyOptionSideEffects(o);
-    expect(o.countrySelectorParent).toBe(document.body);
+    expect(["DROPDOWN", "FULLSCREEN"]).toContain(o.countrySelectorMode);
+  });
+
+  test("dropdownAlwaysOpen forces countrySelectorMode to 'DROPDOWN'", () => {
+    const o = clone();
+    o.dropdownAlwaysOpen = true;
+    o.countrySelectorMode = "FULLSCREEN";
+    applyOptionSideEffects(o);
+    expect(o.countrySelectorMode).toBe("DROPDOWN");
   });
 });
 
@@ -78,13 +85,26 @@ describe("core/options validateOptions", () => {
   test("accepts a minimal valid options object", () => {
     expect(() =>
       validateOptions({
-        enableCountrySelector: false,
+        countrySelectorMode: "OFF",
         initialCountry: "us",
         excludeCountries: ["us"],
         allowedNumberTypes: ["MOBILE"],
         placeholderNumberPolicy: "AGGRESSIVE",
       }),
     ).not.toThrow();
+    expect(warnSpy).not.toHaveBeenCalled();
+  });
+
+  test("warns on invalid countrySelectorMode", () => {
+    expect(() => validateOptions({ countrySelectorMode: "nope" })).not.toThrow();
+    expect(warnSpy).toHaveBeenCalled();
+  });
+
+  test("accepts valid countrySelectorMode values", () => {
+    expect(() => validateOptions({ countrySelectorMode: "OFF" })).not.toThrow();
+    expect(() => validateOptions({ countrySelectorMode: "DROPDOWN" })).not.toThrow();
+    expect(() => validateOptions({ countrySelectorMode: "FULLSCREEN" })).not.toThrow();
+    expect(() => validateOptions({ countrySelectorMode: "AUTO" })).not.toThrow();
     expect(warnSpy).not.toHaveBeenCalled();
   });
 

@@ -318,7 +318,7 @@ export class Iti {
   #initListeners(): void {
     this.#bindAllTelInputListeners();
 
-    if (this.#options.enableCountrySelector) {
+    if (this.#options.countrySelectorMode !== "OFF") {
       this.#ui.bindAllInitialCountrySelectorListeners(
         this.#abortController!.signal,
         () => this.openCountrySelector(),
@@ -533,7 +533,7 @@ export class Iti {
       strictMode,
       formatAsYouType,
       separateDialCode,
-      enableCountrySelector,
+      countrySelectorMode,
       countrySearch,
     } = this.#options;
     //* This listener receives both native InputEvents (from typing) and synthetic CustomEvents (from setNumber/setSelectedCountry), so we read detail via a cast.
@@ -556,7 +556,7 @@ export class Iti {
       !isPaste &&
       e?.data === "+" &&
       separateDialCode &&
-      enableCountrySelector &&
+      countrySelectorMode !== "OFF" &&
       countrySearch
     ) {
       this.#handleAndroidPlusKey(inputValue);
@@ -631,7 +631,7 @@ export class Iti {
   //* On keydown event: (1) if strictMode then prevent invalid characters, (2) if separateDialCode then handle plus key
   //* Note that this fires BEFORE the input is updated.
   #handleKeydownEvent = (e: KeyboardEvent): void => {
-    const { strictMode, separateDialCode, enableCountrySelector, countrySearch } =
+    const { strictMode, separateDialCode, countrySelectorMode, countrySearch } =
       this.#options;
     //* Only interested in actual character presses, rather than ctrl, alt, command, arrow keys, delete/backspace, cut/copy/paste etc.
     if (!e.key || e.key.length !== 1 || e.altKey || e.ctrlKey || e.metaKey) {
@@ -639,7 +639,7 @@ export class Iti {
     }
 
     //* If separateDialCode, handle the plus key differently: open the country selector and put plus in the search input instead.
-    if (separateDialCode && enableCountrySelector && countrySearch && e.key === "+") {
+    if (separateDialCode && countrySelectorMode !== "OFF" && countrySearch && e.key === "+") {
       e.preventDefault();
       this.#openCountrySelectorWithPlus();
       return;
@@ -1400,7 +1400,7 @@ export class Iti {
     }
     this.#isActive = false;
 
-    if (this.#options.enableCountrySelector) {
+    if (this.#options.countrySelectorMode !== "OFF") {
       //* Make sure the country selector is closed (and unbind listeners).
       this.#closeCountrySelectorInternal(true);
     }

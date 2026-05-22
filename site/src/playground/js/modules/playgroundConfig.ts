@@ -11,12 +11,11 @@ export const OPTION_GROUPS = [
     icon: "bi-window",
     description: "Control country selector behaviour and whether certain UI elements are displayed.",
     keys: [
-      "enableCountrySelector",
       "countrySearch",
+      "countrySelectorMode",
       "matchDropdownWidth",
       "separateDialCode",
       "showFlags",
-      "useFullscreenPopup",
     ],
   },
   {
@@ -80,7 +79,9 @@ export function createPlaygroundConfig({
   );
 
   const defaultInitOptions = {
-    enableCountrySelector: defaults.enableCountrySelector,
+    // playground forces "DROPDOWN" so the country selector stays inline (rather than fullscreen on mobile),
+    // which is a better UX for exploring other options
+    countrySelectorMode: "DROPDOWN",
     allowedNumberTypes: defaults.allowedNumberTypes,
     allowNumberExtensions: defaults.allowNumberExtensions,
     allowPhonewords: defaults.allowPhonewords,
@@ -106,8 +107,6 @@ export function createPlaygroundConfig({
     showFlags: defaults.showFlags,
     strictMode: defaults.strictMode,
     strictRejectAnimation: defaults.strictRejectAnimation,
-    // show dropdown open, even on mobile, as provides a better playground experience for testing options, otherwise they have to scroll down, change option, scroll back up, open dropdown etc
-    useFullscreenPopup: false,
   };
 
   // Opinionated starting state for the playground form. Library defaults are still
@@ -125,9 +124,10 @@ export function createPlaygroundConfig({
 
   const optionMeta = {
     // User Interface Options
-    enableCountrySelector: {
-      type: "boolean",
-      tooltip: "Enable the country selector — the panel (dropdown or fullscreen popup) that lets the user pick a country. When disabled, the selected country button becomes a static, non-clickable display.",
+    countrySelectorMode: {
+      type: "select",
+      tooltip: "Display the country selector as either a <code>\"DROPDOWN\"</code>, or a <code>\"FULLSCREEN\"</code> popup, or set it to <code>\"AUTO\"</code> to decide itself based on viewport width. The playground forces <code>\"DROPDOWN\"</code> by default for a better exploration experience.",
+      options: ["OFF", "DROPDOWN", "FULLSCREEN", "AUTO"],
     },
     countrySearch: {
       type: "boolean",
@@ -144,10 +144,6 @@ export function createPlaygroundConfig({
     showFlags: {
       type: "boolean",
       tooltip: "Show country flags in the country list and selected country.",
-    },
-    useFullscreenPopup: {
-      type: "boolean",
-      tooltip: "Use a fullscreen-style country picker instead of the dropdown. Defaults to true on small screens (except on this page, where it is helpful to have it always visible as a dropdown).",
     },
 
     // Country Options

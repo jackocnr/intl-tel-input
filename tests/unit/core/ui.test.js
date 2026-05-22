@@ -20,7 +20,7 @@ const makeCountry = (overrides) => ({
 
 // Helper: minimal merged options (mirrors what applyOptionSideEffects produces)
 const makeOptions = (overrides = {}) => ({
-  enableCountrySelector: true,
+  countrySelectorMode: "DROPDOWN",
   allowedNumberTypes: ["MOBILE", "FIXED_LINE"],
   allowNumberExtensions: false,
   allowPhonewords: false,
@@ -31,7 +31,7 @@ const makeOptions = (overrides = {}) => ({
   countrySearch: true,
   customPlaceholder: null,
   dropdownAlwaysOpen: false,
-  countrySelectorParent: null,
+  dropdownParent: null,
   excludeCountries: null,
   matchDropdownWidth: true,
   formatAsYouType: true,
@@ -47,7 +47,6 @@ const makeOptions = (overrides = {}) => ({
   separateDialCode: false,
   showFlags: true,
   strictMode: false,
-  useFullscreenPopup: false,
   ...overrides,
 });
 
@@ -146,15 +145,15 @@ describe("UI.buildMarkup", () => {
     expect(input.classList.contains("iti__tel-input")).toBe(true);
   });
 
-  test("creates selectedCountry button when enableCountrySelector is true", () => {
-    const { input } = buildUI({ enableCountrySelector: true });
+  test("creates selectedCountry button when countrySelectorMode is not 'OFF'", () => {
+    const { input } = buildUI({ countrySelectorMode: "DROPDOWN" });
     const selectedCountryEl = getSelectedCountryEl(input);
     expect(selectedCountryEl.tagName).toBe("BUTTON");
     expect(selectedCountryEl.getAttribute(ARIA.HASPOPUP)).toBe("dialog");
   });
 
-  test("creates selectedCountry div when enableCountrySelector is false", () => {
-    const { input } = buildUI({ enableCountrySelector: false, showFlags: true });
+  test("creates selectedCountry div when countrySelectorMode is 'OFF'", () => {
+    const { input } = buildUI({ countrySelectorMode: "OFF", showFlags: true });
     expect(getSelectedCountryEl(input).tagName).toBe("DIV");
   });
 
@@ -194,9 +193,9 @@ describe("UI.buildMarkup", () => {
     expect(input.parentNode.classList.contains("my-class")).toBe(true);
   });
 
-  test("no countryContainer when enableCountrySelector, showFlags, separateDialCode all false", () => {
+  test("no countryContainer when countrySelectorMode is 'OFF' and showFlags + separateDialCode are false", () => {
     const { input } = buildUI({
-      enableCountrySelector: false,
+      countrySelectorMode: "OFF",
       showFlags: false,
       separateDialCode: false,
     });
@@ -209,8 +208,8 @@ describe("UI.buildMarkup", () => {
     expect(dialCodeEl).not.toBeNull();
   });
 
-  test("does not create dropdown arrow when enableCountrySelector is false", () => {
-    const { input } = buildUI({ enableCountrySelector: false, showFlags: true });
+  test("does not create dropdown arrow when countrySelectorMode is 'OFF'", () => {
+    const { input } = buildUI({ countrySelectorMode: "OFF", showFlags: true });
     const arrow = getSelectedCountryEl(input).querySelector(".iti__arrow");
     expect(arrow).toBeNull();
   });

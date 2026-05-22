@@ -11,13 +11,13 @@ import {
 } from "../helpers/helpers";
 import { userEvent } from "@testing-library/user-event";
 
-describe("countrySelectorParent option", () => {
-  describe("countrySelectorParent=null", () => {
+describe("dropdownParent option", () => {
+  describe("dropdownParent=null", () => {
     let iti, container, user;
 
     beforeEach(() => {
       user = userEvent.setup();
-      const options = { countrySelectorParent: null };
+      const options = { dropdownParent: null };
       ({ iti, container } = initIntlTelInput({ options }));
     });
 
@@ -43,12 +43,12 @@ describe("countrySelectorParent option", () => {
     });
   });
 
-  describe("countrySelectorParent=document.body", () => {
+  describe("dropdownParent=document.body", () => {
     let iti, container, user;
 
     beforeEach(() => {
       user = userEvent.setup();
-      const options = { countrySelectorParent: document.body };
+      const options = { dropdownParent: document.body };
       ({ iti, container } = initIntlTelInput({ options }));
     });
 
@@ -65,7 +65,7 @@ describe("countrySelectorParent option", () => {
     });
   });
 
-  describe("countrySelectorParent=custom element", () => {
+  describe("dropdownParent=custom element", () => {
     let iti, container, user, customContainer;
 
     beforeEach(() => {
@@ -73,7 +73,7 @@ describe("countrySelectorParent option", () => {
       customContainer = document.createElement("div");
       customContainer.id = "custom-dd-container";
       document.body.appendChild(customContainer);
-      ({ iti, container } = initIntlTelInput({ options: { countrySelectorParent: customContainer } }));
+      ({ iti, container } = initIntlTelInput({ options: { dropdownParent: customContainer } }));
     });
 
     afterEach(() => {

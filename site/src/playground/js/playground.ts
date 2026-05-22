@@ -38,6 +38,11 @@ const integrationTabs = document.querySelectorAll<HTMLButtonElement>(".iti-playg
 const INTEGRATION_VALUES = new Set<Integration>(["vanilla", "react", "vue", "angular", "svelte"]);
 const INTEGRATION_STORAGE_KEY = "iti.playground.integration";
 
+// Hoisted to module top so it's safely initialised before any top-of-module
+// code calls renderMarkdownLinks (e.g. the keep-dropdown-open tooltip setup).
+// Used by renderMarkdownLinks and by hint-length calculation further down.
+const MARKDOWN_LINK_PATTERN = /\[([^\]]+)\]\(([^)]+)\)/g;
+
 function isIntegration(value: string | null | undefined): value is Integration {
   return !!value && INTEGRATION_VALUES.has(value as Integration);
 }
@@ -111,11 +116,11 @@ function flashActionButtonLabel(buttonEl: HTMLButtonElement | null, temporaryLab
 }
 
 function getKeepDropdownOpenDisabledReason(state) {
-  if (state.useFullscreenPopup) {
-    return "Disabled because useFullscreenPopup is on — the dropdown becomes a modal popup.";
+  if (state.countrySelectorMode === "FULLSCREEN") {
+    return "Disabled because [countrySelectorMode](#countrySelectorMode) is 'FULLSCREEN' — this only works with a dropdown.";
   }
-  if (!state.enableCountrySelector) {
-    return "Disabled because enableCountrySelector is off — there is no dropdown to keep open.";
+  if (state.countrySelectorMode === "OFF") {
+    return "Disabled because [countrySelectorMode](#countrySelectorMode) is 'OFF' — there is no dropdown to keep open.";
   }
   return null;
 }
@@ -137,10 +142,37 @@ function setKeepDropdownOpenTooltip(title: string) {
     keepDropdownOpenTooltip.dispose();
     keepDropdownOpenTooltip = null;
   }
-  keepDropdownOpenInfo.setAttribute("data-bs-title", title);
-  keepDropdownOpenTooltip = new window.bootstrap.Tooltip(keepDropdownOpenInfo);
+  // Render markdown `[text](url)` link syntax via the shared helper, then
+  // serialise to HTML for Bootstrap's data-bs-title. Note: innerHTML
+  // serialisation drops the helper's custom same-hash click handlers, but
+  // native hash navigation still works — adequate for this tooltip.
+  const wrapper = document.createElement("span");
+  wrapper.appendChild(renderMarkdownLinks(title));
+  keepDropdownOpenInfo.setAttribute("data-bs-title", wrapper.innerHTML);
+  keepDropdownOpenTooltip = new window.bootstrap.Tooltip(keepDropdownOpenInfo, { html: true });
 }
 setKeepDropdownOpenTooltip(KEEP_DROPDOWN_OPEN_DEFAULT_TOOLTIP);
+
+// When the checkbox is in its disabled state, a click anywhere on the wrapper
+// (checkbox or label) shows the info tooltip explaining why — otherwise the
+// tooltip is only reachable by hovering the small info icon, which is easy to
+// miss (especially on touch devices, which have no hover).
+let disabledTooltipHideTimer: number | null = null;
+keepDropdownOpenWrapper.addEventListener("click", (e) => {
+  if (!keepDropdownOpenWrapper.classList.contains("is-disabled")) {
+    return;
+  }
+  // Don't let the click propagate to the info icon's own handlers — we drive the tooltip ourselves.
+  e.preventDefault();
+  keepDropdownOpenTooltip?.show();
+  if (disabledTooltipHideTimer !== null) {
+    window.clearTimeout(disabledTooltipHideTimer);
+  }
+  disabledTooltipHideTimer = window.setTimeout(() => {
+    keepDropdownOpenTooltip?.hide();
+    disabledTooltipHideTimer = null;
+  }, 3000);
+});
 
 function syncKeepDropdownOpenAvailability(state) {
   const reason = getKeepDropdownOpenDisabledReason(state);
@@ -363,7 +395,7 @@ const { resetGroupKeys: optionResetGroupKeys } = renderControls(optionsForm, opt
 
 // Hash-target handling. Two forms are supported:
 //   - group slug (e.g. #user-interface-options) → scroll to the group header
-//   - option name (e.g. #enableCountrySelector, case-insensitive) → scroll to the parent
+//   - option name (e.g. #countrySelectorMode, case-insensitive) → scroll to the parent
 //     group header AND flash the option control to draw the eye to it
 const optionKeyByLower = new Map(
   Object.keys(optionMeta).map((k) => [k.toLowerCase(), k]),
@@ -458,8 +490,6 @@ function flashOptionControl(key: string) {
 // link elements. URLs starting with `#` are intercepted so the same-hash case
 // still runs scroll+flash (the browser fires no hashchange in that case).
 // Returns a DocumentFragment for safe insertion — no innerHTML, no XSS risk.
-const MARKDOWN_LINK_PATTERN = /\[([^\]]+)\]\(([^)]+)\)/g;
-
 function renderMarkdownLinks(text: string): DocumentFragment {
   const frag = document.createDocumentFragment();
   MARKDOWN_LINK_PATTERN.lastIndex = 0;
@@ -563,7 +593,7 @@ function getCombinedStateFromControls() {
 
 const initialOptionsState = parseQueryOverrides(playgroundInitialOptions, optionMeta, {
   // Legacy URL params still in the wild — map them to the new option keys.
-  aliases: { uiTranslations: "i18n", enableCountrySelector: "allowDropdown" },
+  aliases: { uiTranslations: "i18n" },
 });
 const initialAttrsState = parseQueryOverrides(defaultInputAttributes, attributeMeta);
 const initialState = mirrorLanguage({ ...initialOptionsState, ...initialAttrsState });
@@ -651,7 +681,7 @@ function hasNoBrowserCountryNameData(locale: string): boolean {
 // Contextual hints: shown when toggling an option that has no visible effect
 // until the user takes an additional action (e.g. selecting a country, typing a number).
 const HINT_CONFIGS = [
-  // User Interface Options (enableCountrySelector not needed as always clear)
+  // User Interface Options
   {
     optionKey: "countrySearch",
     message: "Tip: in the Live Demo section, enable [Keep dropdown open](#keep-dropdown-open) to see this change in action.",
@@ -687,14 +717,9 @@ const HINT_CONFIGS = [
     alsoShowOnToggleOff: true,
   },
   {
-    optionKey: "useFullscreenPopup",
-    message: () => {
-      if (!getCombinedStateFromControls().enableCountrySelector) {
-        return "Tip: enable [enableCountrySelector](#enableCountrySelector) for this to work.";
-      }
-      return "Tip: click the selected country to open the popup.";
-    },
-    shouldShow: () => true,
+    optionKey: "countrySelectorMode",
+    message: () => "Tip: click the selected country to open the fullscreen popup.",
+    shouldShow: () => getCombinedStateFromControls().countrySelectorMode === "FULLSCREEN",
   },
   // Country Options
   {

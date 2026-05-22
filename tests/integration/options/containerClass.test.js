@@ -25,7 +25,7 @@ describe("containerClass option", () => {
 
     beforeEach(() => {
       user = userEvent.setup();
-      const options = { containerClass: "cpc", useFullscreenPopup: true };
+      const options = { containerClass: "cpc", countrySelectorMode: "FULLSCREEN" };
       ({ iti, container } = initIntlTelInput({ options }));
     });
 

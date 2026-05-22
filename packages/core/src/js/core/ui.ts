@@ -25,7 +25,9 @@ import { Numerals } from "./numerals.js";
 
 //* Feature-detect CSS Anchor Positioning.
 const supportsCssAnchor =
-  typeof CSS !== "undefined" && CSS.supports("anchor-name: --x");
+  typeof CSS !== "undefined" &&
+  typeof CSS.supports === "function" &&
+  CSS.supports("anchor-name: --x");
 
 export default class UI {
   // private
@@ -123,16 +125,15 @@ export default class UI {
   }
 
   #createWrapperAndInsert(): HTMLElement {
-    const { enableCountrySelector, showFlags, containerClass, useFullscreenPopup } =
-      this.#options;
+    const { countrySelectorMode, showFlags, containerClass } = this.#options;
 
     //* Containers (mostly for positioning).
     const parentClasses = buildClassNames({
       iti: true,
       "iti--input-container": true,
-      "iti--enable-country-selector": enableCountrySelector,
+      "iti--enable-country-selector": countrySelectorMode !== "OFF",
       "iti--show-flags": showFlags,
-      "iti--inline-country-selector": !useFullscreenPopup,
+      "iti--inline-country-selector": countrySelectorMode !== "FULLSCREEN",
       [containerClass]: Boolean(containerClass),
     });
     const wrapper = createEl("div", { class: parentClasses });
@@ -145,7 +146,8 @@ export default class UI {
   }
 
   #buildCountryContainer(wrapper: HTMLElement): void {
-    const { enableCountrySelector, separateDialCode, showFlags } = this.#options;
+    const { countrySelectorMode, separateDialCode, showFlags } = this.#options;
+    const enableCountrySelector = countrySelectorMode !== "OFF";
 
     //* If we don't need a countryContainer
     if (!enableCountrySelector && !showFlags && !separateDialCode) {
@@ -159,7 +161,7 @@ export default class UI {
       wrapper,
     );
 
-    //* Selected country: clickable <button> when enableCountrySelector is enabled, otherwise a non-interactive <div>. Always shown on the left of the input, even in RTL mode.
+    //* Selected country: clickable <button> when the country selector is enabled, otherwise a non-interactive <div>. Always shown on the left of the input, even in RTL mode.
     //* https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only
     if (enableCountrySelector) {
       this.#selectedCountryEl = createEl(
@@ -186,7 +188,7 @@ export default class UI {
       );
     }
 
-    // The element that gets a grey background on hover (if enableCountrySelector enabled)
+    // The element that gets a grey background on hover (if the country selector is enabled)
     const selectedCountryPrimary = createEl(
       "div",
       { class: "iti__selected-country-primary" },
@@ -222,12 +224,12 @@ export default class UI {
   }
 
   public ensureDropdownWidthSet(): void {
-    const { matchDropdownWidth, enableCountrySelector } = this.#options;
+    const { matchDropdownWidth, countrySelectorMode } = this.#options;
 
-    // Note: matchDropdownWidth is always false if useFullscreenPopup is true
+    // Note: matchDropdownWidth is always false if rendering as a fullscreen popup
     // don't re-set it if it's already set
     if (
-      !enableCountrySelector ||
+      countrySelectorMode === "OFF" ||
       !matchDropdownWidth ||
       this.#countrySelectorEl!.style.width
     ) {
@@ -244,12 +246,13 @@ export default class UI {
   #buildCountrySelector(): void {
     const {
       matchDropdownWidth,
-      useFullscreenPopup,
+      countrySelectorMode,
       countrySearch,
       uiTranslations,
-      countrySelectorParent,
       containerClass,
     } = this.#options;
+    const isFullscreen = countrySelectorMode === "FULLSCREEN";
+    const detachedParent = this.#getDetachedParent();
 
     const extraClasses = matchDropdownWidth ? "" : "iti--flexible-dropdown-width";
     this.#countrySelectorEl = createEl("div", {
@@ -282,7 +285,7 @@ export default class UI {
       this.#updateSearchResultsA11yText();
     }
 
-    if (!useFullscreenPopup) {
+    if (!isFullscreen) {
       // capture the dropdown height for later uses: (1) on dropdown open: decide whether to position it above or below the input, and (2) when countrySearch enabled, fix the dropdown height to prevent it jumping around when filtering the country list.
       this.#inlineDropdownHeight = this.#getHiddenInlineDropdownHeight();
       // fix the dropdown height when using countrySearch so when dropdown is positioned above input, and you type in the search input and the country list changes, the search input doesn't jump up/down. (NOTE: the country list just has a max-height as it may only be needed to show a few items e.g. from onlyCountries, or from filtering with a search query)
@@ -291,23 +294,35 @@ export default class UI {
       }
     }
 
-    //* Create countrySelectorParent markup.
-    if (countrySelectorParent) {
+    //* Detached country selector: required for fullscreen (always attached to document.body), or optional for dropdown (when dropdownParent is set to escape an overflow:hidden ancestor).
+    if (detachedParent) {
       const wrapperClasses = buildClassNames({
         iti: true,
         "iti--detached-country-selector": true,
-        "iti--fullscreen-popup": useFullscreenPopup,
-        "iti--inline-country-selector": !useFullscreenPopup,
+        "iti--fullscreen-popup": isFullscreen,
+        "iti--inline-country-selector": !isFullscreen,
         [containerClass]: Boolean(containerClass),
       });
       this.#detachedCountrySelectorEl = createEl("div", { class: wrapperClasses });
       this.#detachedCountrySelectorEl.appendChild(this.#countrySelectorEl);
-      if (!useFullscreenPopup) {
+      if (!isFullscreen) {
         this.#setupCssAnchorPositioning();
       }
     } else {
       this.#countryContainerEl!.appendChild(this.#countrySelectorEl!);
     }
+  }
+
+  //* Resolve the DOM element to attach the country selector to. Fullscreen always uses document.body; dropdown uses the consumer-supplied dropdownParent (if any); otherwise the country selector renders inline within the input wrapper (no detached element).
+  #getDetachedParent(): HTMLElement | null {
+    const { countrySelectorMode, dropdownParent } = this.#options;
+    if (countrySelectorMode === "FULLSCREEN") {
+      return document.body;
+    }
+    if (countrySelectorMode === "DROPDOWN") {
+      return dropdownParent;
+    }
+    return null;
   }
 
   #buildSearchUI(): void {
@@ -779,16 +794,15 @@ export default class UI {
     onSelect: (listItem: HTMLElement | null) => void,
     onClose: () => void,
   ): void {
-    const { countrySearch, dropdownAlwaysOpen, countrySelectorParent } =
-      this.#options;
+    const { countrySearch, dropdownAlwaysOpen } = this.#options;
 
     this.#countrySelectorAbortController = new AbortController();
 
     // if matchDropdownWidth enabled, and the width was not set during init (e.g. because input was hidden), then set it now as the input must be visible now.
     this.ensureDropdownWidthSet();
 
-    // countrySelectorParent can be used for both a detached dropdown and the fullscreen popup
-    if (countrySelectorParent) {
+    // Detached country selector: fullscreen popup (always) or detached dropdown (when dropdownParent set).
+    if (this.#detachedCountrySelectorEl) {
       this.#injectAndPositionDetachedCountrySelector();
     } else {
       // inline dropdown
@@ -818,7 +832,7 @@ export default class UI {
     // When using fullscreen popup, listen for virtual keyboard show/hide via visualViewport
     // so the popup resizes to stay above the keyboard.
     if (
-      this.#options.useFullscreenPopup &&
+      this.#options.countrySelectorMode === "FULLSCREEN" &&
       this.#detachedCountrySelectorEl &&
       window.visualViewport
     ) {
@@ -860,8 +874,8 @@ export default class UI {
       this.#bindSearchInputListener(signal);
     }
     if (
-      !this.#options.useFullscreenPopup &&
-      this.#options.countrySelectorParent &&
+      this.#options.countrySelectorMode === "DROPDOWN" &&
+      this.#options.dropdownParent &&
       !supportsCssAnchor
     ) {
       //* For browsers that support it, we fix the detached dropdown to the input using CSS Anchor Positioning.
@@ -1098,7 +1112,7 @@ export default class UI {
 
   // UI: Close the country selector (DOM + abort scoped listeners).
   public closeCountrySelector(): void {
-    const { countrySearch, countrySelectorParent } = this.#options;
+    const { countrySearch } = this.#options;
 
     //* Unbind all country-selector-scoped listeners in one go.
     this.#countrySelectorAbortController!.abort();
@@ -1122,13 +1136,13 @@ export default class UI {
     // Update the arrow.
     this.#arrowEl!.classList.remove(CLASSES.ARROW_UP);
 
-    // Remove country selector from container if using external container
-    if (countrySelectorParent) {
-      this.#detachedCountrySelectorEl!.remove();
-      this.#detachedCountrySelectorEl!.style.top = "";
-      this.#detachedCountrySelectorEl!.style.bottom = "";
-      this.#detachedCountrySelectorEl!.style.paddingLeft = "";
-      this.#detachedCountrySelectorEl!.style.paddingRight = "";
+    // Remove country selector from container if using detached element
+    if (this.#detachedCountrySelectorEl) {
+      this.#detachedCountrySelectorEl.remove();
+      this.#detachedCountrySelectorEl.style.top = "";
+      this.#detachedCountrySelectorEl.style.bottom = "";
+      this.#detachedCountrySelectorEl.style.paddingLeft = "";
+      this.#detachedCountrySelectorEl.style.paddingRight = "";
     } else {
       this.#countrySelectorEl!.style.top = "";
       this.#countrySelectorEl!.style.bottom = "";
@@ -1150,9 +1164,10 @@ export default class UI {
 
   // inject the country selector into its detached wrapper and apply positioning styles
   #injectAndPositionDetachedCountrySelector(): void {
-    const { countrySelectorParent, useFullscreenPopup } = this.#options;
+    const isFullscreen = this.#options.countrySelectorMode === "FULLSCREEN";
+    const detachedParent = this.#getDetachedParent();
 
-    if (useFullscreenPopup) {
+    if (isFullscreen) {
       // on wider screens, constrain the popup to the input width instead of full width
       if (window.innerWidth >= LAYOUT.NARROW_VIEWPORT_WIDTH) {
         const inputPos = this.telInputEl.getBoundingClientRect();
@@ -1173,7 +1188,7 @@ export default class UI {
       }
     }
 
-    countrySelectorParent!.appendChild(this.#detachedCountrySelectorEl!);
+    detachedParent!.appendChild(this.#detachedCountrySelectorEl!);
   }
 
   //* Wire up CSS Anchor Positioning between the input and the detached country selector using a
@@ -1268,12 +1283,12 @@ export default class UI {
   }
 
   public setSelectedCountry(selectedCountry: SelectedCountry): void {
-    const { enableCountrySelector, showFlags, separateDialCode, uiTranslations } = this.#options;
+    const { countrySelectorMode, showFlags, separateDialCode, uiTranslations } = this.#options;
     const name = selectedCountry?.name;
     const dialCode = selectedCountry?.dialCode;
     const iso2 = selectedCountry?.iso2 ?? "";
 
-    if (enableCountrySelector) {
+    if (countrySelectorMode !== "OFF") {
       // Update the selected list item in the country list
       this.#updateSelectedListItem(iso2);
     }

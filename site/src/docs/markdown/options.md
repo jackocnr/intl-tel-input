@@ -33,21 +33,34 @@ Add a search input to the top of the country list, so users can filter the displ
 
 View `intl-tel-input` with this disabled in the [Playground](/playground?countrySearch=false#countrySearch).
 
-###### countrySelectorParent
+###### countrySelectorMode
+Type: `"DROPDOWN" | "FULLSCREEN" | "AUTO" | "OFF"`  
+Default: `"AUTO"`  
+
+Controls the country selector — the panel that opens when the user clicks the selected country button, so they can pick a different country.
+
+* `"DROPDOWN"` — render as an inline dropdown attached to the input.
+* `"FULLSCREEN"` — render as a fullscreen popup that takes over the viewport. Better suited to mobile / touch devices. See screenshot below.
+* `"AUTO"` — pick `"FULLSCREEN"` on narrow viewports and `"DROPDOWN"` otherwise.
+* `"OFF"` — the country selector is disabled entirely. The selected country is no longer clickable, and there is no arrow is shown.
+
+_Note: this replaces the previous `enableCountrySelector` and `useFullscreenPopup` boolean options._
+
+Try `intl-tel-input` with this option set to `"OFF"` in the [Playground](/playground?countrySelectorMode=OFF#countrySelectorMode).
+
+_Here's what the fullscreen popup looks like on mobile:_
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="/img/iti-mobile-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="/img/iti-mobile-light.png">
+  <img width="350" height="642" alt="Mobile fullscreen popup" src="/img/iti-mobile-light.png">
+</picture>
+
+###### dropdownParent
 Type: `HTMLElement`  
 Default: `null`  
 
-Instead of putting the country selector markup next to the input, append it to the specified node (e.g. `document.body`), and it will then be positioned next to the input using JavaScript (using `position: fixed`). This is useful when the input is inside a container with `overflow: hidden` which would otherwise cut off the country selector. The country selector will automatically reposition itself on scroll or resize to stay anchored to the input. _Note: previously named `dropdownContainer`._
-
-Play with this option in the [Playground](/playground#user-interface-options).
-
-###### enableCountrySelector
-Type: `boolean`  
-Default: `true`  
-
-Enable the country selector — the panel (dropdown or fullscreen popup) that opens when the user clicks the selected country button, so they can pick a different country. If disabled, the selected country is no longer clickable, and there is no arrow displayed. _Note: previously named `allowDropdown`._
-
-Try `intl-tel-input` with `enableCountrySelector` disabled in the [Playground](/playground?enableCountrySelector=false#enableCountrySelector).
+When using the country selector as a dropdown, sometimes it can get cut-off if an ancestor has `overflow:hidden` (or similar). You can solve this by setting `dropdownParent` to another element on the page (e.g. `document.body`), which means the dropdown will be appended to that element instead of next to the input. It will then be re-positioned next to the input using JavaScript (with `position:fixed`), so it looks the same as the standard inline dropdown. _Note: previously named `dropdownContainer`._
 
 ###### matchDropdownWidth
 Type: `boolean`  
@@ -78,7 +91,7 @@ Play with this option in the [Playground](/playground#separateDialCode).
 </picture>
 
 > [!NOTE]  
-> If the user tries to type a new dial code (as well as the displayed one), we automatically open the country list and focus the search input, so the dial code appears there instead - this way, if they type +54, then Argentina will be highlighted in the country list, and they can simply press Enter to select it, updating the displayed dial code (this feature requires [`enableCountrySelector`](#enablecountryselector) and [`countrySearch`](#countrysearch) to be enabled).
+> If the user tries to type a new dial code (as well as the displayed one), we automatically open the country list and focus the search input, so the dial code appears there instead - this way, if they type +54, then Argentina will be highlighted in the country list, and they can simply press Enter to select it, updating the displayed dial code (this feature requires the country selector to be enabled via [`countrySelectorMode`](#countryselectormode) and [`countrySearch`](#countrysearch) to be enabled).
 
 ###### showFlags
 Type: `boolean`  
@@ -87,21 +100,6 @@ Default: `true`
 Display the country flag in the selected country button and next to each country in the list. When disabled, a generic globe icon is shown in place of the selected flag.
 
 Try `intl-tel-input` with this disabled in the [Playground](/playground?showFlags=false#showFlags).
-
-###### useFullscreenPopup
-Type: `boolean`  
-Default: `true on mobile devices, false otherwise`  
-
-Control when the country list appears as a fullscreen popup vs an inline dropdown. By default, it will appear as a fullscreen popup on narrow viewports, to make better use of the available space (similar to how a native `<select>` works), and as an inline dropdown on larger screens. 
-
-Try `intl-tel-input` with this option enabled on the [Playground](/playground?useFullscreenPopup=true#useFullscreenPopup).
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="/img/iti-mobile-dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="/img/iti-mobile-light.png">
-  <img width="350" height="642" alt="Mobile fullscreen popup" src="/img/iti-mobile-light.png">
-</picture>
-
 
 ## Country options
 

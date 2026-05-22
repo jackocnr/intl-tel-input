@@ -63,16 +63,16 @@ test.describe("visual snapshots", () => {
   });
 });
 
-test.describe("visual snapshots - useFullscreenPopup", () => {
+test.describe("visual snapshots - countrySelectorMode='FULLSCREEN'", () => {
 
   test("fullscreen popup open", async ({ page }) => {
-    await page.goto("/tests-e2e/fixtures/vanilla-fullscreen.html");
+    await page.goto("/tests-e2e/fixtures/vanilla-country-selector-mode-fullscreen.html");
     await expect(page.locator(".iti")).toBeVisible();
 
     await page.locator(".iti__selected-country").click();
     await expect(page.locator(".iti__country-list")).toBeVisible();
 
-    await expect(page).toHaveScreenshot("vanilla-fullscreen-popup-open.png");
+    await expect(page).toHaveScreenshot("vanilla-country-selector-mode-fullscreen-open.png");
   });
 });
 
@@ -93,13 +93,13 @@ test.describe("visual snapshots - separateDialCode", () => {
   });
 });
 
-test.describe("visual snapshots - enableCountrySelector=false", () => {
+test.describe("visual snapshots - countrySelectorMode='OFF'", () => {
 
   test("initial render", async ({ page }) => {
-    await page.goto("/tests-e2e/fixtures/vanilla-enable-country-selector-false.html");
+    await page.goto("/tests-e2e/fixtures/vanilla-country-selector-mode-off.html");
     await expect(page.locator(".iti")).toBeVisible();
 
-    await expect(page).toHaveScreenshot("vanilla-enable-country-selector-false.png");
+    await expect(page).toHaveScreenshot("vanilla-country-selector-mode-off.png");
   });
 });
 

@@ -54,9 +54,11 @@ export type ValidationError = ArrayValues<typeof VALIDATION_ERRORS>;
 
 export type ValueOf<T> = T[keyof T];
 
+export type CountrySelectorMode = "OFF" | "DROPDOWN" | "FULLSCREEN" | "AUTO";
+
 // All configurable options
 export interface AllOptions {
-  enableCountrySelector: boolean;
+  countrySelectorMode: CountrySelectorMode;
   allowedNumberTypes: NumberType[] | null;
   allowNumberExtensions: boolean;
   allowPhonewords: boolean;
@@ -72,7 +74,7 @@ export interface AllOptions {
       ) => string)
     | null;
   dropdownAlwaysOpen: boolean;
-  countrySelectorParent: HTMLElement | null;
+  dropdownParent: HTMLElement | null;
   excludeCountries: Iso2[] | null;
   matchDropdownWidth: boolean;
   formatAsYouType: boolean;
@@ -92,7 +94,6 @@ export interface AllOptions {
   strictRejectAnimation: boolean;
   showFlags: boolean;
   strictMode: boolean;
-  useFullscreenPopup: boolean;
 }
 
 // Partial options accepted by the factory
