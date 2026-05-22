@@ -82,11 +82,11 @@ The library triggers the following custom events on the `<input>` element. Liste
 
 ##### countrychange
 
-Triggered when the selected country is updated, e.g. if the user selects a country from the list, or they type a different dial code into the input, or you call [`setSelectedCountry`](/docs/methods#setselectedcountry) etc. `e.detail` contains the [country data](/docs/types#country) for the newly-selected country (`Country | null`).
+Triggered when the selected country is updated, e.g. if the user selects a country from the list, or they type a different dial code into the input, or you call [`setSelectedCountry`](/docs/methods#setselectedcountry) etc. `e.detail` contains the the newly-selected [country](/docs/types#country), or null when no country is selected.
 
 ```js
 input.addEventListener("countrychange", (e) => {
-  const countryData = e.detail;
+  const country = e.detail;
 });
 ```
 

@@ -29,24 +29,19 @@
       const validMsg = document.querySelector("#valid-msg");
 
       const iti = window.intlTelInput(input, {
-        // enableCountrySelector: false,
         // allowedNumberTypes: ["TOLL_FREE"],
         // allowNumberExtensions: true,
         // allowPhonewords: true,
-        // placeholderNumberPolicy: "OFF",
         // containerClass: "test",
         // countryNameLocale: "ru",
         // countryOrder: ["jp", "kr"],
         // countrySearch: false,
-        // customPlaceholder: function(selectedCountryPlaceholder, selectedCountryData) {
-        //   return "e.g. " + selectedCountryPlaceholder;
-        // },
+        // customPlaceholder: (exampleNumber, selectedCountry) => exampleNumber ? exampleNumber.replace(/\d/g, "X") : "Enter number",
         // countrySelectorParent: document.querySelector('#custom-container'),
+        // enableCountrySelector: false,
         // excludeCountries: ["us"],
-        // matchDropdownWidth: false,
         // formatAsYouType: false,
         // hiddenInputs: () => ({ phone: "phone_full", country: "country_iso2" }),
-        // i18n: { searchPlaceholder: "Custom search" },
         // initialCountry: "us",
         // initialCountryLookup: async () => {
         //   const res = await fetch("https://ipapi.co/json");
@@ -54,15 +49,18 @@
         //   return data.country_iso2;
         // },
         // loadUtils: () => import("/packages/core/dist/js/utils.js"), // leading slash (and http-server) required for this to work in chrome
+        // matchDropdownWidth: false,
         // numberDisplayFormat: "INTERNATIONAL", // "E164" / "INTERNATIONAL" / "NATIONAL"
         // onlyCountries: ['us', 'gb', 'ch', 'ca', 'do'],
+        // placeholderNumberPolicy: "OFF",
         // placeholderNumberType: "MOBILE",
-        // showFlags: false,
+        searchInputClass: "form-control",
         // separateDialCode: true,
+        // showFlags: false,
         // strictMode: true,
         // strictRejectAnimation: true,
+        // uiTranslations: { searchPlaceholder: "Custom search" },
         // useFullscreenPopup: true,
-        searchInputClass: "form-control",
       });
       window.iti = iti; // useful for testing
 

@@ -31,18 +31,18 @@ describe("customPlaceholder with empty country (globe state)", () => {
     document.body.innerHTML = "";
   });
 
-  test("receives null countryData and empty placeholder when no country selected", () => {
+  test("receives null selectedCountry and empty placeholder when no country selected", () => {
     const calls = [];
     const options = {
       placeholderNumberPolicy: "POLITE",
-      customPlaceholder: (p, countryData) => {
-        calls.push({ p, countryData });
+      customPlaceholder: (p, selectedCountry) => {
+        calls.push({ p, selectedCountry });
         return `pl:${p}`;
       },
     };
     const { iti, input } = initIntlTelInput({ options });
     expect(calls.length).toBeGreaterThan(0);
-    expect(calls[0].countryData).toBeNull();
+    expect(calls[0].selectedCountry).toBeNull();
     expect(calls[0].p).toEqual("");
     expect(input.getAttribute("placeholder")).toEqual("pl:");
     iti.destroy();

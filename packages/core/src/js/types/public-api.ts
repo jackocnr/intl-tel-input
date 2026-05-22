@@ -67,7 +67,7 @@ export interface AllOptions {
   countrySearch: boolean;
   customPlaceholder:
     | ((
-        selectedCountryPlaceholder: string,
+        exampleNumber: string,
         selectedCountry: SelectedCountry,
       ) => string)
     | null;

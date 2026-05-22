@@ -40,7 +40,7 @@ Default: `null`
 Instead of putting the country list markup next to the input, append it to the specified node (e.g. `document.body`), and it will then be positioned next to the input using JavaScript (using `position: fixed`). This is useful when the input is inside a container with `overflow: hidden`. _Note: previously named `dropdownContainer`._
 
 > [!NOTE]  
-> The positioning is broken by scrolling, so the dropdown will automatically close on the `window` scroll event. This also applies to the fullscreen popup.
+> The fixed positioning is broken by scrolling, so the dropdown will automatically close on the `window` scroll event.
 
 Play with this option in the [Playground](/playground#user-interface-options).
 
@@ -222,7 +222,7 @@ When [`strictMode`](#strictmode) is enabled, play a subtle animation any time a 
 Configure the automatically generated placeholder numbers.
 
 ###### customPlaceholder
-Type: `(exampleNumber: string, selectedCountryData: Country | null) => string`  
+Type: `(exampleNumber: string, selectedCountry: Country | null) => string`  
 Default: `null`  
 
 Customise the placeholder text. Your function receives the example number (used as the default placeholder), along with the [selected country data](/docs/types#country), and whatever string you return is used as the placeholder instead.
@@ -230,13 +230,13 @@ Customise the placeholder text. Your function receives the example number (used 
 For example, the snippet below masks each digit with an `X`, or falls back to `"Enter number"` when no country is selected:
 
 ```js
-(exampleNumber, selectedCountryData) => exampleNumber
+(exampleNumber, selectedCountry) => exampleNumber
   ? exampleNumber.replace(/\d/g, "X")
   : "Enter number"
 ```
 
 > [!IMPORTANT]
-> When no country is selected (globe state), `exampleNumber` is an empty string and `selectedCountryData` is `null`, so remember to guard against null when reading properties off it.
+> When no country is selected (globe state), `exampleNumber` is an empty string and `selectedCountry` is `null`, so remember to guard against null when reading properties off it.
 
 View `intl-tel-input` with this enabled in the [Playground](/playground?customPlaceholder=true#customPlaceholder).
 
