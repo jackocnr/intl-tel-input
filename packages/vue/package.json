@@ -1,6 +1,6 @@
 {
   "name": "@intl-tel-input/vue",
-  "version": "29.0.0",
+  "version": "29.0.1",
   "description": "A Vue component for intl-tel-input, for entering, formatting, and validating international telephone numbers",
   "type": "module",
   "license": "MIT",
@@ -24,7 +24,7 @@
     "README.md"
   ],
   "dependencies": {
-    "intl-tel-input": "^29.0.0"
+    "intl-tel-input": "^29.0.1"
   },
   "peerDependencies": {
     "vue": "^3.0.0"
