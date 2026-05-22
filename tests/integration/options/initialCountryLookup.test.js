@@ -194,6 +194,48 @@ describe("initialCountryLookup option", () => {
     });
   });
 
+  describe("initialCountryLookup resolves while input is focused with a value", () => {
+    let iti, input, resolveLookup;
+
+    beforeEach(() => {
+      intlTelInput.startedLoadingAutoCountry = false;
+      intlTelInput.autoCountry = undefined;
+
+      ({ iti, input } = initIntlTelInput({
+        inputValue: "7024181234",
+        options: {
+          separateDialCode: false,
+          initialCountryLookup: () => new Promise((resolve) => {
+            resolveLookup = resolve;
+          }),
+        },
+      }));
+    });
+
+    afterEach(() => {
+      teardown(iti);
+      intlTelInput.startedLoadingAutoCountry = false;
+      intlTelInput.autoCountry = undefined;
+    });
+
+    test("auto country is stashed as fallback only, leaving focused input untouched", async () => {
+      // No country detected from the national-format value, so still loading.
+      expect(iti.getSelectedCountry()).toBeNull();
+      expect(input.value).toBe("7024181234");
+
+      input.focus();
+      expect(document.activeElement).toBe(input);
+
+      resolveLookup("us");
+      await iti.promise;
+
+      // Auto country was discovered but treated as fallback only — user input untouched.
+      expect(intlTelInput.autoCountry).toBe("us");
+      expect(iti.getSelectedCountry()).toBeNull();
+      expect(input.value).toBe("7024181234");
+    });
+  });
+
   describe("initialCountryLookup hangs (never settles)", () => {
     let iti, rejected;
 

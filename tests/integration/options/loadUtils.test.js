@@ -116,6 +116,34 @@ describe("loadUtils option", () => {
     expect(intlTelInput.utils).toBe(mockUtils.default);
   });
 
+  test("does not reformat the input value when utils loads while input is focused", async () => {
+    let resolveLoad;
+    const deferredLoadUtils = () => new Promise((resolve) => {
+      resolveLoad = resolve;
+    });
+
+    const { iti, input } = initIntlTelInput({
+      intlTelInput,
+      inputValue: "7024181234",
+      options: { loadUtils: deferredLoadUtils, initialCountry: "us", separateDialCode: false },
+    });
+
+    // Value is unformatted because utils has not loaded yet.
+    expect(input.value).toBe("7024181234");
+
+    // Simulate user mid-edit when utils resolves.
+    input.focus();
+    expect(document.activeElement).toBe(input);
+
+    resolveLoad(await import("intl-tel-input/utils"));
+    await iti.promise;
+
+    // Confirm utils actually attached, so we know handleUtilsLoaded ran.
+    expect(intlTelInput).toHaveProperty("utils.formatNumber");
+    // Value stays as the user typed it — no reformat, no caret jump.
+    expect(input.value).toBe("7024181234");
+  });
+
   describe("in 'withUtils' builds", async () => {
     const { default: intlTelInputWithUtils } = await import("intl-tel-input/intlTelInputWithUtils");
     resetPackageAfterEach(intlTelInputWithUtils);
