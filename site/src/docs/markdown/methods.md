@@ -5,6 +5,7 @@ This page lists the core library's public API methods.
 ## Contents
 
 - [Instance methods](#instance-methods)
+  - [closeCountrySelector](#closecountryselector)
   - [destroy](#destroy)
   - [getExtension](#getextension)
   - [getNumber](#getnumber)
@@ -13,6 +14,7 @@ This page lists the core library's public API methods.
   - [getValidationError](#getvalidationerror)
   - [isValidNumber](#isvalidnumber)
   - [isValidNumberPrecise](#isvalidnumberprecise)
+  - [openCountrySelector](#opencountryselector)
   - [setDisabled](#setdisabled)
   - [setNumber](#setnumber)
   - [setPlaceholderNumberType](#setplaceholdernumbertype)
@@ -40,6 +42,15 @@ These methods are called on the core library instance. The examples below all us
 > await iti.promise;
 > const number = iti.getNumber();
 > ```
+
+###### closeCountrySelector
+Type: `() => void`  
+
+Programmatically close the country selector. Useful for closing it in response to custom events (e.g. a scroll on an ancestor container that the library doesn't otherwise know about).
+
+```js
+iti.closeCountrySelector();
+```
 
 ###### destroy
 Type: `() => void`  
@@ -131,6 +142,15 @@ Check if the current number is valid using precise matching rules for each count
 const isValid = iti.isValidNumberPrecise();
 ```
 Returns: `true`/`false`
+
+###### openCountrySelector
+Type: `() => void`  
+
+Programmatically open the country selector. Useful for opening it in response to a custom UI event.
+
+```js
+iti.openCountrySelector();
+```
 
 ###### setDisabled
 Type: `(disabled: boolean) => void`  

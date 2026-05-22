@@ -237,7 +237,7 @@ export class Iti {
     this.#startAsyncLoads();
 
     if (this.#options.dropdownAlwaysOpen) {
-      this.#openCountrySelector();
+      this.openCountrySelector();
     }
   }
 
@@ -321,8 +321,8 @@ export class Iti {
     if (this.#options.enableCountrySelector) {
       this.#ui.bindAllInitialCountrySelectorListeners(
         this.#abortController!.signal,
-        () => this.#openCountrySelector(),
-        () => this.#closeCountrySelector(),
+        () => this.openCountrySelector(),
+        () => this.#closeCountrySelectorInternal(),
       );
     }
     this.#ui.bindHiddenInputSubmitListener(
@@ -425,7 +425,7 @@ export class Iti {
   }
 
   #openCountrySelectorWithPlus(): void {
-    this.#openCountrySelector();
+    this.openCountrySelector();
     this.#ui.prefillSearchWithPlus();
   }
 
@@ -863,14 +863,15 @@ export class Iti {
   }
 
   //* Open the country selector. Bail if already open — otherwise the existing AbortController gets overwritten
-  //* and its listeners leak. Reachable via openCountrySelectorWithPlus when dropdownAlwaysOpen is set
-  #openCountrySelector(): void {
+  //* and its listeners leak. Reachable via openCountrySelectorWithPlus when dropdownAlwaysOpen is set.
+  //* Public so consumers can programmatically open the country selector.
+  public openCountrySelector(): void {
     if (this.#ui.isCountrySelectorOpen()) {
       return;
     }
     this.#ui.openCountrySelector(
       (li) => this.#selectListItem(li),
-      () => this.#closeCountrySelector(),
+      () => this.#closeCountrySelectorInternal(),
     );
     this.#dispatchEvent(EVENTS.OPEN_COUNTRY_SELECTOR);
   }
@@ -1161,7 +1162,7 @@ export class Iti {
     //* Update selected country and active list item.
     const iso2 = listItem.dataset[DATA_KEYS.ISO2] as Iso2;
     const countryChanged = this.#updateSelectedCountry(iso2);
-    this.#closeCountrySelector();
+    this.#closeCountrySelectorInternal();
 
     const dialCode = listItem.dataset[DATA_KEYS.DIAL_CODE];
     this.#updateDialCode(dialCode!);
@@ -1180,8 +1181,15 @@ export class Iti {
     }
   }
 
-  //* Close the country selector and unbind any listeners.
-  #closeCountrySelector(isDestroy?: boolean): void {
+  //* Public: close the country selector (consumer-callable; delegates to the internal helper
+  //* without the destroy-specific path).
+  public closeCountrySelector(): void {
+    this.#closeCountrySelectorInternal();
+  }
+
+  //* Close the country selector and unbind any listeners. The isDestroy flag forces close even
+  //* when dropdownAlwaysOpen is set, so destroy() can fully tear down.
+  #closeCountrySelectorInternal(isDestroy?: boolean): void {
     // we call closeCountrySelector in places where it might not even be open e.g. in destroy()
     if (
       !this.#ui.isCountrySelectorOpen() ||
@@ -1394,7 +1402,7 @@ export class Iti {
 
     if (this.#options.enableCountrySelector) {
       //* Make sure the country selector is closed (and unbind listeners).
-      this.#closeCountrySelector(true);
+      this.#closeCountrySelectorInternal(true);
     }
 
     //* Abort all listeners registered via the main controller
