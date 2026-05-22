@@ -6,6 +6,7 @@
   --iti-arrow-padding: 9px;
   --iti-path-flags-1x: url("<%= cacheBust('/img/largeFlags.webp') %>");
   --iti-path-flags-2x: url("<%= cacheBust('/img/largeFlags@2x.webp') %>");
+  --build-bust: 1;
 }
 .iti {
   font-size: 20px;
