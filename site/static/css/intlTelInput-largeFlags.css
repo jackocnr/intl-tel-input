@@ -231,16 +231,16 @@
 .iti__country-list .iti__flag {
   flex-shrink: 0;
 }
-.iti--enable-country-selector .iti__country-container:has(+ input[disabled]) button.iti__selected-country,
-.iti--enable-country-selector .iti__country-container:has(+ input[readonly]) button.iti__selected-country {
+.iti--has-country-selector .iti__country-container:has(+ input[disabled]) button.iti__selected-country,
+.iti--has-country-selector .iti__country-container:has(+ input[readonly]) button.iti__selected-country {
   cursor: not-allowed;
 }
-.iti--enable-country-selector .iti__country-container:has(+ input[disabled]) button.iti__selected-country .iti__arrow,
-.iti--enable-country-selector .iti__country-container:has(+ input[readonly]) button.iti__selected-country .iti__arrow {
+.iti--has-country-selector .iti__country-container:has(+ input[disabled]) button.iti__selected-country .iti__arrow,
+.iti--has-country-selector .iti__country-container:has(+ input[readonly]) button.iti__selected-country .iti__arrow {
   visibility: hidden;
 }
-.iti--enable-country-selector .iti__country-container:not(:has(+ input[disabled])):not(:has(+ input[readonly])) .iti__selected-country-primary:hover,
-.iti--enable-country-selector .iti__country-container:not(:has(+ input[disabled])):not(:has(+ input[readonly])) .iti__selected-country:has(+ .iti__country-selector:hover) .iti__selected-country-primary {
+.iti--has-country-selector .iti__country-container:not(:has(+ input[disabled])):not(:has(+ input[readonly])) .iti__selected-country-primary:hover,
+.iti--has-country-selector .iti__country-container:not(:has(+ input[disabled])):not(:has(+ input[readonly])) .iti__selected-country:has(+ .iti__country-selector:hover) .iti__selected-country-primary {
   background-color: var(--iti-hover-color);
 }
 .iti .iti__selected-dial-code {

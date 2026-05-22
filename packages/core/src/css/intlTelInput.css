@@ -337,7 +337,7 @@
   }
 }
 
-.iti--enable-country-selector {
+.iti--has-country-selector {
   /* If the adjacent input is disabled/readonly, ensure the country button doesn't look clickable. */
   .iti__country-container:has(+ input[disabled]),
   .iti__country-container:has(+ input[readonly]) {

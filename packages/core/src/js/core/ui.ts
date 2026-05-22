@@ -132,7 +132,7 @@ export default class UI {
     const parentClasses = buildClassNames({
       iti: true,
       "iti--input-container": true,
-      "iti--enable-country-selector": countrySelectorMode !== COUNTRY_SELECTOR_MODE.OFF,
+      "iti--has-country-selector": countrySelectorMode !== COUNTRY_SELECTOR_MODE.OFF,
       "iti--show-flags": showFlags,
       "iti--inline-country-selector": countrySelectorMode !== COUNTRY_SELECTOR_MODE.FULLSCREEN,
       [containerClass]: Boolean(containerClass),
