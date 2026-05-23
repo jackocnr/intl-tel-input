@@ -98,6 +98,63 @@
     // Offset to clear the sticky header before treating a section as "current".
     const HEADER_OFFSET = 100;
 
+    // Lock each link's wrap structure: measure where its label wraps in the
+    // normal (non-bold) state, insert <br>s at those points, then nowrap so
+    // it can never re-wrap. When a link becomes .active (bold), bold lines
+    // that no longer fit overflow horizontally past the sidebar's right edge
+    // instead of pushing a word onto a new line — so the link's height (and
+    // therefore the whole TOC's layout) is fixed.
+    const freezeWrapping = () => {
+      toc.classList.remove('iti-toc--frozen');
+      // Strip .active for measurement: bold text wraps differently. Restore after.
+      const wasActive = links.find((l) => l.classList.contains('active'));
+      if (wasActive) wasActive.classList.remove('active');
+      links.forEach((link) => {
+        const original = link.dataset.itiOriginalText || link.textContent;
+        link.dataset.itiOriginalText = original;
+        const tokens = original.split(/(\s+)/).filter(Boolean);
+        link.innerHTML = '';
+        const wordSpans = [];
+        tokens.forEach((tok) => {
+          if (/^\s+$/.test(tok)) {
+            link.appendChild(document.createTextNode(tok));
+          } else {
+            const span = document.createElement('span');
+            span.textContent = tok;
+            link.appendChild(span);
+            wordSpans.push({ span, token: tok });
+          }
+        });
+        // Sidebar hidden (mobile) or label has no words — measurement is
+        // meaningless. Restore plain text; we'll re-run on resize.
+        if (!wordSpans.length || wordSpans[0].span.offsetParent === null) {
+          link.textContent = original;
+          return;
+        }
+        const lines = [];
+        let currentLine = [];
+        let currentTop = null;
+        wordSpans.forEach(({ span, token }) => {
+          const top = span.offsetTop;
+          if (currentTop === null || top === currentTop) {
+            currentLine.push(token);
+          } else {
+            lines.push(currentLine.join(' '));
+            currentLine = [token];
+          }
+          currentTop = top;
+        });
+        if (currentLine.length) lines.push(currentLine.join(' '));
+        link.innerHTML = '';
+        lines.forEach((line, i) => {
+          if (i > 0) link.appendChild(document.createElement('br'));
+          link.appendChild(document.createTextNode(line));
+        });
+      });
+      if (wasActive) wasActive.classList.add('active');
+      toc.classList.add('iti-toc--frozen');
+    };
+
     const setActive = (i) => {
       sections.forEach((s, idx) => s.link.classList.toggle('active', idx === i));
     };
@@ -131,6 +188,8 @@
 
     window.addEventListener('scroll', schedule, { passive: true });
     window.addEventListener('resize', schedule, { passive: true });
+
+    freezeWrapping();
     update();
   }
   if (document.readyState === 'loading') {

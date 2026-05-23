@@ -86,12 +86,17 @@
   color: var(--bs-body-color);
   opacity: 1;
   font-weight: 700;
-  /* Widen the active link past the sidebar so bold text has more horizontal
-     room and (in most cases) doesn't have to push a word onto a new line.
-     The extra width overflows into the gutter — allowed via overflow-x: clip
-     + overflow-clip-margin on .iti-right-sidebar. Long labels still wrap. */
-  width: calc(100% + 15px);
   border-left-color: rgb(var(--header-bg-color-rgb));
+}
+/* JS-applied once per link's wrap structure has been "frozen" — see
+   freezeWrapping in common_body_end.html. <br> tags are inserted at the
+   natural (non-bold) wrap points and white-space: nowrap then prevents
+   any automatic re-wrapping, so when a link goes bold the line count
+   (and the link's height) can't change. Bold lines that no longer fit
+   simply overflow horizontally into the gutter — see the overflow-x:
+   clip + overflow-clip-margin rule on .iti-right-sidebar above. */
+.iti-toc--frozen a {
+  white-space: nowrap;
 }
 
 /* Sticky-footer layout: ensure short pages still fill the viewport so any
