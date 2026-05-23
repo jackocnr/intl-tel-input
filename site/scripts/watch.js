@@ -57,7 +57,7 @@ function categorise(p) {
 
   if (p.startsWith("src/examples/")) {
     // display_code.* files are shown as code on the example page; rebuild pages.
-    if (/\/display_code\.(js|vue|svelte)$/.test(p)) {
+    if (/\/display_code(?:_[a-z]+)?\.(js|vue|svelte)$/.test(p)) {
       return "pages";
     }
     // The vue/svelte example sources, their main.ts, and their vite.config.ts

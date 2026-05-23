@@ -39,6 +39,26 @@ h1 {
   margin-bottom: 30px;
 }
 
+/* Tabbed code block used on example pages (e.g. Validation: Minimal / Full demo code).
+   Matches the styling of the Playground's integration tabs. */
+.example-code-tabs {
+  flex-wrap: wrap;
+
+  .nav-link {
+    padding: 0.35rem 0.75rem;
+    color: var(--bs-secondary-color);
+    border: 1px solid transparent;
+    background: transparent;
+  }
+  .nav-link:hover:not(.active) {
+    color: var(--bs-body-color);
+    border-color: var(--bs-border-color) var(--bs-border-color) transparent;
+  }
+  .nav-link.active {
+    color: var(--bs-body-color);
+  }
+}
+
 .iti-live-results {
   border: 1px solid rgb(var(--header-bg-color-rgb));
   padding: 10px;

@@ -30,7 +30,27 @@
   <% if (typeof notesHtml !== 'undefined' && notesHtml) { %>
     <%= notesHtml %>
   <% } %>
-  <pre><code class="language-<%= typeof display_code_language !== 'undefined' ? display_code_language : 'javascript' %>"><%- display_code %></code></pre>
+  <% const _codeLang = typeof display_code_language !== 'undefined' ? display_code_language : 'javascript'; %>
+  <% if (typeof display_code_minimal !== 'undefined' && display_code_minimal) { %>
+    <ul class="nav nav-tabs example-code-tabs mb-3" role="tablist" aria-label="Code variant">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="code-minimal-tab" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#code-minimal-pane" aria-controls="code-minimal-pane" aria-selected="true">Simple code</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="code-full-tab" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#code-full-pane" aria-controls="code-full-pane" aria-selected="false">Full demo code</button>
+      </li>
+    </ul>
+    <div class="tab-content example-code-tab-content">
+      <div class="tab-pane fade show active" id="code-minimal-pane" role="tabpanel" aria-labelledby="code-minimal-tab">
+        <pre class="mb-0"><code class="language-<%= _codeLang %>"><%- display_code_minimal %></code></pre>
+      </div>
+      <div class="tab-pane fade" id="code-full-pane" role="tabpanel" aria-labelledby="code-full-tab">
+        <pre class="mb-0"><code class="language-<%= _codeLang %>"><%- display_code %></code></pre>
+      </div>
+    </div>
+  <% } else { %>
+    <pre><code class="language-<%= _codeLang %>"><%- display_code %></code></pre>
+  <% } %>
 </div>
 
 <%= common_body_end %>

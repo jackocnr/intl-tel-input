@@ -306,6 +306,7 @@ const exampleDefinitions = [
     content: {
       demo_note: allowedNumberTypesNote,
       includeItiScript: true,
+      displayCodeMinimal: "src/examples/vanilla-javascript/single-country/display_code_minimal.js",
     },
   },
   {
@@ -319,6 +320,7 @@ const exampleDefinitions = [
     content: {
       markupName: "validation",
       includeItiScript: true,
+      displayCodeMinimal: "src/examples/vanilla-javascript/validation/display_code_minimal.js",
       extraData: () => ({
         demo_note: allowedNumberTypesNote,
       }),
@@ -336,6 +338,7 @@ const exampleDefinitions = [
       markupName: "validation",
       includeItiScript: true,
       displayCode: "src/examples/vanilla-javascript/validation/display_code.js",
+      displayCodeMinimal: "src/examples/vanilla-javascript/validation/display_code_minimal.js",
       extraData: () => ({
         demo_note: allowedNumberTypesNote,
       }),
@@ -353,6 +356,7 @@ const exampleDefinitions = [
       demo_note: allowedNumberTypesNote,
       includeItiScript: true,
       markupName: "validation",
+      displayCodeMinimal: "src/examples/vanilla-javascript/hidden-input/display_code_minimal.js",
     },
   },
   {
@@ -621,16 +625,23 @@ for (const def of exampleDefinitions) {
     src: "src/examples/_templates/content.html.ejs",
     dest: contentDest,
     data: () => {
-      let displayCodeContent = fs.readFileSync(displayCode, "utf8");
       // hack so that the validation_precise example page shows the right
       // validation method in the displayed code
-      if (key === "validation_precise") {
-        displayCodeContent = displayCodeContent.replace(
-          /\biti\.isValidNumber\(\)/g,
-          "iti.isValidNumberPrecise()",
-        );
-      }
-      const renderedDisplayCode = renderString(displayCodeContent, templateData);
+      const applyPreciseHack = (code) =>
+        key === "validation_precise"
+          ? code.replace(/\biti\.isValidNumber\(\)/g, "iti.isValidNumberPrecise()")
+          : code;
+
+      const renderedDisplayCode = renderString(
+        applyPreciseHack(fs.readFileSync(displayCode, "utf8")),
+        templateData,
+      );
+      const renderedDisplayCodeMinimal = content.displayCodeMinimal
+        ? renderString(
+            applyPreciseHack(fs.readFileSync(content.displayCodeMinimal, "utf8")),
+            templateData,
+          )
+        : null;
       const notes = deriveNotesFromCode(renderedDisplayCode);
       const displayCodeLanguage = [".vue", ".svelte"].includes(displayCodeExt)
         ? "html"
@@ -646,6 +657,9 @@ for (const def of exampleDefinitions) {
         display_markup: fs.readFileSync(displayMarkupPath, "utf8"),
         display_code: renderedDisplayCode,
         display_code_language: displayCodeLanguage,
+        ...(renderedDisplayCodeMinimal
+          ? { display_code_minimal: renderedDisplayCodeMinimal }
+          : {}),
         script: scriptName,
         ...(content.demo_note ? { demo_note: content.demo_note } : {}),
         ...(content.hideMarkupSection ? { hideMarkupSection: true } : {}),

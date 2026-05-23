@@ -30,10 +30,10 @@ const setText = (el: HTMLElement, text: string) => el.textContent = text;
   loading.classList.add("d-none");
   formContent.classList.remove("d-none");
 
-  // Sync the displayed JS code block with the looked-up country. hljs has already
-  // highlighted by now, so reset textContent and re-highlight to clear the spans.
-  const codeBlock = document.querySelector<HTMLElement>("code.language-javascript");
-  if (codeBlock) {
+  // Sync the displayed JS code blocks (both Simple and Full demo tabs) with the
+  // looked-up country. hljs has already highlighted by now, so reset textContent
+  // and re-highlight to clear the spans.
+  document.querySelectorAll<HTMLElement>("code.language-javascript").forEach((codeBlock) => {
     codeBlock.textContent = codeBlock.textContent!.replace(
       'onlyCountries: ["us"]',
       `onlyCountries: ["${code}"]`,
@@ -42,7 +42,7 @@ const setText = (el: HTMLElement, text: string) => el.textContent = text;
       delete codeBlock.dataset.highlighted;
       window.hljs.highlightElement(codeBlock);
     }
-  }
+  });
 
   const playgroundLink = document.querySelector<HTMLAnchorElement>('a[href*="/playground?"]');
   if (playgroundLink) {
