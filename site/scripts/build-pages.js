@@ -82,6 +82,18 @@ const escapeHtml = (value) =>
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
 
+// Decode the handful of HTML entities markdown-it can emit inside a heading.
+// `&amp;` must go last so we don't double-decode sequences like `&amp;lt;`.
+const decodeHtmlEntities = (value) =>
+  String(value ?? "")
+    .replace(/&#x([0-9a-fA-F]+);/g, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
+    .replace(/&#(\d+);/g, (_, dec) => String.fromCodePoint(parseInt(dec, 10)))
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&apos;/g, "'")
+    .replace(/&amp;/g, "&");
+
 const createLocaleListText = (languageCodes) => {
   const codes = Array.isArray(languageCodes)
     ? languageCodes.filter(Boolean)
@@ -169,7 +181,10 @@ const extractDocsHeadings = (html) => {
   while ((m = re.exec(html)) !== null) {
     const level = Number(m[1]);
     const id = m[2];
-    const label = m[3].replace(/<[^>]+>/g, "").trim();
+    // Strip nested tags (markdown-it-anchor wraps the heading text in an
+    // anchor span) AND decode entities so renderTocLink's escapeHtml() doesn't
+    // double-encode them (e.g. `Foo & Bar` would otherwise render as `Foo &amp; Bar`).
+    const label = decodeHtmlEntities(m[3].replace(/<[^>]+>/g, "")).trim();
     if (id && label) {
       headings.push({ level, id, label });
     }

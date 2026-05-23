@@ -98,6 +98,13 @@
 .iti-toc--frozen a {
   white-space: nowrap;
 }
+/* Single-word labels can't be broken across lines, so a long one would spill
+   way past the sidebar with no clean termination. Clip at the link's right
+   edge with an ellipsis instead. Multi-word labels keep their gutter spill. */
+.iti-toc a.iti-toc-link--ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 /* Sticky-footer layout: ensure short pages still fill the viewport so any
  * elements injected at end of <body> (e.g. AdSense edit consent block) get pushed down. */

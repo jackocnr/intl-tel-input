@@ -139,6 +139,9 @@ function initTocScrollSpy() {
           wordSpans.push({ span, token: tok });
         }
       });
+      // Single-token labels can't be wrapped, so a long one would spill far
+      // past the sidebar — apply ellipsis truncation via CSS instead.
+      link.classList.toggle("iti-toc-link--ellipsis", wordSpans.length === 1);
       // Sidebar hidden (mobile) or label has no words — measurement is
       // meaningless. Restore plain text; we'll re-run on resize.
       if (!wordSpans.length || wordSpans[0].span.offsetParent === null) {
