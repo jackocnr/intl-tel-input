@@ -156,6 +156,14 @@ build({
   outfile: "dist/js/hljs-copy-button.js",
 });
 
+// site chrome (nav flyouts, feedback button, TOC scroll-spy) loaded from
+// common_body_end.html on every page.
+build({
+  ...sharedOptions,
+  entryPoints: ["src/js/site.ts"],
+  outfile: "dist/js/site.js",
+});
+
 // highlight.js — slim bundle with only the languages used on this site.
 // Exposes window.hljs so common_body_end.html can call hljs.highlightAll().
 build({

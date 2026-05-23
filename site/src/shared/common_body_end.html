@@ -1,10 +1,12 @@
 <!-- Bootstrap UMD bundle (vendored from npm via site/scripts/copy-assets.js) -->
 <script src="<%= cacheBust('/js/bootstrap.bundle.min.js') %>"></script>
 
+<!-- Highlight.js -->
 <script src="<%= cacheBust('/js/highlight.min.js') %>"></script>
 <script src="<%= cacheBust('/js/hljs-copy-button.js') %>"></script>
 <script>hljs.highlightAll();</script>
 
+<!-- DocSearch -->
 <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@4"></script>
 <script>
   docsearch({
@@ -14,187 +16,13 @@
     apiKey: "36bc251934d6bbefeb56f187686f4810",
   });
 
-  // mobile search icon trigger
-  const algoliaButton = document.querySelector('#docsearch button');
-  const mobileSearchButton = document.getElementById('itiSearchButtonMobile');
-  mobileSearchButton.addEventListener('click', () => algoliaButton.click());
-
-  // Header nav fly-out submenus: hover-driven via CSS on hover devices; this
-  // handler provides the touch/click fallback (Bootstrap doesn't nest dropdowns)
-  // and resets state when the parent dropdown closes.
-  const closeFlyout = (toggle) => {
-    toggle.setAttribute('aria-expanded', 'false');
-    toggle.nextElementSibling.classList.remove('show');
-  };
-  document.addEventListener('click', (e) => {
-    const toggle = e.target.closest('.iti-flyout-toggle');
-    document.querySelectorAll('.iti-flyout-toggle[aria-expanded="true"]').forEach((t) => {
-      if (t !== toggle) closeFlyout(t);
-    });
-    if (toggle) {
-      e.preventDefault();
-      e.stopPropagation();
-      const expanded = toggle.getAttribute('aria-expanded') === 'true';
-      toggle.setAttribute('aria-expanded', String(!expanded));
-      toggle.nextElementSibling.classList.toggle('show', !expanded);
-    }
-  });
-  document.querySelectorAll('.iti-header-nav .dropdown').forEach((dropdown) => {
-    dropdown.addEventListener('hidden.bs.dropdown', () => {
-      dropdown.querySelectorAll('.iti-flyout-toggle[aria-expanded="true"]').forEach(closeFlyout);
-    });
-  });
-
-  // Floating feedback button: pre-fill the current URL into the GitHub issue
-  // form, wire up the dismiss control (hidden for the rest of the session).
-  // Deferred to DOMContentLoaded because on example pages this script is
-  // rendered inside <main>, before the button markup at the end of the layout.
-  function initFeedbackBtn() {
-    const STORAGE_KEY = 'iti-feedback-dismissed';
-    const btn = document.getElementById('iti-feedback-btn');
-    if (!btn) return;
-    try {
-      if (sessionStorage.getItem(STORAGE_KEY) === '1') return;
-    } catch (e) {}
-    const link = btn.querySelector('.iti-feedback-btn__link');
-    try {
-      const url = new URL(link.href);
-      url.searchParams.set('url', window.location.href);
-      const dpr = window.devicePixelRatio || 1;
-      const browserInfo = [
-        'User agent: ' + navigator.userAgent,
-        'Viewport: ' + window.innerWidth + '×' + window.innerHeight + (dpr !== 1 ? ' @' + dpr + 'x' : ''),
-      ].join('\n');
-      url.searchParams.set('browser', browserInfo);
-      link.href = url.toString();
-    } catch (e) {}
-    btn.querySelector('.iti-feedback-btn__close').addEventListener('click', () => {
-      try { sessionStorage.setItem(STORAGE_KEY, '1'); } catch (e) {}
-      btn.remove();
-    });
-    btn.hidden = false;
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initFeedbackBtn);
-  } else {
-    initFeedbackBtn();
-  }
-
-  // Right-sidebar "On this page" TOC: highlight the link for the section
-  // currently nearest the top of the viewport.
-  function initTocScrollSpy() {
-    const toc = document.querySelector('.iti-toc');
-    if (!toc) return;
-    const links = Array.from(toc.querySelectorAll('a[href^="#"]'));
-    const sections = links
-      .map((link) => {
-        const id = decodeURIComponent(link.getAttribute('href').slice(1));
-        const el = id ? document.getElementById(id) : null;
-        return el ? { link, el } : null;
-      })
-      .filter(Boolean);
-    if (!sections.length) return;
-
-    // Offset to clear the sticky header before treating a section as "current".
-    const HEADER_OFFSET = 100;
-
-    // Lock each link's wrap structure: measure where its label wraps in the
-    // normal (non-bold) state, insert <br>s at those points, then nowrap so
-    // it can never re-wrap. When a link becomes .active (bold), bold lines
-    // that no longer fit overflow horizontally past the sidebar's right edge
-    // instead of pushing a word onto a new line — so the link's height (and
-    // therefore the whole TOC's layout) is fixed.
-    const freezeWrapping = () => {
-      toc.classList.remove('iti-toc--frozen');
-      // Strip .active for measurement: bold text wraps differently. Restore after.
-      const wasActive = links.find((l) => l.classList.contains('active'));
-      if (wasActive) wasActive.classList.remove('active');
-      links.forEach((link) => {
-        const original = link.dataset.itiOriginalText || link.textContent;
-        link.dataset.itiOriginalText = original;
-        const tokens = original.split(/(\s+)/).filter(Boolean);
-        link.innerHTML = '';
-        const wordSpans = [];
-        tokens.forEach((tok) => {
-          if (/^\s+$/.test(tok)) {
-            link.appendChild(document.createTextNode(tok));
-          } else {
-            const span = document.createElement('span');
-            span.textContent = tok;
-            link.appendChild(span);
-            wordSpans.push({ span, token: tok });
-          }
-        });
-        // Sidebar hidden (mobile) or label has no words — measurement is
-        // meaningless. Restore plain text; we'll re-run on resize.
-        if (!wordSpans.length || wordSpans[0].span.offsetParent === null) {
-          link.textContent = original;
-          return;
-        }
-        const lines = [];
-        let currentLine = [];
-        let currentTop = null;
-        wordSpans.forEach(({ span, token }) => {
-          const top = span.offsetTop;
-          if (currentTop === null || top === currentTop) {
-            currentLine.push(token);
-          } else {
-            lines.push(currentLine.join(' '));
-            currentLine = [token];
-          }
-          currentTop = top;
-        });
-        if (currentLine.length) lines.push(currentLine.join(' '));
-        link.innerHTML = '';
-        lines.forEach((line, i) => {
-          if (i > 0) link.appendChild(document.createElement('br'));
-          link.appendChild(document.createTextNode(line));
-        });
-      });
-      if (wasActive) wasActive.classList.add('active');
-      toc.classList.add('iti-toc--frozen');
-    };
-
-    const setActive = (i) => {
-      sections.forEach((s, idx) => s.link.classList.toggle('active', idx === i));
-    };
-
-    const update = () => {
-      const scrollY = window.scrollY || window.pageYOffset;
-      const threshold = scrollY + HEADER_OFFSET;
-      let activeIdx = 0;
-      for (let i = 0; i < sections.length; i++) {
-        const top = sections[i].el.getBoundingClientRect().top + scrollY;
-        if (top <= threshold) activeIdx = i;
-        else break;
-      }
-      // At very bottom: force last item active so we don't get stuck on the
-      // last section whose top scrolled past, even if shorter than the viewport.
-      const atBottom =
-        scrollY + window.innerHeight >=
-        document.documentElement.scrollHeight - 2;
-      if (atBottom) activeIdx = sections.length - 1;
-      setActive(activeIdx);
-    };
-
-    let rafId = null;
-    const schedule = () => {
-      if (rafId !== null) return;
-      rafId = requestAnimationFrame(() => {
-        rafId = null;
-        update();
-      });
-    };
-
-    window.addEventListener('scroll', schedule, { passive: true });
-    window.addEventListener('resize', schedule, { passive: true });
-
-    freezeWrapping();
-    update();
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initTocScrollSpy);
-  } else {
-    initTocScrollSpy();
+  // Mobile search icon → trigger Algolia DocSearch
+  const algoliaButton = document.querySelector<HTMLButtonElement>("#docsearch button");
+  const mobileSearchButton = document.getElementById("itiSearchButtonMobile");
+  if (algoliaButton && mobileSearchButton) {
+    mobileSearchButton.addEventListener("click", () => algoliaButton.click());
   }
 </script>
+
+<!-- Site chrome (nav flyouts, feedback button, TOC scroll-spy) -->
+<script src="<%= cacheBust('/js/site.js') %>"></script>
