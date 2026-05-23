@@ -57,8 +57,6 @@ See the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/mas
 
 User testing powered by [BrowserStack Open-Source Program](https://www.browserstack.com/open-source)  
 
-Browser testing via <a href="https://www.lambdatest.com/" target="_blank"><img src="https://raw.githubusercontent.com/jackocnr/intl-tel-input/refs/heads/master/screenshots/lambda_test.svg" style="vertical-align:middle;margin-left:5px" width="147" height="26" /></a>
-
 ## License
 
 MIT
