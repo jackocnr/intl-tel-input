@@ -6,6 +6,8 @@
   --iti-arrow-padding: 9px;
   --iti-path-flags-1x: url("<%= cacheBust('/img/largeFlags.webp') %>");
   --iti-path-flags-2x: url("<%= cacheBust('/img/largeFlags@2x.webp') %>");
+
+  /* Make the file hash different, so cloudflare stops serving a broken version of the file - safe to delete this later */
   --build-bust: 1;
 }
 .iti {
