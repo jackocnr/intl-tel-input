@@ -11,8 +11,7 @@
   .iti-layout-both-sidebars {
     display: grid;
     grid-template-areas: "nav main ads";
-    /* this minmax ensures main block doesn't encroach on sidebars */
-    grid-template-columns: minmax(0, 1fr) minmax(0, 4fr) minmax(0, 1fr);
+    grid-template-columns: 208px minmax(0, 1fr) 208px;
     gap: 1.5rem;
   }
 }
