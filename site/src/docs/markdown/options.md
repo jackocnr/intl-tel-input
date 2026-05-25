@@ -190,7 +190,7 @@ Try `intl-tel-input` with `separateDialCode` disabled and `numberDisplayFormat` 
 Type: `boolean`  
 Default: `true`  
 
-As the user types (or pastes) in the input, reject any irrelevant characters. The user can only enter numeric characters and an optional plus at the beginning. Cap the length at the maximum valid number length (this respects [`allowedNumberTypes`](#allowednumbertypes)). Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). 
+As the user types (or pastes) in the input, ignore any irrelevant characters (e.g. letters). The user can only enter numeric characters and an optional plus at the beginning. Cap the length at the maximum valid number length (this respects [`allowedNumberTypes`](#allowednumbertypes)). Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). 
 
 Play with this option in the [Playground](/playground#strictMode).
 

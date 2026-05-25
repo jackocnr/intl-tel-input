@@ -186,7 +186,7 @@ export function createPlaygroundConfig({
     },
     strictMode: {
       type: "boolean",
-      tooltip: "As the user types in the input, ignore irrelevant characters and cap the number at the maximum valid length.",
+      tooltip: "As the user types in the input, ignore irrelevant characters (e.g. letters) and cap the number at the maximum valid length.",
     },
     strictRejectAnimation: {
       type: "boolean",
