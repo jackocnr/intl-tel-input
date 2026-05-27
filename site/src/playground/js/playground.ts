@@ -273,6 +273,45 @@ playgroundContainer.addEventListener("click", (event) => {
   }, 600);
 });
 
+// Show a one-time toast the first time the user picks a country from the
+// dropdown while "Keep dropdown open" is on — the dropdown staying open after
+// selection is surprising without an explanation.
+const KEEP_DROPDOWN_OPEN_TOAST_STORAGE_KEY = "iti.playground.keepDropdownOpenToastShown";
+const keepDropdownOpenToastEl = document.getElementById("playgroundKeepDropdownOpenToast");
+const keepDropdownOpenToast = keepDropdownOpenToastEl
+  ? window.bootstrap.Toast.getOrCreateInstance(keepDropdownOpenToastEl)
+  : null;
+function hasKeepDropdownOpenToastBeenShown(): boolean {
+  try {
+    return window.localStorage.getItem(KEEP_DROPDOWN_OPEN_TOAST_STORAGE_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+function markKeepDropdownOpenToastShown(): void {
+  try {
+    window.localStorage.setItem(KEEP_DROPDOWN_OPEN_TOAST_STORAGE_KEY, "1");
+  } catch {
+    // localStorage may be unavailable — fall through; toast will simply show again next load.
+  }
+}
+playgroundContainer.addEventListener("click", (event) => {
+  if (!(event.target instanceof Element)) {
+    return;
+  }
+  if (!event.target.closest(".iti__country")) {
+    return;
+  }
+  if (!keepDropdownOpenCheckbox.checked || keepDropdownOpenCheckbox.disabled) {
+    return;
+  }
+  if (hasKeepDropdownOpenToastBeenShown()) {
+    return;
+  }
+  markKeepDropdownOpenToastShown();
+  keepDropdownOpenToast?.show();
+});
+
 if (shareButton) {
   let copiedResetTimer: number | null = null;
   const labelEl = shareButton.querySelector("[data-role=\"label\"]") || shareButton;
@@ -649,13 +688,15 @@ setupStrictRejectToast(telInput, "playgroundStrictRejectToast", "playgroundStric
 
 // Re-trigger scroll+flash when the toast link is clicked and the hash is
 // already set — the browser fires no hashchange in that case.
-document.getElementById("playgroundStrictRejectToastBody")?.addEventListener("click", (event) => {
+function rerunHashTargetOnSameHashLinkClick(event: Event) {
   const target = (event.target as HTMLElement | null)?.closest<HTMLAnchorElement>("a[href^='#']");
   if (target && window.location.hash === new URL(target.href).hash) {
     event.preventDefault();
     handleHashTarget();
   }
-});
+}
+document.getElementById("playgroundStrictRejectToastBody")?.addEventListener("click", rerunHashTargetOnSameHashLinkClick);
+document.getElementById("playgroundKeepDropdownOpenToastBody")?.addEventListener("click", rerunHashTargetOnSameHashLinkClick);
 
 // Returns true when the browser's Intl.DisplayNames falls back to English for the
 // given locale — either the locale isn't in supportedLocalesOf, or it claims support
