@@ -48,6 +48,15 @@ textarea.form-control::placeholder {
   left: 0;
   width: 100%;
   text-align: left;
+  /* Use flex+gap rather than Bootstrap's :not(:last-child) margin so that
+     when one of multiple toasts is hidden (display:none), it doesn't leave a
+     ghost margin pushing the visible toast up. */
+  display: flex;
+  flex-direction: column;
+  gap: var(--bs-toast-spacing);
+}
+.demo-input-wrap .demo-toast-container > :not(:last-child) {
+  margin-bottom: 0;
 }
 
 /* Pin toast close buttons to the first line of body text, rather than vertically
