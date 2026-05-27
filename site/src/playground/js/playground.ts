@@ -973,35 +973,35 @@ function maybeShowHint(config: any) {
     return;
   }
 
-  const existing = optionsForm.querySelector(`[data-hint-option='${optionKey}']`);
-  if (existing) {
-    existing.remove();
-  }
-  if (hintTimers[optionKey]) {
-    window.clearTimeout(hintTimers[optionKey]!);
-  }
-
   const messageText = typeof message === "function" ? message() : message;
   if (!messageText) {
     return;
   }
 
-  const hint = document.createElement("span");
-  hint.className = "iti-playground-hint form-text";
-  hint.setAttribute("data-hint-option", optionKey);
-  hint.appendChild(renderMarkdownLinks(messageText));
-
   const controlWrapper = control.closest(".iti-playground-control");
-  if (!controlWrapper) {
+  const toastEl = controlWrapper?.querySelector<HTMLElement>(
+    `.iti-playground-hint-toast[data-hint-option='${optionKey}']`,
+  );
+  const bodyEl = toastEl?.querySelector<HTMLElement>("[data-role='body']");
+  if (!toastEl || !bodyEl) {
     return;
   }
-  controlWrapper.appendChild(hint);
 
+  bodyEl.replaceChildren(renderMarkdownLinks(messageText));
+
+  // autohide: false — we drive dismissal ourselves so the delay can scale with
+  // message length (Bootstrap's `delay` is a flat number, content-agnostic).
+  const toast = window.bootstrap.Toast.getOrCreateInstance(toastEl, { autohide: false });
+  toast.show();
+
+  if (hintTimers[optionKey]) {
+    window.clearTimeout(hintTimers[optionKey]!);
+  }
   // Scale timeout with rendered text length: ~5s base, +40ms per readable
   // character. Strip markdown link syntax so we count only what the user sees.
   const renderedLength = messageText.replace(MARKDOWN_LINK_PATTERN, "$1").length;
   hintTimers[optionKey] = window.setTimeout(() => {
-    hint.remove();
+    toast.hide();
     hintTimers[optionKey] = null;
   }, Math.max(5000, renderedLength * 40));
 }

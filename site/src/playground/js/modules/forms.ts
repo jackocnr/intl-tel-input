@@ -216,6 +216,52 @@ function buildLabelGroup(key: string, meta: any, { labelText, htmlFor, labelClas
   return group;
 }
 
+// Contextual-hint toast anchored above the input. Floats absolutely so showing/
+// hiding doesn't reflow the form. One element per option, populated and toggled
+// by maybeShowHint in playground.ts.
+function buildHintToastContainer(optionKey: string): HTMLElement {
+  const container = document.createElement("div");
+  container.className = "toast-container iti-playground-hint-toast-container";
+
+  const toast = document.createElement("div");
+  toast.className = "toast text-bg-primary iti-playground-hint-toast";
+  toast.setAttribute("role", "status");
+  toast.setAttribute("aria-live", "polite");
+  toast.setAttribute("aria-atomic", "true");
+  toast.setAttribute("data-hint-option", optionKey);
+
+  const flex = document.createElement("div");
+  flex.className = "d-flex";
+
+  const body = document.createElement("div");
+  body.className = "toast-body";
+  body.setAttribute("data-role", "body");
+
+  const closeBtn = document.createElement("button");
+  closeBtn.type = "button";
+  // align-self-start + mt-2 me-2 pin the button to the top-right corner even
+  // when the body wraps to multiple lines.
+  closeBtn.className = "btn-close btn-close-white me-2 align-self-start iti-playground-hint-toast-close";
+  closeBtn.setAttribute("data-bs-dismiss", "toast");
+  closeBtn.setAttribute("aria-label", "Close");
+
+  flex.appendChild(body);
+  flex.appendChild(closeBtn);
+  toast.appendChild(flex);
+  container.appendChild(toast);
+  return container;
+}
+
+// For non-boolean controls, wrap the input in a position-relative container so
+// the hint toast can float directly above it.
+function wrapInputWithHintToast(inputEl: HTMLElement, optionKey: string): HTMLElement {
+  const wrap = document.createElement("div");
+  wrap.className = "iti-playground-input-wrap";
+  wrap.appendChild(inputEl);
+  wrap.appendChild(buildHintToastContainer(optionKey));
+  return wrap;
+}
+
 function buildBooleanExampleControl(key: string, meta: any, { idPrefix, dataAttr, exampleText, infoIconTemplate }: any) {
   // Custom layout: show the code example to the right of the label (desktop), then the checkbox below.
   const wrapper = document.createElement("div");
@@ -237,6 +283,7 @@ function buildBooleanExampleControl(key: string, meta: any, { idPrefix, dataAttr
 
   checkboxRow.appendChild(checkbox);
   checkboxRow.appendChild(enableSpan);
+  checkboxRow.appendChild(buildHintToastContainer(key));
 
   wrapper.appendChild(
     buildLabelGroup(key, meta, {
@@ -329,6 +376,7 @@ function buildControlRow(key: string, meta: any, { idPrefix, dataAttr, infoIconT
         infoIconTemplate,
       }),
     );
+    wrapper.appendChild(buildHintToastContainer(key));
 
     return wrapper;
   }
@@ -357,7 +405,7 @@ function buildControlRow(key: string, meta: any, { idPrefix, dataAttr, infoIconT
       select.appendChild(option);
     });
 
-    wrapper.appendChild(select);
+    wrapper.appendChild(wrapInputWithHintToast(select, key));
     return wrapper;
   }
 
@@ -402,7 +450,7 @@ function buildControlRow(key: string, meta: any, { idPrefix, dataAttr, infoIconT
 
     dropdown.appendChild(button);
     dropdown.appendChild(menu);
-    wrapper.appendChild(dropdown);
+    wrapper.appendChild(wrapInputWithHintToast(dropdown, key));
 
     dropdown.addEventListener("change", () => {
       const selected = [...dropdown.querySelectorAll<HTMLInputElement>("input[type=\"checkbox\"]:checked")].map((el) => el.value);
@@ -419,7 +467,10 @@ function buildControlRow(key: string, meta: any, { idPrefix, dataAttr, infoIconT
       hiddenInput.id = `${idPrefix}_${key}`;
       hiddenInput.setAttribute(dataAttr, key);
       wrapper.classList.add("iti-playground-control--multi-combobox");
-      wrapper.appendChild(attachMultiCombobox(hiddenInput, meta.multiCombobox, { draggable: Boolean(meta.draggable) }));
+      wrapper.appendChild(wrapInputWithHintToast(
+        attachMultiCombobox(hiddenInput, meta.multiCombobox, { draggable: Boolean(meta.draggable) }),
+        key,
+      ));
       return wrapper;
     }
 
@@ -429,7 +480,10 @@ function buildControlRow(key: string, meta: any, { idPrefix, dataAttr, infoIconT
       hiddenInput.id = `${idPrefix}_${key}`;
       hiddenInput.setAttribute(dataAttr, key);
       wrapper.classList.add("iti-playground-control--overrides");
-      wrapper.appendChild(attachOverridesEditor(hiddenInput, meta.overridesEditor));
+      wrapper.appendChild(wrapInputWithHintToast(
+        attachOverridesEditor(hiddenInput, meta.overridesEditor),
+        key,
+      ));
       return wrapper;
     }
 
@@ -445,7 +499,7 @@ function buildControlRow(key: string, meta: any, { idPrefix, dataAttr, infoIconT
     if (meta.placeholder) {
       numberInput.placeholder = meta.placeholder;
     }
-    wrapper.appendChild(numberInput);
+    wrapper.appendChild(wrapInputWithHintToast(numberInput, key));
     return wrapper;
   }
 
@@ -454,7 +508,10 @@ function buildControlRow(key: string, meta: any, { idPrefix, dataAttr, infoIconT
     hiddenInput.type = "hidden";
     hiddenInput.id = `${idPrefix}_${key}`;
     hiddenInput.setAttribute(dataAttr, key);
-    wrapper.appendChild(attachSingleSelectCombobox(hiddenInput, meta.singleCombobox));
+    wrapper.appendChild(wrapInputWithHintToast(
+      attachSingleSelectCombobox(hiddenInput, meta.singleCombobox),
+      key,
+    ));
     return wrapper;
   }
 
@@ -467,11 +524,10 @@ function buildControlRow(key: string, meta: any, { idPrefix, dataAttr, infoIconT
     input.placeholder = meta.placeholder;
   }
 
-  if (Array.isArray(meta.datalist) && meta.datalist.length > 0) {
-    wrapper.appendChild(attachCombobox(input, meta.datalist));
-  } else {
-    wrapper.appendChild(input);
-  }
+  const inputControl: HTMLElement = Array.isArray(meta.datalist) && meta.datalist.length > 0
+    ? attachCombobox(input, meta.datalist)
+    : input;
+  wrapper.appendChild(wrapInputWithHintToast(inputControl, key));
 
   return wrapper;
 }

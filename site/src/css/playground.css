@@ -536,11 +536,9 @@
     &:not(.iti-playground-control--check) {
       > .form-control,
       > .form-select,
-      > .dropdown {
+      > .dropdown,
+      > .iti-playground-input-wrap {
         min-width: 0;
-      }
-      > .form-text {
-        grid-column: 2;
       }
     }
 
@@ -565,26 +563,50 @@
     margin-top: 0;
   }
 }
-/* contextual hint (shown after toggling certain options) */
-.iti-playground-hint {
-  display: block;
-  animation: iti-hint-fade-in 0.2s ease-out;
-
-  @media (min-width: 600px) {
-    grid-column: 2;
-  }
+/* contextual hint (shown after toggling certain options) — floats as a toast
+   above the input so it doesn't disturb the form layout. */
+.iti-playground-input-wrap,
+.iti-playground-control--check,
+.iti-playground-example-toggle {
+  position: relative;
 }
-/* On mobile, checkbox controls have BS5's 1.5em left padding (room for the
-   checkbox itself); back the hint out so it aligns with the column edge. */
-.iti-playground-control--check > .iti-playground-hint {
-  margin-left: -1.5em;
-  @media (min-width: 600px) {
-    margin-left: 0;
-  }
+.iti-playground-hint-toast-container {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 5;
+  /* Let clicks pass through the container so it doesn't shadow form controls
+     above it when no toast is visible; the toast itself opts back in. */
+  pointer-events: none;
 }
-@keyframes iti-hint-fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+.iti-playground-hint-toast-container .toast {
+  pointer-events: auto;
+  width: 100%;
+  min-width: 0; /* override Bootstrap's 350px so the toast can shrink to the column width */
+  max-width: 100%;
+}
+/* Inside the (primary-coloured) hint toast, drop the monospace/blue link
+   styling — white prose-style links read better against the dark background. */
+.iti-playground-hint-toast .iti-playground-option-link {
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  text-decoration: underline;
+}
+/* Pin close button to the toast's first line — Bootstrap's mt-* utilities jump
+   0.5rem → 1rem with nothing between, so use an explicit value instead. */
+.iti-playground-hint-toast-close {
+  margin-top: 0.625rem;
+}
+/* On desktop, boolean controls' wrapper IS the grid container (label + checkbox
+   in one row); confine the toast to the control column so it doesn't span the
+   label column too. CSS Grid lets absolutely-positioned items use a grid area
+   as their containing block via grid-column/grid-row. */
+@media (min-width: 600px) {
+  .iti-playground-control--check > .iti-playground-hint-toast-container {
+    grid-area: control;
+  }
 }
 
 /* Inline links to other options inside hints/notes — visually code-like since
