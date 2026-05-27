@@ -4,7 +4,7 @@ import IntlTelInput from "../../src/indexWithUtils";
 
 <template>
   <IntlTelInput
-    initialCountry="us"
+    initial-country="us"
     :input-props="{ class: 'form-control' }"
     search-input-class="form-control"
   />

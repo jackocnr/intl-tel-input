@@ -15,8 +15,8 @@ const handleSetCountry = () => {
     <div class="d-flex align-items-start gap-2">
       <IntlTelInput
         ref="intlTelInputRef"
-        @changeCountry="country = $event"
-        initialCountry="us"
+        @change-country="country = $event"
+        initial-country="us"
         :input-props="{ class: 'form-control' }"
         search-input-class="form-control"
       />

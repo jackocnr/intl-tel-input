@@ -20,7 +20,7 @@ Then, add something like this to your code:
 
 <template>
   <IntlTelInput
-    initialCountry="us"
+    initial-country="us"
     :load-utils="() => import('intl-tel-input/utils')"
   />
 </template>
@@ -81,13 +81,13 @@ The component supports `v-model` for two-way binding. When the bound value chang
 
 ## Initialisation options
 
-All of the core library's initialisation options are supported as individual Vue component props using the same option name. There are dozens of options — country selector, formatting, validation, placeholders, localisation, and more — see the full list on the [Initialisation options](/docs/options) page, or try them interactively in the [playground](/playground). For example:
+All of the core library's initialisation options are supported as individual Vue component props using the same option name (in kebab-case, the idiomatic Vue form). There are dozens of options — country selector, formatting, validation, placeholders, localisation, and more — see the full list on the [Initialisation options](/docs/options) page, or try them interactively in the [playground](/playground). For example:
 
 ```js
-<IntlTelInput initialCountry="us" />
+<IntlTelInput initial-country="us" />
 ```
 
-In Vue templates you can also use the kebab-case form (e.g. `initial-country`) if you prefer — both work.
+The camelCase form (e.g. `initialCountry`) also works if you prefer to match the option name exactly as documented.
 
 > [!NOTE]
 > If you're migrating from an older version, the previous `:initOptions="{ initialCountry: 'us' }"` style is no longer supported — pass each option as its own prop instead.

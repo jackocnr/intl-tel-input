@@ -31,10 +31,10 @@ const handleSubmit = () => {
   <form>
     <div class="d-flex align-items-start gap-2">
       <IntlTelInput
-        @changeNumber="number = $event"
-        @changeValidity="isValid = $event"
-        @changeErrorCode="errorCode = $event"
-        initialCountry="us"
+        @change-number="number = $event"
+        @change-validity="isValid = $event"
+        @change-error-code="errorCode = $event"
+        initial-country="us"
         :input-props="{ class: 'form-control' }"
         search-input-class="form-control"
       />

@@ -70,10 +70,10 @@
           </div>
         </div>
         <IntlTelInput
-          @changeNumber="handleChangeNumber"
-          @changeValidity="isValid = $event"
-          @changeErrorCode="errorCode = $event"
-          @strictReject="handleStrictReject"
+          @change-number="handleChangeNumber"
+          @change-validity="isValid = $event"
+          @change-error-code="errorCode = $event"
+          @strict-reject="handleStrictReject"
           :separate-dial-code="true"
           :strict-mode="true"
           :strict-reject-animation="true"

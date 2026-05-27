@@ -18,7 +18,7 @@ const reset = () => {
     <div class="d-flex align-items-start gap-2">
       <IntlTelInput
         v-model="value"
-        initialCountry="us"
+        initial-country="us"
         :input-props="{ class: 'form-control' }"
         search-input-class="form-control"
       />

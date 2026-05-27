@@ -46,9 +46,9 @@
   <form @submit.prevent="handleSubmit">
     <label for="phone">Phone number</label>
     <IntlTelInput
-      @changeNumber="handleChangeNumber"
-      @changeValidity="isValid = $event"
-      @changeErrorCode="errorCode = $event"
+      @change-number="handleChangeNumber"
+      @change-validity="isValid = $event"
+      @change-error-code="errorCode = $event"
       :separate-dial-code="true"
       :strict-mode="true"
       :strict-reject-animation="true"
