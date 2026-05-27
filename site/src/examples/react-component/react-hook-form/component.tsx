@@ -71,7 +71,7 @@ const App = () => {
             <div ref={toastDivRef} className="toast text-bg-primary" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="4000">
               <div className="d-flex">
                 <div className="toast-body">{toastMessage && <>{toastMessage} (see <a href="/docs/options#strictmode" className="link-light">strictMode</a>)</>}</div>
-                <button type="button" className="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                <button type="button" className="btn-close btn-close-white me-2" data-bs-dismiss="toast" aria-label="Close"></button>
               </div>
             </div>
           </div>

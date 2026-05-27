@@ -49,3 +49,11 @@ textarea.form-control::placeholder {
   width: 100%;
   text-align: left;
 }
+
+/* Pin toast close buttons to the first line of body text, rather than vertically
+   centring them when the body wraps. Bootstrap's mt-* utilities jump 0.5rem →
+   1rem with no value between, so use an explicit margin-top. */
+.toast .btn-close {
+  align-self: flex-start;
+  margin-top: 0.625rem;
+}

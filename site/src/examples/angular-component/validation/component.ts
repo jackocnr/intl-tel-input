@@ -32,7 +32,7 @@ import { initialCountryLookup } from "../../../js/initialCountryLookup";
                 <div class="toast-body">@if (toastMessage) { {{ toastMessage }} (see <a href="/docs/options#strictmode" class="link-light">strictMode</a>) }</div>
                 <button
                   type="button"
-                  class="btn-close btn-close-white me-2 m-auto"
+                  class="btn-close btn-close-white me-2"
                   data-bs-dismiss="toast"
                   aria-label="Close"
                 ></button>

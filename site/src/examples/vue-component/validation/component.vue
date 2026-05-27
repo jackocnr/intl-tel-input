@@ -65,7 +65,7 @@
           <div ref="toastDivRef" class="toast text-bg-primary" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="4000">
             <div class="d-flex">
               <div class="toast-body"><template v-if="toastMessage">{{ toastMessage }} (see <a href="/docs/options#strictmode" class="link-light">strictMode</a>)</template></div>
-              <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+              <button type="button" class="btn-close btn-close-white me-2" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
           </div>
         </div>

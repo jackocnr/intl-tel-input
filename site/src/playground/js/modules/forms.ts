@@ -239,9 +239,7 @@ function buildHintToastContainer(optionKey: string): HTMLElement {
 
   const closeBtn = document.createElement("button");
   closeBtn.type = "button";
-  // align-self-start + mt-2 me-2 pin the button to the top-right corner even
-  // when the body wraps to multiple lines.
-  closeBtn.className = "btn-close btn-close-white me-2 align-self-start iti-playground-hint-toast-close";
+  closeBtn.className = "btn-close btn-close-white me-2";
   closeBtn.setAttribute("data-bs-dismiss", "toast");
   closeBtn.setAttribute("aria-label", "Close");
 

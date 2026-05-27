@@ -314,6 +314,12 @@
     width: 100%;
     max-width: 250px;
   }
+  /* Match the strict:reject toast to the input width (example pages get this
+     for free via .section.demo .demo-input-wrap { width: fit-content }, but
+     the playground wrap stretches full-width / spans both grid columns). */
+  .demo-toast-container {
+    max-width: 250px;
+  }
   /* Single-column layout: space the live results away from the input.
      The 2-column layout below overrides this back to 0. */
   .iti-live-results {
@@ -593,11 +599,6 @@
   font-family: inherit;
   font-size: inherit;
   text-decoration: underline;
-}
-/* Pin close button to the toast's first line — Bootstrap's mt-* utilities jump
-   0.5rem → 1rem with nothing between, so use an explicit value instead. */
-.iti-playground-hint-toast-close {
-  margin-top: 0.625rem;
 }
 /* On desktop, boolean controls' wrapper IS the grid container (label + checkbox
    in one row); confine the toast to the control column so it doesn't span the
