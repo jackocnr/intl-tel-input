@@ -32,7 +32,6 @@
     </div>
     <IntlTelInput
       @strict-reject="handleStrictReject"
-      :separate-dial-code="true"
       initial-value="+447733312345"
       :load-utils="() => import('<%= cacheBust(`/intl-tel-input/js/utils.js`) %>')"
       search-input-class="form-control"

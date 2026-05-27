@@ -49,9 +49,6 @@
       @change-number="handleChangeNumber"
       @change-validity="isValid = $event"
       @change-error-code="errorCode = $event"
-      :separate-dial-code="true"
-      :strict-mode="true"
-      :strict-reject-animation="true"
       :initial-country-lookup="initialCountryLookup"
       :load-utils="() => import('intl-tel-input/utils')"
       :input-props="{
