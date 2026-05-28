@@ -741,7 +741,7 @@ const HINT_CONFIGS = [
       if (!itiController.iti?.getSelectedCountry()) {
         return "Tip: select a country to see this in action.";
       }
-      return "Tip: by design, the separate dial code is styled to look like part of the typed number, so toggling this option has no visible effect when the value already contains a number.";
+      return "Tip: toggling this has no visible effect when the input already contains a dial code. Clear the input and toggle again to see the difference.";
     },
     shouldShow: () => !itiController.iti?.getSelectedCountry() || getCombinedStateFromControls().value.trim().startsWith("+"),
     alsoShowOnToggleOff: true,
