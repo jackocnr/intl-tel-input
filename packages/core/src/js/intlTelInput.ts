@@ -593,6 +593,8 @@ export class Iti {
     //* Update selected country.
     if (this.#updateCountryFromNumber(inputValue)) {
       this.#dispatchCountryChangeEvent();
+      //* Also dispatch a synthetic input event so input-only listeners (validation, framework wrappers) re-read the country after we update it — the original input event's listeners ran before us with the stale country.
+      this.#dispatchEvent(EVENTS.INPUT, { isCountryChange: true });
     }
 
     //* If user types their own formatting char (not a plus or a numeric), or they paste something, then set the override.

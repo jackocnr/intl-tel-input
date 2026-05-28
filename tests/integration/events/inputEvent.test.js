@@ -2,6 +2,7 @@
  * @vitest-environment jsdom
  */
 
+import { fireEvent } from "@testing-library/dom";
 import { userEvent } from "@testing-library/user-event";
 import {
   injectInput,
@@ -9,6 +10,14 @@ import {
   teardown,
   openAndSelectCountryAsync,
 } from "../helpers/helpers";
+
+//* Simulate typing a character: update the value and fire a real "input" event,
+//* without going through userEvent's keyboard simulation (which has quirks with `+`).
+const typeChar = (input, char) => {
+  input.value = input.value + char;
+  input.setSelectionRange(input.value.length, input.value.length);
+  fireEvent.input(input, { inputType: "insertText", data: char });
+};
 
 describe("input event", () => {
   let input, iti, mockEventHandler, container, user;
@@ -53,5 +62,17 @@ describe("input event", () => {
     expect(mockEventHandler).toHaveBeenCalled();
     const event = mockEventHandler.mock.calls.at(-1)[0];
     expect(event.detail).toEqual({ isCountryChange: true });
+  });
+
+  test("typing a dial code that changes the country fires synthetic input event with isCountryChange=true", () => {
+    //* Listeners attached before the core's own input listener (e.g. framework wrappers binding @input in a template) run with the stale country when the native input event fires. The core must follow up with a synthetic input event so those listeners re-read the updated country, otherwise downstream change-country handlers miss the update by one keystroke.
+    typeChar(input, "+");
+    typeChar(input, "4");
+    typeChar(input, "5");
+    expect(iti.getSelectedCountry().iso2).toBe("dk");
+    const syntheticEvents = mockEventHandler.mock.calls
+      .map((call) => call[0])
+      .filter((event) => event.detail?.isCountryChange);
+    expect(syntheticEvents).toHaveLength(1);
   });
 });
