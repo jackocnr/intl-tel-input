@@ -39,18 +39,17 @@ describe("Svelte IntlTelInput wrapper", () => {
     //* the user's onChangeNumber handler sees stale country data when they look it up via getInstance().getSelectedCountry().
     //* See https://github.com/jackocnr/intl-tel-input/issues/2171#issuecomment-4565159354
     const seenCountriesInHandler: string[] = [];
-    let getInstance: (() => { getSelectedCountry: () => { iso2: string } | null } | undefined) | undefined;
+    //* Holder object so the handler can close over a stable reference and read `component` once render() returns.
+    const componentRef: { current?: { getInstance: () => { getSelectedCountry: () => { iso2: string } | null } | undefined } } = {};
     const onChangeNumber = vi.fn(() => {
-      const iso2 = getInstance?.()?.getSelectedCountry()?.iso2 ?? "";
+      const iso2 = componentRef.current?.getInstance()?.getSelectedCountry()?.iso2 ?? "";
       seenCountriesInHandler.push(iso2);
     });
     const { component } = render(IntlTelInput, {
       initialCountry: "dk",
       onChangeNumber,
     });
-    getInstance = (component as unknown as {
-      getInstance: () => { getSelectedCountry: () => { iso2: string } | null } | undefined;
-    }).getInstance;
+    componentRef.current = component as unknown as typeof componentRef.current;
 
     const input = getTelInput();
     //* Replace previous "+45..." with "+47..." in one input event (simulates pasting/selecting-all-then-typing the new prefix).
