@@ -390,10 +390,9 @@
   color: var(--bs-warning-text-emphasis, #997404);
 }
 
-/* Briefly highlight the checkbox when the user clicks the selected country
-   while the dropdown is being held open — points them at the control that's
-   preventing the click from closing the dropdown. Also used to flash a
-   specific option control when the page is linked to via #optionName. */
+/* Briefly highlight a control when the page is linked to via #optionName
+   (or #keep-dropdown-open / #sync-demo-state for the demo checkboxes) so
+   the eye lands on the relevant control after the scroll. */
 .playground-dropdown-checkbox.is-flashing,
 .iti-playground-demo-controls .form-check.is-flashing,
 .iti-playground-control.is-flashing {

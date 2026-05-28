@@ -244,12 +244,15 @@ keepDropdownOpenCheckbox.addEventListener("change", () => {
 });
 syncKeepDropdownOpen();
 
-// Flash the "Keep dropdown open" checkbox if the user clicks the selected
-// country's primary area (flag + arrow) while it's on — that click would
-// normally close the dropdown, so the no-op can be confusing without
-// something pointing at the cause. Excludes clicks on the separate dial code,
-// where users are often just probing whether the dial code is editable.
-let keepDropdownOpenFlashTimer: number | null = null;
+// Show a toast if the user clicks the selected country's primary area (flag +
+// arrow) while "Keep dropdown open" is on — that click would normally close
+// the dropdown, so the no-op can be confusing without something pointing at
+// the cause. Excludes clicks on the separate dial code, where users are often
+// just probing whether the dial code is editable.
+const keepDropdownOpenFlagToastEl = document.getElementById("playgroundKeepDropdownOpenFlagToast");
+const keepDropdownOpenFlagToast = keepDropdownOpenFlagToastEl
+  ? window.bootstrap.Toast.getOrCreateInstance(keepDropdownOpenFlagToastEl)
+  : null;
 playgroundContainer.addEventListener("click", (event) => {
   if (!(event.target instanceof Element)) {
     return;
@@ -260,17 +263,7 @@ playgroundContainer.addEventListener("click", (event) => {
   if (!keepDropdownOpenCheckbox.checked || keepDropdownOpenCheckbox.disabled) {
     return;
   }
-  keepDropdownOpenWrapper.classList.remove("is-flashing");
-  // Force reflow so the animation restarts cleanly on rapid clicks.
-  void keepDropdownOpenWrapper.offsetWidth;
-  keepDropdownOpenWrapper.classList.add("is-flashing");
-  if (keepDropdownOpenFlashTimer) {
-    window.clearTimeout(keepDropdownOpenFlashTimer);
-  }
-  keepDropdownOpenFlashTimer = window.setTimeout(() => {
-    keepDropdownOpenWrapper.classList.remove("is-flashing");
-    keepDropdownOpenFlashTimer = null;
-  }, 600);
+  keepDropdownOpenFlagToast?.show();
 });
 
 // Show a one-time toast the first time the user picks a country from the
@@ -697,6 +690,7 @@ function rerunHashTargetOnSameHashLinkClick(event: Event) {
 }
 document.getElementById("playgroundStrictRejectToastBody")?.addEventListener("click", rerunHashTargetOnSameHashLinkClick);
 document.getElementById("playgroundKeepDropdownOpenToastBody")?.addEventListener("click", rerunHashTargetOnSameHashLinkClick);
+document.getElementById("playgroundKeepDropdownOpenFlagToastBody")?.addEventListener("click", rerunHashTargetOnSameHashLinkClick);
 
 // Returns true when the browser's Intl.DisplayNames falls back to English for the
 // given locale — either the locale isn't in supportedLocalesOf, or it claims support

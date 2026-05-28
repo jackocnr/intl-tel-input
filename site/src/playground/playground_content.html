@@ -121,7 +121,13 @@
                 </div>
                 <div id="playgroundKeepDropdownOpenToast" class="toast text-bg-primary" role="status" aria-live="polite" aria-atomic="true" data-bs-delay="8000">
                   <div class="d-flex">
-                    <div class="toast-body" id="playgroundKeepDropdownOpenToastBody">The dropdown stays open after selection because <a href="#keep-dropdown-open" class="link-light">Keep dropdown open</a> is enabled (a demo-only setting)</div>
+                    <div class="toast-body" id="playgroundKeepDropdownOpenToastBody">In this demo, the dropdown stays open after selecting a country because <a href="#keep-dropdown-open" class="link-light">Keep dropdown open</a> is enabled</div>
+                    <button type="button" class="btn-close btn-close-white me-2" data-bs-dismiss="toast" aria-label="Close"></button>
+                  </div>
+                </div>
+                <div id="playgroundKeepDropdownOpenFlagToast" class="toast text-bg-primary" role="status" aria-live="polite" aria-atomic="true" data-bs-delay="8000">
+                  <div class="d-flex">
+                    <div class="toast-body" id="playgroundKeepDropdownOpenFlagToastBody">In this demo, the dropdown stays open when you click the selected flag because <a href="#keep-dropdown-open" class="link-light">Keep dropdown open</a> is enabled</div>
                     <button type="button" class="btn-close btn-close-white me-2" data-bs-dismiss="toast" aria-label="Close"></button>
                   </div>
                 </div>
@@ -135,7 +141,7 @@
                     <input class="form-check-input" type="checkbox" id="playgroundKeepDropdownOpen" checked />
                     <span class="d-inline-flex align-items-center" style="gap: 0.4rem;">
                       <label class="form-check-label" for="playgroundKeepDropdownOpen">Keep dropdown open</label>
-                      <span class="iti-playground-info" id="playgroundKeepDropdownOpenInfo" tabindex="0" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="Recommended. Stops the dropdown closing when you click away, so you can see how option changes affect it without having to reopen it each time.">
+                      <span class="iti-playground-info" id="playgroundKeepDropdownOpenInfo" tabindex="0" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="Recommended. Always keeps the dropdown open so you can see how option changes affect it without having to reopen it each time.">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false">
                           <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
                           <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
