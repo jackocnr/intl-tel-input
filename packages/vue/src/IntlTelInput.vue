@@ -197,6 +197,8 @@ onMounted(() => {
   instance.value = intlTelInput(input.value, initOptions.value);
   libraryInputClasses.value = input.value.className;
 
+  //* Attach input listener AFTER intlTelInput() so the core's #handleInputEvent (also added in intlTelInput()) runs first on each native input event. That guarantees getSelectedCountry() / getNumber() return the post-update values inside updateCountry. A template-bound @input would be registered before mount and so would run before the core's listener, reading stale state.
+  input.value.addEventListener("input", updateCountry);
   input.value.addEventListener("open:countryselector", handleOpen);
   input.value.addEventListener("close:countryselector", handleClose);
   input.value.addEventListener("strict:reject", handleStrictReject);
@@ -273,6 +275,7 @@ watch(
 
 onUnmounted(() => {
   if (input.value) {
+    input.value.removeEventListener("input", updateCountry);
     input.value.removeEventListener("open:countryselector", handleOpen);
     input.value.removeEventListener("close:countryselector", handleClose);
     input.value.removeEventListener("strict:reject", handleStrictReject);
@@ -289,6 +292,5 @@ defineExpose({ instance, input });
     v-bind="sanitizedInputProps"
     ref="input"
     type="tel"
-    @input="updateCountry"
   />
 </template>

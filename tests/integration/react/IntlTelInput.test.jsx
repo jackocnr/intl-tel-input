@@ -1,5 +1,5 @@
 import { createRef } from "react";
-import { render, screen, waitFor, cleanup } from "@testing-library/react";
+import { render, screen, waitFor, cleanup, fireEvent } from "@testing-library/react";
 import { afterEach, describe, expect, test, vi } from "vitest";
 import IntlTelInput, { intlTelInput } from "../../../packages/react/src/IntlTelInputWithUtils";
 
@@ -33,6 +33,39 @@ describe("React IntlTelInput wrapper", () => {
     expect(instance.isActive()).toBe(true);
     unmount();
     expect(instance.isActive()).toBe(false);
+  });
+
+  test("getSelectedCountry inside an onChangeNumber handler returns the newly-typed country", async () => {
+    //* Listener-order regression guard: React's synthetic onInput is delegated to the root, so it fires
+    //* after native listeners on the element itself — which means the core's input handler has already
+    //* updated the country by the time onChangeNumber runs and the user reads getSelectedCountry().
+    //* See https://github.com/jackocnr/intl-tel-input/issues/2171#issuecomment-4565159354
+    const ref = createRef();
+    const seenCountriesInHandler = [];
+    const onChangeNumber = vi.fn(() => {
+      const iso2 = ref.current?.getInstance()?.getSelectedCountry()?.iso2 ?? "";
+      seenCountriesInHandler.push(iso2);
+    });
+    render(
+      <IntlTelInput
+        ref={ref}
+        initialCountry="dk"
+        onChangeNumber={onChangeNumber}
+      />,
+    );
+
+    const input = getTelInput();
+    //* Wait for the wrapper's promise.then() seed step to run, otherwise our event will be treated
+    //* as a "fired during the utils-loading gap" replay rather than going through the normal update path.
+    await waitFor(() => expect(ref.current.getInstance().getNumber()).toBeDefined());
+    //* Replace previous "+45..." with "+47..." in one input event (simulates pasting/selecting-all-then-typing the new prefix).
+    //* Use the native value setter so React's input value tracker registers the change.
+    const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value").set;
+    setter.call(input, "+4712345678");
+    fireEvent.input(input);
+
+    await waitFor(() => expect(onChangeNumber).toHaveBeenCalled());
+    expect(seenCountriesInHandler.at(-1)).toBe("no");
   });
 
   test("updating the value prop fires onChangeNumber / onChangeCountry", async () => {

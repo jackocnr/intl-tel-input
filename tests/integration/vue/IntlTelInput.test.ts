@@ -41,6 +41,37 @@ describe("Vue IntlTelInput wrapper", () => {
     expect(document.body.contains(input)).toBe(false);
   });
 
+  test("getSelectedCountry inside a changeNumber handler returns the newly-typed country", async () => {
+    //* Listener-order regression: if the wrapper's input listener runs before the core updates the country,
+    //* the user's changeNumber handler sees stale country data when they look it up via instance.getSelectedCountry().
+    //* See https://github.com/jackocnr/intl-tel-input/issues/2171#issuecomment-4565159354
+    const itiRef = ref<{ instance: { getSelectedCountry: () => { iso2: string } | null } | null } | null>(null);
+    const seenCountriesInHandler: string[] = [];
+    const onChangeNumber = vi.fn(() => {
+      const iso2 = itiRef.value?.instance?.getSelectedCountry()?.iso2 ?? "";
+      seenCountriesInHandler.push(iso2);
+    });
+    const Wrapper = defineComponent({
+      setup() {
+        return () => h(IntlTelInput, {
+          ref: itiRef,
+          initialCountry: "dk",
+          onChangeNumber,
+        });
+      },
+    });
+    render(Wrapper);
+    await waitFor(() => expect(itiRef.value?.instance).toBeTruthy());
+
+    const input = getTelInput();
+    //* Replace previous "+45..." with "+47..." in one input event (simulates pasting/selecting-all-then-typing the new prefix).
+    input.value = "+4712345678";
+    input.dispatchEvent(new Event("input"));
+
+    await waitFor(() => expect(onChangeNumber).toHaveBeenCalled());
+    expect(seenCountriesInHandler.at(-1)).toBe("no");
+  });
+
   test("updating modelValue fires changeNumber / changeCountry", async () => {
     const onChangeNumber = vi.fn();
     const onChangeCountry = vi.fn();

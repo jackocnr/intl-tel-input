@@ -47,7 +47,6 @@ const warnInputAttr = (prop: string): void => {
     <input
       type="tel"
       #inputRef
-      (input)="handleInput()"
       (blur)="handleBlur($event)"
       (focus)="handleFocus($event)"
       (keydown)="handleKeyDown($event)"
@@ -168,6 +167,8 @@ class IntlTelInput
     );
     this.libraryInputClasses = this.inputRef.nativeElement.className;
 
+    //* Attach input listener AFTER intlTelInput() so the core's #handleInputEvent (also added in intlTelInput()) runs first on each native input event. That guarantees getSelectedCountry() / getNumber() return the post-update values inside handleInput. A template-bound (input)= would be registered before view init and so would run before the core's listener, reading stale state.
+    this.inputRef.nativeElement.addEventListener("input", this.handleInput);
     this.inputRef.nativeElement.addEventListener(
       "open:countryselector",
       this.handleOpenCountrySelector,
@@ -265,7 +266,7 @@ class IntlTelInput
     }
   }
 
-  handleInput() {
+  handleInput = (): void => {
     if (!this.iti) {
       return;
     }
@@ -314,7 +315,7 @@ class IntlTelInput
     if (hasChanged) {
       this.onValidatorChange();
     }
-  }
+  };
 
   handleBlur(event: FocusEvent) {
     this.onTouched();
@@ -358,6 +359,7 @@ class IntlTelInput
   }
 
   ngOnDestroy() {
+    this.inputRef.nativeElement.removeEventListener("input", this.handleInput);
     this.inputRef.nativeElement.removeEventListener(
       "open:countryselector",
       this.handleOpenCountrySelector,

@@ -74,6 +74,28 @@ describe("Angular IntlTelInput wrapper", () => {
     expect(instance.getNumber()).toBe("+447733123456");
   });
 
+  test("getSelectedCountry inside a numberChange subscriber returns the newly-typed country", async () => {
+    //* Listener-order regression: if the wrapper's input listener runs before the core updates the country,
+    //* the user's numberChange subscriber sees stale country data when they look it up via getInstance().getSelectedCountry().
+    //* See https://github.com/jackocnr/intl-tel-input/issues/2171#issuecomment-4565159354
+    const { fixture, component } = mount({ initialCountry: "dk" });
+    const seenCountriesInHandler: string[] = [];
+    component.numberChange.subscribe(() => {
+      const iso2 = component.getInstance()?.getSelectedCountry()?.iso2 ?? "";
+      seenCountriesInHandler.push(iso2);
+    });
+    const instance = component.getInstance()!;
+    await instance.promise;
+
+    const input = getTelInput(fixture);
+    //* Replace previous "+45..." with "+47..." in one input event (simulates pasting/selecting-all-then-typing the new prefix).
+    input.value = "+4712345678";
+    input.dispatchEvent(new Event("input"));
+
+    await waitUntil(() => seenCountriesInHandler.length > 0);
+    expect(seenCountriesInHandler.at(-1)).toBe("no");
+  });
+
   test("emits numberChange / countryChange / validityChange / errorCodeChange on input", async () => {
     const { fixture, component } = mount({ initialCountry: "gb" });
     const numberChange = vi.fn();
