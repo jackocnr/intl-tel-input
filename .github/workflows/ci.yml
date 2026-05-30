@@ -47,8 +47,6 @@ jobs:
       - name: Install Playwright browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         timeout-minutes: 10
-        env:
-          DEBUG: pw:install
         run: ./node_modules/.bin/playwright install chromium
 
       - name: Build
