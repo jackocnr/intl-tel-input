@@ -287,11 +287,16 @@ export default class UI {
     }
 
     if (!isFullscreen) {
-      // capture the dropdown height for later uses: (1) on dropdown open: decide whether to position it above or below the input, and (2) when countrySearch enabled, fix the dropdown height to prevent it jumping around when filtering the country list.
-      this.#inlineDropdownHeight = this.#getHiddenInlineDropdownHeight();
+      // capture the dropdown size for later uses: (1) on dropdown open: decide whether to position it above or below the input, and (2) when countrySearch enabled, fix the dropdown height (and, when matchDropdownWidth is disabled, width) to prevent it jumping around when filtering the country list.
+      const { height, width } = this.#getHiddenInlineDropdownSize();
+      this.#inlineDropdownHeight = height;
       // fix the dropdown height when using countrySearch so when dropdown is positioned above input, and you type in the search input and the country list changes, the search input doesn't jump up/down. (NOTE: the country list just has a max-height as it may only be needed to show a few items e.g. from onlyCountries, or from filtering with a search query)
       if (countrySearch) {
-        this.#countrySelectorEl.style.height = `${this.#inlineDropdownHeight}px`;
+        this.#countrySelectorEl.style.height = `${height}px`;
+        // With matchDropdownWidth disabled, the dropdown width tracks its widest country name (white-space: nowrap). Filtering the list would shrink it as the user types, so pin the width to its initial natural width.
+        if (!matchDropdownWidth && width > 0) {
+          this.#countrySelectorEl.style.width = `${width}px`;
+        }
       }
     }
 
@@ -566,8 +571,8 @@ export default class UI {
     return width;
   }
 
-  // Get the dropdown height (before it is added to the DOM)
-  #getHiddenInlineDropdownHeight(): number {
+  // Get the dropdown size (before it is added to the DOM)
+  #getHiddenInlineDropdownSize(): { height: number; width: number } {
     const body = UI.#getBody();
     // it's safe to remove the hide class as the dropdown has not yet been added to the DOM
     this.#countrySelectorEl!.classList.remove(CLASSES.HIDE);
@@ -581,11 +586,15 @@ export default class UI {
     tempContainer.style.visibility = "hidden";
     body.appendChild(tempContainer);
     const height = this.#countrySelectorEl!.offsetHeight;
+    const width = this.#countrySelectorEl!.offsetWidth;
     body.removeChild(tempContainer);
     tempContainer.style.visibility = "";
 
     this.#countrySelectorEl!.classList.add(CLASSES.HIDE);
-    return height > 0 ? height : LAYOUT.FALLBACK_DROPDOWN_HEIGHT;
+    return {
+      height: height > 0 ? height : LAYOUT.FALLBACK_DROPDOWN_HEIGHT,
+      width,
+    };
   }
 
   //* Update search results text (for a11y).
