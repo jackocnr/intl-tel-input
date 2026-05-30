@@ -1,9 +1,9 @@
-<p>By default, the Vue component validates phone numbers by length (sufficient for most use cases — enable <a href="/docs/vue-component#useprecisevalidation"><code>usePreciseValidation</code></a> for stricter matching), surfacing the result through three events: <code>changeNumber</code>, <code>changeValidity</code>, and <code>changeErrorCode</code>.</p>
+<p>By default, the Vue component validates phone numbers by length (sufficient for most use cases — enable <a href="/docs/vue-component#use-precise-validation"><code>use-precise-validation</code></a> for stricter matching), surfacing the result through three events: <code>change-number</code>, <code>change-validity</code>, and <code>change-error-code</code>.</p>
 
 <p>Validation respects the <a href="/docs/options#allowednumbertypes"><code>allowedNumberTypes</code></a> option, which is set to <code>["MOBILE", "FIXED_LINE"]</code> by default, meaning it will only consider those types of numbers as valid.</p>
 
-<p>When a number fails validation, <code>changeErrorCode</code> emits the error code, which you can then map to your own custom error message — see <a href="/docs/best-practices#show-a-user-facing-error-message">Show a user-facing error message</a>.</p>
+<p>When a number fails validation, <code>change-error-code</code> emits the error code, which you can then map to your own custom error message — see <a href="/docs/best-practices#show-a-user-facing-error-message">Show a user-facing error message</a>.</p>
 
 <p>Note: the red/green styling and warning/success icons are not part of the component — in this example they come from <a rel="noopener" href="https://getbootstrap.com/docs/5.3/forms/validation/">Bootstrap form validation</a>.</p>
 
-<p>Note: the toast shown when input is rejected isn't part of the library — see the <a href="/docs/vue-component#strictreject"><code>strictReject</code></a> event docs for an example of how to wire one up yourself.</p>
+<p>Note: the toast shown when input is rejected isn't part of the library — see the <a href="/docs/vue-component#strict-reject"><code>strict-reject</code></a> event docs for an example of how to wire one up yourself.</p>

@@ -33,7 +33,7 @@ See [Best practices](/docs/best-practices) for general advice on validation, E.1
 
 ## Props
 
-Any of the [initialisation options](#initialisation-options) (like `initialCountry`) can also be passed as a prop.
+Any of the [initialisation options](#initialisation-options) (like `initial-country`) can also be passed as a prop.
 
 ###### disabled
 Type: `boolean`  
@@ -41,20 +41,22 @@ Default: `false`
 
 Sets the disabled attribute of both the telephone input and the selected country button. Use this instead of `inputProps.disabled`, as this disables the country button too.
 
-###### initialValue
+###### initial-value
 Type: `string`  
 Default: `""`  
+camelCase: `initialValue`
 
-The initial value to put in the input. This will get auto-formatted on init (according to the `numberDisplayFormat` initialisation option). Only used during initialisation — for ongoing reactive updates, use `v-model` instead.
+The initial value to put in the input. This will get auto-formatted on init (according to the `number-display-format` initialisation option). Only used during initialisation — for ongoing reactive updates, use `v-model` instead.
 
-###### inputProps
+###### input-props
 Type: `object`  
 Default: `{}`  
+camelCase: `inputProps`
 
 The props to pass to the input element, e.g. `id`, `class`, `placeholder`, `required`, `onBlur`.
 
 > [!NOTE]
-> The following keys are reserved for the component/core library integration and will be ignored: `type`, `value`, `disabled`, `readonly`, `onInput`, `oninput`. Use the component props (`disabled`, `readonly`) and component events (`changeNumber`, `changeCountry`, etc.) instead.
+> The following keys are reserved for the component/core library integration and will be ignored: `type`, `value`, `disabled`, `readonly`, `onInput`, `oninput`. Use the component props (`disabled`, `readonly`) and component events (`change-number`, `change-country`, etc.) instead.
 
 ###### readonly
 Type: `boolean`  
@@ -62,17 +64,18 @@ Default: `false`
 
 Sets the readonly attribute of the telephone input and disables the selected country button. Use this instead of `inputProps.readonly`, as this disables the country button too.
 
-###### usePreciseValidation
-Type: `boolean`
+###### use-precise-validation
+Type: `boolean`  
 Default: `false`  
+camelCase: `usePreciseValidation`
 
 By default, the component uses the core library's `isValidNumber` method for validation, but if you'd rather use `isValidNumberPrecise`, set this to `true`.
 
-###### v-model (modelValue)
+###### v-model
 Type: `string`  
 Default: `undefined`  
 
-The component supports `v-model` for two-way binding. When the bound value changes, the input is updated via `setNumber` (skipped while the input is focused, to avoid disrupting typing). When the user types, the bound value is kept in sync via the `update:modelValue` event. If you don't use `v-model`, the component is uncontrolled — use `initialValue` for the starting value.
+The component supports `v-model` for two-way binding. When the bound value changes, the input is updated via `setNumber` (skipped while the input is focused, to avoid disrupting typing). When the user types, the bound value is kept in sync via the `update:modelValue` event. If you don't use `v-model`, the component is uncontrolled — use `initial-value` for the starting value.
 
 ```js
 <IntlTelInput v-model="phone" />
@@ -98,47 +101,54 @@ The camelCase form (e.g. `initialCountry`) also works if you prefer to match the
 
 ## Events
 
-###### changeCountry
+###### change-country
 Type: `(iso2: string) => void`  
 Default: `null`  
+camelCase: `changeCountry`
 
 Emitted when the selected country changes. The handler receives the new country's iso2 code (e.g. `"gb"`), or `""` if no country is selected.
 
-###### changeErrorCode
+###### change-error-code
 Type: `(errorCode: ValidationError | null) => void`  
 Default: `null`  
+camelCase: `changeErrorCode`
 
 Emitted when the number validation error changes. The handler receives a [`ValidationError`](/docs/types#validationerror) string, or `null` if the number is valid. See [Show a user-facing error message](/docs/best-practices#show-a-user-facing-error-message) for how to turn the error code into a message. Requires the utils script to be loaded (see above).
 
-###### changeNumber
+###### change-number
 Type: `(number: string) => void`  
 Default: `null`  
+camelCase: `changeNumber`
 
 Emitted when the number changes. The handler receives the new number in standardised E.164 format (e.g. `"+447700900123"`), or `""` if the input is empty. Requires the utils script to be loaded (see above).
 
-###### changeValidity
+###### change-validity
 Type: `(isValid: boolean) => void`  
 Default: `null`  
+camelCase: `changeValidity`
 
 Emitted when the number validity changes. The handler receives the new validity boolean. Requires the utils script to be loaded (see above).
 
-###### closeCountrySelector
+###### close-country-selector
 Type: `() => void`  
 Default: `null`  
+camelCase: `closeCountrySelector`
 
 Emitted when the country selector closes.
 
-###### openCountrySelector
+###### open-country-selector
 Type: `() => void`  
 Default: `null`  
+camelCase: `openCountrySelector`
 
 Emitted when the country selector opens.
 
-###### strictReject
+###### strict-reject
 Type: `(source: "key" | "paste", rejectedInput: string, reason: "invalid" | "max-length") => void`  
 Default: `null`  
+camelCase: `strictReject`
 
-Emitted when [`strictMode`](/docs/options#strictmode) rejects or modifies input. For most cases, [`strictRejectAnimation`](/docs/options#strictrejectanimation) gives you a built-in shake/flash animation without writing any handler code — only reach for `strictReject` when you need custom feedback (e.g. a toast that explains _why_ the input was rejected).
+Emitted when [`strictMode`](/docs/options#strictmode) rejects or modifies input. For most cases, [`strictRejectAnimation`](/docs/options#strictrejectanimation) gives you a built-in shake/flash animation without writing any handler code — only reach for `strict-reject` when you need custom feedback (e.g. a toast that explains _why_ the input was rejected).
 
 The handler receives three arguments describing what was rejected and why:
 

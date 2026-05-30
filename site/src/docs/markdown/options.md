@@ -11,12 +11,14 @@ Control country list behaviour and whether certain UI elements are displayed.
 ###### containerClass
 Type: `string`  
 Default: `""`  
+Vue: `container-class`
 
 Additional class(es) to add to the injected `<div class="iti">` that wraps the input and selected country. Useful for sizing or positioning the whole component.
 
 ###### countrySearch
 Type: `boolean`  
 Default: `true`  
+Vue: `country-search`
 
 Add a search input to the top of the country list, so users can filter the displayed countries. Matches against country name, iso2 code, dial code, and initials. 
 
@@ -25,6 +27,7 @@ View `intl-tel-input` with this disabled in the [Playground](/playground?country
 ###### countrySelectorMode
 Type: `"DROPDOWN" | "FULLSCREEN" | "AUTO" | "OFF"`  
 Default: `"AUTO"`  
+Vue: `country-selector-mode`
 
 Controls the country selector — the panel that opens when the user clicks the selected country button, so they can pick a different country.
 
@@ -51,12 +54,14 @@ _Here's what the fullscreen popup looks like on mobile:_
 ###### dropdownParent
 Type: `HTMLElement`  
 Default: `null`  
+Vue: `dropdown-parent`
 
 When using the country selector as a dropdown, sometimes it can get cut-off if an ancestor has `overflow:hidden` (or similar). You can solve this by setting `dropdownParent` to another element on the page (e.g. `document.body`), which means the dropdown will be appended to that element instead of next to the input. It will then be re-positioned next to the input using JavaScript (with `position:fixed`), so it looks the same as the standard inline dropdown. _Note: previously named `dropdownContainer`._
 
 ###### matchDropdownWidth
 Type: `boolean`  
 Default: `true`  
+Vue: `match-dropdown-width`
 
 Match the dropdown width to the input width. When disabled, the dropdown is as wide as the longest country name. _Note: previously named `fixDropdownWidth`._
 
@@ -65,12 +70,14 @@ Try `intl-tel-input` with this disabled in the [Playground](/playground?matchDro
 ###### searchInputClass
 Type: `string`  
 Default: `""`  
+Vue: `search-input-class`
 
 Additional class(es) to add to the country search input element (requires [`countrySearch`](#countrysearch) to be enabled).
 
 ###### separateDialCode
 Type: `boolean`  
 Default: `true`  
+Vue: `separate-dial-code`
 
 Display the selected country's international dial code next to the input, so it looks like it's part of the typed number, but is actually separate (they cannot delete it). This makes it clear to the user which dial code is currently selected and that they are entering their number in international format. _Note: previously named `showSelectedDialCode`._
 
@@ -88,6 +95,7 @@ Play with this option in the [Playground](/playground#separateDialCode).
 ###### showFlags
 Type: `boolean`  
 Default: `true`  
+Vue: `show-flags`
 
 Display the country flag in the selected country button and next to each country in the list. When disabled, a generic globe icon is shown in place of the selected flag.
 
@@ -100,6 +108,7 @@ Choose which countries are available, the order they're displayed in, and how th
 ###### countryOrder
 Type: `string[]`  
 Default: `null`  
+Vue: `country-order`
 
 An array of iso2 codes that is used to order the country list. Any omitted countries will appear after those specified, in alphabetical order, e.g. setting `countryOrder` to `["jp", "kr"]` will result in the list: Japan, South Korea, Afghanistan, Albania, Algeria, etc. _Note: this replaces the legacy `preferredCountries` option, which has now been removed, but you can still re-create the grey divider below the preferred group [with a single CSS rule](/docs/faq#how-do-i-restore-the-preferredcountries-divider)._
 
@@ -108,6 +117,7 @@ Play with the above example in the [Playground](/playground?countryOrder=%5B"jp"
 ###### excludeCountries
 Type: `string[]`  
 Default: `null`  
+Vue: `exclude-countries`
 
 An array of iso2 codes to exclude from the country list e.g. `["gb", "us"]`. Also see: [`onlyCountries`](#onlycountries) option.
 
@@ -116,6 +126,7 @@ Try `intl-tel-input` with all "A" countries excluded in the [Playground](/playgr
 ###### initialCountry
 Type: `string`  
 Default: `""`  
+Vue: `initial-country`
 
 Set the initial country selection by specifying its iso2 code, e.g. `"us"` for the United States. If left unset (and no [`initialCountryLookup`](#initialcountrylookup) is provided), the input starts in the empty/globe state. Note: however you use `initialCountry`, it will not update the country selection if the input already contains a number with an international dial code.
 
@@ -127,6 +138,7 @@ View `intl-tel-input` with `initialCountry` set to `"de"` (Germany) in the [Play
 ###### initialCountryLookup
 Type: `() => Promise<string>`  
 Default: `null`  
+Vue: `initial-country-lookup`
 
 Provide a custom function that calls a lookup service (e.g. an IP geolocation API) to determine the user's country, and returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) that resolves with the relevant iso2 code (or rejects on error). The lookup only runs when [`initialCountry`](#initialcountry) is not set — an explicit `initialCountry` always takes precedence. _Note: previously named `geoIpLookup`._
 
@@ -151,10 +163,12 @@ Play with this option in the [Playground](/playground#initialCountryLookup).
 ###### onlyCountries
 Type: `string[]`  
 Default: `null`  
+Vue: `only-countries`
 
 In the country list, display only the countries you specify here, using their iso2 codes e.g. `["fr", "de", "es"]`. Also see: [`excludeCountries`](#excludecountries) option.
 
 Try `intl-tel-input` with this option set to only European countries in the [Playground](/playground?onlyCountries=%5B"al"%2C"ad"%2C"at"%2C"by"%2C"be"%2C"ba"%2C"bg"%2C"hr"%2C"cz"%2C"dk"%2C"ee"%2C"fo"%2C"fi"%2C"fr"%2C"de"%2C"gi"%2C"gr"%2C"va"%2C"hu"%2C"is"%2C"ie"%2C"it"%2C"lv"%2C"li"%2C"lt"%2C"lu"%2C"mk"%2C"mt"%2C"md"%2C"mc"%2C"me"%2C"nl"%2C"no"%2C"pl"%2C"pt"%2C"ro"%2C"ru"%2C"sm"%2C"rs"%2C"sk"%2C"si"%2C"es"%2C"se"%2C"ch"%2C"ua"%2C"gb"%5D#onlyCountries).
+
 
 
 ## Formatting options
@@ -164,6 +178,7 @@ How numbers are formatted as you type and on initial display.
 ###### formatAsYouType
 Type: `boolean`  
 Default: `true`  
+Vue: `format-as-you-type`
 
 Automatically format the number as the user types. This feature will be disabled if the user types their own formatting characters. Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). _Note: previously named `autoFormat`._
 
@@ -172,6 +187,7 @@ Try `intl-tel-input` with this disabled in the [Playground](/playground?formatAs
 ###### numberDisplayFormat
 Type: `"E164" | "INTERNATIONAL" | "NATIONAL"`  
 Default: `"INTERNATIONAL"`  
+Vue: `number-display-format`
 
 Controls how numbers are displayed in the input — both the auto-generated placeholder example and any stored value passed in on initialisation or via [`setNumber`](/docs/methods#setnumber).
 
@@ -189,6 +205,7 @@ Try `intl-tel-input` with `separateDialCode` disabled and `numberDisplayFormat` 
 ###### strictMode
 Type: `boolean`  
 Default: `true`  
+Vue: `strict-mode`
 
 As the user types (or pastes) in the input, ignore any irrelevant characters (e.g. letters). The user can only enter numeric characters and an optional plus at the beginning. Cap the length at the maximum valid number length (this respects [`allowedNumberTypes`](#allowednumbertypes)). Requires the [utils script to be loaded](/docs/utils#loading-the-utils-script). 
 
@@ -200,8 +217,10 @@ Play with this option in the [Playground](/playground#strictMode).
 ###### strictRejectAnimation
 Type: `boolean`  
 Default: `true`  
+Vue: `strict-reject-animation`
 
 When [`strictMode`](#strictmode) is enabled, play a subtle animation any time a keystroke is rejected, or a paste is rejected entirely — a brief shake by default, or a background-colour flash for users with `prefers-reduced-motion`. Partial paste sanitisation (e.g. only some characters stripped) does not trigger it. The flash colour can be customised via the `--iti-strict-reject-flash-color` CSS variable.
+
 
 
 ## Placeholder options
@@ -211,6 +230,7 @@ Configure the automatically generated placeholder numbers.
 ###### customPlaceholder
 Type: `(exampleNumber: string, selectedCountry: Country | null) => string`  
 Default: `null`  
+Vue: `custom-placeholder`
 
 Customise the placeholder text. Your function receives the example number (used as the default placeholder), along with the [selected country data](/docs/types#country), and whatever string you return is used as the placeholder instead.
 
@@ -230,6 +250,7 @@ View `intl-tel-input` with this enabled in the [Playground](/playground?customPl
 ###### placeholderNumberPolicy
 Type: `"POLITE" | "AGGRESSIVE" | "OFF"`  
 Default: `"POLITE"`  
+Vue: `placeholder-number-policy`
 
 Policy for setting the input's placeholder to an example number for the selected country (auto-updates on country change).
 
@@ -247,6 +268,7 @@ Play with this option on an input that contains a placeholder in the [Playground
 ###### placeholderNumberType
 Type: `NumberType`  
 Default: `"MOBILE"`  
+Vue: `placeholder-number-type`
 
 Set the [number type](/docs/types#numbertype) to use for the generated placeholder numbers. We strongly recommend sticking to `"MOBILE"` (the default), `"FIXED_LINE"`, or `"FIXED_LINE_OR_MOBILE"` — these are the only types with an example number for every country. Other values produce an empty placeholder for any country where libphonenumber has no example (e.g. `"PAGER"` only has examples for ~9% of countries).
 
@@ -256,6 +278,7 @@ View `intl-tel-input` with this set to `"FIXED_LINE"` in the [Playground](/playg
 > You can either pass a string literal, e.g. `"MOBILE"`, or a [constant](/docs/types#constant-objects), e.g. `intlTelInput.NUMBER_TYPE.MOBILE` — useful where typos in the string literal won't be caught at compile time.
 
 
+
 ## Validation options
 
 Adjust what is considered a valid number.
@@ -263,6 +286,7 @@ Adjust what is considered a valid number.
 ###### allowedNumberTypes
 Type: `NumberType[] | null`  
 Default: `["MOBILE", "FIXED_LINE"]`  
+Vue: `allowed-number-types`
 
 Set the [number type(s)](/docs/types#numbertype) to enforce during validation, as well as the maximum number length to enforce with [strictMode](#strictmode). Set it to `null` to not enforce any particular type (not recommended<sup>*</sup>). 
 
@@ -278,6 +302,7 @@ Play with this option in the [Playground](/playground#allowedNumberTypes).
 ###### allowNumberExtensions
 Type: `boolean`  
 Default: `false`  
+Vue: `allow-number-extensions`
 
 Whether or not the validation methods return `true` for numbers containing extensions, e.g. "+1 702 123-1234 ext. 1234". 
 
@@ -292,6 +317,7 @@ Try toggling this option on/off on a number with an extension in the [Playground
 ###### allowPhonewords
 Type: `boolean`  
 Default: `false`  
+Vue: `allow-phonewords`
 
 Whether or not the validation methods return `true` for numbers containing phonewords, e.g. "+1 702 FLOWERS".
 
@@ -303,6 +329,7 @@ Note that the number must contain **at least 3 letters** for them to be treated 
 > Not compatible with [`strictMode`](#strictmode) (which is enabled by default), as that will prevent the user from typing letters in the first place. Disable `strictMode` to allow phonewords to be entered.
 
 
+
 ## Translation options
 
 Localise country names and the core library UI strings, e.g. the country search placeholder.
@@ -310,6 +337,7 @@ Localise country names and the core library UI strings, e.g. the country search 
 ###### countryNameLocale
 Type: `string`  
 Default: `"en"`  
+Vue: `country-name-locale`
 
 The locale to pass to `Intl.DisplayNames` to generate the country names. Should adhere to the [BCP 47](https://developer.mozilla.org/en-US/docs/Glossary/BCP_47_language_tag) standard, e.g. `"zh"` (Chinese), or `"zh-Hans"` (Simplified Chinese). To override individual country names, see [`countryNameOverrides`](#countrynameoverrides) below. For translating the other UI strings, like the country search placeholder, see [`uiTranslations`](#uitranslations) below. _Note: previously named `localizedCountries`._
 
@@ -318,6 +346,7 @@ View `intl-tel-input` in Hindi in the [Playground](/playground?uiTranslations=hi
 ###### countryNameOverrides
 Type: `object`  
 Default: `{}`  
+Vue: `country-name-overrides`
 
 Override individual country names, keyed by iso2 code. Useful when the name produced by [`countryNameLocale`](#countrynamelocale) doesn't match your preferred wording. Example use:
 
@@ -332,6 +361,7 @@ View `intl-tel-input` with the US renamed to "United States of America" in the [
 ###### uiTranslations
 Type: `object`  
 Default: `{}`  
+Vue: `ui-translations`
 
 Translate the core library's UI strings (country search placeholder, no-results message, ARIA labels). For translating country names, see [`countryNameLocale`](#countrynamelocale) above; to override individual country names, see [`countryNameOverrides`](#countrynameoverrides).
 
@@ -346,6 +376,7 @@ See the [Localisation docs](/docs/localisation#localising-user-interface-strings
 View `intl-tel-input` in Ukrainian in the [Playground](/playground?uiTranslations=uk&initialCountry=ua#uiTranslations).
 
 
+
 ## Miscellaneous options
 
 Extra features like hidden inputs and loading the utils module.
@@ -353,6 +384,7 @@ Extra features like hidden inputs and loading the utils module.
 ###### hiddenInputs
 Type: `(telInputName: string) => { phone: string, country?: string }`  
 Default: `null`  
+Vue: `hidden-inputs`
 
 Allows the creation of hidden input fields within a form, which, on submit, get populated with (1) the full international telephone number and (2) the selected country's iso2 code. This is useful for old-fashioned, page-load form submissions to ensure the full international number and iso2 code are captured, especially when [`numberDisplayFormat`](#numberdisplayformat) is `"NATIONAL"` or [`separateDialCode`](#separatedialcode) is enabled. [See example](/examples/vanilla-javascript/hidden-input).
 
@@ -378,6 +410,7 @@ This will generate the following (hidden) elements, which will be automatically 
 ###### loadUtils
 Type: `() => Promise<{ default: object }>`  
 Default: `null`  
+Vue: `load-utils`
 
 This is one way to lazy load the included utils.js (to enable formatting/validation, etc) - see [Loading The Utils Script](/docs/utils#loading-the-utils-script) for more options.
 
