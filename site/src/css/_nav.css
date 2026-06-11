@@ -77,6 +77,7 @@
     --docsearch-search-button-background: rgba(0, 0, 0, .1);
     --docsearch-search-button-text-color: rgba(255, 255, 255, .65);
     border: 1px solid rgba(255, 255, 255, .4);
+    border-radius: var(--bs-border-radius);
 
     &:hover {
       --docsearch-search-button-text-color: rgba(255, 255, 255, 1);
