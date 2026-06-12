@@ -9,16 +9,7 @@ import {
   computed,
   getCurrentInstance,
 } from "vue";
-import type { InputHTMLAttributes } from "vue";
-
-interface Props {
-  usePreciseValidation?: boolean;
-  disabled?: boolean;
-  readonly?: boolean;
-  inputProps?: InputHTMLAttributes;
-  initialValue?: string | null;
-  modelValue?: string | null;
-}
+import type { Props } from "./props";
 
 const props = withDefaults(defineProps<Props & SomeOptions>(), {
   disabled: false,
