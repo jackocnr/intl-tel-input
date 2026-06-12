@@ -1,5 +1,6 @@
 //* Shqip (Albanian). Translated by: ChatGPT 5.
 import type { UiTranslations } from "./types.js";
+import countryNames from "./country-names/sq.js";
 
 const interfaceTranslations: UiTranslations = {
   selectedCountryAriaLabel:
@@ -21,4 +22,4 @@ const interfaceTranslations: UiTranslations = {
   },
 };
 
-export default interfaceTranslations;
+export default { ...interfaceTranslations, countryNames };

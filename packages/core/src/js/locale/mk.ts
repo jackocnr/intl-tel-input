@@ -1,5 +1,6 @@
 //* Macedonian. Translated by: Claude.
 import type { UiTranslations } from "./types.js";
+import countryNames from "./country-names/mk.js";
 
 const interfaceTranslations: UiTranslations = {
   selectedCountryAriaLabel:
@@ -26,4 +27,4 @@ const interfaceTranslations: UiTranslations = {
   },
 };
 
-export default interfaceTranslations;
+export default { ...interfaceTranslations, countryNames };

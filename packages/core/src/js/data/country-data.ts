@@ -28,7 +28,12 @@ export const generateCountryNames = (
   countries: Country[],
   options: AllOptions,
 ): void => {
-  const { countryNameLocale, countryNameOverrides } = options;
+  const { countryNameLocale, countryNameOverrides, uiTranslations } = options;
+  //* Some locales (e.g. bs, hy, is, mk, sq, uz) bundle their own country names
+  //* because certain browsers' Intl.DisplayNames lacks region data for them and
+  //* silently falls back to English (notably Chrome desktop). When the active
+  //* uiTranslations carries these, they take precedence over Intl.DisplayNames.
+  const bundledCountryNames = uiTranslations?.countryNames;
 
   //* Populate country names using Intl.DisplayNames (per instance) with countryNameLocale.
   let displayNames;
@@ -48,7 +53,11 @@ export const generateCountryNames = (
     displayNames = null;
   }
   for (const c of countries) {
-    c.name = countryNameOverrides[c.iso2] || displayNames?.of(c.iso2.toUpperCase()) || "";
+    c.name =
+      countryNameOverrides[c.iso2] ||
+      bundledCountryNames?.[c.iso2] ||
+      displayNames?.of(c.iso2.toUpperCase()) ||
+      "";
   }
 };
 

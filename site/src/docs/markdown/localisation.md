@@ -14,6 +14,12 @@ You can also override individual country names via the [`countryNameOverrides`](
 }
 ```
 
+#### Browser support caveat
+
+Some browsers ship a reduced `Intl.DisplayNames` dataset that omits country names for certain locales, silently falling back to English. Most notably, **Chrome on desktop** does this for `bs` (Bosnian), `hy` (Armenian), `is` (Icelandic), `mk` (Macedonian), `sq` (Albanian) and `uz` (Uzbek).
+
+You don't need to handle this: for these locales we bundle the translated country names into their `intl-tel-input/locale` modules, so importing one for [`uiTranslations`](/docs/options#uitranslations) gives correctly translated country names in every browser. Note that when using one of these locales with `uiTranslations`, any separate `countryNameLocale` option value will be ignored, but you can still use `countryNameOverrides` to override them.
+
 ## Localising user interface strings
 
 Use the [`uiTranslations`](/docs/options#uitranslations) option to translate the user interface strings (e.g. the country search placeholder, no-results message, and various accessibility labels).
@@ -34,7 +40,7 @@ You can override one or more keys by spreading the provided translations — pas
 }
 ```
 
-### Supported UI locales
+#### Supported UI locales
 
 We currently ship user interface translations for the following <!-- LOCALE_COUNT --> locales:
 
@@ -44,7 +50,7 @@ Don't see your locale? It's easy to contribute a new one yourself — see [Addin
 
 Alternatively, you can specify your own translations inline by passing a custom object to the [`uiTranslations`](/docs/options#uitranslations) option — see the full list of translatable keys below.
 
-### Translatable keys
+#### Translatable keys
 
 Here is the full set of UI strings the [`uiTranslations`](/docs/options#uitranslations) option accepts, shown with their default English values for reference:
 

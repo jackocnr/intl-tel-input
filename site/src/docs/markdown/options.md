@@ -341,6 +341,8 @@ Vue: `country-name-locale`
 
 The locale to pass to `Intl.DisplayNames` to generate the country names. Should adhere to the [BCP 47](https://developer.mozilla.org/en-US/docs/Glossary/BCP_47_language_tag) standard, e.g. `"zh"` (Chinese), or `"zh-Hans"` (Simplified Chinese). To override individual country names, see [`countryNameOverrides`](#countrynameoverrides) below. For translating the other UI strings, like the country search placeholder, see [`uiTranslations`](#uitranslations) below. _Note: previously named `localizedCountries`._
 
+Note: some browsers lack `Intl.DisplayNames` country-name data for certain locales (e.g. desktop Chrome lacks Armenian etc). For those locales we bundle a fallback via the `uiTranslations` option - see [Browser support caveat](/docs/localisation#browser-support-caveat).
+
 View `intl-tel-input` in Hindi in the [Playground](/playground?uiTranslations=hi&initialCountry=in#uiTranslations).
 
 ###### countryNameOverrides

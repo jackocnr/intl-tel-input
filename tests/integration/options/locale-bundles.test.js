@@ -18,9 +18,15 @@ const UI_TRANSLATION_KEYS = [
   "searchSummaryAria",
 ];
 
+// Optional keys a locale may additionally include. "countryNames" is bundled
+// only for locales whose region display names are missing from some browsers'
+// Intl.DisplayNames data (e.g. Chrome desktop). See country-data.ts.
+const OPTIONAL_KEYS = ["countryNames"];
+
 describe("locale bundles", () => {
-  test("each locale exports all and only the expected UI translation keys", () => {
-    const expectedKeys = [...UI_TRANSLATION_KEYS].sort();
+  test("each locale exports all required UI translation keys (plus only permitted optional keys)", () => {
+    const requiredKeys = [...UI_TRANSLATION_KEYS].sort();
+    const allowedKeys = new Set([...UI_TRANSLATION_KEYS, ...OPTIONAL_KEYS]);
     const locales = Object.keys(localeModules)
       .filter((key) => key !== "__esModule")
       .sort();
@@ -31,7 +37,10 @@ describe("locale bundles", () => {
       const actualKeys = Object.keys(translations).sort();
 
       try {
-        expect(actualKeys).toEqual(expectedKeys);
+        // All required UI keys must be present.
+        expect(actualKeys.filter((k) => UI_TRANSLATION_KEYS.includes(k)).sort()).toEqual(requiredKeys);
+        // No keys outside the allowed set (required + optional).
+        expect(actualKeys.filter((k) => !allowedKeys.has(k))).toEqual([]);
       } catch (error) {
         error.message = `Locale ${locale} has unexpected keys.\n` + error.message;
         throw error;

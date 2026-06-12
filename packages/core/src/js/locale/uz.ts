@@ -1,5 +1,6 @@
 //* English. Translated by: Mukhammadkhojiakbar Khusanov (khusanov-m).
 import type { UiTranslations } from "./types.js";
+import countryNames from "./country-names/uz.js";
 
 const interfaceTranslations: UiTranslations = {
   selectedCountryAriaLabel:
@@ -18,4 +19,4 @@ const interfaceTranslations: UiTranslations = {
   },
 };
 
-export default interfaceTranslations;
+export default { ...interfaceTranslations, countryNames };

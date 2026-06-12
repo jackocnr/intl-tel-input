@@ -713,6 +713,22 @@ function hasNoBrowserCountryNameData(locale: string): boolean {
   }
 }
 
+// Locales that bundle their own country names (in packages/core/src/js/locale/
+// country-names/), so even when Intl.DisplayNames falls back to English the
+// library still shows translated names. Keep in sync with that directory.
+const LOCALES_WITH_BUNDLED_COUNTRY_NAMES = new Set([
+  "bs", "hy", "is", "mk", "sq", "uz",
+]);
+
+// True when country names will actually render in English: the browser lacks the
+// Intl.DisplayNames data AND we don't bundle a fallback for this locale.
+function countryNamesWillFallBackToEnglish(locale: string): boolean {
+  return (
+    hasNoBrowserCountryNameData(locale) &&
+    !LOCALES_WITH_BUNDLED_COUNTRY_NAMES.has(locale)
+  );
+}
+
 // Contextual hints: shown when toggling an option that has no visible effect
 // until the user takes an additional action (e.g. selecting a country, typing a number).
 const HINT_CONFIGS = [
@@ -948,7 +964,7 @@ const HINT_CONFIGS = [
     optionKey: "uiTranslations",
     message: () => {
       const state = getCombinedStateFromControls();
-      if (hasNoBrowserCountryNameData(state.uiTranslations)) {
+      if (countryNamesWillFallBackToEnglish(state.uiTranslations)) {
         return "Warning: your browser's Intl.DisplayNames has no country-name data for this locale — country names will fall back to English.";
       }
       if (!state.countrySearch) {
@@ -961,7 +977,7 @@ const HINT_CONFIGS = [
     },
     shouldShow: () => {
       const state = getCombinedStateFromControls();
-      if (hasNoBrowserCountryNameData(state.uiTranslations)) {
+      if (countryNamesWillFallBackToEnglish(state.uiTranslations)) {
         return true;
       }
       return !state.countrySearch || !keepDropdownOpenCheckbox.checked;

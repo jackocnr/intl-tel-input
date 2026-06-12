@@ -26,7 +26,7 @@
     "clean:vue": "rimraf packages/vue/dist/*",
     "clean:angular": "rimraf packages/angular/dist/*",
     "clean:all": "npm run clean:dist:css && npm run clean:dist:img && npm run clean:dist:js && npm run clean:react && npm run clean:vue && npm run clean:angular && npm run clean:tmp",
-    "build:translations:gen": "node scripts/translations.js",
+    "build:translations:gen": "node scripts/generate-country-names.js && node scripts/translations.js",
     "build:translations": "npm run clean:dist:js && npm run clean:tmp && npm run build:translations:gen && npm run build:js",
     "build:utils:closure": "node scripts/build-utils.js",
     "build:utils:check": "node scripts/check-lpn-metadata.js",

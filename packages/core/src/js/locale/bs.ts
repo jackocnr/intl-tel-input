@@ -1,5 +1,6 @@
 //* Bosnian. Translated by: Harun Sabljaković (sabljak) */
 import type { UiTranslations } from "./types.js";
+import countryNames from "./country-names/bs.js";
 
 const interfaceTranslations: UiTranslations = {
   selectedCountryAriaLabel:
@@ -33,4 +34,4 @@ const interfaceTranslations: UiTranslations = {
   },
 };
 
-export default interfaceTranslations;
+export default { ...interfaceTranslations, countryNames };

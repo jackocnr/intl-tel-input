@@ -90,4 +90,57 @@ describe("data/country-data generateCountryNames", () => {
     });
     expect(sample[0].name).toBe("République Française");
   });
+
+  test("uiTranslations.countryNames takes precedence over DisplayNames", () => {
+    const sample = [{ ...allCountries.find(c => c.iso2 === "de") }];
+    // countryNameLocale is English (would give "Germany"), but the active
+    // locale bundles its own translated names — those must win. This is the
+    // fallback for browsers whose Intl.DisplayNames lacks region data.
+    generateCountryNames(sample, {
+      countryNameLocale: "en",
+      countryNameOverrides: {},
+      uiTranslations: { countryNames: { de: "Njemačka" } },
+    });
+    expect(sample[0].name).toBe("Njemačka");
+  });
+
+  test("countryNameOverrides beats uiTranslations.countryNames", () => {
+    const sample = [{ ...allCountries.find(c => c.iso2 === "de") }];
+    generateCountryNames(sample, {
+      countryNameLocale: "en",
+      countryNameOverrides: { de: "MY OVERRIDE" },
+      uiTranslations: { countryNames: { de: "Njemačka" } },
+    });
+    expect(sample[0].name).toBe("MY OVERRIDE");
+  });
+});
+
+describe("data/country-data bundled fallback locales", () => {
+  // Locales whose region display names are missing from some browsers'
+  // Intl.DisplayNames data (e.g. Chrome desktop), so we bundle translated
+  // country names with them. See scripts/generate-country-names.js.
+  const FALLBACK_LOCALES = ["bs", "hy", "is", "mk", "sq", "uz"];
+
+  test.each(FALLBACK_LOCALES)("locale %s bundles countryNames for every country", async (locale) => {
+    const mod = await import(`../../../packages/core/src/js/locale/${locale}.ts`);
+    const { countryNames } = mod.default;
+    expect(countryNames).toBeTruthy();
+    for (const c of allCountries) {
+      expect(typeof countryNames[c.iso2]).toBe("string");
+      expect(countryNames[c.iso2].length).toBeGreaterThan(0);
+    }
+  });
+
+  test("bundled names are actually applied end-to-end via the locale module", async () => {
+    const bs = (await import("../../../packages/core/src/js/locale/bs.ts")).default;
+    const sample = [{ ...allCountries.find(c => c.iso2 === "de") }];
+    // Even with the default English countryNameLocale, importing the Bosnian
+    // locale yields Bosnian country names.
+    generateCountryNames(sample, {
+      countryNameLocale: "en",
+      countryNameOverrides: {},
+      uiTranslations: bs,
+    });
+    expect(sample[0].name).toBe("Njemačka");
+  });
 });
