@@ -13,7 +13,7 @@ These methods are called on the core library instance. The examples below all us
 - **Svelte**: `const iti = ref.getInstance()` — see [Accessing instance methods](/docs/svelte-component#accessing-instance-methods).
 
 > [!IMPORTANT]
-> Methods that require the [utils script](/docs/utils#loading-the-utils-script) (e.g. `getNumber`, `getNumberType`, `isValidNumber`) will throw if called before utils have finished loading. Always await `iti.promise` first:
+> Methods that require the [utils script](/docs/utils#loading-the-utils-script) (e.g. `getNumber`, `getNumberType`, `isValidNumber`) will throw if called before utils have finished loading. Always `await iti.promise` first:
 >
 > ```js
 > await iti.promise;
