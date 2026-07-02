@@ -6,95 +6,95 @@ The core library exposes a set of CSS variables (all prefixed `--iti-`) that you
 
 ##### Colour variables
 
-###### --iti-hover-color
+###### `--iti-hover-color`
 Default: `rgba(0, 0, 0, 0.05)`  
 
 Hover background for the selected-country button and country list items.
 
-###### --iti-border-color
+###### `--iti-border-color`
 Default: `#ccc`  
 
 Country selector border and the divider under the country search input.
 
-###### --iti-country-selector-bg
+###### `--iti-country-selector-bg`
 Default: `white`  
 
 Country selector background.
 
-###### --iti-icon-color
+###### `--iti-icon-color`
 Default: `#555`  
 
 Colour of the arrow, globe, search, clear, and check icons.
 
-###### --iti-strict-reject-flash-color
+###### `--iti-strict-reject-flash-color`
 Default: `rgba(255, 0, 0, 0.12)`  
 
 Flash colour used by [`strictRejectAnimation`](/docs/options#strictrejectanimation) for users with `prefers-reduced-motion`.
 
 ##### Spacing & sizing variables
 
-###### --iti-spacer-horizontal
+###### `--iti-spacer-horizontal`
 Default: `10px`  
 
 Horizontal spacing around the flag, country name, and icons.
 
-###### --iti-border-width
+###### `--iti-border-width`
 Default: `1px`  
 
 Border width used for the country selector and divider. Should match your input's border width.
 
-###### --iti-mobile-popup-margin
+###### `--iti-mobile-popup-margin`
 Default: `30px`  
 
 Margin around the fullscreen popup on mobile.
 
 ##### Arrow variables
 
-###### --iti-arrow-size
+###### `--iti-arrow-size`
 Default: `5px`  
 
 Arrow size.
 
-###### --iti-arrow-width
+###### `--iti-arrow-width`
 Default: `1.5px`  
 
 Arrow line thickness.
 
-###### --iti-arrow-padding
+###### `--iti-arrow-padding`
 Default: `7px`  
 
 Padding around the arrow.
 
 ##### Icon variables
 
-###### --iti-globe-icon-size
+###### `--iti-globe-icon-size`
 Default: `17px`  
 
 Size of the globe icon (empty state) and the search icon.
 
-###### --iti-clear-icon-size
+###### `--iti-clear-icon-size`
 Default: `15px`  
 
 Size of the search clear button and the selected-country check icon.
 
 ##### Flag variables
 
-###### --iti-flag-width
+###### `--iti-flag-width`
 Default: `20px`  
 
 Flag width. The sprite offsets and height scale from this — see [Scaling down the flag images](#scaling-down-the-flag-images).
 
-###### --iti-flag-height
+###### `--iti-flag-height`
 Default: `calc(var(--iti-flag-width) * 3 / 4)`  
 
 Flag height. Derived from width via the 4:3 aspect ratio; override only if you need a non-4:3 box, e.g. you're providing your own flags.
 
-###### --iti-path-flags-1x
+###### `--iti-path-flags-1x`
 Default: `url('../img/flags.webp')`  
 
 1x flag sprite URL. Override to serve the sprite from your own host/CDN.
 
-###### --iti-path-flags-2x
+###### `--iti-path-flags-2x`
 Default: `url('../img/flags@2x.webp')`  
 
 2x (retina) flag sprite URL. Override to serve the sprite from your own host/CDN.
