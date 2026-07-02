@@ -227,3 +227,37 @@ if (document.readyState === "loading") {
 } else {
   initTocScrollSpy();
 }
+
+// Re-apply hash scrolling shortly after load.
+//
+// When a page is opened with a #section in the URL, the browser scrolls to the
+// target on a best-effort basis. But content-blocking extensions (e.g. AdBlock)
+// perform a scroll operation during their pass around load, which the browser
+// treats as "the user has taken over" and cancels the pending fragment scroll —
+// leaving the page stuck near the top. Since that interference happens early,
+// re-applying the scroll a moment after load lands us on the section.
+function initHashScroll() {
+  const rawHash = window.location.hash;
+  if (!rawHash || rawHash === "#") {
+    return;
+  }
+  let id: string;
+  try {
+    id = decodeURIComponent(rawHash.slice(1));
+  } catch {
+    id = rawHash.slice(1);
+  }
+  const target = document.getElementById(id);
+  if (!target) {
+    return;
+  }
+  // scrollIntoView honours html { scroll-padding-top }, so we land in the same
+  // spot as clicking a TOC link. The small delay lets the extension finish its
+  // pass first; if the browser already scrolled correctly, this is a no-op.
+  window.setTimeout(() => target.scrollIntoView(), 0);
+}
+if (document.readyState === "complete") {
+  initHashScroll();
+} else {
+  window.addEventListener("load", initHashScroll, { once: true });
+}

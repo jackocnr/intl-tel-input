@@ -17,3 +17,4 @@ node_modules/
 /.claude/
 tests/integration/**/__screenshots__/
 /.vitest-attachments/
+/.wrangler/
