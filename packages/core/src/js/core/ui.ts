@@ -40,6 +40,7 @@ export default class UI {
   #searchTokens!: SearchTokensMap;
   #searchDebounceTimer: ReturnType<typeof setTimeout> | null = null;
   #inlineDropdownHeight?: number;
+  #cssAnchorPositioningDone = false;
   #countryContainerEl?: HTMLElement;
   #selectedCountryEl?: HTMLElement;
   #selectedFlagEl?: HTMLElement;
@@ -299,9 +300,7 @@ export default class UI {
       });
       this.#detachedCountrySelectorEl = createEl("div", { class: wrapperClasses });
       this.#detachedCountrySelectorEl.appendChild(this.#countrySelectorEl);
-      if (!isFullscreen) {
-        this.#setupCssAnchorPositioning();
-      }
+      //* NOTE: CSS anchor positioning (which forces a getComputedStyle style recalc) is set up lazily on first open — see #setupCssAnchorPositioning — to keep init free of layout/style work.
     } else {
       this.#countryContainerEl!.appendChild(this.#countrySelectorEl!);
     }
@@ -1205,7 +1204,12 @@ export default class UI {
         this.#detachedCountrySelectorEl!.style.paddingLeft = `${inputPos.left}px`;
         this.#detachedCountrySelectorEl!.style.paddingRight = `${window.innerWidth - inputPos.right}px`;
       }
-    } else if (!supportsCssAnchor) {
+    } else {
+      // Set up CSS anchor positioning on first open (memoised) before the dropdown is revealed. Inert in browsers without anchor() support, which use the fixed-coordinate fallback below instead.
+      this.#setupCssAnchorPositioning();
+    }
+
+    if (!isFullscreen && !supportsCssAnchor) {
       //* For browsers that support it, we fix the detached dropdown to the input using CSS Anchor Positioning.
       //* For older browsers, we position the dropdown next to the input using fixed coordinates.
       const inputPos = this.telInputEl.getBoundingClientRect();
@@ -1223,13 +1227,17 @@ export default class UI {
   }
 
   //* Wire up CSS Anchor Positioning between the input and the detached country selector using a
-  //* unique anchor name per instance. Called once at build time — the matching styles in
+  //* unique anchor name per instance. Called lazily on first open (memoised) — the matching styles in
   //* intlTelInput.css only take effect in browsers that support anchor(); elsewhere these
   //* properties are inert. We append our name to any existing anchor-name (read via
   //* getComputedStyle so we pick up CSS-defined values), so consumer-set anchors on the input
   //* are preserved. Caveat: this snapshots the consumer's value once — if they later change
   //* anchor-name via CSS (e.g. a class swap), our inline write will shadow the change.
   #setupCssAnchorPositioning(): void {
+    if (this.#cssAnchorPositioningDone) {
+      return;
+    }
+    this.#cssAnchorPositioningDone = true;
     const anchorName = `--iti-anchor-${this.#id}`;
     const existing = getComputedStyle(this.telInputEl).anchorName;
     this.telInputEl.style.anchorName =
