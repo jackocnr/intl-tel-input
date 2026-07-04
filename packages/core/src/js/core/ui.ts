@@ -286,19 +286,7 @@ export default class UI {
       this.#updateSearchResultsA11yText();
     }
 
-    if (!isFullscreen) {
-      // capture the dropdown size for later uses: (1) on dropdown open: decide whether to position it above or below the input, and (2) when countrySearch enabled, fix the dropdown height (and, when matchDropdownWidth is disabled, width) to prevent it jumping around when filtering the country list.
-      const { height, width } = this.#getHiddenInlineDropdownSize();
-      this.#inlineDropdownHeight = height;
-      // fix the dropdown height when using countrySearch so when dropdown is positioned above input, and you type in the search input and the country list changes, the search input doesn't jump up/down. (NOTE: the country list just has a max-height as it may only be needed to show a few items e.g. from onlyCountries, or from filtering with a search query)
-      if (countrySearch) {
-        this.#countrySelectorEl.style.height = `${height}px`;
-        // With matchDropdownWidth disabled, the dropdown width tracks its widest country name (white-space: nowrap). Filtering the list would shrink it as the user types, so pin the width to its initial natural width.
-        if (!matchDropdownWidth && width > 0) {
-          this.#countrySelectorEl.style.width = `${width}px`;
-        }
-      }
-    }
+    //* NOTE: measuring the inline dropdown size (which forces a synchronous layout reflow) is deferred to the first open — see #ensureInlineDropdownSizeMeasured — so that init does no layout work for a dropdown that may never be opened.
 
     //* Detached country selector: required for fullscreen (always attached to document.body), or optional for dropdown (when dropdownParent is set to escape an overflow:hidden ancestor).
     if (detachedParent) {
@@ -571,26 +559,54 @@ export default class UI {
     return width;
   }
 
-  // Get the dropdown size (before it is added to the DOM)
+  //* Measure the inline dropdown size once, lazily, on first open — see #getHiddenInlineDropdownSize for why measuring forces a reflow. Memoised via #inlineDropdownHeight so subsequent opens are free.
+  //* Captured for two uses: (1) on open, decide whether to position the dropdown above or below the input; (2) when countrySearch is enabled, pin the dropdown height (and, when matchDropdownWidth is disabled, width) so it doesn't jump around as the country list is filtered.
+  #ensureInlineDropdownSizeMeasured(): void {
+    if (this.#inlineDropdownHeight !== undefined) {
+      return;
+    }
+    const { countrySearch, matchDropdownWidth } = this.#options;
+    const { height, width } = this.#getHiddenInlineDropdownSize();
+    this.#inlineDropdownHeight = height;
+    // fix the dropdown height when using countrySearch so when dropdown is positioned above input, and you type in the search input and the country list changes, the search input doesn't jump up/down. (NOTE: the country list just has a max-height as it may only be needed to show a few items e.g. from onlyCountries, or from filtering with a search query)
+    if (countrySearch) {
+      this.#countrySelectorEl!.style.height = `${height}px`;
+      // With matchDropdownWidth disabled, the dropdown width tracks its widest country name (white-space: nowrap). Filtering the list would shrink it as the user types, so pin the width to its initial natural width.
+      if (!matchDropdownWidth && width > 0) {
+        this.#countrySelectorEl!.style.width = `${width}px`;
+      }
+    }
+  }
+
+  // Measure the dropdown by moving it into a temporary hidden container on the body (it needs the right ancestor classes to lay out correctly). Restores it to its original position afterwards — a no-op during init (when it is still detached) but required when called lazily on first open (when it is already inserted).
   #getHiddenInlineDropdownSize(): { height: number; width: number } {
     const body = UI.#getBody();
-    // it's safe to remove the hide class as the dropdown has not yet been added to the DOM
-    this.#countrySelectorEl!.classList.remove(CLASSES.HIDE);
+    const selectorEl = this.#countrySelectorEl!;
+    const originalParent = selectorEl.parentNode;
+    const originalNextSibling = selectorEl.nextSibling;
+
+    // safe to remove the hide class as we measure inside a detached, hidden temp container
+    selectorEl.classList.remove(CLASSES.HIDE);
 
     // it needs these classes on the container to get the correct height
     const tempContainer = createEl("div", {
       class: "iti iti--inline-country-selector",
     });
-    tempContainer.appendChild(this.#countrySelectorEl!);
+    tempContainer.appendChild(selectorEl);
 
     tempContainer.style.visibility = "hidden";
     body.appendChild(tempContainer);
-    const height = this.#countrySelectorEl!.offsetHeight;
-    const width = this.#countrySelectorEl!.offsetWidth;
+    const height = selectorEl.offsetHeight;
+    const width = selectorEl.offsetWidth;
     body.removeChild(tempContainer);
-    tempContainer.style.visibility = "";
 
-    this.#countrySelectorEl!.classList.add(CLASSES.HIDE);
+    selectorEl.classList.add(CLASSES.HIDE);
+
+    // restore the dropdown to where it was (no-op at init when originalParent is null)
+    if (originalParent) {
+      originalParent.insertBefore(selectorEl, originalNextSibling);
+    }
+
     return {
       height: height > 0 ? height : LAYOUT.FALLBACK_DROPDOWN_HEIGHT,
       width,
@@ -807,6 +823,11 @@ export default class UI {
     const { countrySearch, dropdownAlwaysOpen } = this.#options;
 
     this.#countrySelectorAbortController = new AbortController();
+
+    // Lazily measure the inline dropdown size on first open (memoised). Fullscreen doesn't use these measurements. Done before ensureDropdownWidthSet so the natural width/height is measured before matchDropdownWidth pins the width (matching the original init ordering).
+    if (this.#options.countrySelectorMode !== COUNTRY_SELECTOR_MODE.FULLSCREEN) {
+      this.#ensureInlineDropdownSizeMeasured();
+    }
 
     // if matchDropdownWidth enabled, and the width was not set during init (e.g. because input was hidden), then set it now as the input must be visible now.
     this.ensureDropdownWidthSet();
