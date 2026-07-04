@@ -578,8 +578,9 @@ export default class UI {
   }
 
   // Measure the dropdown by moving it into a temporary hidden container on the body (it needs the right ancestor classes to lay out correctly). Restores it to its original position afterwards — a no-op during init (when it is still detached) but required when called lazily on first open (when it is already inserted).
+  //* Deliberately measures in the LOCAL document.body (not UI.#getBody(), which escapes to window.top): this runs on first open, when the input's own frame is visibly rendered and styled. Escaping to the top frame breaks when the input is inside a same-origin iframe whose outer frame lacks intl-tel-input's styles (e.g. Storybook), as the dropdown would then be measured unstyled and come out far too tall (issue #2178).
   #getHiddenInlineDropdownSize(): { height: number; width: number } {
-    const body = UI.#getBody();
+    const body = document.body;
     const selectorEl = this.#countrySelectorEl!;
     const originalParent = selectorEl.parentNode;
     const originalNextSibling = selectorEl.nextSibling;
