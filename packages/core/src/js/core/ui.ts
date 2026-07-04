@@ -515,29 +515,17 @@ export default class UI {
     this.#resizeObserver.observe(this.#selectedCountryEl);
   }
 
-  static #getBody(): HTMLElement {
-    // Use window.top as a fix for same-origin iframes (that are hidden during init) where even appending it to document.body would still be hidden. window.top accesses the top-most document, which will not be hidden.
-    let body;
-    try {
-      body = window.top!.document.body;
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (e) {
-      // fix for cross-origin iframes, where accessing window.top.document throws a security error
-      body = document.body;
-    }
-    return body;
-  }
-
   //* When input is in a hidden container during init, we cannot calculate the selected country width.
   //* Fix: clone the markup, make it invisible, add it to the end of the DOM, and then measure it's width.
   //* To get the right styling to apply, all we need is a shallow clone of the container,
   //* and then to inject a deep clone of the selectedCountryEl element.
+  //* Measures in the LOCAL document.body: appending to the local body escapes any hidden ancestor container, and the input's own frame is where intl-tel-input's styles live (so the clone lays out correctly). We deliberately do NOT escape to window.top: that only measures correctly in the rare case where the top frame also loads the library's styles, and measures wrong when it doesn't (e.g. a same-origin iframe whose outer frame lacks the styles — cf. #2178). If the local frame itself isn't laid out yet (e.g. an iframe hidden during init), this returns 0 and the caller falls back to a sane constant; the ResizeObserver in #observeSelectedCountryResize then corrects the padding once the input becomes visible.
   #getHiddenSelectedCountryWidth(): number {
     if (!this.telInputEl.parentNode) {
       return 0;
     }
 
-    const body = UI.#getBody();
+    const body = document.body;
     const containerClone = this.telInputEl.parentNode!.cloneNode(
       false,
     ) as HTMLElement;
@@ -578,7 +566,7 @@ export default class UI {
   }
 
   // Measure the dropdown by moving it into a temporary hidden container on the body (it needs the right ancestor classes to lay out correctly). Restores it to its original position afterwards — a no-op during init (when it is still detached) but required when called lazily on first open (when it is already inserted).
-  //* Deliberately measures in the LOCAL document.body (not UI.#getBody(), which escapes to window.top): this runs on first open, when the input's own frame is visibly rendered and styled. Escaping to the top frame breaks when the input is inside a same-origin iframe whose outer frame lacks intl-tel-input's styles (e.g. Storybook), as the dropdown would then be measured unstyled and come out far too tall (issue #2178).
+  //* Deliberately measures in the LOCAL document.body (not window.top): this runs on first open, when the input's own frame is visibly rendered and styled. Escaping to the top frame breaks when the input is inside a same-origin iframe whose outer frame lacks intl-tel-input's styles (e.g. Storybook), as the dropdown would then be measured unstyled and come out far too tall (issue #2178).
   #getHiddenInlineDropdownSize(): { height: number; width: number } {
     const body = document.body;
     const selectorEl = this.#countrySelectorEl!;
