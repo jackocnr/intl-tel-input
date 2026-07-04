@@ -75,6 +75,34 @@
   }
 }
 
+/* Collapsible <details> block */
+.iti-details {
+  margin: 0 0 1rem;
+  border: var(--bs-border-width, 1px) solid var(--bs-border-color, #dee2e6);
+  border-radius: var(--bs-border-radius, 0.375rem);
+}
+.iti-details > summary {
+  padding: 0.5rem 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+.iti-details[open] > summary {
+  border-bottom: var(--bs-border-width, 1px) solid var(--bs-border-color, #dee2e6);
+}
+.iti-details > :not(summary) {
+  padding: 0 0.75rem;
+}
+.iti-details > ul,
+.iti-details > ol {
+  padding-left: 2rem;
+}
+.iti-details > summary + * {
+  margin-top: 0.75rem;
+}
+.iti-details > :last-child {
+  margin-bottom: 0.75rem;
+}
+
 /* Docs options page layout: keep code blocks within the content width */
 .iti-doc-options__row {
   border: var(--bs-border-width, 1px) solid var(--bs-border-color, #dee2e6);

@@ -4,13 +4,18 @@ This page lists the core library's public API methods.
 
 ## Instance Methods
 
-These methods are called on the core library instance. The examples below all use a variable named `iti` for the instance — how you get hold of it depends on the integration:
+These methods are called on the core library instance. The examples below all use a variable named `iti` for the instance — how you get hold of it depends on the integration.
+
+<details class="iti-details">
+<summary>How to get the <code>iti</code> instance for your integration</summary>
 
 - **Vanilla JavaScript library**: `const iti = intlTelInput(input, options)` — directly from the initialisation call.
 - **React**: `const iti = ref.current.getInstance()` — see [Accessing instance methods](/docs/react-component#accessing-instance-methods).
 - **Vue**: `const iti = ref.value.instance` — see [Accessing instance methods](/docs/vue-component#accessing-instance-methods).
 - **Angular**: `const iti = this.ref.getInstance()` — see [Accessing instance methods](/docs/angular-component#accessing-instance-methods).
 - **Svelte**: `const iti = ref.getInstance()` — see [Accessing instance methods](/docs/svelte-component#accessing-instance-methods).
+
+</details>
 
 > [!IMPORTANT]
 > Methods that require the [utils script](/docs/utils#loading-the-utils-script) (e.g. `getNumber`, `getNumberType`, `isValidNumber`) will throw if called before utils have finished loading. Always `await iti.promise` first:
