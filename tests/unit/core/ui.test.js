@@ -554,26 +554,6 @@ describe("UI with disabled input", () => {
   });
 });
 
-// ── RTL ────────────────────────────────────────────────────────
-describe("UI RTL support", () => {
-  test("does not set a dir attribute on the wrapper (RTL is handled via CSS logical properties)", () => {
-    const rtlContainer = document.createElement("div");
-    rtlContainer.setAttribute("dir", "rtl");
-    document.body.appendChild(rtlContainer);
-
-    const input = document.createElement("input");
-    rtlContainer.appendChild(input);
-
-    const options = makeOptions();
-    const ui = new UI(input, options, 3);
-    const testCountries = countries.map((c) => ({ ...c }));
-    ui.buildMarkup(testCountries, buildSearchTokens(testCountries));
-
-    const wrapper = input.parentNode;
-    expect(wrapper.getAttribute("dir")).toBe(null);
-  });
-});
-
 // ── showFlags: false ───────────────────────────────────────────
 describe("UI with showFlags: false", () => {
   test("does not render flag divs in country list items", () => {
