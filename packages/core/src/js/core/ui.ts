@@ -34,7 +34,6 @@ export default class UI {
   // private
   readonly #options: AllOptions;
   readonly #id: number;
-  readonly #isRTL: boolean;
   readonly #originalPaddingInlineStart: string = "";
   #countries!: Country[];
   #searchTokens!: SearchTokensMap;
@@ -72,7 +71,6 @@ export default class UI {
     this.#options = options;
     this.#id = id;
     this.hadInitialPlaceholder = Boolean(input.getAttribute("placeholder"));
-    this.#isRTL = !!this.telInputEl.closest("[dir=rtl]");
     //* Store original styling before we override it.
     this.#originalPaddingInlineStart = this.telInputEl.style.paddingInlineStart;
   }
@@ -139,10 +137,6 @@ export default class UI {
       [containerClass]: Boolean(containerClass),
     });
     const wrapper = createEl("div", { class: parentClasses });
-    // if the page is RTL, then add dir=LTR to the wrapper, as numbers are still written LTR, so the input should be LTR, but we also need to display any separate dial code to the left as well (but we then make the country selector RTL)
-    if (this.#isRTL) {
-      wrapper.setAttribute("dir", "ltr");
-    }
     this.telInputEl.before(wrapper);
     return wrapper;
   }
@@ -263,9 +257,6 @@ export default class UI {
       role: "dialog",
       [ARIA.MODAL]: "true",
     });
-    if (this.#isRTL) {
-      this.#countrySelectorEl.setAttribute("dir", "rtl");
-    }
 
     if (countrySearch) {
       this.#buildSearchUI();
@@ -474,9 +465,6 @@ export default class UI {
       // the dial code span sits inside the name span, separated by a space, which works for both LTR and RTL languages
       // (visually it looks better separated by a standard space character, rather than a fixed margin distance, and is more flexible)
       const dialEl = createEl("span", { class: "iti__dial-code" }, nameEl);
-      if (this.#isRTL) {
-        dialEl.setAttribute("dir", "ltr");
-      }
       dialEl.textContent = `(+${c.dialCode})`;
 
       frag.appendChild(listItem);
