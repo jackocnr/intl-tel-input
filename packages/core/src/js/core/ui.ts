@@ -35,7 +35,7 @@ export default class UI {
   readonly #options: AllOptions;
   readonly #id: number;
   readonly #isRTL: boolean;
-  readonly #originalPaddingLeft: string = "";
+  readonly #originalPaddingInlineStart: string = "";
   #countries!: Country[];
   #searchTokens!: SearchTokensMap;
   #searchDebounceTimer: ReturnType<typeof setTimeout> | null = null;
@@ -74,7 +74,7 @@ export default class UI {
     this.hadInitialPlaceholder = Boolean(input.getAttribute("placeholder"));
     this.#isRTL = !!this.telInputEl.closest("[dir=rtl]");
     //* Store original styling before we override it.
-    this.#originalPaddingLeft = this.telInputEl.style.paddingLeft;
+    this.#originalPaddingInlineStart = this.telInputEl.style.paddingInlineStart;
   }
 
   // Validate that the provided element is an HTMLInputElement.
@@ -498,7 +498,7 @@ export default class UI {
         fallbackWidth;
       const inputPadding =
         selectedCountryWidth + LAYOUT.INPUT_PADDING_EXTRA_LEFT;
-      this.telInputEl.style.paddingLeft = `${inputPadding}px`;
+      this.telInputEl.style.paddingInlineStart = `${inputPadding}px`;
     }
   }
 
@@ -1369,7 +1369,7 @@ export default class UI {
     this.#resizeObserver?.disconnect();
 
     //* Restore original styling
-    this.telInputEl.style.paddingLeft = this.#originalPaddingLeft;
+    this.telInputEl.style.paddingInlineStart = this.#originalPaddingInlineStart;
 
     //* Remove markup (but leave the original input). parentNode may be null if the host framework (e.g. Svelte) detached the input before destroy() ran; the orphaned wrapper has no parent and will be GC'd once references are released.
     const wrapper = this.telInputEl.parentNode as HTMLElement | null;
