@@ -123,6 +123,15 @@
   margin-inline-start: 4px;
 }
 
+/* Dial codes are inherently LTR (e.g. "(+81)" / "+81"); isolate them so the
+   digits and surrounding punctuation render correctly regardless of the
+   widget's direction (otherwise the parentheses can mirror in RTL). */
+.iti__dial-code,
+.iti__selected-dial-code {
+  unicode-bidi: isolate;
+  direction: ltr;
+}
+
 .iti__arrow {
   margin-inline-start: var(--iti-arrow-padding);
   margin-top: -2px;

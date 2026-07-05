@@ -96,13 +96,14 @@ describe("with RTL context", () => {
     document.body.removeAttribute("dir");
   });
 
-  test("does add dir attributes by default", () => {
-    // we add dir=LTR to the container, dir=RTL to the dropdown, and dir=LTR on the dial codes in the country list
-    expect(container.getAttribute("dir")).toBe("ltr");
+  test("does not add dir attributes (RTL is handled via CSS logical properties)", () => {
+    // RTL is handled entirely in CSS via logical properties (inset-inline-*, padding-inline-*,
+    // margin-inline-*) plus unicode-bidi isolation on the dial codes — no dir attributes are set.
+    expect(container.getAttribute("dir")).toBe(null);
     const dropdownContent = getCountrySelectorElement(container);
-    expect(dropdownContent.getAttribute("dir")).toBe("rtl");
+    expect(dropdownContent.getAttribute("dir")).toBe(null);
     const firstDialCode = dropdownContent.querySelector(".iti__dial-code");
-    expect(firstDialCode.getAttribute("dir")).toBe("ltr");
+    expect(firstDialCode.getAttribute("dir")).toBe(null);
   });
 });
 

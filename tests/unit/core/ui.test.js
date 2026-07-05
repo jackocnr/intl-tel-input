@@ -520,9 +520,9 @@ describe("UI.destroy", () => {
     expect(input.dataset.intlTelInputId).toBeUndefined();
   });
 
-  test("restores original paddingLeft when separateDialCode was enabled", () => {
+  test("restores original paddingInlineStart when separateDialCode was enabled", () => {
     const input = document.createElement("input");
-    input.style.paddingLeft = "20px";
+    input.style.paddingInlineStart = "20px";
     document.body.appendChild(input);
 
     const options = makeOptions({ separateDialCode: true });
@@ -530,10 +530,10 @@ describe("UI.destroy", () => {
     const testCountries = countries.map((c) => ({ ...c }));
     ui.buildMarkup(testCountries, buildSearchTokens(testCountries));
 
-    // paddingLeft will have been overwritten by buildMarkup
-    expect(input.style.paddingLeft).not.toBe("20px");
+    // paddingInlineStart will have been overwritten by buildMarkup
+    expect(input.style.paddingInlineStart).not.toBe("20px");
     ui.destroy();
-    expect(input.style.paddingLeft).toBe("20px");
+    expect(input.style.paddingInlineStart).toBe("20px");
   });
 });
 
@@ -556,7 +556,7 @@ describe("UI with disabled input", () => {
 
 // ── RTL ────────────────────────────────────────────────────────
 describe("UI RTL support", () => {
-  test("sets dir=ltr on wrapper when input is inside RTL container", () => {
+  test("does not set a dir attribute on the wrapper (RTL is handled via CSS logical properties)", () => {
     const rtlContainer = document.createElement("div");
     rtlContainer.setAttribute("dir", "rtl");
     document.body.appendChild(rtlContainer);
@@ -570,7 +570,7 @@ describe("UI RTL support", () => {
     ui.buildMarkup(testCountries, buildSearchTokens(testCountries));
 
     const wrapper = input.parentNode;
-    expect(wrapper.getAttribute("dir")).toBe("ltr");
+    expect(wrapper.getAttribute("dir")).toBe(null);
   });
 });
 
