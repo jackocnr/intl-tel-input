@@ -132,6 +132,25 @@
   direction: ltr;
 }
 
+/* A phone number is inherently left-to-right, so lay the input chrome out LTR in every
+   direction — the flag / country button on the left, then the dial code, then the number.
+   This needs no :dir(): in an LTR page it is the natural direction (a no-op), and in an RTL
+   page it overrides the inherited RTL so the flag stays on the left and the number reads (and
+   clears the button) correctly. */
+.iti {
+  direction: ltr;
+}
+
+/* ...but the country dropdown LIST still follows the page's RTL direction (localised names
+   right-aligned, flags on the inline-end). This part DOES need :dir(rtl): the forced-LTR above
+   cascades into the dropdown, and an unconditional `direction: rtl` here would wrongly flip
+   LTR-page dropdowns to RTL too. */
+:dir(rtl) .iti__country-list,
+:dir(rtl) .iti__search-input-wrapper,
+:dir(rtl) .iti__no-results {
+  direction: rtl;
+}
+
 .iti__arrow {
   margin-inline-start: var(--iti-arrow-padding);
   margin-top: -2px;
