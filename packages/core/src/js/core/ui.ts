@@ -34,8 +34,7 @@ export default class UI {
   // private
   readonly #options: AllOptions;
   readonly #id: number;
-  readonly #isRTL: boolean;
-  readonly #originalPaddingLeft: string = "";
+  readonly #originalPaddingInlineStart: string = "";
   #countries!: Country[];
   #searchTokens!: SearchTokensMap;
   #searchDebounceTimer: ReturnType<typeof setTimeout> | null = null;
@@ -72,9 +71,8 @@ export default class UI {
     this.#options = options;
     this.#id = id;
     this.hadInitialPlaceholder = Boolean(input.getAttribute("placeholder"));
-    this.#isRTL = !!this.telInputEl.closest("[dir=rtl]");
     //* Store original styling before we override it.
-    this.#originalPaddingLeft = this.telInputEl.style.paddingLeft;
+    this.#originalPaddingInlineStart = this.telInputEl.style.paddingInlineStart;
   }
 
   // Validate that the provided element is an HTMLInputElement.
@@ -139,10 +137,6 @@ export default class UI {
       [containerClass]: Boolean(containerClass),
     });
     const wrapper = createEl("div", { class: parentClasses });
-    // if the page is RTL, then add dir=LTR to the wrapper, as numbers are still written LTR, so the input should be LTR, but we also need to display any separate dial code to the left as well (but we then make the country selector RTL)
-    if (this.#isRTL) {
-      wrapper.setAttribute("dir", "ltr");
-    }
     this.telInputEl.before(wrapper);
     return wrapper;
   }
@@ -263,9 +257,6 @@ export default class UI {
       role: "dialog",
       [ARIA.MODAL]: "true",
     });
-    if (this.#isRTL) {
-      this.#countrySelectorEl.setAttribute("dir", "rtl");
-    }
 
     if (countrySearch) {
       this.#buildSearchUI();
@@ -474,9 +465,6 @@ export default class UI {
       // the dial code span sits inside the name span, separated by a space, which works for both LTR and RTL languages
       // (visually it looks better separated by a standard space character, rather than a fixed margin distance, and is more flexible)
       const dialEl = createEl("span", { class: "iti__dial-code" }, nameEl);
-      if (this.#isRTL) {
-        dialEl.setAttribute("dir", "ltr");
-      }
       dialEl.textContent = `(+${c.dialCode})`;
 
       frag.appendChild(listItem);
@@ -498,7 +486,7 @@ export default class UI {
         fallbackWidth;
       const inputPadding =
         selectedCountryWidth + LAYOUT.INPUT_PADDING_EXTRA_LEFT;
-      this.telInputEl.style.paddingLeft = `${inputPadding}px`;
+      this.telInputEl.style.paddingInlineStart = `${inputPadding}px`;
     }
   }
 
@@ -1369,7 +1357,7 @@ export default class UI {
     this.#resizeObserver?.disconnect();
 
     //* Restore original styling
-    this.telInputEl.style.paddingLeft = this.#originalPaddingLeft;
+    this.telInputEl.style.paddingInlineStart = this.#originalPaddingInlineStart;
 
     //* Remove markup (but leave the original input). parentNode may be null if the host framework (e.g. Svelte) detached the input before destroy() ran; the orphaned wrapper has no parent and will be GC'd once references are released.
     const wrapper = this.telInputEl.parentNode as HTMLElement | null;
