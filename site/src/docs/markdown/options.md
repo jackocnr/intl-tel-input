@@ -390,6 +390,8 @@ Vue: `hidden-inputs`
 
 Allows the creation of hidden input fields within a form, which, on submit, get populated with (1) the full international telephone number and (2) the selected country's iso2 code. This is useful for old-fashioned, page-load form submissions to ensure the full international number and iso2 code are captured, especially when [`numberDisplayFormat`](#numberdisplayformat) is `"NATIONAL"` or [`separateDialCode`](#separatedialcode) is enabled. [See example](/examples/vanilla-javascript/hidden-input).
 
+If an input with the specified name already exists in the form, the library will overwrite it on submit instead of creating a new input.
+
 This option accepts a function that receives the name of the main telephone input as an argument. This function should return an object with `phone` and (optionally) `country` properties to specify the names of the hidden inputs for the phone number and iso2 code, respectively.
 
 > [!NOTE]
