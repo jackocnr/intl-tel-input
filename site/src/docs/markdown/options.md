@@ -388,14 +388,11 @@ Type: `(telInputName: string) => { phone: string, country?: string }`
 Default: `null`  
 Vue: `hidden-inputs`
 
-Allows the creation of hidden input fields within a form, which, on submit, get populated with (1) the full international telephone number and (2) the selected country's iso2 code. This is useful for old-fashioned, page-load form submissions to ensure the full international number and iso2 code are captured, especially when [`numberDisplayFormat`](#numberdisplayformat) is `"NATIONAL"` or [`separateDialCode`](#separatedialcode) is enabled. [See example](/examples/vanilla-javascript/hidden-input).
+Allows the creation of hidden input fields within a form, which, on submit, get populated with (1) the full international telephone number and (2) the selected country's iso2 code. This is useful for old-fashioned, page-load form submissions to ensure the full international number and iso2 code are always captured, even when the user enters their number in national format (omitting the dial code), or when [`separateDialCode`](#separatedialcode) is enabled. [See example](/examples/vanilla-javascript/hidden-input).
 
-If an input with the specified name already exists in the form, the library will overwrite it on submit instead of creating a new input.
+If an input with the specified name already exists in the form, the library will use that instead of creating a new one.
 
 This option accepts a function that receives the name of the main telephone input as an argument. This function should return an object with `phone` and (optionally) `country` properties to specify the names of the hidden inputs for the phone number and iso2 code, respectively.
-
-> [!NOTE]
-> This feature requires the input to be inside a `<form>` element, as it listens for the `submit` event on the closest form element. Also note that since this uses [`getNumber`](/docs/methods#getnumber) internally, firstly it requires the [utils script to be loaded](/docs/utils#loading-the-utils-script), and secondly, it expects a valid number and so will only work correctly if you have used [`isValidNumber`](/docs/methods#isvalidnumber) to validate the number before allowing the form submit to go through.
 
 ```js
 (telInputName) => ({
@@ -410,6 +407,9 @@ This will generate the following (hidden) elements, which will be automatically 
 <input type="hidden" name="phone_full">
 <input type="hidden" name="country_iso2">
 ```
+
+> [!NOTE]
+> This feature requires the input to be inside a `<form>` element, as it listens for the `submit` event on the closest form element. Also note that since this uses [`getNumber`](/docs/methods#getnumber) internally, firstly it requires the [utils script to be loaded](/docs/utils#loading-the-utils-script), and secondly, it expects a valid number and so will only work correctly if you have used [`isValidNumber`](/docs/methods#isvalidnumber) to validate the number before allowing the form submit to go through.
 
 ###### loadUtils
 Type: `() => Promise<{ default: object }>`  
