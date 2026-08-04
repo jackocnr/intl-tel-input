@@ -240,7 +240,7 @@
   visibility: hidden;
 }
 .iti--has-country-selector .iti__country-container:not(:has(+ input[disabled])):not(:has(+ input[readonly])) .iti__selected-country-primary:hover,
-.iti--has-country-selector .iti__country-container:not(:has(+ input[disabled])):not(:has(+ input[readonly])) .iti__selected-country:has(+ .iti__country-selector:hover) .iti__selected-country-primary {
+.iti--has-country-selector .iti__country-container:not(:has(+ input[disabled])):not(:has(+ input[readonly])) .iti__selected-country[aria-expanded=true] .iti__selected-country-primary {
   background-color: var(--iti-hover-color);
 }
 .iti .iti__selected-dial-code {
