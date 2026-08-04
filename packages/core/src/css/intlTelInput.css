@@ -350,11 +350,11 @@
     }
   }
 
-  /* Only show hover background colour when you hover (1) selected flag/arrow or (2) country selector contents, but NOT when you hover the selected dial code, which would feel weird.
+  /* Show the active background colour on the selected flag/arrow when you hover it, or for as long as the country selector (dropdown) is open. Deliberately not applied when hovering the selected dial code, which would feel weird.
      Only apply when the input is NOT disabled/readonly. */
   .iti__country-container:not(:has(+ input[disabled])):not(:has(+ input[readonly])) {
     .iti__selected-country-primary:hover,
-    .iti__selected-country:has(+ .iti__country-selector:hover) .iti__selected-country-primary {
+    .iti__selected-country[aria-expanded="true"] .iti__selected-country-primary {
       background-color: var(--iti-hover-color);
     }
   }
