@@ -162,6 +162,115 @@ function simplePrefixesFromPattern(pat) {
     return [];
 }
 
+// ---------------------------------------------------------------------------
+// Exact prefix expansion, used by the area code audit further down.
+//
+// The extractors above are deliberately heuristic: they pull a short, readable
+// prefix out of a pattern and give up on anything awkward. The audit needs the
+// opposite - a complete and exact answer to "which N-digit prefixes can this
+// pattern match?" - so it gets its own parser. It handles the subset of regex
+// that LPN's nationalNumberPattern actually uses: digit literals, \d, character
+// classes, non-capturing groups, alternation and {n,m}/?/*/+ quantifiers.
+// ---------------------------------------------------------------------------
+function parseRegexPattern(src) {
+  let i = 0;
+  function parseAlt() {
+    const alts = [parseSeq()];
+    while (src[i] === "|") { i++; alts.push(parseSeq()); }
+    return { t: "alt", alts };
+  }
+  function parseSeq() {
+    const items = [];
+    while (i < src.length && src[i] !== "|" && src[i] !== ")") items.push(parseQuant());
+    return { t: "seq", items };
+  }
+  function parseQuant() {
+    const atom = parseAtom();
+    const c = src[i];
+    if (c === "{") {
+      const close = src.indexOf("}", i);
+      if (close === -1) throw new Error(`unterminated {} in ${src}`);
+      const [a, b] = src.slice(i + 1, close).split(",");
+      i = close + 1;
+      const min = Number(a);
+      const max = b === undefined ? min : (b === "" ? min + 8 : Number(b));
+      return { t: "rep", min, max, node: atom };
+    }
+    if (c === "?") { i++; return { t: "rep", min: 0, max: 1, node: atom }; }
+    if (c === "*") { i++; return { t: "rep", min: 0, max: 8, node: atom }; }
+    if (c === "+") { i++; return { t: "rep", min: 1, max: 8, node: atom }; }
+    return atom;
+  }
+  function parseAtom() {
+    const c = src[i];
+    if (c === "(") {
+      i++;
+      if (src.slice(i, i + 2) === "?:") i += 2;
+      const inner = parseAlt();
+      if (src[i] !== ")") throw new Error(`expected ) at ${i} in ${src}`);
+      i++;
+      return inner;
+    }
+    if (c === "[") {
+      const close = src.indexOf("]", i);
+      if (close === -1) throw new Error(`unterminated [] in ${src}`);
+      const cls = src.slice(i + 1, close);
+      i = close + 1;
+      return { t: "cls", chars: expandCharClass(cls) };
+    }
+    if (c === "\\") {
+      const n = src[i + 1];
+      i += 2;
+      if (n === "d") return { t: "cls", chars: "0123456789".split("") };
+      return { t: "cls", chars: [n] };
+    }
+    i++;
+    return { t: "cls", chars: [c] };
+  }
+  const ast = parseAlt();
+  if (i !== src.length) throw new Error(`trailing input at ${i} in ${src}`);
+  return ast;
+}
+
+const PREFIX_EXPANSION_CAP = 2000000;
+
+// Every prefix of length k that this node can match (shorter strings mean the
+// node can be fully consumed in fewer than k digits).
+function enumeratePrefixes(node, k) {
+  if (node.t === "cls") return new Set(k === 0 ? [""] : node.chars);
+  if (node.t === "alt") {
+    const out = new Set();
+    for (const a of node.alts) for (const s of enumeratePrefixes(a, k)) out.add(s);
+    return out;
+  }
+  const concat = (acc, node2) => {
+    if ([...acc].every((s) => s.length >= k)) return acc;
+    const next = enumeratePrefixes(node2, k);
+    const out = new Set();
+    for (const a of acc) {
+      if (a.length >= k) { out.add(a); continue; }
+      for (const b of next) out.add((a + b).slice(0, k));
+    }
+    if (out.size > PREFIX_EXPANSION_CAP) throw new Error("prefix expansion cap exceeded");
+    return out;
+  };
+  if (node.t === "seq") {
+    let acc = new Set([""]);
+    for (const item of node.items) acc = concat(acc, item);
+    return acc;
+  }
+  // rep
+  const out = new Set();
+  const max = Math.min(node.max, k + 1);
+  for (let n = node.min; n <= max; n++) {
+    let acc = new Set([""]);
+    for (let r = 0; r < n; r++) acc = concat(acc, node.node);
+    for (const s of acc) out.add(s);
+    if (out.size > PREFIX_EXPANSION_CAP) throw new Error("prefix expansion cap exceeded");
+  }
+  return out;
+}
+
 // Collapse exhaustive ranges (prefix-aware): if for a parent prefix p we see all 10 next digits
 // across any longer codes (e.g., p0*, p1*, ..., p9*), then replace all those children with p.
 function collapseExhaustiveRanges(codes) {
@@ -361,6 +470,8 @@ async function main() {
 
   // For XML mode, we also keep a structured source set per region
   const xmlSourcesByIso2 = {};
+  // iso2 -> [{ type, pattern }] for geographic number types, used by the area code audit
+  const geoPatternsByIso2 = {};
   console.log("Loading libphonenumber XML from:", XML_PATH);
   // Lazy-import to keep startup lightweight
   let XMLParser;
@@ -406,6 +517,19 @@ async function main() {
     if (typeof fixed === "string") { patterns.push(fixed); fixedPats.push(fixed); }
     const mobile = t.mobile && t.mobile.nationalNumberPattern;
     if (typeof mobile === "string") { patterns.push(mobile); mobilePats.push(mobile); }
+
+    //* Geographic/subscriber ranges only, for the area code audit. Deliberately
+    //* excludes tollFree/premiumRate/pager/etc, which are nationwide ranges that
+    //* LPN copies verbatim into a territory's metadata so they are recognised as
+    //* reachable from there (GB's 80x and 76x paging ranges appear identically
+    //* under GG/IM/JE). Auditing those would be nothing but false positives.
+    //* Nothing is lost: IM's real 7624 paging block is in its mobile pattern.
+    const geoPats = [];
+    for (const type of ["fixedLine", "mobile"]) {
+      const p = t[type] && t[type].nationalNumberPattern;
+      if (typeof p === "string") geoPats.push({ type, pattern: p.replace(/\s+/g, "") });
+    }
+    geoPatternsByIso2[iso2] = geoPats;
 
     // Build dialCodeToRegions honoring mainCountryForCode where available
     if (!dialCodeToRegions[dial]) dialCodeToRegions[dial] = [];
@@ -748,7 +872,149 @@ async function main() {
     return `${header}${parts.length ? ", " + parts.join(", ") : ""}`;
   }
 
-  function runDiff() {
+  //* ------------------------------------------------------------------------
+  //* Area code audit.
+  //*
+  //* runDiff() below compares whole areaCodes arrays, which is noisy enough that
+  //* genuine problems get lost in it. This checks the two things that actually
+  //* break country selection, straight against the curated data:
+  //*
+  //*  1. OVER-BROAD - the territory claims a range where the main country owns
+  //*     sub-ranges the territory does not. Those numbers get the territory's
+  //*     flag and can never recover, because the territory's area code stays the
+  //*     longest match in dialCodeToIso2Map. This is what made +4477001 (a GB
+  //*     number) select Jersey, back when JE claimed all of 7700.
+  //*
+  //*  2. UNDER-COVERED - libphonenumber gives the territory a geographic range
+  //*     that no declared area code covers, so its numbers show the main
+  //*     country's flag. This is what made +262268901234 (Mayotte) select
+  //*     Réunion, back when YT was missing 2689.
+  //*
+  //* Both restate the criteria documented at the top of data.ts.
+  //* ------------------------------------------------------------------------
+  const prefixCache = new Map();
+  function claimedPrefixes(iso2, k) {
+    const key = `${iso2}:${k}`;
+    if (prefixCache.has(key)) return prefixCache.get(key);
+    const out = new Set();
+    for (const { type, pattern } of geoPatternsByIso2[iso2] || []) {
+      let set;
+      try {
+        set = enumeratePrefixes(parseRegexPattern(pattern), k);
+      } catch (e) {
+        console.warn(`  (could not expand ${iso2.toUpperCase()}/${type}: ${e.message})`);
+        continue;
+      }
+      //* Anything shorter than k means the whole number is shorter than the area
+      //* code we're testing, so it can't collide with it.
+      for (const s of set) if (s.length === k) out.add(s);
+    }
+    prefixCache.set(key, out);
+    return out;
+  }
+
+  function runAreaCodeAudit(curatedMap) {
+    const byDial = new Map();
+    for (const c of curatedMap.values()) {
+      if (!byDial.has(c.dialCode)) byDial.set(c.dialCode, []);
+      byDial.get(c.dialCode).push(c);
+    }
+
+    const overBroad = [];
+    const sharedNotes = [];
+    const underCovered = [];
+
+    for (const [dialCode, group] of byDial) {
+      if (group.length < 2) continue;
+      const main = group.find((c) => (c.priority || 0) === 0);
+      if (!main) {
+        console.warn(`  (no main country for +${dialCode}, skipping)`);
+        continue;
+      }
+
+      for (const c of group) {
+        if (c === main || !c.areaCodes || AREA_CODES_EXCLUDE.has(c.iso2)) continue;
+
+        for (const A of c.areaCodes) {
+          const k = A.length + 1;
+          const mainDeep = claimedPrefixes(main.iso2, k);
+          const ownDeep = claimedPrefixes(c.iso2, k);
+          const mainOnly = [...mainDeep]
+            .filter((p) => p.startsWith(A) && !ownDeep.has(p))
+            .sort();
+          if (!mainOnly.length) continue;
+          //* If the main country declares the same range, priority arbitrates:
+          //* the main country wins by default and the territory only sticks when
+          //* the user picked it by hand. That is the deliberate shared-range
+          //* pattern (e.g. AX/FI "4"), so it is a note rather than an issue.
+          const declaredByMain = (main.areaCodes || []).some(
+            (ma) => A.startsWith(ma) || ma.startsWith(A),
+          );
+          (declaredByMain ? sharedNotes : overBroad).push({
+            dialCode, iso2: c.iso2, main: main.iso2, areaCode: A, mainOnly,
+          });
+        }
+
+        //* Look at 4 then 5 digits: the first depth that reveals a gap is the
+        //* one worth reporting, and going deeper just repeats it.
+        for (const k of [4, 5]) {
+          const missing = [...claimedPrefixes(c.iso2, k)]
+            .filter((p) => !c.areaCodes.some((A) => p.startsWith(A) || A.startsWith(p)))
+            .sort();
+          if (!missing.length) continue;
+          //* Collapse e.g. 5000..5099 back down to "50" so the report names the
+          //* range you would actually add, rather than 100 of its children.
+          underCovered.push({
+            dialCode, iso2: c.iso2, main: main.iso2,
+            roots: collapseExhaustiveRanges([...new Set(missing.map((p) => p.slice(0, 4)))]),
+          });
+          break;
+        }
+      }
+    }
+
+    const lines = [];
+    const fmtList = (arr, limit = 10) =>
+      arr.slice(0, limit).join(", ") + (arr.length > limit ? ` …(${arr.length} total)` : "");
+
+    for (const r of overBroad) {
+      lines.push(
+        `! ${r.iso2}: areaCode "${r.areaCode}" is too broad - ${r.main.toUpperCase()} owns ${fmtList(r.mainOnly)}. ` +
+        `Numbers in those ranges will wrongly select ${r.iso2.toUpperCase()}. ` +
+        `Narrow "${r.areaCode}" to the sub-ranges ${r.iso2.toUpperCase()} actually owns.`,
+      );
+    }
+    for (const r of underCovered) {
+      lines.push(
+        `! ${r.iso2}: no areaCode covers ${fmtList(r.roots)} - libphonenumber gives ${r.iso2.toUpperCase()} numbers there, ` +
+        `so they will show the ${r.main.toUpperCase()} flag. Add the missing range(s).`,
+      );
+    }
+
+    console.log("\n# Area code audit");
+    if (!lines.length) {
+      console.log("No issues found.");
+    } else {
+      console.log(lines.join("\n"));
+    }
+    if (sharedNotes.length) {
+      console.log("\n# Shared ranges (informational - declared on both sides, priority decides)");
+      for (const r of sharedNotes) {
+        console.log(`  ${r.iso2}: "${r.areaCode}" overlaps ${r.main.toUpperCase()} at ${fmtList(r.mainOnly, 5)}`);
+      }
+    }
+
+    const outDir = path.resolve(REPO_ROOT, "tmp");
+    try { fs.mkdirSync(outDir, { recursive: true }); } catch { /* ignore */ }
+    fs.writeFileSync(
+      path.join(outDir, "areaCodeAudit.txt"),
+      (lines.length ? lines.join("\n") : "No issues found.") + "\n",
+      "utf8",
+    );
+    return lines.length > 0;
+  }
+
+  function runDiff(auditFailed) {
     const GEN_PATH = OUT_TS;
     const ORIG_PATH = CURATED_DATA_TS_PATH;
     if (!fs.existsSync(GEN_PATH)) {
@@ -795,13 +1061,16 @@ async function main() {
     const outDir = path.resolve(REPO_ROOT, "tmp");
     try { fs.mkdirSync(outDir, { recursive: true }); } catch { /* ignore */ }
     fs.writeFileSync(path.join(outDir, "rawCountryData.diff.txt"), out + "\n", "utf8");
-    if (added || removed || changed) {
+    if (added || removed || changed || auditFailed) {
       // Exit with non-zero to signal differences (suitable for CI failure)
       process.exit(1);
     }
   }
 
-  runDiff();
+  //* Audit the curated data first, so its findings stay visible above the
+  //* (much longer) generated-vs-curated diff.
+  const auditFailed = runAreaCodeAudit(toMap(loadArray(CURATED_DATA_TS_PATH, true)));
+  runDiff(auditFailed);
 
   // iso2 list is sourced from iso2-codes.js; we never write it from this script
 }
