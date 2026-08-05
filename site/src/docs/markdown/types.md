@@ -35,12 +35,12 @@ The kind of phone number. Returned by [`getNumberType`](/docs/methods#getnumbert
 ## ValidationError
 Returned by [`getValidationError`](/docs/methods#getvalidationerror) and the wrapper components' `onChangeErrorCode` / `errorCodeChange` callback. One of:
 
-- `"IS_POSSIBLE"` — the number is valid.
 - `"INVALID_COUNTRY_CODE"` — no country has been selected, or the dial code doesn't match any country.
 - `"TOO_SHORT"` — number is shorter than the minimum length for the country.
 - `"TOO_LONG"` — number exceeds the maximum length for the country.
-- `"IS_POSSIBLE_LOCAL_ONLY"` — the number is only valid as a local (intra-area) number.
 - `"INVALID_LENGTH"` — length is invalid in some other way.
+- `"IS_POSSIBLE_LOCAL_ONLY"` — the length only matches local (intra-area) numbers for this country. Our validation methods treat these as invalid, as they can't be dialled from elsewhere.
+- `"IS_POSSIBLE"` — the number length is right, but the number can still be invalid for a stricter reason, e.g. [`isValidNumberPrecise`](/docs/methods#isvalidnumberprecise) rejected it, or it didn't match your [`allowedNumberTypes`](/docs/options#allowednumbertypes).
 
 See [Show a user-facing error message](/docs/best-practices#show-a-user-facing-error-message) for a worked example.
 
