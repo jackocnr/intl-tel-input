@@ -81,7 +81,7 @@
   /* Full height. */
   top: 0;
   bottom: 0;
-  left: 0;
+  inset-inline-start: 0;
   /* Prevent the highlighted child from overlapping the input border. */
   padding: var(--iti-border-width);
 }
@@ -115,15 +115,44 @@
   align-items: center;
   /* This must be full-height for the hover highlight. */
   height: 100%;
-  padding: 0 var(--iti-arrow-padding) 0 var(--iti-spacer-horizontal);
+  padding-block: 0;
+  padding-inline: var(--iti-spacer-horizontal) var(--iti-arrow-padding);
 }
 
 .iti__selected-dial-code {
-  margin-left: 4px;
+  margin-inline-start: 4px;
+}
+
+/* Dial codes are inherently LTR (e.g. "(+81)" / "+81"); isolate them so the
+   digits and surrounding punctuation render correctly regardless of the
+   widget's direction (otherwise the parentheses can mirror in RTL). */
+.iti__dial-code,
+.iti__selected-dial-code {
+  unicode-bidi: isolate;
+  direction: ltr;
+}
+
+/* A phone number is inherently left-to-right, so lay the input chrome out LTR in every
+   direction — the flag / country button on the left, then the dial code, then the number.
+   This needs no :dir(): in an LTR page it is the natural direction (a no-op), and in an RTL
+   page it overrides the inherited RTL so the flag stays on the left and the number reads (and
+   clears the button) correctly. */
+.iti {
+  direction: ltr;
+}
+
+/* ...but the country dropdown LIST still follows the page's RTL direction (localised names
+   right-aligned, flags on the inline-end). This part DOES need :dir(rtl): the forced-LTR above
+   cascades into the dropdown, and an unconditional `direction: rtl` here would wrongly flip
+   LTR-page dropdowns to RTL too. */
+:dir(rtl) .iti__country-list,
+:dir(rtl) .iti__search-input-wrapper,
+:dir(rtl) .iti__no-results {
+  direction: rtl;
 }
 
 .iti__arrow {
-  margin-left: var(--iti-arrow-padding);
+  margin-inline-start: var(--iti-arrow-padding);
   margin-top: -2px;
 
   width: var(--iti-arrow-size);
@@ -153,7 +182,7 @@
     position: absolute;
     /* Popup so render above everything else. */
     z-index: 2;
-    left: 0;
+    inset-inline-start: 0;
   }
 }
 
@@ -162,22 +191,15 @@
   border-width: 0;
   border-radius: 3px;
   /* Space for search icon. */
-  padding-left: calc(
+  padding-inline-start: calc(
     var(--iti-spacer-horizontal) + var(--iti-globe-icon-size) +
       var(--iti-spacer-horizontal)
   );
   /* Space for clear button. */
-  padding-right: calc(
+  padding-inline-end: calc(
     var(--iti-spacer-horizontal) + var(--iti-clear-icon-size) +
       var(--iti-spacer-horizontal)
   );
-
-  /* RTL: put the icon on the right instead. */
-  [dir="rtl"] & {
-    padding-left: inherit;
-    padding-right: 30px;
-    background-position: right 8px center;
-  }
 
   /* hide chrome/safari's native clear button for inputs with type=search */
   &::-webkit-search-cancel-button {
@@ -201,14 +223,9 @@
 
 .iti__search-icon {
   position: absolute;
-  left: var(--iti-spacer-horizontal);
+  inset-inline-start: var(--iti-spacer-horizontal);
   display: flex;
   pointer-events: none;
-
-  [dir="rtl"] & {
-    left: auto;
-    right: var(--iti-spacer-horizontal);
-  }
 }
 
 .iti__search-icon-svg {
@@ -223,7 +240,7 @@
 .iti__search-clear {
   position: absolute;
   /* half the spacer value as the other half is in the padding */
-  right: calc(var(--iti-spacer-horizontal) / 2);
+  inset-inline-end: calc(var(--iti-spacer-horizontal) / 2);
   background: transparent;
   border: 0;
   border-radius: 3px; /* nice on hover state */
@@ -239,11 +256,6 @@
   }
   .iti__search-clear-bg {
     fill: var(--iti-icon-color);
-  }
-
-  [dir="rtl"] & {
-    right: auto;
-    left: var(--iti-spacer-horizontal);
   }
 
   &:hover,
@@ -298,8 +310,7 @@
   /* Note: decided not to use line-height here for alignment because it causes issues e.g. large font-sizes will overlap, and also looks bad if one country overflows onto 2 lines. */
   display: flex;
   align-items: center;
-  padding-left: var(--iti-spacer-horizontal);
-  padding-right: var(--iti-spacer-horizontal);
+  padding-inline: var(--iti-spacer-horizontal);
   outline: none;
 
   &.iti__highlight {
@@ -314,7 +325,7 @@
 
 /* Check icon shown on the right for the selected country. */
 .iti__country-check {
-  margin-left: var(--iti-spacer-horizontal);
+  margin-inline-start: var(--iti-spacer-horizontal);
   display: flex;
   align-items: center;
   color: var(--iti-icon-color);
@@ -328,13 +339,8 @@
 
 /* Spacing between country flag and country name. */
 .iti__country-list .iti__flag {
-  margin-right: var(--iti-spacer-horizontal);
+  margin-inline-end: var(--iti-spacer-horizontal);
   flex-shrink: 0; /* stop long country names from shrinking the flag */
-
-  [dir="rtl"] & {
-    margin-right: 0;
-    margin-left: var(--iti-spacer-horizontal);
-  }
 }
 
 .iti--has-country-selector {
@@ -431,8 +437,7 @@
   }
 
   .iti__country {
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-inline: 10px;
     /* Increase line height because country list copy is v likely to overflow on mobile and when it does it needs to be well spaced. */
     line-height: 1.5em;
   }
