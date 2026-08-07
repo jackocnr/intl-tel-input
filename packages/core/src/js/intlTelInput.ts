@@ -683,16 +683,19 @@ export class Iti {
     const newValue = before + normalisedKey + after;
     const newFullNumber = this.#buildFullNumber(newValue);
 
-    let hasExceededMaxLength = false;
-    if (intlTelInput.utils && this.#maxCoreNumberLength) {
+    //* Always enforce the E.164 ceiling, which no valid number can exceed. This is the only cap when there's no country-specific max (e.g. no selected country, so we're in the empty/globe state), and a backstop when there is one, as getCoreNumber can't measure a number it can't parse: it strips leading zeros, and returns empty for anything it fails to parse, both of which would otherwise leave the length unbounded.
+    let hasExceededMaxLength =
+      getNumeric(newFullNumber).length > E164_MAX_DIGITS;
+    if (
+      !hasExceededMaxLength &&
+      intlTelInput.utils &&
+      this.#maxCoreNumberLength
+    ) {
       const coreNumber = intlTelInput.utils.getCoreNumber(
         newFullNumber,
         this.#selectedCountry?.iso2,
       );
       hasExceededMaxLength = coreNumber.length > this.#maxCoreNumberLength;
-    } else {
-      //* No country-specific max (e.g. no selected country, so we're in the empty/globe state), so fall back to the E.164 ceiling, which no valid number can exceed. Without this, strictMode would impose no length cap at all.
-      hasExceededMaxLength = getNumeric(newFullNumber).length > E164_MAX_DIGITS;
     }
 
     const newCountry = this.#resolveCountryChangeFromNumber(newFullNumber);
@@ -780,21 +783,21 @@ export class Iti {
       return true;
     }
 
-    // If there's no country-specific max (e.g. no selected country, so we're in the empty/globe
-    // state, or utils are not loaded), fall back to the E.164 ceiling. The getCoreNumber checks
-    // below can't help here, as without a country it can't parse the number at all.
-    if (!this.#maxCoreNumberLength) {
-      const excessDigits = getNumeric(newValue).length - E164_MAX_DIGITS;
-      if (excessDigits > 0) {
-        // if they try to paste too many digits in the middle, then just ignore the paste entirely
-        if (selEnd !== originalValue.length) {
-          this.#rejectStrictPasteAsTooLong(pasteSnapshot);
-          return true;
-        }
-        // else they pasted too many digits at the end, so just trim the excess
-        newValue = newValue.slice(0, newValue.length - excessDigits);
-        rejectReason = "max-length";
+    // Always enforce the E.164 ceiling, which no valid number can exceed. This is the only cap when
+    // there's no country-specific max (e.g. no selected country, so we're in the empty/globe state,
+    // or utils are not loaded), and a backstop when there is one, as the getCoreNumber checks below
+    // can't measure a number they can't parse.
+    const excessDigits =
+      getNumeric(this.#buildFullNumber(newValue)).length - E164_MAX_DIGITS;
+    if (excessDigits > 0) {
+      // if they try to paste too many digits in the middle, then just ignore the paste entirely
+      if (selEnd !== originalValue.length) {
+        this.#rejectStrictPasteAsTooLong(pasteSnapshot);
+        return true;
       }
+      // else they pasted too many digits at the end, so just trim the excess
+      newValue = newValue.slice(0, newValue.length - excessDigits);
+      rejectReason = "max-length";
     }
 
     // utils.getCoreNumber doesn't work for very short numbers, so only bother checking once we have a few chars

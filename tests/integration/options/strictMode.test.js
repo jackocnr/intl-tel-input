@@ -406,6 +406,68 @@ describe("strictMode option", () => {
     });
   });
 
+  // The country max is derived from the parsed core number, which getCoreNumber cannot measure for
+  // input it cannot parse: it strips leading zeros, and returns empty for anything it fails to
+  // parse. The E.164 ceiling of 15 digits backstops both cases.
+  describe("input that libphonenumber cannot parse", () => {
+    let input, iti, user;
+
+    afterEach(() => {
+      teardown(iti);
+    });
+
+    // PREV BUG: getCoreNumber("+380000000000", "ua") is "0", so the core length never hit the max
+    test("caps typed zeros at 15 digits", async () => {
+      user = userEvent.setup();
+      ({ input, iti } = initIntlTelInput({
+        options: { strictMode: true, separateDialCode: false, initialCountry: "ua" },
+      }));
+      await user.type(input, "+38000000000000000000");
+      expect(stripFormattingChars(input.value)).toBe("+380000000000000");
+    });
+
+    // PREV BUG: leading zeros made the number unparseable, so getCoreNumber returned empty and any
+    // digits could follow
+    test("caps typed zeros followed by other digits at 15 digits", async () => {
+      user = userEvent.setup();
+      ({ input, iti } = initIntlTelInput({
+        options: { strictMode: true, separateDialCode: false, initialCountry: "ua" },
+      }));
+      await user.type(input, "+3800000000001234567890");
+      expect(stripFormattingChars(input.value)).toBe("+380000000000123");
+    });
+
+    test("counts the separate dial code towards the 15 digits", async () => {
+      user = userEvent.setup();
+      ({ input, iti } = initIntlTelInput({
+        options: { strictMode: true, initialCountry: "ua" },
+      }));
+      await user.type(input, "00000000000000000000");
+      expect(stripFormattingChars(input.value)).toBe("000000000000");
+    });
+
+    test("trims pasted zeros to 15 digits", async () => {
+      user = userEvent.setup();
+      ({ input, iti } = initIntlTelInput({
+        options: { strictMode: true, separateDialCode: false, initialCountry: "ua" },
+      }));
+      await user.click(input);
+      expect(pasteIntoInput(input, "+38000000000000000000")).toBe(true);
+      expect(stripFormattingChars(input.value)).toBe("+380000000000000");
+    });
+
+    // the national prefix is legitimately stripped from the core number, so make sure the backstop
+    // hasn't broken normal national format entry
+    test("still allows a national number with its national prefix", async () => {
+      user = userEvent.setup();
+      ({ input, iti } = initIntlTelInput({
+        options: { strictMode: true, separateDialCode: false, initialCountry: "gb" },
+      }));
+      await user.type(input, "07901234567890");
+      expect(stripFormattingChars(input.value)).toBe("07901234567");
+    });
+  });
+
   describe("Android paste handling", () => {
     let input, iti, user, container;
 
