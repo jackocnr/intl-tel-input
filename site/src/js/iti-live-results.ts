@@ -44,9 +44,21 @@
         liveResults.appendChild(document.createTextNode(" to see validation here"));
       };
 
+      // Absent utils mean one of two very different things: loadUtils is off, or it is on and
+      // the request is still in flight. The core library only starts that request on window
+      // load, so treat "not loaded yet" as pending right up until it has had its chance.
+      const utilsPending = (): boolean =>
+        !window.intlTelInput.utils &&
+        (window.intlTelInput.startedLoadingUtils ||
+          !window.intlTelInput.documentReady());
+
       const updateResults = () => {
         if (!window.intlTelInput.utils) {
-          renderNoUtilsMessage();
+          // Only nag about loadUtils when it is genuinely disabled — while utils are still
+          // loading, leave whatever the box is showing until they arrive.
+          if (!utilsPending()) {
+            renderNoUtilsMessage();
+          }
           return;
         }
         const hasValue = itiInput.value.trim().length > 0;
@@ -88,7 +100,10 @@
 
     const iti = getItiInstance();
     if (iti.promise && typeof iti.promise.then === "function") {
-      iti.promise.then(setupLiveResults);
+      // The init promise rejects when initialCountryLookup fails (e.g. the geo-IP request is
+      // blocked or offline), but that says nothing about whether we can report on the number,
+      // so wire up the live results either way.
+      iti.promise.then(setupLiveResults, setupLiveResults);
     } else {
       setupLiveResults();
     }
