@@ -186,6 +186,33 @@ describe("Svelte IntlTelInput wrapper", () => {
     expect(input.classList.contains("iti__tel-input")).toBe(true);
   });
 
+  test("changing inputProps.class replaces the old class rather than accumulating", async () => {
+    const { rerender } = render(IntlTelInput, {
+      classNames: { input: "from-classnames" },
+      inputProps: { class: "border-green" },
+    });
+    const input = getTelInput();
+    expect(input.classList.contains("border-green")).toBe(true);
+
+    await rerender({
+      classNames: { input: "from-classnames" },
+      inputProps: { class: "border-red" },
+    });
+
+    expect(input.classList.contains("border-red")).toBe(true);
+    expect(input.classList.contains("border-green")).toBe(false);
+    // the library's own classes survive the re-render
+    expect(input.classList.contains("iti__tel-input")).toBe(true);
+    expect(input.classList.contains("from-classnames")).toBe(true);
+  });
+
+  test("an undefined inputProps.class does not add a stray class", () => {
+    render(IntlTelInput, { inputProps: { class: undefined } });
+    const input = getTelInput();
+    expect(input.classList.contains("undefined")).toBe(false);
+    expect(input.classList.contains("iti__tel-input")).toBe(true);
+  });
+
   test("getInstance returns undefined after unmount", () => {
     const { unmount, component } = render(IntlTelInput);
     const instance = (component as unknown as { getInstance: () => { isActive: () => boolean } | undefined }).getInstance();

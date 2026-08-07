@@ -60,6 +60,24 @@ describe("Angular IntlTelInput wrapper", () => {
     expect(getTelInput(fixture).classList).toContain("custom-input");
   });
 
+  test("changing inputAttributes.class replaces the old class rather than accumulating", () => {
+    const { fixture } = mount({
+      classNames: { input: "from-classnames" },
+      inputAttributes: { class: "border-green" },
+    });
+    const input = getTelInput(fixture);
+    expect(input.classList).toContain("border-green");
+
+    fixture.componentRef.setInput("inputAttributes", { class: "border-red" });
+    fixture.detectChanges();
+
+    expect(input.classList).toContain("border-red");
+    expect(input.classList).not.toContain("border-green");
+    // the library's own classes survive
+    expect(input.classList).toContain("iti__tel-input");
+    expect(input.classList).toContain("from-classnames");
+  });
+
   test("exposes the underlying iti instance and input via getters", () => {
     const { fixture, component } = mount();
     expect(component.getInstance()).toBeTruthy();

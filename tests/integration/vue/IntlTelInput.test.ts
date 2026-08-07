@@ -203,6 +203,35 @@ describe("Vue IntlTelInput wrapper", () => {
     expect(input.classList.contains("iti__tel-input")).toBe(true);
   });
 
+  test("changing inputProps.class replaces the old class rather than accumulating", async () => {
+    const { rerender } = render(IntlTelInput, {
+      props: {
+        classNames: { input: "from-classnames" },
+        inputProps: { class: "border-green" },
+      },
+    });
+    const input = getTelInput();
+    await waitFor(() => expect(input.classList.contains("border-green")).toBe(true));
+
+    await rerender({
+      classNames: { input: "from-classnames" },
+      inputProps: { class: "border-red" },
+    });
+
+    await waitFor(() => expect(input.classList.contains("border-red")).toBe(true));
+    expect(input.classList.contains("border-green")).toBe(false);
+    // the library's own classes survive the re-render
+    expect(input.classList.contains("iti__tel-input")).toBe(true);
+    expect(input.classList.contains("from-classnames")).toBe(true);
+  });
+
+  test("an undefined inputProps.class does not add a stray class", async () => {
+    render(IntlTelInput, { props: { inputProps: { class: undefined } } });
+    const input = getTelInput();
+    await waitFor(() => expect(input.classList.contains("iti__tel-input")).toBe(true));
+    expect(input.classList.contains("undefined")).toBe(false);
+  });
+
   test("modelValue takes precedence over initialValue when both are provided", async () => {
     const itiRef = ref<{ instance: { getSelectedCountry: () => { iso2: string } } | null } | null>(null);
     const Wrapper = defineComponent({

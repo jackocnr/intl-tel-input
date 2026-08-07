@@ -162,11 +162,19 @@ class IntlTelInput
   };
 
   ngAfterViewInit() {
+    //* Record only the classes the library itself adds during init (iti__tel-input, plus any
+    //* classNames.input), by diffing the class list across the call. Capturing the whole className
+    //* would also scoop up any inputAttributes.class, which ngOnChanges has already applied by this
+    //* point - that would then be re-applied on every applyInputAttrs(), so a changed
+    //* inputAttributes.class would leave the old value behind, and an unchanged one be duplicated.
+    const classesBeforeInit = new Set(this.inputRef.nativeElement.classList);
     this.iti = intlTelInput(
       this.inputRef.nativeElement,
       this.buildInitOptions(),
     );
-    this.libraryInputClasses = this.inputRef.nativeElement.className;
+    this.libraryInputClasses = Array.from(this.inputRef.nativeElement.classList)
+      .filter((className) => !classesBeforeInit.has(className))
+      .join(" ");
 
     //* Attach input listener AFTER intlTelInput() so the core's #handleInputEvent (also added in intlTelInput()) runs first on each native input event. That guarantees getSelectedCountry() / getNumber() return the post-update values inside handleInput. A template-bound (input)= would be registered before view init and so would run before the core's listener, reading stale state.
     this.inputRef.nativeElement.addEventListener("input", this.handleInput);

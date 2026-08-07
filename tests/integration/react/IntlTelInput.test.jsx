@@ -209,6 +209,47 @@ describe("React IntlTelInput wrapper", () => {
     expect(input.classList.contains("iti__tel-input")).toBe(true);
   });
 
+  test("changing inputProps.className replaces the old class rather than accumulating", () => {
+    const { rerender } = render(
+      <IntlTelInput
+        classNames={{ input: "from-classnames" }}
+        inputProps={{ className: "border-green" }}
+      />,
+    );
+    const input = getTelInput();
+    expect(input.classList.contains("border-green")).toBe(true);
+
+    rerender(
+      <IntlTelInput
+        classNames={{ input: "from-classnames" }}
+        inputProps={{ className: "border-red" }}
+      />,
+    );
+
+    expect(input.classList.contains("border-red")).toBe(true);
+    expect(input.classList.contains("border-green")).toBe(false);
+    // the library's own classes survive the re-render
+    expect(input.classList.contains("iti__tel-input")).toBe(true);
+    expect(input.classList.contains("from-classnames")).toBe(true);
+  });
+
+  test("re-rendering with an unchanged inputProps.className does not duplicate it", () => {
+    const { rerender } = render(<IntlTelInput inputProps={{ className: "custom" }} />);
+    const input = getTelInput();
+
+    rerender(<IntlTelInput inputProps={{ className: "custom" }} />);
+
+    const occurrences = input.className.split(/\s+/).filter((c) => c === "custom");
+    expect(occurrences).toHaveLength(1);
+  });
+
+  test("an undefined inputProps.className does not add a stray class", () => {
+    render(<IntlTelInput inputProps={{ className: undefined }} />);
+    const input = getTelInput();
+    expect(input.classList.contains("undefined")).toBe(false);
+    expect(input.classList.contains("iti__tel-input")).toBe(true);
+  });
+
   test("initOptions are init-only: changing initialCountry on re-render is a no-op", () => {
     const ref = createRef();
     const { rerender } = render(<IntlTelInput ref={ref} initialCountry="gb" />);

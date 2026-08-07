@@ -154,8 +154,16 @@ const IntlTelInput = forwardRef(function IntlTelInput(
     if (!inputEl) {
       return undefined;
     }
+    //* Record only the classes the library itself adds during init (iti__tel-input, plus any
+    //* classNames.input), by diffing the class list across the call. Capturing the whole className
+    //* would also scoop up any inputProps.className React has already rendered, which would then be
+    //* re-applied on every subsequent render - so a changed inputProps.className would leave the old
+    //* value behind, and an unchanged one would be duplicated.
+    const classesBeforeInit = new Set(inputEl.classList);
     itiRef.current = intlTelInput(inputEl, initOptions as SomeOptions);
-    libraryInputClassesRef.current = inputEl.className;
+    libraryInputClassesRef.current = Array.from(inputEl.classList)
+      .filter((className) => !classesBeforeInit.has(className))
+      .join(" ");
 
     const handleOpen = (): void => onOpenCountrySelectorRef.current?.();
     const handleClose = (): void => onCloseCountrySelectorRef.current?.();
@@ -233,8 +241,11 @@ const IntlTelInput = forwardRef(function IntlTelInput(
     if (ignoredInputProps.has(key)) {
       warnInputProp(key);
     } else if (key === "className") {
-      // Preserve any user-added or library-added classes on the input
-      sanitizedInputProps[key] = `${libraryInputClassesRef.current} ${val}`;
+      // Re-apply the library's own classes alongside the consumer's, as React owns the attribute
+      // (filter out empties so we never emit a stray "undefined" class or leading whitespace)
+      sanitizedInputProps[key] = [libraryInputClassesRef.current, val]
+        .filter(Boolean)
+        .join(" ");
     } else {
       sanitizedInputProps[key] = val;
     }

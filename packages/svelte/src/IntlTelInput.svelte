@@ -118,8 +118,16 @@
   // Lifecycle
   onMount(() => {
     if (inputElement) {
+      //* Record only the classes the library itself adds during init (iti__tel-input, plus any
+      //* classNames.input), by diffing the class list across the call. Capturing the whole className
+      //* would also scoop up any inputProps.class already rendered, which would then be re-applied on
+      //* every subsequent render - so a changed inputProps.class would leave the old value behind,
+      //* and an unchanged one would be duplicated.
+      const classesBeforeInit = new Set(inputElement.classList);
       instance = intlTelInput(inputElement, initOptions as SomeOptions);
-      libraryInputClasses = inputElement.className;
+      libraryInputClasses = Array.from(inputElement.classList)
+        .filter((className) => !classesBeforeInit.has(className))
+        .join(" ");
       if (disabled) instance.setDisabled(disabled);
       if (readonly) instance.setReadonly(readonly);
 
@@ -215,7 +223,9 @@
       if (ignoredInputProps.has(key)) {
         warnInputProp(key);
       } else if (key === "class") {
-        rest[key] = `${libraryInputClasses} ${val}`;
+        // Re-apply the library's own classes alongside the consumer's, as Svelte owns the attribute
+        // (filter out empties so we never emit a stray "undefined" class or leading whitespace)
+        rest[key] = [libraryInputClasses, val].filter(Boolean).join(" ");
       } else {
         rest[key] = val;
       }
