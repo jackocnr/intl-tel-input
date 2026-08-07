@@ -26,7 +26,7 @@ Check out the [website](https://intl-tel-input.com), where you can find [a full 
 * Full keyboard navigation
 
 ✨ **Smart defaults**
-* Optionally auto-detect the user's country
+* Auto-detect the user's country
 * Example placeholders per country
 
 📞 **Formatting & output**
@@ -35,16 +35,15 @@ Check out the [website](https://intl-tel-input.com), where you can find [a full 
 
 🛡️ **Validation**
 * Validate numbers with specific error types
-* Only allow valid digits and enforce max length
+* Only allow users to type valid digits and enforce max length
 
 🌍 **International & accessible**
-* Translated into 40+ languages
+* Translated into 50+ languages
 * Support for RTL and alternative numerals
 * Screen reader-friendly ARIA markup
 
 🎛️ **Developer-friendly**
-* Override CSS variables (e.g. dark mode)
-* Extensive initialisation options
+* Theme it with CSS variables (e.g. dark mode) or utility classes like Tailwind
 * TypeScript definitions included
 
 ## Contributing
