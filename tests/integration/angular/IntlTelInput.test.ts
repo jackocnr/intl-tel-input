@@ -1,5 +1,7 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { TestBed, ComponentFixture } from "@angular/core/testing";
+import { Component } from "@angular/core";
+import { FormControl, ReactiveFormsModule, Validators } from "@angular/forms";
 import IntlTelInput, { intlTelInput } from "../../../packages/angular/dist/IntlTelInputWithUtils.js";
 
 type ItiComponent = InstanceType<typeof IntlTelInput>;
@@ -32,8 +34,39 @@ const mount = (
   return { fixture, component: fixture.componentInstance };
 };
 
-const getTelInput = (fixture: ItiFixture): HTMLInputElement =>
+const getTelInput = (fixture: ComponentFixture<unknown>): HTMLInputElement =>
   fixture.nativeElement.querySelector("input[type=tel]") as HTMLInputElement;
+
+class ReactiveFormHost {
+  control = new FormControl<string | null>(null, Validators.required);
+
+  valueChanges: (string | null)[] = [];
+
+  constructor() {
+    this.control.valueChanges.subscribe((value) => this.valueChanges.push(value));
+  }
+}
+
+//* Decorator syntax isn't transformed in these test files, so apply the Component decorator as a
+//* plain function call instead - the JIT compiler is happy either way.
+const ReactiveFormHostComponent = Component({
+  standalone: true,
+  imports: [ReactiveFormsModule, IntlTelInput],
+  template: `<intl-tel-input [formControl]="control" initialCountry="gb"></intl-tel-input>`,
+})(ReactiveFormHost) as typeof ReactiveFormHost;
+
+const mountReactiveForm = async (): Promise<{
+  fixture: ComponentFixture<ReactiveFormHost>;
+  host: ReactiveFormHost;
+}> => {
+  const fixture = TestBed.createComponent(ReactiveFormHostComponent);
+  fixture.detectChanges();
+  //* let the wrapper's iti.promise handler (which writes the initial value) run
+  await flushMicrotasks();
+  await flushMicrotasks();
+  fixture.detectChanges();
+  return { fixture, host: fixture.componentInstance };
+};
 
 afterEach(() => {
   TestBed.resetTestingModule();
@@ -186,6 +219,39 @@ describe("Angular IntlTelInput wrapper", () => {
     component.writeValue("");
     await waitUntil(() => getTelInput(fixture).value === "");
     expect(numberChange).toHaveBeenLastCalledWith("");
+  });
+
+  //* Angular marks a control dirty on ANY onChange call from the value accessor, so writing a value
+  //* that came from the model must not go back through onChange. See issue #2186.
+  test("leaves the form control pristine on init", async () => {
+    const { host } = await mountReactiveForm();
+    expect(host.control.pristine).toBe(true);
+    expect(host.control.dirty).toBe(false);
+    //* the empty writeValue must not coerce the control's value from null to ""
+    expect(host.control.value).toBe(null);
+  });
+
+  test("leaves the form control pristine when the value is set programmatically", async () => {
+    const { fixture, host } = await mountReactiveForm();
+
+    host.control.setValue("+447733123456");
+    await waitUntil(() => getTelInput(fixture).value !== "");
+
+    expect(host.control.pristine).toBe(true);
+    expect(host.control.dirty).toBe(false);
+    expect(host.control.value).toBe("+447733123456");
+  });
+
+  test("marks the form control dirty when the user types", async () => {
+    const { fixture, host } = await mountReactiveForm();
+
+    const input = getTelInput(fixture);
+    input.value = "07733123456";
+    input.dispatchEvent(new Event("input"));
+
+    await waitUntil(() => host.control.dirty);
+    expect(host.control.pristine).toBe(false);
+    expect(host.control.value).toBe("+447733123456");
   });
 
   test("disabled input toggles the input disabled state", () => {

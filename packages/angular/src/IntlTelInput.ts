@@ -148,6 +148,11 @@ class IntlTelInput
   // if an input event fires before utils has loaded, we defer the update until the promise resolves
   private pendingUpdate = false;
 
+  //* setNumber dispatches a synthetic input event, which handleInput would otherwise treat as a
+  //* user edit and report via onChange - and Angular marks a control dirty on any onChange call.
+  //* Set while we write a value that came FROM the form model, so we can skip that callback.
+  private isWritingModelValue = false;
+
   // eslint-disable-next-line class-methods-use-this
   private onChange: (value: string) => void = () => {};
   // eslint-disable-next-line class-methods-use-this
@@ -207,10 +212,10 @@ class IntlTelInput
         return;
       }
       if (this.pendingWriteValue !== undefined) {
-        this.iti.setNumber(this.pendingWriteValue);
+        this.setNumberFromModel(this.pendingWriteValue);
         this.pendingWriteValue = undefined;
       } else if (this.initialValue) {
-        this.iti.setNumber(this.initialValue);
+        this.setNumberFromModel(this.initialValue);
       }
       // if an input event fired during the utils-loading gap, replay it now so the skipped emissions fire
       if (this.pendingUpdate) {
@@ -276,6 +281,17 @@ class IntlTelInput
     }
   }
 
+  //* Write a value that came from the form model (writeValue/initialValue), without reporting it
+  //* back to the model as a user change.
+  private setNumberFromModel(value: string): void {
+    this.isWritingModelValue = true;
+    try {
+      this.iti?.setNumber(value);
+    } finally {
+      this.isWritingModelValue = false;
+    }
+  }
+
   handleInput = (): void => {
     if (!this.iti) {
       return;
@@ -293,7 +309,9 @@ class IntlTelInput
     if (num !== this.lastEmittedNumber) {
       this.lastEmittedNumber = num;
       this.numberChange.emit(num);
-      this.onChange(num);
+      if (!this.isWritingModelValue) {
+        this.onChange(num);
+      }
       hasChanged = true;
     }
 
@@ -421,7 +439,7 @@ class IntlTelInput
       // wait for utils to load before calling setNumber
       this.iti.promise.then(() => {
         if (this.iti?.isActive()) {
-          this.iti.setNumber(next);
+          this.setNumberFromModel(next);
         }
       });
     } else {
