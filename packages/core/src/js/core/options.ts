@@ -5,6 +5,7 @@ import {
   NUMBER_TYPES,
   COUNTRY_SELECTOR_MODE,
   COUNTRY_SELECTOR_MODES,
+  ITI_SLOTS,
   LAYOUT,
 } from "../constants.js";
 import defaultEnglishStrings from "../locale/en.js";
@@ -44,6 +45,8 @@ export const defaults: AllOptions = {
   allowNumberExtensions: false,
   // Allow alphanumeric "phonewords" (e.g. +1 800 FLOWERS) as valid numbers
   allowPhonewords: false,
+  //* Add custom classes to the elements we generate, keyed by slot name e.g. { selectedCountry: "rounded-l-lg" }.
+  classNames: {},
   //* Add a custom class to the (injected) container element.
   containerClass: "",
   //* Locale for localising country names via Intl.DisplayNames.
@@ -117,6 +120,8 @@ const isElLike = (val: unknown): val is HTMLElement => {
 };
 
 const placeholderPolicySet = new Set<string>(Object.values(PLACEHOLDER_POLICY));
+
+const slotSet = new Set<string>(ITI_SLOTS);
 
 const warn = (message: string): void => {
   console.warn(`[intl-tel-input] ${message}`);
@@ -246,6 +251,29 @@ export const validateOptions = (customOptions: unknown): SomeOptions => {
         }
         validatedOptions[key] = value;
         break;
+
+      case "classNames": {
+        if (!isPlainObject(value)) {
+          warnOption("classNames", "an object", value);
+          break;
+        }
+        //* Drop unknown slots and non-string values, so a typo is loud rather than silent.
+        const validSlots: Record<string, string> = {};
+        for (const [slot, slotValue] of Object.entries(value)) {
+          if (!slotSet.has(slot)) {
+            warn(
+              `Unknown slot '${slot}' in 'classNames'. Valid slots: ${ITI_SLOTS.join(", ")}. Skipping.`,
+            );
+          } else if (typeof slotValue !== "string") {
+            warnOption(`classNames.${slot}`, "a string", slotValue);
+          } else {
+            //* Normalise whitespace, so consumers can be untidy, and we can safely split on single spaces.
+            validSlots[slot] = slotValue.trim().replace(/\s+/g, " ");
+          }
+        }
+        validatedOptions[key] = validSlots;
+        break;
+      }
 
       case "countryOrder": {
         if (value === null) {

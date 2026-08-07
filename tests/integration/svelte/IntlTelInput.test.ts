@@ -165,6 +165,27 @@ describe("Svelte IntlTelInput wrapper", () => {
     expect(input.getAttribute("placeholder")).toBe("enter number");
   });
 
+  test("passes classNames through to the library", () => {
+    render(IntlTelInput, {
+      // DROPDOWN so the country list is rendered inline (fullscreen only attaches it on open)
+      countrySelectorMode: "DROPDOWN",
+      classNames: { selectedCountry: "custom-button", countryList: "custom-list" },
+    });
+    expect(document.querySelector(".iti__selected-country")!.classList).toContain("custom-button");
+    expect(document.querySelector(".iti__country-list")!.classList).toContain("custom-list");
+  });
+
+  test("classNames.input and inputProps.class are both applied to the input", () => {
+    render(IntlTelInput, {
+      classNames: { input: "from-classnames" },
+      inputProps: { class: "from-inputprops" },
+    });
+    const input = getTelInput();
+    expect(input.classList.contains("from-inputprops")).toBe(true);
+    expect(input.classList.contains("from-classnames")).toBe(true);
+    expect(input.classList.contains("iti__tel-input")).toBe(true);
+  });
+
   test("getInstance returns undefined after unmount", () => {
     const { unmount, component } = render(IntlTelInput);
     const instance = (component as unknown as { getInstance: () => { isActive: () => boolean } | undefined }).getInstance();

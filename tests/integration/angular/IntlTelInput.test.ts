@@ -48,6 +48,18 @@ describe("Angular IntlTelInput wrapper", () => {
     expect(input.parentElement?.classList.contains("iti")).toBe(true);
   });
 
+  test("passes classNames through to the library", () => {
+    const { fixture } = mount({
+      // DROPDOWN so the country list is rendered inline (fullscreen only attaches it on open)
+      countrySelectorMode: "DROPDOWN",
+      classNames: { selectedCountry: "custom-button", countryList: "custom-list", input: "custom-input" },
+    });
+    const root = fixture.nativeElement as HTMLElement;
+    expect(root.querySelector(".iti__selected-country")!.classList).toContain("custom-button");
+    expect(root.querySelector(".iti__country-list")!.classList).toContain("custom-list");
+    expect(getTelInput(fixture).classList).toContain("custom-input");
+  });
+
   test("exposes the underlying iti instance and input via getters", () => {
     const { fixture, component } = mount();
     expect(component.getInstance()).toBeTruthy();

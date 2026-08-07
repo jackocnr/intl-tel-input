@@ -1,5 +1,5 @@
 import type { Country, Iso2 } from "../data.js";
-import type { AllOptions, SelectedCountry } from "../types/public-api.js";
+import type { AllOptions, ItiSlot, SelectedCountry } from "../types/public-api.js";
 import { buildClassNames, createEl } from "../helpers/dom.js";
 import {
   buildSearchIcon,
@@ -94,6 +94,12 @@ export default class UI {
     }
   }
 
+  //* Append any consumer-supplied classes (via the classNames option) for the given slot to our own classes for that element.
+  #withSlotClass(slot: ItiSlot, ourClasses: string): string {
+    const custom = this.#options.classNames[slot];
+    return custom ? `${ourClasses} ${custom}` : ourClasses;
+  }
+
   //* Generate all of the markup for the core library: the selected country overlay, and the country selector.
   public buildMarkup(
     countries: Country[],
@@ -102,7 +108,9 @@ export default class UI {
     this.#countries = countries;
     this.#searchTokens = searchTokens;
 
-    this.telInputEl.classList.add("iti__tel-input");
+    this.telInputEl.classList.add(
+      ...this.#withSlotClass("input", "iti__tel-input").split(" "),
+    );
     //* Set useful defaults for phone number input attributes.
     if (!this.telInputEl.hasAttribute("type")) {
       this.telInputEl.setAttribute("type", "tel");
@@ -138,7 +146,9 @@ export default class UI {
       "iti--inline-country-selector": countrySelectorMode !== COUNTRY_SELECTOR_MODE.FULLSCREEN,
       [containerClass]: Boolean(containerClass),
     });
-    const wrapper = createEl("div", { class: parentClasses });
+    const wrapper = createEl("div", {
+      class: this.#withSlotClass("container", parentClasses),
+    });
     // if the page is RTL, then add dir=LTR to the wrapper, as numbers are still written LTR, so the input should be LTR, but we also need to display any separate dial code to the left as well (but we then make the country selector RTL)
     if (this.#isRTL) {
       wrapper.setAttribute("dir", "ltr");
@@ -159,7 +169,12 @@ export default class UI {
     this.#countryContainerEl = createEl(
       "div",
       // visibly hidden until we measure its width to set the input padding correctly
-      { class: `iti__country-container ${CLASSES.V_HIDE}` },
+      {
+        class: this.#withSlotClass(
+          "countryContainer",
+          `iti__country-container ${CLASSES.V_HIDE}`,
+        ),
+      },
       wrapper,
     );
 
@@ -170,7 +185,7 @@ export default class UI {
         "button",
         {
           type: "button",
-          class: "iti__selected-country",
+          class: this.#withSlotClass("selectedCountry", "iti__selected-country"),
           [ARIA.EXPANDED]: "false",
           [ARIA.LABEL]: this.#options.uiTranslations.noCountrySelected,
           [ARIA.HASPOPUP]: "dialog",
@@ -185,7 +200,7 @@ export default class UI {
     } else {
       this.#selectedCountryEl = createEl(
         "div",
-        { class: "iti__selected-country" },
+        { class: this.#withSlotClass("selectedCountry", "iti__selected-country") },
         this.#countryContainerEl,
       );
     }
@@ -193,21 +208,29 @@ export default class UI {
     // The element that gets a grey background on hover (if the country selector is enabled)
     const selectedCountryPrimary = createEl(
       "div",
-      { class: "iti__selected-country-primary" },
+      {
+        class: this.#withSlotClass(
+          "selectedCountryPrimary",
+          "iti__selected-country-primary",
+        ),
+      },
       this.#selectedCountryEl,
     );
 
     //* This is where we will add the selected flag (or globe) class later
     this.#selectedFlagEl = createEl(
       "div",
-      { class: CLASSES.FLAG },
+      { class: this.#withSlotClass("selectedFlag", CLASSES.FLAG) },
       selectedCountryPrimary,
     );
 
     if (enableCountrySelector) {
       this.#arrowEl = createEl(
         "div",
-        { class: "iti__arrow", [ARIA.HIDDEN]: "true" },
+        {
+          class: this.#withSlotClass("arrow", "iti__arrow"),
+          [ARIA.HIDDEN]: "true",
+        },
         selectedCountryPrimary,
       );
     }
@@ -215,7 +238,12 @@ export default class UI {
     if (separateDialCode) {
       this.#selectedDialCodeEl = createEl(
         "div",
-        { class: "iti__selected-dial-code" },
+        {
+          class: this.#withSlotClass(
+            "selectedDialCode",
+            "iti__selected-dial-code",
+          ),
+        },
         this.#selectedCountryEl,
       );
     }
@@ -259,7 +287,10 @@ export default class UI {
     const extraClasses = matchDropdownWidth ? "" : "iti--flexible-dropdown-width";
     this.#countrySelectorEl = createEl("div", {
       id: `iti-${this.#id}__country-selector`,
-      class: `iti__country-selector ${CLASSES.HIDE} ${extraClasses}`,
+      class: this.#withSlotClass(
+        "countrySelector",
+        `iti__country-selector ${CLASSES.HIDE} ${extraClasses}`,
+      ),
       role: "dialog",
       [ARIA.MODAL]: "true",
     });
@@ -274,7 +305,7 @@ export default class UI {
     this.#countryListEl = createEl(
       "ul",
       {
-        class: "iti__country-list",
+        class: this.#withSlotClass("countryList", "iti__country-list"),
         id: `iti-${this.#id}__country-listbox`,
         role: "listbox",
         [ARIA.LABEL]: uiTranslations.countryListAriaLabel,
@@ -298,7 +329,9 @@ export default class UI {
         "iti--inline-country-selector": !isFullscreen,
         [containerClass]: Boolean(containerClass),
       });
-      this.#detachedCountrySelectorEl = createEl("div", { class: wrapperClasses });
+      this.#detachedCountrySelectorEl = createEl("div", {
+        class: this.#withSlotClass("countrySelectorContainer", wrapperClasses),
+      });
       this.#detachedCountrySelectorEl.appendChild(this.#countrySelectorEl);
       //* NOTE: CSS anchor positioning (which forces a getComputedStyle style recalc) is set up lazily on first open — see #setupCssAnchorPositioning — to keep init free of layout/style work.
     } else {
@@ -324,7 +357,7 @@ export default class UI {
     // Wrapper so we can position the icons (search + clear)
     const searchWrapper = createEl(
       "div",
-      { class: "iti__search-input-wrapper" },
+      { class: this.#withSlotClass("searchWrapper", "iti__search-input-wrapper") },
       this.#countrySelectorEl!,
     );
 
@@ -332,7 +365,7 @@ export default class UI {
     this.#searchIconEl = createEl(
       "span",
       {
-        class: "iti__search-icon",
+        class: this.#withSlotClass("searchIcon", "iti__search-icon"),
         [ARIA.HIDDEN]: "true",
       },
       searchWrapper,
@@ -345,7 +378,10 @@ export default class UI {
       {
         id: `iti-${this.#id}__search-input`, // Chrome says inputs need either a name or an id
         type: "search",
-        class: `iti__search-input ${searchInputClass}`,
+        class: this.#withSlotClass(
+          "searchInput",
+          `iti__search-input ${searchInputClass}`,
+        ),
         placeholder: uiTranslations.searchPlaceholder,
         // role=combobox + aria-autocomplete=list + aria-activedescendant allows maintaining focus on the search input while allowing users to navigate search results with up/down keyboard keys
         role: "combobox",
@@ -362,7 +398,10 @@ export default class UI {
       "button",
       {
         type: "button",
-        class: `iti__search-clear ${CLASSES.HIDE}`,
+        class: this.#withSlotClass(
+          "searchClear",
+          `iti__search-clear ${CLASSES.HIDE}`,
+        ),
         [ARIA.LABEL]: uiTranslations.clearSearchAriaLabel,
         tabindex: "-1",
       },
@@ -382,7 +421,7 @@ export default class UI {
     this.#noResultsMessageEl = createEl(
       "div",
       {
-        class: `iti__no-results ${CLASSES.HIDE}`,
+        class: this.#withSlotClass("noResults", `iti__no-results ${CLASSES.HIDE}`),
         [ARIA.HIDDEN]: "true", // all a11y messaging happens in this.#searchResultsLiveRegionEl
       },
       this.#countrySelectorEl!,
@@ -443,12 +482,9 @@ export default class UI {
   //* For each country: add a country list item <li> to the countryList <ul> container.
   #appendListItems(): void {
     const frag = document.createDocumentFragment();
+    const liClass = this.#withSlotClass("countryListItem", CLASSES.COUNTRY_ITEM);
     for (let i = 0; i < this.#countries.length; i++) {
       const c = this.#countries[i];
-      // Compute classes (highlight first item when countrySearch disabled)
-      const liClass = buildClassNames({
-        [CLASSES.COUNTRY_ITEM]: true,
-      });
 
       const listItem = createEl("li", {
         id: `iti-${this.#id}__item-${c.iso2}`,
@@ -465,15 +501,32 @@ export default class UI {
 
       // Build contents without innerHTML for safety and clarity
       if (this.#options.showFlags) {
-        createEl("div", { class: `${CLASSES.FLAG} iti__${c.iso2}` }, listItem);
+        createEl(
+          "div",
+          {
+            class: this.#withSlotClass(
+              "countryListItemFlag",
+              `${CLASSES.FLAG} iti__${c.iso2}`,
+            ),
+          },
+          listItem,
+        );
       }
 
-      const nameEl = createEl("span", { class: "iti__country-name" }, listItem);
+      const nameEl = createEl(
+        "span",
+        { class: this.#withSlotClass("countryName", "iti__country-name") },
+        listItem,
+      );
       nameEl.textContent = `${c.name} `;
 
       // the dial code span sits inside the name span, separated by a space, which works for both LTR and RTL languages
       // (visually it looks better separated by a standard space character, rather than a fixed margin distance, and is more flexible)
-      const dialEl = createEl("span", { class: "iti__dial-code" }, nameEl);
+      const dialEl = createEl(
+        "span",
+        { class: this.#withSlotClass("dialCode", "iti__dial-code") },
+        nameEl,
+      );
       if (this.#isRTL) {
         dialEl.setAttribute("dir", "ltr");
       }
@@ -1082,7 +1135,10 @@ export default class UI {
         newListItem.setAttribute(ARIA.SELECTED, "true");
         const checkIcon = createEl(
           "span",
-          { class: "iti__country-check", [ARIA.HIDDEN]: "true" },
+          {
+            class: this.#withSlotClass("countryCheck", "iti__country-check"),
+            [ARIA.HIDDEN]: "true",
+          },
           newListItem,
         );
         checkIcon.appendChild(buildCheckIcon());
@@ -1323,10 +1379,13 @@ export default class UI {
 
     //* Update the selected flag class and the a11y text.
     if (this.#selectedCountryEl) {
-      const flagClass =
+      //* Note: this whole className gets overwritten below, so re-apply the consumer's classes for this slot.
+      const flagClass = this.#withSlotClass(
+        "selectedFlag",
         iso2 && showFlags
           ? `${CLASSES.FLAG} iti__${iso2}`
-          : `${CLASSES.FLAG} ${CLASSES.GLOBE}`;
+          : `${CLASSES.FLAG} ${CLASSES.GLOBE}`,
+      );
       let ariaLabel, title;
       let flagContent: SVGElement | null = null;
       if (iso2) {

@@ -25,6 +25,7 @@ const makeOptions = (overrides = {}) => ({
   allowNumberExtensions: false,
   allowPhonewords: false,
   placeholderNumberPolicy: "POLITE",
+  classNames: {},
   containerClass: "",
   countryNameLocale: "en",
   countryOrder: null,

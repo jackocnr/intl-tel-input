@@ -86,6 +86,8 @@ export type {
   SomeOptions,
   SelectedCountry,
   UtilsLoader,
+  ItiClassNames,
+  ItiSlot,
   ItiUtils,
   ArrayValues,
   NumberFormat,

@@ -91,6 +91,7 @@ class IntlTelInput
   @Input() allowedNumberTypes?: AllOptions["allowedNumberTypes"];
   @Input() allowNumberExtensions?: AllOptions["allowNumberExtensions"];
   @Input() allowPhonewords?: AllOptions["allowPhonewords"];
+  @Input() classNames?: AllOptions["classNames"];
   @Input() containerClass?: AllOptions["containerClass"];
   @Input() countryNameLocale?: AllOptions["countryNameLocale"];
   @Input() countryNameOverrides?: AllOptions["countryNameOverrides"];
@@ -220,6 +221,7 @@ class IntlTelInput
       allowedNumberTypes: this.allowedNumberTypes,
       allowNumberExtensions: this.allowNumberExtensions,
       allowPhonewords: this.allowPhonewords,
+      classNames: this.classNames,
       containerClass: this.containerClass,
       countryNameLocale: this.countryNameLocale,
       countryNameOverrides: this.countryNameOverrides,

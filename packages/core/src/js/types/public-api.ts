@@ -2,6 +2,7 @@ import type { Country, Iso2 } from "../data.js";
 import type { UiTranslations } from "../locale/types.js";
 import type {
   COUNTRY_SELECTOR_MODES,
+  ITI_SLOTS,
   NUMBER_FORMATS,
   NUMBER_TYPES,
   PLACEHOLDER_POLICY,
@@ -57,12 +58,78 @@ export type ValueOf<T> = T[keyof T];
 
 export type CountrySelectorMode = ArrayValues<typeof COUNTRY_SELECTOR_MODES>;
 
+//* The named "slots" (i.e. the elements we generate) that consumers can add their own
+//* classes to, via the classNames option. These names are deliberately decoupled from
+//* our internal iti__* class names, so the markup remains an implementation detail.
+export type ItiSlot = ArrayValues<typeof ITI_SLOTS>;
+
+//* Additional class(es) to add to the elements we generate, keyed by slot name.
+//* Note: our own inline styles (e.g. the input's padding-left, the country selector's
+//* width) always win over classes, so those properties can't be overridden here.
+export interface ItiClassNames {
+  /** The injected `<div class="iti">` wrapping the input and the selected country. */
+  container?: string;
+  /** The `<input>` itself. */
+  input?: string;
+  /** The `<div>` wrapping the selected country, which overlays the left of the input. */
+  countryContainer?: string;
+  /** The selected country `<button>` (or `<div>` when the country selector is disabled). */
+  selectedCountry?: string;
+  /** The `<div>` inside the selected country that gets the hover highlight. */
+  selectedCountryPrimary?: string;
+  /** The selected country's flag (or globe icon) `<div>`. */
+  selectedFlag?: string;
+  /** The dropdown arrow `<div>`. */
+  arrow?: string;
+  /** The selected country's dial code `<div>`. Requires `separateDialCode`. */
+  selectedDialCode?: string;
+  /** The country selector `<div>` i.e. the dropdown or the fullscreen popup. */
+  countrySelector?: string;
+  /**
+   * The `<div>` wrapping the country selector when it is rendered outside the
+   * main container — i.e. the fullscreen popup, or when `dropdownParent` is set.
+   * This element only handles positioning, so it is mainly useful for getting a
+   * scoping class (e.g. a theme class) onto a country selector that would
+   * otherwise escape it. Does not exist for a normal inline dropdown.
+   */
+  countrySelectorContainer?: string;
+  /** The `<div>` wrapping the country search input and its icons. Requires `countrySearch`. */
+  searchWrapper?: string;
+  /** The search (magnifying glass) icon `<span>`. Requires `countrySearch`. */
+  searchIcon?: string;
+  /** The country search `<input>`. Requires `countrySearch`. */
+  searchInput?: string;
+  /** The clear-search `<button>`. Requires `countrySearch`. */
+  searchClear?: string;
+  /** The country list `<ul>`. */
+  countryList?: string;
+  /** Every country `<li>` in the country list. */
+  countryListItem?: string;
+  /** The flag `<div>` inside every country `<li>`. Requires `showFlags`. */
+  countryListItemFlag?: string;
+  /** The country name `<span>` inside every country `<li>`. */
+  countryName?: string;
+  /** The dial code `<span>` inside every country name. */
+  dialCode?: string;
+  /** The check icon `<span>` added to the currently selected country `<li>`. */
+  countryCheck?: string;
+  /** The "no results" message `<div>`. Requires `countrySearch`. */
+  noResults?: string;
+}
+
+//* Compile-time guard that ItiClassNames and ITI_SLOTS stay in sync: both directions
+//* error if a slot is added to one but not the other.
+type AssertExtends<T extends U, U> = T;
+type _SlotsCoverInterface = AssertExtends<keyof ItiClassNames, ItiSlot>;
+type _InterfaceCoversSlots = AssertExtends<ItiSlot, keyof ItiClassNames>;
+
 // All configurable options
 export interface AllOptions {
   countrySelectorMode: CountrySelectorMode;
   allowedNumberTypes: NumberType[] | null;
   allowNumberExtensions: boolean;
   allowPhonewords: boolean;
+  classNames: ItiClassNames;
   containerClass: string;
   countryNameLocale: string;
   countryNameOverrides: Partial<Record<Iso2, string>>;

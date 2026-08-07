@@ -177,6 +177,32 @@ describe("Vue IntlTelInput wrapper", () => {
     expect(input.getAttribute("placeholder")).toBe("enter number");
   });
 
+  test("passes classNames through to the library", () => {
+    render(IntlTelInput, {
+      props: {
+        // DROPDOWN so the country list is rendered inline (fullscreen only attaches it on open)
+        countrySelectorMode: "DROPDOWN",
+        classNames: { selectedCountry: "custom-button", countryList: "custom-list" },
+      },
+    });
+    expect(document.querySelector(".iti__selected-country")!.classList).toContain("custom-button");
+    expect(document.querySelector(".iti__country-list")!.classList).toContain("custom-list");
+  });
+
+  test("classNames.input and inputProps.class are both applied to the input", async () => {
+    render(IntlTelInput, {
+      props: {
+        classNames: { input: "from-classnames" },
+        inputProps: { class: "from-inputprops" },
+      },
+    });
+    const input = getTelInput();
+    // the wrapper re-binds class after mount, merging the library's own classes with inputProps.class
+    await waitFor(() => expect(input.classList.contains("from-inputprops")).toBe(true));
+    expect(input.classList.contains("from-classnames")).toBe(true);
+    expect(input.classList.contains("iti__tel-input")).toBe(true);
+  });
+
   test("modelValue takes precedence over initialValue when both are provided", async () => {
     const itiRef = ref<{ instance: { getSelectedCountry: () => { iso2: string } } | null } | null>(null);
     const Wrapper = defineComponent({

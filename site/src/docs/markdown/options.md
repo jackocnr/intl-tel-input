@@ -8,10 +8,30 @@ _Throughout these docs, "iso2 code" means the two-letter country identifier ([IS
 
 Control country list behaviour and whether certain UI elements are displayed.
 
+###### classNames
+Type: `object`  
+Default: `{}`  
+Vue: `class-names`
+
+Additional class(es) to add to the elements we generate, keyed by slot name. Designed for utility-first CSS frameworks like Tailwind, so you can style the component without writing CSS that targets our internal `iti__*` class names.
+
+```js
+{
+  input: "rounded-lg border-gray-300",
+  selectedCountry: "rounded-l-lg",
+  countrySelector: "shadow-xl",
+}
+```
+
+Each value is a plain class string, so you can pass several classes at once. See [Styling with utility classes](/docs/theming#styling-with-utility-classes) for the full list of slots, and for an important note about making sure your classes actually win over ours.
+
 ###### containerClass
 Type: `string`  
 Default: `""`  
 Vue: `container-class`
+
+> [!WARNING]
+> **Deprecated** — superseded by [`classNames`](#classnames)
 
 Additional class(es) to add to the injected `<div class="iti">` that wraps the input and selected country. Useful for sizing or positioning the whole component.
 
@@ -71,6 +91,9 @@ Try `intl-tel-input` with this disabled in the [Playground](/playground?matchDro
 Type: `string`  
 Default: `""`  
 Vue: `search-input-class`
+
+> [!WARNING]
+> **Deprecated** — superseded by [`classNames`](#classnames)
 
 Additional class(es) to add to the country search input element (requires [`countrySearch`](#countrysearch) to be enabled).
 

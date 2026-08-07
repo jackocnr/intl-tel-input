@@ -10,6 +10,34 @@ export const EVENTS = {
   STRICT_REJECT: "strict:reject",
 } as const;
 
+//* The named "slots" (i.e. the elements we generate) that consumers can add their own classes
+//* to, via the classNames option. Deliberately decoupled from our internal iti__* class names,
+//* so the markup remains an implementation detail. Used to validate the option at runtime, and
+//* to derive the ItiClassNames type. Keep in sync with the ItiClassNames interface.
+export const ITI_SLOTS = [
+  "container",
+  "input",
+  "countryContainer",
+  "selectedCountry",
+  "selectedCountryPrimary",
+  "selectedFlag",
+  "arrow",
+  "selectedDialCode",
+  "countrySelector",
+  "countrySelectorContainer",
+  "searchWrapper",
+  "searchIcon",
+  "searchInput",
+  "searchClear",
+  "countryList",
+  "countryListItem",
+  "countryListItemFlag",
+  "countryName",
+  "dialCode",
+  "countryCheck",
+  "noResults",
+] as const;
+
 export const CLASSES = {
   HIDE: "iti__hide",
   V_HIDE: "iti__v-hide",
