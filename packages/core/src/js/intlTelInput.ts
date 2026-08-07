@@ -1377,8 +1377,13 @@ export class Iti {
       return;
     }
 
-    //* Reset the initial state
-    this.#setInitialState(true);
+    //* Same interruption check as #handleAutoCountryLoaded: a lookup can fail long after the
+    //* user picked a country (selecting one clears the loading state), and #setInitialState
+    //* would wipe that selection and reformat their value out from under them.
+    if (this.#ui.isLoading()) {
+      //* Reset the initial state
+      this.#setInitialState(true);
+    }
     this.#ui.setLoading(false);
     this.#autoCountryDeferred?.reject();
   }

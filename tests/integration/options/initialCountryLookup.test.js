@@ -236,6 +236,44 @@ describe("initialCountryLookup option", () => {
     });
   });
 
+  describe("initialCountryLookup fails after the user has picked a country", () => {
+    let iti, input, rejectLookup;
+
+    beforeEach(() => {
+      intlTelInput.startedLoadingAutoCountry = false;
+      intlTelInput.autoCountry = undefined;
+
+      ({ iti, input } = initIntlTelInput({
+        options: {
+          separateDialCode: false,
+          initialCountryLookup: () => new Promise((_, reject) => {
+            rejectLookup = reject;
+          }),
+        },
+      }));
+    });
+
+    afterEach(() => {
+      teardown(iti);
+      intlTelInput.startedLoadingAutoCountry = false;
+      intlTelInput.autoCountry = undefined;
+    });
+
+    test("the user's selection survives the failure", async () => {
+      // User picks a country and types a national number while the lookup is still in flight.
+      iti.setSelectedCountry("gb");
+      input.value = "7400123456";
+      expect(iti.getSelectedCountry().iso2).toBe("gb");
+
+      rejectLookup();
+      await iti.promise.catch(() => {});
+
+      // The failure must not reset them back to no country.
+      expect(iti.getSelectedCountry()?.iso2).toBe("gb");
+      expect(input.value).toBe("7400123456");
+    });
+  });
+
   describe("initialCountryLookup hangs (never settles)", () => {
     let iti, rejected;
 
