@@ -352,6 +352,60 @@ describe("strictMode option", () => {
     });
   });
 
+  // NO SELECTED COUNTRY (empty/globe state): there is no country-specific max length, so we fall
+  // back to the E.164 ceiling of 15 digits, which no valid number can exceed.
+  describe("no selected country", () => {
+    let input, iti, user;
+
+    beforeEach(() => {
+      user = userEvent.setup();
+      const options = {
+        strictMode: true,
+        separateDialCode: false,
+      };
+      ({ input, iti } = initIntlTelInput({ options }));
+    });
+
+    afterEach(() => {
+      teardown(iti);
+    });
+
+    // PREV BUG: typing a dial code without the plus left the input with no max length at all
+    test("caps typed digits at 15 when country code typed without plus", async () => {
+      await user.type(input, "3805555555555555555555");
+      expect(input.value).toBe("380555555555555");
+    });
+
+    // PREV BUG: an unrecognised dial code deselects the country, removing the max length
+    test("caps typed digits at 15 after an unrecognised dial code deselects the country", async () => {
+      ({ input, iti } = initIntlTelInput({
+        options: { strictMode: true, separateDialCode: false, initialCountry: "us" },
+      }));
+      await user.type(input, "+9995555555555555555555");
+      expect(input.value).toBe("+999555555555555");
+    });
+
+    test("strict:reject fires with source=key, reason=max-length at the 15 digit ceiling", async () => {
+      const events = [];
+      await user.type(input, "380555555555555");
+      input.addEventListener("strict:reject", (e) => events.push(e.detail));
+      await user.type(input, "8");
+      expect(events).toEqual([{ source: "key", rejectedInput: "8", reason: "max-length" }]);
+    });
+
+    test("still applies the country max once a country is resolved from a typed plus", async () => {
+      await user.type(input, "+3805555555555555555555");
+      expect(stripFormattingChars(input.value)).toBe("+380555555555");
+    });
+
+    test("trims pasted digits to 15", async () => {
+      await user.click(input);
+      const pastedContent = "3805555555555555555555";
+      expect(pasteIntoInput(input, pastedContent)).toBe(true);
+      expect(input.value).toBe("380555555555555");
+    });
+  });
+
   describe("Android paste handling", () => {
     let input, iti, user, container;
 

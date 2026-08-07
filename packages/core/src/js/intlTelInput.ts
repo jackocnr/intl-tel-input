@@ -42,6 +42,7 @@ import {
   UK,
   INPUT_TYPES,
   DIAL_CODE,
+  E164_MAX_DIGITS,
   US,
   NUMBER_FORMAT,
   NUMBER_TYPE,
@@ -689,6 +690,9 @@ export class Iti {
         this.#selectedCountry?.iso2,
       );
       hasExceededMaxLength = coreNumber.length > this.#maxCoreNumberLength;
+    } else {
+      //* No country-specific max (e.g. no selected country, so we're in the empty/globe state), so fall back to the E.164 ceiling, which no valid number can exceed. Without this, strictMode would impose no length cap at all.
+      hasExceededMaxLength = getNumeric(newFullNumber).length > E164_MAX_DIGITS;
     }
 
     const newCountry = this.#resolveCountryChangeFromNumber(newFullNumber);
@@ -772,19 +776,34 @@ export class Iti {
     // Reject super long pastes upfront, before any libphonenumber work.
     // E.164 caps numbers at 15 digits; 30 leaves headroom for formatting chars.
     if (newValue.length > 30) {
-      this.#ui.playStrictRejectAnimation();
-      this.#dispatchEvent(EVENTS.STRICT_REJECT, {
-        source: "paste",
-        rejectedInput: pastedRaw,
-        reason: "max-length",
-      });
-      this.#restoreValueBeforeStrictPaste(pasteSnapshot);
+      this.#rejectStrictPasteAsTooLong(pasteSnapshot);
       return true;
+    }
+
+    // If there's no country-specific max (e.g. no selected country, so we're in the empty/globe
+    // state, or utils are not loaded), fall back to the E.164 ceiling. The getCoreNumber checks
+    // below can't help here, as without a country it can't parse the number at all.
+    if (!this.#maxCoreNumberLength) {
+      const excessDigits = getNumeric(newValue).length - E164_MAX_DIGITS;
+      if (excessDigits > 0) {
+        // if they try to paste too many digits in the middle, then just ignore the paste entirely
+        if (selEnd !== originalValue.length) {
+          this.#rejectStrictPasteAsTooLong(pasteSnapshot);
+          return true;
+        }
+        // else they pasted too many digits at the end, so just trim the excess
+        newValue = newValue.slice(0, newValue.length - excessDigits);
+        rejectReason = "max-length";
+      }
     }
 
     // utils.getCoreNumber doesn't work for very short numbers, so only bother checking once we have a few chars
     // (fixes bug where you couldn't paste the first digit of a number)
-    if (newValue.length > 5 && intlTelInput.utils) {
+    if (
+      this.#maxCoreNumberLength &&
+      newValue.length > 5 &&
+      intlTelInput.utils
+    ) {
       let coreNumber = intlTelInput.utils!.getCoreNumber(newValue, iso2);
 
       // utils.getCoreNumber returns empty string for very long numbers
@@ -795,19 +814,10 @@ export class Iti {
       }
       // if no valid core number can be found, then just ignore the paste (defensive path for pathologically long input)
       if (!coreNumber) {
-        this.#ui.playStrictRejectAnimation();
-        this.#dispatchEvent(EVENTS.STRICT_REJECT, {
-          source: "paste",
-          rejectedInput: pastedRaw,
-          reason: "max-length",
-        });
-        this.#restoreValueBeforeStrictPaste(pasteSnapshot);
+        this.#rejectStrictPasteAsTooLong(pasteSnapshot);
         return true;
       }
-      if (
-        this.#maxCoreNumberLength &&
-        coreNumber.length > this.#maxCoreNumberLength
-      ) {
+      if (coreNumber.length > this.#maxCoreNumberLength) {
         if (selEnd === originalValue.length) {
           // if they try to paste too many digits at the end, then just trim the excess
           const trimLength = coreNumber.length - this.#maxCoreNumberLength;
@@ -815,13 +825,7 @@ export class Iti {
           rejectReason = "max-length";
         } else {
           // if they try to paste too many digits in the middle, then just ignore the paste entirely
-          this.#ui.playStrictRejectAnimation();
-          this.#dispatchEvent(EVENTS.STRICT_REJECT, {
-            source: "paste",
-            rejectedInput: pastedRaw,
-            reason: "max-length",
-          });
-          this.#restoreValueBeforeStrictPaste(pasteSnapshot);
+          this.#rejectStrictPasteAsTooLong(pasteSnapshot);
           return true;
         }
       }
@@ -845,9 +849,18 @@ export class Iti {
     return false;
   }
 
-  #restoreValueBeforeStrictPaste(
-    pasteSnapshot: StrictPasteSnapshot,
-  ): void {
+  // Reject a paste entirely because it would exceed the max length, restoring the previous value.
+  #rejectStrictPasteAsTooLong(pasteSnapshot: StrictPasteSnapshot): void {
+    this.#ui.playStrictRejectAnimation();
+    this.#dispatchEvent(EVENTS.STRICT_REJECT, {
+      source: "paste",
+      rejectedInput: pasteSnapshot.pastedRaw,
+      reason: "max-length",
+    });
+    this.#restoreValueBeforeStrictPaste(pasteSnapshot);
+  }
+
+  #restoreValueBeforeStrictPaste(pasteSnapshot: StrictPasteSnapshot): void {
     this.#setTelInputValue(pasteSnapshot.value);
     this.#ui.telInputEl.setSelectionRange(
       pasteSnapshot.selectionStart,
@@ -993,6 +1006,10 @@ export class Iti {
       //* If the user is still typing a prefix of the currently selected country's dial code, don't change yet.
       const currentDial = this.#selectedCountry?.dialCode || "";
       if (currentDial && currentDial.startsWith(numeric)) {
+        return null;
+      }
+      //* Already in the empty state, so no change (e.g. they're typing more digits after an invalid dial code).
+      if (!selectedIso2) {
         return null;
       }
       //* Invalid dial code (or prefix of a different country), so empty.

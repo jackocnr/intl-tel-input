@@ -94,6 +94,11 @@ export const DIAL_CODE = {
   NANP: "1", // North American Numbering Plan
 } as const;
 
+// E.164 caps a full international number (dial code + national number) at 15
+// digits. Used as a fallback max length in strictMode when there is no selected
+// country, and so no country-specific max to enforce.
+export const E164_MAX_DIGITS = 15;
+
 // Country-specific telephone rules
 export const UK = {
   ISO2: "gb" as Iso2,
