@@ -41,6 +41,8 @@ const getErrorMessage = (number, errorCode) => {
 
 If you know the user's country, set [`initialCountry`](/docs/options#initialcountry) (e.g. `"us"`). If you don't, set the [`initialCountryLookup`](/docs/options#initialcountrylookup) option to determine the country from their IP address — [see example](/examples/vanilla-javascript/lookup-country).
 
+If you only have a tentative country hint, use [`countryOrder`](/docs/options#countryorder) to place it first in the list without selecting it.
+
 ## Translate the UI
 
 If you know the user's language, you can translate the country names and UI strings — see [Localisation](/docs/localisation).
