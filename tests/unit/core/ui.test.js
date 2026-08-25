@@ -176,6 +176,11 @@ describe("UI.buildMarkup", () => {
     expect(first.getAttribute("role")).toBe("option");
   });
 
+  test("country list is keyboard-focusable (a11y: scrollable regions must be reachable by keyboard)", () => {
+    const { input } = buildUI();
+    expect(getCountryList(input).getAttribute("tabindex")).toBe("0");
+  });
+
   test("builds search input when countrySearch is true", () => {
     const { input } = buildUI({ countrySearch: true });
     const searchInput = getSearchInput(input);
@@ -330,6 +335,22 @@ describe("UI arrow-key navigation", () => {
     // openCountrySelector starts us on the first item
     pressKey(input, KEYS.ARROW_UP);
     expect(getHighlighted(input)).toBe(list.children[list.children.length - 1]);
+  });
+
+  // The country list is keyboard-focusable (tabindex="0") to satisfy a11y
+  // checks for scrollable regions; keyboard navigation must keep working
+  // when focus actually lands there rather than on the search input/button.
+  test("ArrowDown moves highlight when keydown originates from the country list itself", () => {
+    const { ui, input } = buildUI({
+      dropdownAlwaysOpen: true,
+      countrySearch: false,
+    });
+    ui.openCountrySelector(() => {}, () => {});
+    const list = getCountryList(input);
+    list.dispatchEvent(
+      new KeyboardEvent("keydown", { key: KEYS.ARROW_DOWN, bubbles: true }),
+    );
+    expect(getHighlighted(input)).toBe(list.children[1]);
   });
 });
 
