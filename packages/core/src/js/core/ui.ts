@@ -309,6 +309,13 @@ export default class UI {
         id: `iti-${this.#id}__country-listbox`,
         role: "listbox",
         [ARIA.LABEL]: uiTranslations.countryListAriaLabel,
+        //* Makes the scrollable list keyboard-focusable so it satisfies a11y
+        //* checks for scrollable regions (e.g. axe's scrollable-region-focusable
+        //* rule), which otherwise fires because its items all have tabindex="-1".
+        //* Arrow/Enter/Escape keys still work when focus lands here, since
+        //* #bindCountrySelectorKeydownListener listens on the whole
+        //* #countrySelectorEl container, not just the selected-country button.
+        tabindex: "0",
       },
       this.#countrySelectorEl,
     );
