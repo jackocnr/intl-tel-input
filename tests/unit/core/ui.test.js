@@ -354,6 +354,57 @@ describe("UI arrow-key navigation", () => {
   });
 });
 
+// ── Tab closes the dropdown and focuses the input ──────────────
+// The country list is keyboard-focusable (tabindex="0") to satisfy a11y
+// checks for scrollable regions. That makes it part of the native tab
+// order, so a plain browser Tab could otherwise land focus there instead
+// of moving on to the input as before. Verify focus is still forced onto
+// the input for a forward Tab.
+describe("UI Tab closes the dropdown", () => {
+  // The Tab-closes behavior lives in bindAllInitialCountrySelectorListeners
+  // (bound once, alongside the open/close callbacks), not in the per-open
+  // onClose callback passed to openCountrySelector.
+  const bindTabClose = (ui) => {
+    const controller = new AbortController();
+    const onClose = vi.fn();
+    ui.bindAllInitialCountrySelectorListeners(
+      controller.signal,
+      () => {},
+      onClose,
+    );
+    return onClose;
+  };
+
+  test("Tab closes the dropdown and moves focus to the input", () => {
+    const { ui, input } = buildUI({ countrySearch: false });
+    const onClose = bindTabClose(ui);
+    ui.openCountrySelector(() => {}, () => {});
+    const list = getCountryList(input);
+    list.dispatchEvent(
+      new KeyboardEvent("keydown", { key: KEYS.TAB, bubbles: true }),
+    );
+    expect(onClose).toHaveBeenCalledTimes(1);
+    expect(document.activeElement).toBe(input);
+  });
+
+  test("Shift+Tab closes the dropdown without forcing focus onto the input", () => {
+    const { ui, input } = buildUI({ countrySearch: false });
+    const onClose = bindTabClose(ui);
+    ui.openCountrySelector(() => {}, () => {});
+    const list = getCountryList(input);
+    list.focus();
+    list.dispatchEvent(
+      new KeyboardEvent("keydown", {
+        key: KEYS.TAB,
+        shiftKey: true,
+        bubbles: true,
+      }),
+    );
+    expect(onClose).toHaveBeenCalledTimes(1);
+    expect(document.activeElement).toBe(list);
+  });
+});
+
 // ── country search filtering ──────────────────────────────────
 // Filtering is private; triggered by typing in the search input (debounced).
 describe("UI country search filtering", () => {

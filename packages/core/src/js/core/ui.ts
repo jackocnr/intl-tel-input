@@ -856,6 +856,14 @@ export default class UI {
         //* Allow tabbing out of the country selector area.
         if (e.key === KEYS.TAB) {
           onClose();
+          //* The country list is keyboard-focusable (so it satisfies the scrollable-region
+          //* a11y requirement even when countrySearch is disabled), so a forward tab could
+          //* otherwise land there instead of skipping through to the input. Take control of
+          //* the focus move explicitly so it still lands on the input as before.
+          if (!e.shiftKey) {
+            e.preventDefault();
+            this.telInputEl.focus();
+          }
         }
       },
       { signal },
