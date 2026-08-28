@@ -1,5 +1,6 @@
 //* Gaelic. Translated with DeepL.
 import type { UiTranslations } from "./types.js";
+import countryNames from "./country-names/ga.js";
 
 const interfaceTranslations: UiTranslations = {
   selectedCountryAriaLabel:
@@ -21,4 +22,4 @@ const interfaceTranslations: UiTranslations = {
   },
 };
 
-export default interfaceTranslations;
+export default {...interfaceTranslations, countryNames};

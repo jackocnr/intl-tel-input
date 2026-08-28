@@ -119,7 +119,7 @@ describe("data/country-data bundled fallback locales", () => {
   // Locales whose region display names are missing from some browsers'
   // Intl.DisplayNames data (e.g. Chrome desktop), so we bundle translated
   // country names with them. See scripts/generate-country-names.js.
-  const FALLBACK_LOCALES = ["bs", "hy", "is", "mk", "sq", "uz"];
+  const FALLBACK_LOCALES = ["bs", "ga", "hy", "is", "mk", "mt", "sq", "uz"];
 
   test.each(FALLBACK_LOCALES)("locale %s bundles countryNames for every country", async (locale) => {
     const mod = await import(`../../../packages/core/src/js/locale/${locale}.ts`);

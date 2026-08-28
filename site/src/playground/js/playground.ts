@@ -717,7 +717,7 @@ function hasNoBrowserCountryNameData(locale: string): boolean {
 // country-names/), so even when Intl.DisplayNames falls back to English the
 // library still shows translated names. Keep in sync with that directory.
 const LOCALES_WITH_BUNDLED_COUNTRY_NAMES = new Set([
-  "bs", "hy", "is", "mk", "sq", "uz",
+  "bs", "ga", "hy", "is", "mk", "mt", "sq", "uz",
 ]);
 
 // True when country names will actually render in English: the browser lacks the
