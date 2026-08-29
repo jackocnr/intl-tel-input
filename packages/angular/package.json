@@ -37,9 +37,9 @@
     "intl-tel-input": "^29.2.3"
   },
   "peerDependencies": {
-    "@angular/common": ">=17",
-    "@angular/core": ">=17",
-    "@angular/forms": ">=17",
+    "@angular/common": ">=21",
+    "@angular/core": ">=21",
+    "@angular/forms": ">=21",
     "rxjs": "^7.0.0 || ^8.0.0"
   },
   "publishConfig": {
