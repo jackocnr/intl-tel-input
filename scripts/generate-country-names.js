@@ -20,7 +20,7 @@ const outDir = path.join(localeDir, 'country-names');
 const dataFile = path.join(localeDir, '..', 'data.ts');
 
 //* Locales whose region display names Chrome's ICU build omits.
-const FALLBACK_LOCALES = ['bs', 'hy', 'is', 'mk', 'sq', 'uz'];
+const FALLBACK_LOCALES = ['az', 'bs', 'hy', 'is', 'mk', 'sq', 'uz'];
 
 //* Extract iso2 codes (in source order) from data.ts — the first element of each
 //* country sub-array, e.g.   "af", // Afghanistan
