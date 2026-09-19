@@ -4,10 +4,17 @@ import { build } from "esbuild";
 // through unchanged (not copied/rewritten by esbuild's bundler).
 const passThroughAssets = ["*.webp", "*.png", "*.jpg", "*.svg"];
 
+// We author with native CSS nesting, but flatten it in the published CSS, as
+// nesting support is much newer (Chrome 112, Safari 16.5, Firefox 117) than the
+// rest of our browser baseline. Any target older than those triggers flattening —
+// these match the JS baseline (set by Object.hasOwn).
+const flattenNestingTarget = ["chrome93", "safari15.4", "firefox92"];
+
 const shared = {
   bundle: true,
   logLevel: "info",
   external: passThroughAssets,
+  target: flattenNestingTarget,
 };
 
 //* Library: with assets (intlTelInput.css)
