@@ -919,6 +919,8 @@ export default class UI {
       this.#detachedCountrySelectorEl &&
       window.visualViewport
     ) {
+      // Size it now too: if the keyboard is already open (e.g. user was typing in the tel input), iOS keeps it open as focus moves to the search input, so no resize event fires (issue #2200).
+      this.#adjustFullscreenPopupToViewport();
       window.visualViewport.addEventListener(
         "resize",
         (): void => {
@@ -1244,6 +1246,7 @@ export default class UI {
       this.#detachedCountrySelectorEl.remove();
       this.#detachedCountrySelectorEl.style.top = "";
       this.#detachedCountrySelectorEl.style.bottom = "";
+      this.#detachedCountrySelectorEl.style.height = "";
       this.#detachedCountrySelectorEl.style.paddingLeft = "";
       this.#detachedCountrySelectorEl.style.paddingRight = "";
     } else {
@@ -1325,8 +1328,8 @@ export default class UI {
     if (!vv || !this.#detachedCountrySelectorEl) {
       return;
     }
-    const virtualKeyboardHeight = window.innerHeight - vv.height;
-    this.#detachedCountrySelectorEl.style.bottom = `${virtualKeyboardHeight}px`;
+    // NOTE: we set the height rather than deriving a bottom inset from window.innerHeight, as on iOS innerHeight changes when the page is zoomed (issue #2200).
+    this.#detachedCountrySelectorEl.style.height = `${vv.height}px`;
   }
 
   // UI: Whether the country selector is currently open (visible).

@@ -105,5 +105,44 @@ describe("countrySelectorMode option", () => {
       expect(getCountryListElement(root)).toBeTruthy();
       expect(root.querySelector(".iti--fullscreen-popup")).toBeTruthy();
     });
+
+    // jsdom has no visualViewport, so fake one to simulate the virtual keyboard
+    describe("with a virtual keyboard (visualViewport)", () => {
+      let fakeViewport;
+      const getPopup = () => document.querySelector(".iti--fullscreen-popup");
+
+      beforeEach(() => {
+        fakeViewport = Object.assign(new EventTarget(), {
+          height: window.innerHeight,
+        });
+        window.visualViewport = fakeViewport;
+      });
+
+      afterEach(() => {
+        delete window.visualViewport;
+      });
+
+      test("sizes the popup on open when the keyboard is already open (issue #2200)", async () => {
+        fakeViewport.height = window.innerHeight - 300;
+        await clickSelectedCountryAsync(container, user);
+        expect(getPopup().style.height).toEqual(`${window.innerHeight - 300}px`);
+      });
+
+      test("resizes the popup when the keyboard opens after the popup", async () => {
+        await clickSelectedCountryAsync(container, user);
+        expect(getPopup().style.height).toEqual(`${window.innerHeight}px`);
+        fakeViewport.height = window.innerHeight - 300;
+        fakeViewport.dispatchEvent(new Event("resize"));
+        expect(getPopup().style.height).toEqual(`${window.innerHeight - 300}px`);
+      });
+
+      test("clears the inline sizing on close", async () => {
+        fakeViewport.height = window.innerHeight - 300;
+        await clickSelectedCountryAsync(container, user);
+        const popup = getPopup();
+        await user.keyboard("{Escape}");
+        expect(popup.style.height).toEqual("");
+      });
+    });
   });
 });
