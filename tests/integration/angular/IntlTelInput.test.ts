@@ -181,6 +181,25 @@ describe("Angular IntlTelInput wrapper", () => {
     expect(errorCodeChange).toHaveBeenLastCalledWith(null);
   });
 
+  test("does not emit countryChange when the user types without changing the country", async () => {
+    //* Regression: the country baseline was never seeded, so the first input event compared against
+    //* undefined and emitted countryChange for the unchanged initialCountry.
+    const { fixture, component } = mount({ initialCountry: "gb" });
+    const numberChange = vi.fn();
+    const countryChange = vi.fn();
+    component.numberChange.subscribe(numberChange);
+    component.countryChange.subscribe(countryChange);
+
+    await component.getInstance()!.promise;
+
+    const input = getTelInput(fixture);
+    input.value = "07733123456";
+    input.dispatchEvent(new Event("input"));
+
+    await waitUntil(() => numberChange.mock.calls.length > 0);
+    expect(countryChange).not.toHaveBeenCalled();
+  });
+
   test("emits numberChange / countryChange / validityChange / errorCodeChange when the value changes via writeValue (ControlValueAccessor)", async () => {
     const { component } = mount();
     const numberChange = vi.fn();

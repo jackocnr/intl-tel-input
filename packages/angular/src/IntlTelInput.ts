@@ -206,6 +206,9 @@ class IntlTelInput
       this.iti.setReadonly(this.readonly);
     }
 
+    // the selected country is set synchronously during init and needs no utils, so record the baseline now - otherwise the first input event would emit countryChange for an unchanged country
+    this.lastEmittedCountry = this.iti.getSelectedCountry()?.iso2 ?? "";
+
     // wait for utils to load before calling methods that require it (setNumber, etc.)
     this.iti.promise.then(() => {
       if (!this.iti?.isActive()) {
