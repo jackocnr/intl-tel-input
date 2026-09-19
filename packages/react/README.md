@@ -1,6 +1,6 @@
 # React component for intl-tel-input
 
-For entering, formatting, and validating international telephone numbers.
+For entering, formatting, and validating international telephone numbers. Requires React 18 or later.
 
 [Explore docs »](https://intl-tel-input.com/docs/react-component)
 

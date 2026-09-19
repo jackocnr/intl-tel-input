@@ -1,6 +1,6 @@
 # React component
 
-A React component for the `intl-tel-input` library. See a live demo on the [Validation](/examples/react-component/validation) example page.
+A React component (React 18+) for the `intl-tel-input` library. See a live demo on the [Validation](/examples/react-component/validation) example page.
 
 ## Installation
 

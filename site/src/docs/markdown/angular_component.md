@@ -1,6 +1,6 @@
 # Angular component
 
-An Angular component for the `intl-tel-input` library. See a live demo on the [Validation](/examples/angular-component/validation) example page.
+An Angular component (Angular 17+) for the `intl-tel-input` library. See a live demo on the [Validation](/examples/angular-component/validation) example page.
 
 ## Installation
 

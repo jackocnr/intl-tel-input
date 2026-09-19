@@ -1,6 +1,6 @@
 # Angular component for intl-tel-input
 
-For entering, formatting, and validating international telephone numbers.
+For entering, formatting, and validating international telephone numbers. Requires Angular 17 or later.
 
 [Explore docs »](https://intl-tel-input.com/docs/angular-component)
 

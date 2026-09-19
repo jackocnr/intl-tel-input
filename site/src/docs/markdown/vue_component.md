@@ -1,6 +1,6 @@
 # Vue component
 
-A Vue component for the `intl-tel-input` library. See a live demo on the [Validation](/examples/vue-component/validation) example page.
+A Vue 3 component for the `intl-tel-input` library. See a live demo on the [Validation](/examples/vue-component/validation) example page.
 
 ## Installation
 

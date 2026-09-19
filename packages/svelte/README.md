@@ -1,6 +1,6 @@
 # Svelte component for intl-tel-input
 
-For entering, formatting, and validating international telephone numbers.
+For entering, formatting, and validating international telephone numbers. Requires Svelte 5.
 
 [Explore docs »](https://intl-tel-input.com/docs/svelte-component)
 

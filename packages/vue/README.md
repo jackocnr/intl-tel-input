@@ -1,6 +1,6 @@
 # Vue component for intl-tel-input
 
-For entering, formatting, and validating international telephone numbers.
+For entering, formatting, and validating international telephone numbers. Requires Vue 3.
 
 [Explore docs »](https://intl-tel-input.com/docs/vue-component)
 
