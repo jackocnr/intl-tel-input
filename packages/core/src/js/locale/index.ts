@@ -1,5 +1,6 @@
 //* THIS FILE IS AUTO-GENERATED. DO NOT EDIT.
 export { default as ar } from "./ar.js";
+export { default as az } from "./az.js";
 export { default as bg } from "./bg.js";
 export { default as bn } from "./bn.js";
 export { default as bs } from "./bs.js";
