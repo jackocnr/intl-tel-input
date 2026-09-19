@@ -161,12 +161,12 @@ const IntlTelInput = forwardRef(function IntlTelInput(
     //* value behind, and an unchanged one would be duplicated.
     const classesBeforeInit = new Set(inputEl.classList);
     itiRef.current = intlTelInput(inputEl, initOptions as SomeOptions);
-    // getSelectedCountry() is populated synchronously by #setInitialState() and needs no utils, so
-    // the country baseline can be recorded before any input event can defer an update
-    lastEmittedCountryRef.current = itiRef.current.getSelectedCountry()?.iso2 ?? "";
     libraryInputClassesRef.current = Array.from(inputEl.classList)
       .filter((className) => !classesBeforeInit.has(className))
       .join(" ");
+
+    // the selected country is set synchronously during init and needs no utils, so record the baseline now - otherwise an input event replayed after the utils-loading gap would fire onChangeCountry for an unchanged country
+    lastEmittedCountryRef.current = itiRef.current.getSelectedCountry()?.iso2 ?? "";
 
     const handleOpen = (): void => onOpenCountrySelectorRef.current?.();
     const handleClose = (): void => onCloseCountrySelectorRef.current?.();
