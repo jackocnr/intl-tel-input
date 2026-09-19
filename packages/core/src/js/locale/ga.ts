@@ -1,4 +1,4 @@
-//* Gaelic. Translated with DeepL.
+//* Irish. Translated by: DeepL.
 import type { UiTranslations } from "./types.js";
 import countryNames from "./country-names/ga.js";
 
@@ -18,8 +18,15 @@ const interfaceTranslations: UiTranslations = {
     if (count === 1) {
       return "1 toradh aimsithe";
     }
-    return `${count} thoradh aimsithe`;
+    // The noun stays singular after a number, but its initial mutation depends on the count
+    if (count >= 2 && count <= 6) {
+      return `${count} thoradh aimsithe`;
+    }
+    if (count >= 7 && count <= 10) {
+      return `${count} dtoradh aimsithe`;
+    }
+    return `${count} toradh aimsithe`;
   },
 };
 
-export default {...interfaceTranslations, countryNames};
+export default { ...interfaceTranslations, countryNames };
