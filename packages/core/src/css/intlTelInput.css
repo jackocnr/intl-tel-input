@@ -270,6 +270,8 @@
   padding: 0;
   margin: 0;
   cursor: pointer;
+  /* The list takes focus when countrySearch is disabled: the highlighted item is the focus indicator. */
+  outline: none;
 
   overflow-y: scroll;
   /* Fixes https://github.com/jackocnr/intl-tel-input/issues/765
@@ -300,7 +302,6 @@
   align-items: center;
   padding-left: var(--iti-spacer-horizontal);
   padding-right: var(--iti-spacer-horizontal);
-  outline: none;
 
   &.iti__highlight {
     background-color: var(--iti-hover-color);

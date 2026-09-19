@@ -287,6 +287,45 @@ describe("UI list-item highlight on hover", () => {
       item.getAttribute("id"),
     );
   });
+
+  test("sets aria-activedescendant on country list when countrySearch disabled", () => {
+    const { ui, input } = buildUI({ countrySearch: false, dropdownAlwaysOpen: true });
+    ui.openCountrySelector(() => {}, () => {});
+    const list = getCountryList(input);
+    const item = list.children[1];
+    hover(item);
+    expect(list.getAttribute(ARIA.ACTIVE_DESCENDANT)).toBe(item.getAttribute("id"));
+  });
+});
+
+// ── focus on open ──────────────────────────────────────────────
+describe("UI focus on open", () => {
+  test("focuses the search input when countrySearch enabled", () => {
+    const { ui, input } = buildUI({ countrySearch: true });
+    ui.openCountrySelector(() => {}, () => {});
+    expect(document.activeElement).toBe(getSearchInput(input));
+  });
+
+  test("focuses the country list when countrySearch disabled", () => {
+    const { ui, input } = buildUI({ countrySearch: false });
+    ui.openCountrySelector(() => {}, () => {});
+    expect(document.activeElement).toBe(getCountryList(input));
+  });
+
+  test("does not steal focus when dropdownAlwaysOpen", () => {
+    const { ui, input } = buildUI({ countrySearch: false, dropdownAlwaysOpen: true });
+    ui.openCountrySelector(() => {}, () => {});
+    expect(document.activeElement).not.toBe(getCountryList(input));
+  });
+
+  test("clears aria-activedescendant from the country list on close", () => {
+    const { ui, input } = buildUI({ countrySearch: false });
+    ui.openCountrySelector(() => {}, () => {});
+    const list = getCountryList(input);
+    expect(list.hasAttribute(ARIA.ACTIVE_DESCENDANT)).toBe(true);
+    ui.closeCountrySelector();
+    expect(list.hasAttribute(ARIA.ACTIVE_DESCENDANT)).toBe(false);
+  });
 });
 
 // ── keyboard arrow navigation ──────────────────────────────────

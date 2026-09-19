@@ -10,6 +10,11 @@ export const intlTelInput = intlTelInputWithUtils;
 
 export const totalCountries = 244;
 
+// jsdom doesn't load the plugin stylesheet, so (unlike a real browser) it can't tell that a closed country selector is display:none, and user-event would tab into its focusable country list. Mirror the one rule that matters. Lives in <head> so it survives teardown (which only clears <body>).
+const hideStyle = document.createElement("style");
+hideStyle.textContent = ".iti__hide { display: none; }";
+document.head.appendChild(hideStyle);
+
 const injectInputDefaults = { inputValue: "", disabled: false };
 
 export const injectInput = ({ inputValue = "", disabled = false } = injectInputDefaults) => {

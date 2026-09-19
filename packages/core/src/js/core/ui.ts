@@ -309,12 +309,7 @@ export default class UI {
         id: `iti-${this.#id}__country-listbox`,
         role: "listbox",
         [ARIA.LABEL]: uiTranslations.countryListAriaLabel,
-        //* Makes the scrollable list keyboard-focusable so it satisfies a11y
-        //* checks for scrollable regions (e.g. axe's scrollable-region-focusable
-        //* rule), which otherwise fires because its items all have tabindex="-1".
-        //* Arrow/Enter/Escape keys still work when focus lands here, since
-        //* #bindCountrySelectorKeydownListener listens on the whole
-        //* #countrySelectorEl container, not just the selected-country button.
+        //* Accessibility: scrollable regions must be keyboard-focusable. When countrySearch is disabled, the list takes focus on open.
         tabindex: "0",
       },
       this.#countrySelectorEl,
@@ -496,7 +491,6 @@ export default class UI {
       const listItem = createEl("li", {
         id: `iti-${this.#id}__item-${c.iso2}`,
         class: liClass,
-        tabindex: "-1",
         role: "option",
         [ARIA.SELECTED]: "false",
       });
@@ -745,6 +739,13 @@ export default class UI {
     }
   }
 
+  //* The element that holds focus while the country selector is open: the search input, or (when countrySearch is disabled) the country list itself.
+  #getOpenFocusEl(): HTMLElement {
+    return this.#options.countrySearch
+      ? this.#searchInputEl!
+      : this.#countryListEl!;
+  }
+
   //* Remove highlighting from the previous list item and highlight the new one.
   #highlightListItem(
     listItem: HTMLElement | null,
@@ -755,13 +756,12 @@ export default class UI {
 
     if (listItem) {
       listItem.classList.add(CLASSES.HIGHLIGHT);
-      if (this.#options.countrySearch) {
-        const activeDescendant = listItem.getAttribute("id") || "";
-        this.#searchInputEl!.setAttribute(
-          ARIA.ACTIVE_DESCENDANT,
-          activeDescendant,
-        );
-      }
+      //* Accessibility: tell screen readers which item is highlighted, via whichever element holds focus while open.
+      const activeDescendant = listItem.getAttribute("id") || "";
+      this.#getOpenFocusEl().setAttribute(
+        ARIA.ACTIVE_DESCENDANT,
+        activeDescendant,
+      );
       if (doScroll) {
         this.#scrollCountryListToItem(listItem);
       }
@@ -868,7 +868,7 @@ export default class UI {
     onSelect: (listItem: HTMLElement | null) => void,
     onClose: () => void,
   ): void {
-    const { countrySearch, dropdownAlwaysOpen } = this.#options;
+    const { dropdownAlwaysOpen } = this.#options;
 
     this.#countrySelectorAbortController = new AbortController();
 
@@ -904,8 +904,8 @@ export default class UI {
     if (itemToHighlight) {
       this.#highlightListItem(itemToHighlight);
     }
-    if (countrySearch && !dropdownAlwaysOpen) {
-      this.#searchInputEl!.focus();
+    if (!dropdownAlwaysOpen) {
+      this.#getOpenFocusEl().focus();
     }
 
     // When using fullscreen popup, listen for virtual keyboard show/hide via visualViewport
@@ -1203,8 +1203,8 @@ export default class UI {
     this.#countrySelectorEl!.classList.add(CLASSES.HIDE);
     this.#selectedCountryEl!.setAttribute(ARIA.EXPANDED, "false");
 
+    this.#getOpenFocusEl().removeAttribute(ARIA.ACTIVE_DESCENDANT);
     if (countrySearch) {
-      this.#searchInputEl!.removeAttribute(ARIA.ACTIVE_DESCENDANT);
       // Clear the search query so it starts fresh next time.
       this.#searchInputEl!.value = "";
       this.#applySearchFilter();
