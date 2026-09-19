@@ -90,6 +90,15 @@ If you have `countrySearch` disabled, this simpler version is enough:
 ```
 
 
+## Which browsers are supported?
+
+Chrome/Edge 93+, Safari 15.4+ and Firefox 92+. This applies equally to the vanilla JavaScript library and the React, Vue, Angular and Svelte components (though your framework's own browser requirements will also apply). We aim to only rely on features that are [Baseline Widely Available](https://web.dev/baseline) (supported in all major browsers for 2.5+ years), so this will move forward gradually over time — any change will be called out in the release notes.
+
+If you need to support older browsers, the only JavaScript feature that sets this floor is `Object.hasOwn`, which you can polyfill (e.g. via [core-js](https://github.com/zloirock/core-js)). With that in place, everything else works back to Safari 15, Chrome 90 and Firefox 90.
+
+One cosmetic exception: the styling for disabled/readonly inputs uses the CSS `:has()` selector, which requires Chrome 105+ and Firefox 121+. Without it, everything still works — the country selector just doesn't get the "not-allowed" cursor.
+
+
 ## Something looks broken — where should I look first?
 
 A lot of “broken” behaviour is caused by layout/CSS or initialising on an input that isn't in the DOM yet. Check devtools: is the CSS loading? Have you overridden the flag paths correctly, and are the flag images loading?

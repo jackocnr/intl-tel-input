@@ -14,6 +14,8 @@ For entering, formatting, and validating international telephone numbers.
 
 Check out the [website](https://intl-tel-input.com), where you can find [a full set of docs](https://intl-tel-input.com/docs/vue-component), a [live playground](https://intl-tel-input.com/playground/) where you can try out all of the options, as well as plenty of [examples](https://intl-tel-input.com/examples/vue-component/validation) of different setups.
 
+Browser support: same as the core library — see the [FAQ](https://intl-tel-input.com/docs/faq#which-browsers-are-supported) for minimum versions.
+
 ## Running the demos locally
 
 1. Initialise the submodules: `git submodule update --init --recursive`

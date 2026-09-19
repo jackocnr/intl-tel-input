@@ -14,6 +14,8 @@ For entering, formatting, and validating international telephone numbers.
 
 Check out the [website](https://intl-tel-input.com), where you can find [a full set of docs](https://intl-tel-input.com/docs/vanilla-javascript), a [live playground](https://intl-tel-input.com/playground/) where you can try out all of the options, as well as plenty of [examples](https://intl-tel-input.com/examples/vanilla-javascript/validation) of different setups.
 
+Browser support: all modern browsers — see the [FAQ](https://intl-tel-input.com/docs/faq#which-browsers-are-supported) for minimum versions.
+
 ## Issues and contributing
 
 Please report issues and open pull requests on the [main repository](https://github.com/jackocnr/intl-tel-input).

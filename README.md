@@ -46,6 +46,9 @@ Check out the [website](https://intl-tel-input.com), where you can find [a full 
 * Theme it with CSS variables (e.g. dark mode) or utility classes like Tailwind
 * TypeScript definitions included
 
+## Browser support
+All modern browsers: Chrome/Edge 93+, Safari 15.4+, Firefox 92+ (roughly, anything released since early 2022). Need to support something older? See the [FAQ](https://intl-tel-input.com/docs/faq#which-browsers-are-supported).
+
 ## Contributing
 See the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/master/.github/CONTRIBUTING.md) for instructions on setting up the project and making changes, and also on how to update the flag images, or how to add a new translation.
 
