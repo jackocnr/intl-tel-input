@@ -325,7 +325,7 @@ export default class UI {
 
     //* NOTE: measuring the inline dropdown size (which forces a synchronous layout reflow) is deferred to the first open — see #ensureInlineDropdownSizeMeasured — so that init does no layout work for a dropdown that may never be opened.
 
-    //* Detached country selector: required for fullscreen (always attached to document.body), or optional for dropdown (when dropdownParent is set to escape an overflow:hidden ancestor).
+    //* Detached country selector: required for fullscreen (attached to fullscreenParent, or document.body by default), or optional for dropdown (when dropdownParent is set to escape an overflow:hidden ancestor).
     if (detachedParent) {
       const wrapperClasses = buildClassNames({
         iti: true,
@@ -344,11 +344,12 @@ export default class UI {
     }
   }
 
-  //* Resolve the DOM element to attach the country selector to. Fullscreen always uses document.body; dropdown uses the consumer-supplied dropdownParent (if any); otherwise the country selector renders inline within the input wrapper (no detached element).
+  //* Resolve the DOM element to attach the country selector to. Fullscreen is always detached: it uses the consumer-supplied fullscreenParent, falling back to document.body; dropdown uses the consumer-supplied dropdownParent (if any); otherwise the country selector renders inline within the input wrapper (no detached element).
+  //* NOTE: these are deliberately two separate options. For the dropdown, setting a parent switches it from inline to detached rendering (pos:fixed, positioned against the input), whereas the fullscreen popup is detached regardless, so its parent only relocates it. Sharing one option would force a detached dropdown on anyone who only needs to move the fullscreen popup e.g. into a modal <dialog> (issue #2199).
   #getDetachedParent(): HTMLElement | null {
-    const { countrySelectorMode, dropdownParent } = this.#options;
+    const { countrySelectorMode, dropdownParent, fullscreenParent } = this.#options;
     if (countrySelectorMode === COUNTRY_SELECTOR_MODE.FULLSCREEN) {
-      return document.body;
+      return fullscreenParent ?? document.body;
     }
     if (countrySelectorMode === COUNTRY_SELECTOR_MODE.DROPDOWN) {
       return dropdownParent;

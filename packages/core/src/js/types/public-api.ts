@@ -146,6 +146,7 @@ export interface AllOptions {
   excludeCountries: Iso2[] | null;
   matchDropdownWidth: boolean;
   formatAsYouType: boolean;
+  fullscreenParent: HTMLElement | null;
   hiddenInputs:
     | ((telInputName: string) => { phone: string; country?: string })
     | null;

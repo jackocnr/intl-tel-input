@@ -36,6 +36,7 @@ const makeOptions = (overrides = {}) => ({
   excludeCountries: null,
   matchDropdownWidth: true,
   formatAsYouType: true,
+  fullscreenParent: null,
   hiddenInputs: null,
   uiTranslations: { ...defaultEnglishStrings },
   initialCountry: "",

@@ -78,6 +78,20 @@ Vue: `dropdown-parent`
 
 When using the country selector as a dropdown, sometimes it can get cut-off if an ancestor has `overflow:hidden` (or similar). You can solve this by setting `dropdownParent` to another element on the page (e.g. `document.body`), which means the dropdown will be appended to that element instead of next to the input. It will then be re-positioned next to the input using JavaScript (with `position:fixed`), so it looks the same as the standard inline dropdown. _Note: previously named `dropdownContainer`._
 
+This only applies to the dropdown. To choose where the fullscreen popup is appended, see [`fullscreenParent`](#fullscreenparent).
+
+###### fullscreenParent
+Type: `HTMLElement`  
+Default: `null`  
+Vue: `fullscreen-parent`
+
+When using the country selector as a fullscreen popup, it is appended to `document.body` by default. Sometimes this means the user can't reach it, e.g. if the input is inside a modal `<dialog>`, everything outside the dialog is inert and rendered behind it. You can solve this by setting `fullscreenParent` to another element on the page (e.g. the dialog), which means the popup will be appended to that element instead.
+
+The popup uses `position: fixed` to cover the viewport, so wherever you append it, it still displays fullscreen. The exception is if the parent (or one of its ancestors) has a `transform`, `filter` or similar, as fixed positioning is then relative to that element instead of the viewport.
+
+> [!NOTE]
+> **Why is this separate from `dropdownParent`?** Setting `dropdownParent` changes how the dropdown renders: it is detached from the input and positioned using `position:fixed`, which you should only opt in to when the dropdown is being cut off. The fullscreen popup is always detached, so `fullscreenParent` only changes where it is appended. A single option would force the detached dropdown on anyone who just needs to move the fullscreen popup, e.g. into a modal. With the default [`countrySelectorMode`](#countryselectormode) of `"AUTO"`, either one may be used depending on the viewport width, so if you need both, set both options, usually to the same element.
+
 ###### matchDropdownWidth
 Type: `boolean`  
 Default: `true`  

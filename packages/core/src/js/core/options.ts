@@ -61,7 +61,7 @@ export const defaults: AllOptions = {
   customPlaceholder: null,
   //* Always show the dropdown
   dropdownAlwaysOpen: false,
-  //* Optional DOM element to append the dropdown to (used to escape ancestors with overflow:hidden, or to mount in a custom container). Only consulted in dropdown rendering; ignored when the country selector renders as a fullscreen popup.
+  //* Optional DOM element to append the dropdown to (used to escape ancestors with overflow:hidden, or to mount in a custom container). Only consulted in dropdown rendering; ignored when the country selector renders as a fullscreen popup (see fullscreenParent).
   dropdownParent: null,
   //* Don't display these countries.
   excludeCountries: null,
@@ -69,6 +69,8 @@ export const defaults: AllOptions = {
   matchDropdownWidth: true,
   //* Format the number as the user types
   formatAsYouType: true,
+  //* Optional DOM element to append the fullscreen popup to, instead of document.body (e.g. a modal <dialog>, where a body-mounted popup would be unreachable). Only consulted in fullscreen rendering (see dropdownParent for the dropdown). Null means document.body, which is resolved on open rather than here, as document may not exist yet (e.g. SSR).
+  fullscreenParent: null,
   //* Inject hidden inputs with the names returned from this function, and on submit, populate them with the full number and selected country iso2.
   hiddenInputs: null,
   //* Translations for the core library UI strings e.g. search input placeholder, country names.
@@ -299,8 +301,9 @@ export const validateOptions = (customOptions: unknown): SomeOptions => {
         break;
 
       case "dropdownParent":
+      case "fullscreenParent":
         if (value !== null && !isElLike(value)) {
-          warnOption("dropdownParent", "an HTMLElement or null", value);
+          warnOption(key, "an HTMLElement or null", value);
           break;
         }
         validatedOptions[key] = value;

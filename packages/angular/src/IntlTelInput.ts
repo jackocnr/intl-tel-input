@@ -103,6 +103,7 @@ class IntlTelInput
   @Input() excludeCountries?: AllOptions["excludeCountries"];
   @Input() matchDropdownWidth?: AllOptions["matchDropdownWidth"];
   @Input() formatAsYouType?: AllOptions["formatAsYouType"];
+  @Input() fullscreenParent?: AllOptions["fullscreenParent"];
   @Input() hiddenInputs?: AllOptions["hiddenInputs"];
   @Input() uiTranslations?: AllOptions["uiTranslations"];
   @Input() initialCountry?: AllOptions["initialCountry"];
@@ -249,6 +250,7 @@ class IntlTelInput
       excludeCountries: this.excludeCountries,
       matchDropdownWidth: this.matchDropdownWidth,
       formatAsYouType: this.formatAsYouType,
+      fullscreenParent: this.fullscreenParent,
       hiddenInputs: this.hiddenInputs,
       uiTranslations: this.uiTranslations,
       initialCountry: this.initialCountry,
