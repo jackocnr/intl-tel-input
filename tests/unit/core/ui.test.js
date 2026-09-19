@@ -176,9 +176,14 @@ describe("UI.buildMarkup", () => {
     expect(first.getAttribute("role")).toBe("option");
   });
 
-  test("country list is keyboard-focusable (a11y: scrollable regions must be reachable by keyboard)", () => {
-    const { input } = buildUI();
+  test("country list is keyboard-focusable when countrySearch disabled (a11y: scrollable regions must be reachable by keyboard)", () => {
+    const { input } = buildUI({ countrySearch: false });
     expect(getCountryList(input).getAttribute("tabindex")).toBe("0");
+  });
+
+  test("country list is not focusable when countrySearch enabled (it would steal focus from the search input)", () => {
+    const { input } = buildUI({ countrySearch: true });
+    expect(getCountryList(input).hasAttribute("tabindex")).toBe(false);
   });
 
   test("builds search input when countrySearch is true", () => {

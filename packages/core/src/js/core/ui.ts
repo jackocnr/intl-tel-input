@@ -309,11 +309,14 @@ export default class UI {
         id: `iti-${this.#id}__country-listbox`,
         role: "listbox",
         [ARIA.LABEL]: uiTranslations.countryListAriaLabel,
-        //* Accessibility: scrollable regions must be keyboard-focusable. When countrySearch is disabled, the list takes focus on open.
-        tabindex: "0",
       },
       this.#countrySelectorEl,
     );
+    //* Accessibility: when countrySearch is disabled, the list takes focus on open (scrollable regions must be keyboard-focusable).
+    //* Not when it's enabled: the search input holds focus, and a focusable list would steal it e.g. on clicking the scrollbar.
+    if (!countrySearch) {
+      this.#countryListEl.setAttribute("tabindex", "0");
+    }
     this.#appendListItems();
 
     if (countrySearch) {
