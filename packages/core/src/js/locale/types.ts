@@ -11,7 +11,7 @@ export type UiTranslations = {
   searchSummaryAria?: (count: number) => string;
   //* Translated country names, keyed by iso2. Only bundled for locales whose
   //* region display names are missing from some browsers' Intl.DisplayNames data
-  //* (e.g. Chrome desktop falls back to English for bs, hy, is, mk, sq, uz). When
+  //* (e.g. Chrome desktop falls back to English for bs, ga, hy, is, mk, mt, sq, uz). When
   //* present, these take precedence over Intl.DisplayNames. See country-data.ts.
   countryNames?: Partial<Record<Iso2, string>>;
 };

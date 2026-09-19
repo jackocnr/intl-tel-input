@@ -20,7 +20,7 @@ const outDir = path.join(localeDir, 'country-names');
 const dataFile = path.join(localeDir, '..', 'data.ts');
 
 //* Locales whose region display names Chrome's ICU build omits.
-const FALLBACK_LOCALES = ['az', 'bs', 'hy', 'is', 'mk', 'sq', 'uz'];
+const FALLBACK_LOCALES = ['az', 'bs', 'ga', 'hy', 'is', 'mk', 'mt', 'sq', 'uz'];
 
 //* Extract iso2 codes (in source order) from data.ts — the first element of each
 //* country sub-array, e.g.   "af", // Afghanistan
@@ -44,7 +44,12 @@ for (const locale of FALLBACK_LOCALES) {
   for (const iso2 of iso2s) {
     const name = dn.of(iso2.toUpperCase());
     if (!name || name === iso2.toUpperCase()) {
-      missing.push(iso2);
+      if (locale === "mt" && iso2 === "io") {
+        //* Node ICU is missing IO (British Indian Ocean Territory) localisation for Maltese
+        entries.push([iso2, "Territorju Brittaniku tal-Oċean Indjan"]);
+      } else {
+        missing.push(iso2);
+      }
       continue;
     }
     entries.push([iso2, name]);

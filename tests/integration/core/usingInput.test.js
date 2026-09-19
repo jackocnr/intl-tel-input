@@ -42,7 +42,7 @@ describe("using input", () => {
 
   describe("typing a dial code containing a space", () => {
     beforeEach(async () => {
-      await user.type(input, "+4 4 98765432");
+      await user.type(input, "+4 4 2025550123");
     });
 
     test("still updates the flag correctly", () => {
@@ -50,14 +50,14 @@ describe("using input", () => {
     });
 
     test("then changing the flag updates and re-formats the number correctly", async () => {
-      await openAndSelectCountryAsync(container, "zw", user);
-      expect(input.value).toBe("09 876 5432");
+      await openAndSelectCountryAsync(container, "us", user);
+      expect(input.value).toBe("(202) 555-0123");
     });
   });
 
   describe("typing a dial code containing a dot", () => {
     beforeEach(async () => {
-      await user.type(input, "+4.4 98765432");
+      await user.type(input, "+4.4 2025550123");
     });
 
     test("still updates the flag correctly", () => {
@@ -65,8 +65,8 @@ describe("using input", () => {
     });
 
     test("then changing the flag updates and re-formats the whole number correctly", async () => {
-      await openAndSelectCountryAsync(container, "zw", user);
-      expect(input.value).toBe("09 876 5432");
+      await openAndSelectCountryAsync(container, "us", user);
+      expect(input.value).toBe("(202) 555-0123");
     });
   });
 

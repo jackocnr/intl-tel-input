@@ -29,7 +29,7 @@ export const generateCountryNames = (
   options: AllOptions,
 ): void => {
   const { countryNameLocale, countryNameOverrides, uiTranslations } = options;
-  //* Some locales (e.g. bs, hy, is, mk, sq, uz) bundle their own country names
+  //* Some locales (e.g. bs, ga, hy, is, mk, mt, sq, uz) bundle their own country names
   //* because certain browsers' Intl.DisplayNames lacks region data for them and
   //* silently falls back to English (notably Chrome desktop). When the active
   //* uiTranslations carries these, they take precedence over Intl.DisplayNames.
