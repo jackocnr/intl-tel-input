@@ -713,19 +713,14 @@ function hasNoBrowserCountryNameData(locale: string): boolean {
   }
 }
 
-// Locales that bundle their own country names (in packages/core/src/js/locale/
-// country-names/), so even when Intl.DisplayNames falls back to English the
-// library still shows translated names. Keep in sync with that directory.
-const LOCALES_WITH_BUNDLED_COUNTRY_NAMES = new Set([
-  "az", "bs", "ga", "hy", "is", "mk", "mt", "sq", "uz",
-]);
-
 // True when country names will actually render in English: the browser lacks the
-// Intl.DisplayNames data AND we don't bundle a fallback for this locale.
+// Intl.DisplayNames data AND the loaded locale module doesn't bundle its own
+// country names (see packages/core/src/js/locale/country-names/). Hint checks run
+// after the instance has (re)initialised, so the controller's module is current.
 function countryNamesWillFallBackToEnglish(locale: string): boolean {
   return (
     hasNoBrowserCountryNameData(locale) &&
-    !LOCALES_WITH_BUNDLED_COUNTRY_NAMES.has(locale)
+    !itiController.uiTranslations?.countryNames
   );
 }
 

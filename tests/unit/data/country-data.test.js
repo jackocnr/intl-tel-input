@@ -2,6 +2,8 @@
  * @vitest-environment node
  */
 
+import fs from "node:fs";
+import path from "node:path";
 import {
   processAllCountries,
   generateCountryNames,
@@ -119,7 +121,13 @@ describe("data/country-data bundled fallback locales", () => {
   // Locales whose region display names are missing from some browsers'
   // Intl.DisplayNames data (e.g. Chrome desktop), so we bundle translated
   // country names with them. See scripts/generate-country-names.js.
-  const FALLBACK_LOCALES = ["az", "bs", "ga", "hy", "is", "mk", "mt", "sq", "uz"];
+  const FALLBACK_LOCALES = fs
+    .readdirSync("packages/core/src/js/locale/country-names")
+    .map((file) => path.basename(file, ".ts"));
+
+  test("finds the generated country-names files", () => {
+    expect(FALLBACK_LOCALES).toContain("bs");
+  });
 
   test.each(FALLBACK_LOCALES)("locale %s bundles countryNames for every country", async (locale) => {
     const mod = await import(`../../../packages/core/src/js/locale/${locale}.ts`);

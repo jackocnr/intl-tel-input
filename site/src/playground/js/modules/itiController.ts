@@ -80,6 +80,8 @@ export class ItiPlaygroundController {
   defaultInitOptions: Record<string, any>;
   specialOptionKeys: string[];
   iti: Iti | null;
+  // The locale module loaded for the current instance (null for English/none).
+  uiTranslations: Record<string, any> | null;
   initNonce: number;
 
   constructor({ telInput, utilsPath, localeDirHash, defaultInitOptions, specialOptionKeys }: { telInput: HTMLInputElement; utilsPath: string; localeDirHash: string; defaultInitOptions: Record<string, any>; specialOptionKeys: string[] }) {
@@ -90,6 +92,7 @@ export class ItiPlaygroundController {
     this.specialOptionKeys = specialOptionKeys;
 
     this.iti = null;
+    this.uiTranslations = null;
     this.initNonce = 0;
   }
 
@@ -122,6 +125,7 @@ export class ItiPlaygroundController {
     // Clear any padding-left set by the previous init, so switching to a config
     // that doesn't touch padding doesn't inherit stale padding from the old one.
     this.telInput.style.paddingLeft = "";
+    this.uiTranslations = uiTranslations;
     initOptions.uiTranslations = uiTranslations;
     // we need this bootstrap class, but don't want to bother users with this, so just add it here.
     initOptions.searchInputClass = "form-control";
