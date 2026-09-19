@@ -14,6 +14,7 @@ const localeDisplayNames = (() => {
 // uses a reduced ICU build and returns the tag itself for several of these e.g. it returns "bs" instead of "Bosnian").
 const FALLBACK_LANGUAGE_NAMES: Record<string, string> = {
   ar: "Arabic",
+  az: "Azerbaijani",
   bg: "Bulgarian",
   bn: "Bengali",
   bs: "Bosnian",

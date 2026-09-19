@@ -16,7 +16,7 @@ You can also override individual country names via the [`countryNameOverrides`](
 
 #### Browser support caveat
 
-Some browsers ship a reduced `Intl.DisplayNames` dataset that omits country names for certain locales, silently falling back to English. Most notably, **Chrome on desktop** does this for `bs` (Bosnian), `ga` (Irish), `hy` (Armenian), `is` (Icelandic), `mk` (Macedonian), `mt` (Maltese), `sq` (Albanian) and `uz` (Uzbek).
+Some browsers ship a reduced `Intl.DisplayNames` dataset that omits country names for certain locales, silently falling back to English. Most notably, **Chrome on desktop** does this for `az` (Azerbaijani), `bs` (Bosnian), `ga` (Irish), `hy` (Armenian), `is` (Icelandic), `mk` (Macedonian), `mt` (Maltese), `sq` (Albanian) and `uz` (Uzbek).
 
 You don't need to handle this: for these locales we bundle the translated country names into their `intl-tel-input/locale` modules, so importing one for [`uiTranslations`](/docs/options#uitranslations) gives correctly translated country names in every browser. Note that when using one of these locales with `uiTranslations`, any separate `countryNameLocale` option value will be ignored, but you can still use `countryNameOverrides` to override them.
 
