@@ -104,3 +104,40 @@ describe("country selector shortcuts", () => {
     });
   });
 });
+
+// With countrySearch disabled, the country list is focusable and takes focus on open, which puts it in the tab order.
+describe("country selector shortcuts, with countrySearch disabled", () => {
+  let iti, input, user, container;
+  beforeEach(async () => {
+    user = userEvent.setup();
+    ({ iti, container, input } = initIntlTelInput({ options: { countrySearch: false } }));
+    await clickSelectedCountryAsync(container, user);
+  });
+
+  afterEach(() => {
+    teardown(iti);
+  });
+
+  test("opening focuses the country list", () => {
+    expect(container.querySelector(".iti__country-list")).toHaveFocus();
+  });
+
+  test("pressing TAB closes the dropdown and focuses the input", async () => {
+    await user.keyboard("{Tab}");
+    expect(isCountrySelectorOpen(container)).toBe(false);
+    expect(input).toHaveFocus();
+  });
+
+  test("pressing SHIFT+TAB closes the dropdown and focuses the selected country", async () => {
+    await user.keyboard("{Shift>}{Tab}{/Shift}");
+    expect(isCountrySelectorOpen(container)).toBe(false);
+    expect(await getSelectedCountryButton(container)).toHaveFocus();
+  });
+
+  test("TAB from the selected country skips the closed country list", async () => {
+    await user.keyboard("{Escape}");
+    expect(await getSelectedCountryButton(container)).toHaveFocus();
+    await user.keyboard("{Tab}");
+    expect(input).toHaveFocus();
+  });
+});
