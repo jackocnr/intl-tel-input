@@ -16,5 +16,12 @@
     "outDir": "dist/temp",
     "declarationDir": "dist",
     "rootDir": "./src"
+  },
+  "angularCompilerOptions": {
+    //* Required for published libraries: emits version-agnostic ɵɵngDeclare*
+    //* calls (linked by the consumer's Angular build) instead of "full" mode's
+    //* private template instructions, which only work with the exact Angular
+    //* major we compile with - that broke Angular 17-20 consumers (#2193).
+    "compilationMode": "partial"
   }
 }
