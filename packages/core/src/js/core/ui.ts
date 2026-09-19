@@ -1073,6 +1073,23 @@ export default class UI {
     this.#selectedCountryEl?.addEventListener("keydown", handleKeydown, { signal });
     //* Catches keystrokes from the search input and country list (which both live inside the country selector).
     this.#countrySelectorEl?.addEventListener("keydown", handleKeydown, { signal });
+
+    //* A detached country selector lives outside countryContainerEl, so its keydowns never reach the close-on-tab listener there,
+    //* and native tab order from its position in the DOM is meaningless. So close, and move focus explicitly.
+    if (this.#detachedCountrySelectorEl) {
+      this.#countrySelectorEl?.addEventListener(
+        "keydown",
+        (e: KeyboardEvent): void => {
+          if (e.key === KEYS.TAB) {
+            e.preventDefault();
+            onEscape();
+            const focusEl = e.shiftKey ? this.#selectedCountryEl! : this.telInputEl;
+            focusEl.focus();
+          }
+        },
+        { signal },
+      );
+    }
   }
 
   //* Wire up country search input listener: typing filters the list, the clear button resets it.

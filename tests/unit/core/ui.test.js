@@ -328,6 +328,48 @@ describe("UI focus on open", () => {
   });
 });
 
+// ── Tab from a detached country selector ───────────────────────
+// A detached country selector (dropdownParent / fullscreen) lives outside the country container, so
+// the container's close-on-tab listener never sees its keydowns: it must close and move focus itself.
+describe("UI Tab from a detached country selector", () => {
+  const pressTab = (shiftKey) => {
+    const onClose = vi.fn();
+    const { ui, input } = buildUI({ dropdownParent: document.body });
+    ui.openCountrySelector(() => {}, onClose);
+    const searchInput = document.querySelector(".iti__search-input");
+    const e = new KeyboardEvent("keydown", {
+      key: KEYS.TAB,
+      shiftKey,
+      bubbles: true,
+      cancelable: true,
+    });
+    searchInput.dispatchEvent(e);
+    return { input, onClose, e };
+  };
+
+  test("Tab closes and focuses the tel input", () => {
+    const { input, onClose, e } = pressTab(false);
+    expect(onClose).toHaveBeenCalledTimes(1);
+    expect(e.defaultPrevented).toBe(true);
+    expect(document.activeElement).toBe(input);
+  });
+
+  test("Shift+Tab closes and focuses the selected country button", () => {
+    const { input, onClose } = pressTab(true);
+    expect(onClose).toHaveBeenCalledTimes(1);
+    expect(document.activeElement).toBe(getSelectedCountryEl(input));
+  });
+
+  test("inline country selector leaves Tab to the browser", () => {
+    const onClose = vi.fn();
+    const { ui, input } = buildUI();
+    ui.openCountrySelector(() => {}, onClose);
+    const e = new KeyboardEvent("keydown", { key: KEYS.TAB, bubbles: true, cancelable: true });
+    getSearchInput(input).dispatchEvent(e);
+    expect(e.defaultPrevented).toBe(false);
+  });
+});
+
 // ── keyboard arrow navigation ──────────────────────────────────
 // handleUpDownKey is private; triggered via keydown events that bubble up to
 // the dropdown content (where the listener is bound) while the dropdown is open.
