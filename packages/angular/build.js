@@ -7,6 +7,11 @@ const mainShared = {
   external: ["@angular/core", "@angular/forms"],
   logLevel: "info",
   minify: false,
+  //? Emit the ɵɵ prefix literally. With esbuild's default (ascii) charset
+  //? these identifiers get escaped to `\u0275...`, which the Angular Linker
+  //? does not recognize, so consumers hit "needs to be compiled using the
+  //? JIT compiler" at runtime (#2202).
+  charset: "utf8",
   define: { "process.env.VERSION": `"${packageJson.version}"` },
 };
 
