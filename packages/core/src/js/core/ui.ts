@@ -913,7 +913,7 @@ export default class UI {
     }
 
     // When using fullscreen popup, listen for virtual keyboard show/hide via visualViewport
-    // so the popup resizes to stay above the keyboard.
+    // so the country selector resizes to stay above the keyboard.
     if (
       this.#options.countrySelectorMode === COUNTRY_SELECTOR_MODE.FULLSCREEN &&
       this.#detachedCountrySelectorEl &&
@@ -1246,7 +1246,7 @@ export default class UI {
       this.#detachedCountrySelectorEl.remove();
       this.#detachedCountrySelectorEl.style.top = "";
       this.#detachedCountrySelectorEl.style.bottom = "";
-      this.#detachedCountrySelectorEl.style.height = "";
+      this.#detachedCountrySelectorEl.style.removeProperty("--iti-virtual-keyboard-height");
       this.#detachedCountrySelectorEl.style.paddingLeft = "";
       this.#detachedCountrySelectorEl.style.paddingRight = "";
     } else {
@@ -1321,15 +1321,17 @@ export default class UI {
     this.#detachedCountrySelectorEl!.style.positionAnchor = anchorName;
   }
 
-  // Adjust the fullscreen popup dimensions to match the visual viewport,
-  // so it stays above the virtual keyboard on mobile devices.
+  // Tell the CSS how much of the fullscreen popup is covered by the virtual keyboard, so it can fit the
+  // country selector above it, while the popup itself (the dark backdrop) stays fullscreen behind the keyboard.
   #adjustFullscreenPopupToViewport(): void {
     const vv = window.visualViewport;
-    if (!vv || !this.#detachedCountrySelectorEl) {
+    const popup = this.#detachedCountrySelectorEl;
+    if (!vv || !popup) {
       return;
     }
-    // NOTE: we set the height rather than deriving a bottom inset from window.innerHeight, as on iOS innerHeight changes when the page is zoomed (issue #2200).
-    this.#detachedCountrySelectorEl.style.height = `${vv.height}px`;
+    // NOTE: we measure the popup rather than using window.innerHeight, as on iOS innerHeight changes when the page is zoomed (issue #2200). Whatever the popup's height, padding it by this amount leaves exactly the visual viewport height.
+    const virtualKeyboardHeight = Math.max(0, popup.offsetHeight - vv.height);
+    popup.style.setProperty("--iti-virtual-keyboard-height", `${virtualKeyboardHeight}px`);
   }
 
   // UI: Whether the country selector is currently open (visible).

@@ -106,42 +106,56 @@ describe("countrySelectorMode option", () => {
       expect(root.querySelector(".iti--fullscreen-popup")).toBeTruthy();
     });
 
-    // jsdom has no visualViewport, so fake one to simulate the virtual keyboard
+    // jsdom has no visualViewport (or layout), so fake the viewport and the popup's height to simulate the virtual keyboard
     describe("with a virtual keyboard (visualViewport)", () => {
+      const KEYBOARD_VAR = "--iti-virtual-keyboard-height";
       let fakeViewport;
       const getPopup = () => document.querySelector(".iti--fullscreen-popup");
+      const getKeyboardHeight = (popup) => popup.style.getPropertyValue(KEYBOARD_VAR);
 
       beforeEach(() => {
         fakeViewport = Object.assign(new EventTarget(), {
           height: window.innerHeight,
         });
         window.visualViewport = fakeViewport;
+        // the popup is fullscreen (top:0, bottom:0), so its height is the window height
+        vi.spyOn(HTMLElement.prototype, "offsetHeight", "get").mockImplementation(function () {
+          return this.classList.contains("iti--fullscreen-popup") ? window.innerHeight : 0;
+        });
       });
 
       afterEach(() => {
         delete window.visualViewport;
+        vi.restoreAllMocks();
       });
 
-      test("sizes the popup on open when the keyboard is already open (issue #2200)", async () => {
+      test("passes the keyboard height to the CSS on open when the keyboard is already open (issue #2200)", async () => {
         fakeViewport.height = window.innerHeight - 300;
         await clickSelectedCountryAsync(container, user);
-        expect(getPopup().style.height).toEqual(`${window.innerHeight - 300}px`);
+        expect(getKeyboardHeight(getPopup())).toEqual("300px");
       });
 
-      test("resizes the popup when the keyboard opens after the popup", async () => {
+      test("updates the keyboard height when the keyboard opens after the popup", async () => {
         await clickSelectedCountryAsync(container, user);
-        expect(getPopup().style.height).toEqual(`${window.innerHeight}px`);
+        expect(getKeyboardHeight(getPopup())).toEqual("0px");
         fakeViewport.height = window.innerHeight - 300;
         fakeViewport.dispatchEvent(new Event("resize"));
-        expect(getPopup().style.height).toEqual(`${window.innerHeight - 300}px`);
+        expect(getKeyboardHeight(getPopup())).toEqual("300px");
       });
 
-      test("clears the inline sizing on close", async () => {
+      test("never sets a height on the popup itself, so the dark backdrop stays fullscreen behind the keyboard", async () => {
+        fakeViewport.height = window.innerHeight - 300;
+        await clickSelectedCountryAsync(container, user);
+        expect(getPopup().style.height).toEqual("");
+        expect(getPopup().style.bottom).toEqual("");
+      });
+
+      test("clears the keyboard height on close", async () => {
         fakeViewport.height = window.innerHeight - 300;
         await clickSelectedCountryAsync(container, user);
         const popup = getPopup();
         await user.keyboard("{Escape}");
-        expect(popup.style.height).toEqual("");
+        expect(getKeyboardHeight(popup)).toEqual("");
       });
     });
   });

@@ -410,8 +410,8 @@
     right: 0;
     position: fixed;
     padding: var(--iti-mobile-popup-margin);
-    /* When the virtual keyboard is open, the JS sets an explicit height to match the visual viewport, which must include the padding. */
-    box-sizing: border-box;
+    /* The popup (dark backdrop) stays fullscreen behind the virtual keyboard. The JS passes in the keyboard height, so the country selector fits above it. */
+    padding-bottom: calc(var(--iti-mobile-popup-margin) + var(--iti-virtual-keyboard-height, 0px));
     /* Short country lists should be vertically centred. */
     display: flex;
     flex-direction: column;
