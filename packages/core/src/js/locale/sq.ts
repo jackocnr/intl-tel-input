@@ -9,6 +9,7 @@ const interfaceTranslations: UiTranslations = {
   countryListAriaLabel: "Lista e vendeve",
   searchPlaceholder: "Kërko",
   clearSearchAriaLabel: "Pastro kërkimin",
+  closeCountrySelectorAriaLabel: "Mbyll",
   searchEmptyState: "Nuk u gjet asnjë rezultat",
 
   searchSummaryAria(count) {

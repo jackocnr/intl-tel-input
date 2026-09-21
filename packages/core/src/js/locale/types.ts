@@ -5,6 +5,7 @@ export type UiTranslations = {
   selectedCountryAriaLabel?: string;
   searchPlaceholder?: string;
   clearSearchAriaLabel?: string;
+  closeCountrySelectorAriaLabel?: string;
   countryListAriaLabel?: string;
   noCountrySelected?: string;
   searchEmptyState?: string;

@@ -9,6 +9,7 @@ const interfaceTranslations: UiTranslations = {
   countryListAriaLabel: "Listi yfir lönd",
   searchPlaceholder: "Leita",
   clearSearchAriaLabel: "Hreinsa leit",
+  closeCountrySelectorAriaLabel: "Loka",
   searchEmptyState: "Engar niðurstöður fundust",
 
   searchSummaryAria(count) {

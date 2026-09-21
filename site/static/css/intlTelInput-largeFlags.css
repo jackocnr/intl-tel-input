@@ -8,13 +8,14 @@
   --iti-flag-height: calc(var(--iti-flag-width) * 3 / 4);
   --iti-globe-icon-size: 17px;
   --iti-clear-icon-size: 15px;
+  --iti-close-icon-size: 20px;
   --iti-border-width: 1px;
   --iti-arrow-size: 5px;
   --iti-arrow-width: 1.5px;
   --iti-arrow-padding: 7px;
   --iti-flag-sprite-width: 244;
   --iti-flag-sprite-height: 1;
-  --iti-mobile-popup-margin: 30px;
+  --iti-mobile-popup-margin: 44px;
   --iti-strict-reject-flash-color: rgba(255, 0, 0, 0.12);
 }
 
@@ -280,6 +281,40 @@
   flex-direction: column;
   max-height: 100%;
   position: relative;
+}
+.iti--fullscreen-popup .iti__close-button {
+  position: absolute;
+  bottom: 100%;
+  right: calc(-1 * var(--iti-mobile-popup-margin));
+  width: var(--iti-mobile-popup-margin);
+  height: var(--iti-mobile-popup-margin);
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 3px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+[dir=rtl] .iti--fullscreen-popup .iti__close-button,
+.iti--fullscreen-popup [dir=rtl] .iti__close-button {
+  right: auto;
+  left: calc(-1 * var(--iti-mobile-popup-margin));
+}
+.iti--fullscreen-popup .iti__close-button:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: -2px;
+}
+.iti--fullscreen-popup .iti__close-button-svg {
+  width: var(--iti-close-icon-size);
+  height: var(--iti-close-icon-size);
+  display: block;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
 }
 .iti--fullscreen-popup .iti__country,
 .iti--fullscreen-popup .iti__search-input {

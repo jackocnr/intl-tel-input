@@ -8,6 +8,7 @@ const interfaceTranslations: UiTranslations = {
   countryListAriaLabel: "দেশের তালিকা",
   searchPlaceholder: "অনুসন্ধান করুন",
   clearSearchAriaLabel: "অনুসন্ধান পরিষ্কার করুন",
+  closeCountrySelectorAriaLabel: "বন্ধ করুন",
   searchEmptyState: "কোন ফলাফল পাওয়া যায়নি",
 
   searchSummaryAria(count) {

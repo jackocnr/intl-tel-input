@@ -48,6 +48,13 @@ export const buildClearIcon = (id: number): SVGElement => {
   );
 };
 
+/** Close (X) icon for the fullscreen popup's close button */
+export const buildCloseIcon = (): SVGElement => buildSvg(
+  ["svg", { class: "iti__close-button-svg", width: 20, height: 20, viewBox: "0 0 16 16", focusable: "false", [ARIA.HIDDEN]: "true" }, [
+    ["path", { d: "M3 3 L13 13 M13 3 L3 13" }],
+  ]],
+);
+
 /** Check icon shown next to the selected country in the country list. */
 export const buildCheckIcon = (): SVGElement => buildSvg(
   ["svg", { class: "iti__country-check-svg", width: 14, height: 14, viewBox: "0 0 16 16", fill: "currentColor", focusable: "false", [ARIA.HIDDEN]: "true" }, [

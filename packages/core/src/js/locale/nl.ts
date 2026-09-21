@@ -8,6 +8,7 @@ const interfaceTranslations: UiTranslations = {
   countryListAriaLabel: "Lijst met landen",
   searchPlaceholder: "Zoekopdracht",
   clearSearchAriaLabel: "Zoekopdracht wissen",
+  closeCountrySelectorAriaLabel: "Sluiten",
   searchEmptyState: "Geen resultaten gevonden",
 
   searchSummaryAria(count) {

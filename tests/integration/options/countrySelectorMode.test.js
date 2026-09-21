@@ -85,6 +85,10 @@ describe("countrySelectorMode option", () => {
       const root = container.ownerDocument;
       expect(root.querySelector(".iti--fullscreen-popup")).toBeFalsy();
     });
+
+    test("has no close button", async () => {
+      expect(container.querySelector(".iti__close-button")).toBeNull();
+    });
   });
 
   describe("countrySelectorMode='FULLSCREEN'", () => {
@@ -104,6 +108,41 @@ describe("countrySelectorMode option", () => {
       await clickSelectedCountryAsync(container, user);
       expect(getCountryListElement(root)).toBeTruthy();
       expect(root.querySelector(".iti--fullscreen-popup")).toBeTruthy();
+    });
+
+    describe("close button", () => {
+      const getCloseButton = () => container.ownerDocument.querySelector(".iti__close-button");
+
+      test("is inside the dialog, so it is reachable for screen reader users", async () => {
+        await clickSelectedCountryAsync(container, user);
+        const closeButton = getCloseButton();
+        expect(closeButton.closest("[role='dialog']")).toBe(getCountrySelectorElement(container.ownerDocument));
+        expect(closeButton.getAttribute("aria-label")).toBe("Close");
+      });
+
+      test("clicking it closes the popup, fires the close event, and re-focuses the selected country button", async () => {
+        const onClose = vi.fn();
+        container.querySelector(".iti__tel-input").addEventListener("close:countryselector", onClose);
+        await clickSelectedCountryAsync(container, user);
+        await user.click(getCloseButton());
+        expect(container.ownerDocument.querySelector(".iti--fullscreen-popup")).toBeNull();
+        expect(onClose).toHaveBeenCalledTimes(1);
+        expect(getSelectedCountryButton(container)).toHaveFocus();
+      });
+
+      test("clicking it does not change the selected country", async () => {
+        await clickSelectedCountryAsync(container, user);
+        await user.click(getCloseButton());
+        expect(iti.getSelectedCountry()).toBeNull();
+      });
+
+      test("still works after re-opening", async () => {
+        await clickSelectedCountryAsync(container, user);
+        await user.click(getCloseButton());
+        await clickSelectedCountryAsync(container, user);
+        await user.click(getCloseButton());
+        expect(container.ownerDocument.querySelector(".iti--fullscreen-popup")).toBeNull();
+      });
     });
 
     // jsdom has no visualViewport (or layout), so fake the viewport and the popup's height to simulate the virtual keyboard

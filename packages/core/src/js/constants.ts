@@ -25,6 +25,7 @@ export const ITI_SLOTS = [
   "selectedDialCode",
   "countrySelector",
   "countrySelectorContainer",
+  "closeButton",
   "searchWrapper",
   "searchIcon",
   "searchInput",

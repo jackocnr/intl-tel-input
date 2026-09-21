@@ -8,6 +8,7 @@ const interfaceTranslations: UiTranslations = {
   countryListAriaLabel: "Országok listája",
   searchPlaceholder: "Keresés",
   clearSearchAriaLabel: "Keresés törlése",
+  closeCountrySelectorAriaLabel: "Bezárás",
   searchEmptyState: "Nincs találat",
 
   searchSummaryAria(count) {

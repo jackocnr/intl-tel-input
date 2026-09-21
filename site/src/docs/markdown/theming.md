@@ -49,9 +49,9 @@ Default: `1px`
 Border width used for the country selector and divider. Should match your input's border width.
 
 ###### `--iti-mobile-popup-margin`
-Default: `30px`  
+Default: `44px`  
 
-Margin around the fullscreen popup on mobile.
+Margin around the fullscreen popup on mobile. The popup's close button fills the top corner of this margin, so this is also the size of its tap target.
 
 ##### Arrow variables
 
@@ -81,6 +81,11 @@ Size of the globe icon (empty state) and the search icon.
 Default: `15px`  
 
 Size of the search clear button and the selected-country check icon.
+
+###### `--iti-close-icon-size`
+Default: `20px`  
+
+Size of the close icon on the fullscreen popup. Its button (the tap target) is sized separately, by [`--iti-mobile-popup-margin`](#iti-mobile-popup-margin).
 
 ##### Flag variables
 
@@ -171,6 +176,7 @@ Your classes are **added** to ours, never replacing them, so the component keeps
 | `selectedDialCode` | The selected country's dial code `<div>` (requires [`separateDialCode`](/docs/options#separatedialcode)) |
 | `countrySelector` | The country selector `<div>` i.e. the dropdown or the fullscreen popup |
 | `countrySelectorContainer` | The `<div>` wrapping the country selector when it's rendered outside the main container — see [below](#reaching-a-detached-country-selector) |
+| `closeButton` | The close `<button>` in the corner of the fullscreen popup (does not exist for a dropdown) |
 | `searchWrapper` | The `<div>` wrapping the country search input and its icons |
 | `searchIcon` | The search (magnifying glass) icon `<span>` |
 | `searchInput` | The country search `<input>` |

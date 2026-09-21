@@ -8,6 +8,7 @@ const interfaceTranslations: UiTranslations = {
   countryListAriaLabel: "Seznam držav",
   searchPlaceholder: "Išči",
   clearSearchAriaLabel: "Počisti iskanje",
+  closeCountrySelectorAriaLabel: "Zapri",
   searchEmptyState: "Ni rezultatov",
 
   searchSummaryAria(count) {

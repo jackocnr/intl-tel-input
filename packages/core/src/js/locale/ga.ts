@@ -9,6 +9,7 @@ const interfaceTranslations: UiTranslations = {
   countryListAriaLabel: "Liosta tíortha",
   searchPlaceholder: "Cuardaigh",
   clearSearchAriaLabel: "Glan an cuardach",
+  closeCountrySelectorAriaLabel: "Dún",
   searchEmptyState: "Níor aimsíodh aon torthaí",
 
   searchSummaryAria(count) {

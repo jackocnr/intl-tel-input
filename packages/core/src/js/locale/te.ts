@@ -8,6 +8,7 @@ const interfaceTranslations: UiTranslations = {
   countryListAriaLabel: "దేశాల జాబితా",
   searchPlaceholder: "వెతకండి",
   clearSearchAriaLabel: "శోధనను క్లియర్ చేయండి",
+  closeCountrySelectorAriaLabel: "మూసివేయండి",
   searchEmptyState: "ఎటువంటి ఫలితాలు లభించలేదు",
 
   searchSummaryAria(count) {

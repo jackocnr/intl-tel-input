@@ -9,6 +9,7 @@ const interfaceTranslations: UiTranslations = {
   countryListAriaLabel: "Lista tal-pajjiżi",
   searchPlaceholder: "Fittex",
   clearSearchAriaLabel: "Ħassar it-tfittxija",
+  closeCountrySelectorAriaLabel: "Agħlaq",
   searchEmptyState: "Ma nstabux riżultati",
 
   searchSummaryAria(count) {

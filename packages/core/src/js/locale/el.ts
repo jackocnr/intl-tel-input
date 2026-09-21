@@ -8,6 +8,7 @@ const interfaceTranslations: UiTranslations = {
   countryListAriaLabel: "Κατάλογος χωρών",
   searchPlaceholder: "Αναζήτηση",
   clearSearchAriaLabel: "Εκκαθάριση αναζήτησης",
+  closeCountrySelectorAriaLabel: "Κλείσιμο",
   searchEmptyState: "Δεν βρέθηκαν αποτελέσματα",
 
   searchSummaryAria(count) {

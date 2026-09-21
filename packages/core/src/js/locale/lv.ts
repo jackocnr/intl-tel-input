@@ -8,6 +8,7 @@ const interfaceTranslations: UiTranslations = {
   countryListAriaLabel: "Valstu saraksts",
   searchPlaceholder: "Meklēt",
   clearSearchAriaLabel: "Notīrīt meklēšanu",
+  closeCountrySelectorAriaLabel: "Aizvērt",
   searchEmptyState: "Rezultāti nav atrasti",
 
   searchSummaryAria(count) {

@@ -8,6 +8,7 @@ const interfaceTranslations: UiTranslations = {
   countryListAriaLabel: "Lista țărilor",
   searchPlaceholder: "Căutare",
   clearSearchAriaLabel: "Șterge căutarea",
+  closeCountrySelectorAriaLabel: "Închide",
   searchEmptyState: "Nici un rezultat găsit",
 
   searchSummaryAria(count) {

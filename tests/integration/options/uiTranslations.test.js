@@ -40,6 +40,18 @@ describe("uiTranslations option", () => {
     expect(clearButton.getAttribute("aria-label")).toBe("Effacer la recherche");
   });
 
+  test("close button aria-label overridden (fullscreen popup)", async () => {
+    teardown(iti);
+    const fullscreenOptions = {
+      countrySelectorMode: "FULLSCREEN",
+      uiTranslations: { closeCountrySelectorAriaLabel: "Fermer" },
+    };
+    ({ iti, container } = initIntlTelInput({ options: fullscreenOptions }));
+    await clickSelectedCountryAsync(container, user);
+    const closeButton = container.ownerDocument.querySelector(".iti__close-button");
+    expect(closeButton.getAttribute("aria-label")).toBe("Fermer");
+  });
+
   test("no-results message and a11y summary use uiTranslations strings", async () => {
     // open dropdown and type a nonsense search to get no results
     await clickSelectedCountryAsync(container, user);

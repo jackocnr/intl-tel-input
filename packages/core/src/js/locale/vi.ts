@@ -8,6 +8,7 @@ const interfaceTranslations: UiTranslations = {
   countryListAriaLabel: "Danh sách các quốc gia",
   searchPlaceholder: "Khám xét",
   clearSearchAriaLabel: "Xóa tìm kiếm",
+  closeCountrySelectorAriaLabel: "Đóng",
   searchEmptyState: "Không tìm thấy kết quả nào",
 
   searchSummaryAria(count) {

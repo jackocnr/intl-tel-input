@@ -4,6 +4,7 @@ import { buildClassNames, createEl } from "../helpers/dom.js";
 import {
   buildSearchIcon,
   buildClearIcon,
+  buildCloseIcon,
   buildCheckIcon,
   buildGlobeIcon,
 } from "./icons.js";
@@ -47,6 +48,7 @@ export default class UI {
   #selectedDialCodeEl?: HTMLElement;
   #arrowEl?: HTMLElement;
   #countrySelectorEl?: HTMLElement;
+  #closeButtonEl?: HTMLButtonElement;
   #searchIconEl?: HTMLElement;
   #searchInputEl?: HTMLInputElement;
   #searchClearButtonEl?: HTMLButtonElement;
@@ -298,6 +300,10 @@ export default class UI {
       this.#countrySelectorEl.setAttribute("dir", "rtl");
     }
 
+    if (isFullscreen) {
+      this.#buildCloseButton();
+    }
+
     if (countrySearch) {
       this.#buildSearchUI();
     }
@@ -355,6 +361,22 @@ export default class UI {
       return dropdownParent;
     }
     return null;
+  }
+
+  //* Fullscreen popup only: a close button, as the backdrop (tap to close) is not discoverable, and is unreachable for screen reader users.
+  //* It lives inside the country selector (role=dialog, aria-modal) so assistive tech can reach it, but the CSS positions it out in the corner of the backdrop.
+  #buildCloseButton(): void {
+    this.#closeButtonEl = createEl(
+      "button",
+      {
+        type: "button",
+        class: this.#withSlotClass("closeButton", "iti__close-button"),
+        [ARIA.LABEL]: this.#options.uiTranslations.closeCountrySelectorAriaLabel,
+        tabindex: "-1",
+      },
+      this.#countrySelectorEl!,
+    ) as HTMLButtonElement;
+    this.#closeButtonEl.appendChild(buildCloseIcon());
   }
 
   #buildSearchUI(): void {
@@ -941,7 +963,7 @@ export default class UI {
   }
 
   //* Wire up all listeners needed while the country selector is open: list-item hover (highlight),
-  //* list-item click & enter key (select), click-off & escape (close), search input (filter),
+  //* list-item click & enter key (select), click-off, close button & escape (close), search input (filter),
   //* (when countrySearch disabled) typed-char hidden search, and (when the country selector is in an
   //* external container) update (fixed) position on scroll/resize.
   #bindCountrySelectorOpenListeners(
@@ -955,6 +977,15 @@ export default class UI {
       this.#bindOutsideClickToClose(signal, onClose);
     }
     this.#bindCountrySelectorKeydownListener(signal, onSelect, onClose);
+    this.#closeButtonEl?.addEventListener(
+      "click",
+      (): void => {
+        onClose();
+        //* Accessibility: re-focus the select country button (same as closing with the escape key).
+        this.#selectedCountryEl!.focus();
+      },
+      { signal },
+    );
     if (this.#options.countrySearch) {
       this.#bindSearchInputListener(signal);
     }

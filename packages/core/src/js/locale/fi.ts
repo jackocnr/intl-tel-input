@@ -8,6 +8,7 @@ const interfaceTranslations: UiTranslations = {
   countryListAriaLabel: "Luettelo maista",
   searchPlaceholder: "Haku",
   clearSearchAriaLabel: "Tyhjennä haku",
+  closeCountrySelectorAriaLabel: "Sulje",
   searchEmptyState: "Ei tuloksia",
 
   searchSummaryAria(count) {

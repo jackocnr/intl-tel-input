@@ -66,6 +66,8 @@ Here is the full set of UI strings the [`uiTranslations`](/docs/options#uitransl
   searchPlaceholder: "Search",
   // Aria label for the clear search button
   clearSearchAriaLabel: "Clear search",
+  // Aria label for the close button on the fullscreen popup
+  closeCountrySelectorAriaLabel: "Close",
   // Visible text for when the search produces no results
   searchEmptyState: "No results found",
   // Screen reader summary of search results

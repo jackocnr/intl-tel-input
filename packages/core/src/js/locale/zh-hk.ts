@@ -7,6 +7,7 @@ const interfaceTranslations: UiTranslations = {
   countryListAriaLabel: "國家清單",
   searchPlaceholder: "搜尋",
   clearSearchAriaLabel: "清除搜尋",
+  closeCountrySelectorAriaLabel: "關閉",
   searchEmptyState: "未找到相關項目",
 
   searchSummaryAria(count) {

@@ -18,6 +18,8 @@
   --iti-globe-icon-size: 17px;
   /* Separate height for the search clear icon, which looks too big if it's the same as the others. */
   --iti-clear-icon-size: 15px;
+  /* Separate size for the fullscreen popup's close icon, which is bigger as it sits on its own out on the backdrop. */
+  --iti-close-icon-size: 20px;
   /* This border width is used for the popup and divider, but it is also assumed to be the border width of the input, which we do not control. */
   --iti-border-width: 1px;
   /* Arrow */
@@ -27,8 +29,8 @@
 
   /* NOTE: image paths are now defined in intlTelInputWithAssets.css */
 
-  /* Enough space for them to click off to close. */
-  --iti-mobile-popup-margin: 30px;
+  /* Enough space for the close button, which goes in the top-right corner of this margin. */
+  --iti-mobile-popup-margin: 44px;
 
   /* Colour used for the flash variant of the strictRejectAnimation option (shown when the user has prefers-reduced-motion). */
   --iti-strict-reject-flash-color: rgba(255, 0, 0, 0.12);
@@ -424,6 +426,44 @@
     flex-direction: column;
     max-height: 100%;
     position: relative; /* Override needed in order to get full-width working properly. */
+  }
+
+  /* The close button is inside the country selector (for a11y), but displayed out on the backdrop, filling the corner square of the margin, diagonally off the country selector's top corner. On mobile, that is the top corner of the screen. */
+  .iti__close-button {
+    position: absolute;
+    bottom: 100%;
+    right: calc(-1 * var(--iti-mobile-popup-margin));
+    width: var(--iti-mobile-popup-margin);
+    height: var(--iti-mobile-popup-margin);
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-radius: 3px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    [dir="rtl"] & {
+      right: auto;
+      left: calc(-1 * var(--iti-mobile-popup-margin));
+    }
+
+    &:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: -2px;
+    }
+  }
+
+  .iti__close-button-svg {
+    width: var(--iti-close-icon-size);
+    height: var(--iti-close-icon-size);
+    display: block;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.75;
+    stroke-linecap: round;
   }
 
   /* give the search input the same v-padding as the country items, for visual consistency */

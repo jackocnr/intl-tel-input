@@ -8,6 +8,7 @@ const interfaceTranslations: UiTranslations = {
   countryListAriaLabel: "국가 목록",
   searchPlaceholder: "검색",
   clearSearchAriaLabel: "검색 지우기",
+  closeCountrySelectorAriaLabel: "닫기",
   searchEmptyState: "검색 결과가 없습니다",
 
   searchSummaryAria(count) {

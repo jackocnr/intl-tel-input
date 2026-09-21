@@ -8,6 +8,7 @@ const interfaceTranslations: UiTranslations = {
   countryListAriaLabel: "国のリスト",
   searchPlaceholder: "検索",
   clearSearchAriaLabel: "検索をクリア",
+  closeCountrySelectorAriaLabel: "閉じる",
   searchEmptyState: "結果が見つかりません",
 
   searchSummaryAria(count) {

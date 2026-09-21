@@ -8,6 +8,7 @@ const interfaceTranslations: UiTranslations = {
   countryListAriaLabel: "Liste over land",
   searchPlaceholder: "Søk",
   clearSearchAriaLabel: "Tøm søk",
+  closeCountrySelectorAriaLabel: "Lukk",
   searchEmptyState: "Ingen resultater funnet",
 
   searchSummaryAria(count) {

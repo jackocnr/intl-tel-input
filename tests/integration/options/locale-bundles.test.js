@@ -12,6 +12,7 @@ const UI_TRANSLATION_KEYS = [
   "selectedCountryAriaLabel",
   "searchPlaceholder",
   "clearSearchAriaLabel",
+  "closeCountrySelectorAriaLabel",
   "countryListAriaLabel",
   "noCountrySelected",
   "searchEmptyState",

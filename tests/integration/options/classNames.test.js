@@ -32,7 +32,7 @@ const SLOT_SELECTORS = {
 
 //* Slots that can't be asserted in the default inline rendering, so are covered
 //* by their own describe blocks below.
-const SLOTS_COVERED_SEPARATELY = ["countrySelectorContainer"];
+const SLOTS_COVERED_SEPARATELY = ["countrySelectorContainer", "closeButton"];
 
 describe("classNames option", () => {
   test("every slot is covered by this test file", () => {
@@ -168,6 +168,7 @@ describe("classNames option", () => {
         classNames: {
           countrySelector: "custom-selector",
           countrySelectorContainer: "custom-selector-container",
+          closeButton: "custom-close",
         },
         countrySelectorMode: "FULLSCREEN",
       };
@@ -175,6 +176,12 @@ describe("classNames option", () => {
     });
 
     afterEach(() => teardown(iti));
+
+    test("adds the class to the close button", async () => {
+      await clickSelectedCountryAsync(container, user);
+      const closeButton = container.ownerDocument.querySelector(".iti__close-button");
+      expect(closeButton.classList).toContain("custom-close");
+    });
 
     test("adds the classes to the detached country selector and its container", async () => {
       await clickSelectedCountryAsync(container, user);

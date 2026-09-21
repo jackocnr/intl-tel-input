@@ -9,6 +9,7 @@ const interfaceTranslations: UiTranslations = {
   countryListAriaLabel: "Երկրների ցանկ",
   searchPlaceholder: "Որոնում",
   clearSearchAriaLabel: "Մաքրել որոնումը",
+  closeCountrySelectorAriaLabel: "Փակել",
   searchEmptyState: "Արդյունքներ չեն գտնվել",
 
   searchSummaryAria(count) {

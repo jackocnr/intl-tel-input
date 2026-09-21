@@ -8,6 +8,7 @@ const interfaceTranslations: UiTranslations = {
   countryListAriaLabel: "Senarai negara",
   searchPlaceholder: "Cari",
   clearSearchAriaLabel: "Kosongkan carian",
+  closeCountrySelectorAriaLabel: "Tutup",
   searchEmptyState: "Tiada hasil ditemui",
 
   searchSummaryAria(count) {

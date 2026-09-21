@@ -8,6 +8,7 @@ const interfaceTranslations: UiTranslations = {
   countryListAriaLabel: "Seznam zemí",
   searchPlaceholder: "Vyhledat",
   clearSearchAriaLabel: "Vymazat vyhledávání",
+  closeCountrySelectorAriaLabel: "Zavřít",
   searchEmptyState: "Nebyly nalezeny žádné výsledky",
 
   searchSummaryAria(count) {

@@ -93,6 +93,8 @@ export interface ItiClassNames {
    * otherwise escape it. Does not exist for a normal inline dropdown.
    */
   countrySelectorContainer?: string;
+  /** The close `<button>` shown in the corner of the fullscreen popup. Does not exist for a dropdown. */
+  closeButton?: string;
   /** The `<div>` wrapping the country search input and its icons. Requires `countrySearch`. */
   searchWrapper?: string;
   /** The search (magnifying glass) icon `<span>`. Requires `countrySearch`. */

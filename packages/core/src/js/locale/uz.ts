@@ -9,6 +9,7 @@ const interfaceTranslations: UiTranslations = {
   countryListAriaLabel: "Davlatlar roʻyxati",
   searchPlaceholder: "Davlatni qidiring",
   clearSearchAriaLabel: "Qidiruvni tozalang",
+  closeCountrySelectorAriaLabel: "Yopish",
   searchEmptyState: "Natija topilmadi",
 
   searchSummaryAria(count) {

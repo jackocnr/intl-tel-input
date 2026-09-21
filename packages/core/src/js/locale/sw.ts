@@ -8,6 +8,7 @@ const interfaceTranslations: UiTranslations = {
   countryListAriaLabel: "Orodha ya nchi",
   searchPlaceholder: "Tafuta",
   clearSearchAriaLabel: "Futa utafutaji",
+  closeCountrySelectorAriaLabel: "Funga",
   searchEmptyState: "Hakuna matokeo yaliyopatikana",
 
   searchSummaryAria(count) {

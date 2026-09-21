@@ -8,6 +8,7 @@ const interfaceTranslations: UiTranslations = {
   countryListAriaLabel: "ದೇಶಗಳ ಪಟ್ಟಿ",
   searchPlaceholder: "ಹುಡುಕಿ",
   clearSearchAriaLabel: "ಹುಡುಕಾಟ ಅಳಿಸಿ",
+  closeCountrySelectorAriaLabel: "ಮುಚ್ಚಿ",
   searchEmptyState: "ಯಾವುದೇ ಫಲಿತಾಂಶಗಳಿಲ್ಲ",
 
   searchSummaryAria(count) {
