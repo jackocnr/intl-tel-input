@@ -270,6 +270,7 @@
   right: 0;
   position: fixed;
   padding: var(--iti-mobile-popup-margin);
+  padding-bottom: calc(var(--iti-mobile-popup-margin) + var(--iti-virtual-keyboard-height, 0px));
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -284,6 +285,9 @@
 .iti--fullscreen-popup .iti__search-input {
   padding-top: 10px;
   padding-bottom: 10px;
+}
+.iti--fullscreen-popup .iti__search-input {
+  font-size: max(16px, 1em);
 }
 .iti--fullscreen-popup .iti__country {
   padding-left: 10px;
