@@ -943,17 +943,19 @@ export default class UI {
     ) {
       // Size it now too: if the keyboard is already open (e.g. user was typing in the tel input), iOS keeps it open as focus moves to the search input, so no resize event fires (issue #2200).
       this.#adjustFullscreenPopupToViewport();
-      window.visualViewport.addEventListener(
-        "resize",
-        (): void => {
-          this.#adjustFullscreenPopupToViewport();
-          // Re-scroll to highlighted item after keyboard resize
-          if (this.#highlightedListItemEl) {
-            this.#scrollCountryListToItem(this.#highlightedListItemEl);
-          }
-        },
-        { signal: this.#countrySelectorAbortController.signal },
-      );
+      const onViewportResize = (): void => {
+        this.#adjustFullscreenPopupToViewport();
+        // Re-scroll to highlighted item after keyboard resize
+        if (this.#highlightedListItemEl) {
+          this.#scrollCountryListToItem(this.#highlightedListItemEl);
+        }
+      };
+      const { signal } = this.#countrySelectorAbortController;
+      // The visual viewport shrinks for the keyboard in all browsers.
+      window.visualViewport.addEventListener("resize", onViewportResize, { signal });
+      // Some browsers (Chrome on iOS, Chrome on Android by default) also shrink the layout viewport for the keyboard, which arrives as a window resize, possibly after the visualViewport one.
+      // As the keyboard height is measured relative to the popup (which fills the layout viewport), it must be recomputed once that has settled too (issue #2200).
+      window.addEventListener("resize", onViewportResize, { signal });
     }
 
     // Update the arrow.

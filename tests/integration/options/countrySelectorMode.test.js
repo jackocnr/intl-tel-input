@@ -148,18 +148,19 @@ describe("countrySelectorMode option", () => {
     // jsdom has no visualViewport (or layout), so fake the viewport and the popup's height to simulate the virtual keyboard
     describe("with a virtual keyboard (visualViewport)", () => {
       const KEYBOARD_VAR = "--iti-virtual-keyboard-height";
-      let fakeViewport;
+      let fakeViewport, layoutHeight;
       const getPopup = () => document.querySelector(".iti--fullscreen-popup");
       const getKeyboardHeight = (popup) => popup.style.getPropertyValue(KEYBOARD_VAR);
 
       beforeEach(() => {
+        layoutHeight = window.innerHeight;
         fakeViewport = Object.assign(new EventTarget(), {
-          height: window.innerHeight,
+          height: layoutHeight,
         });
         window.visualViewport = fakeViewport;
-        // the popup is fullscreen (top:0, bottom:0), so its height is the window height
+        // the popup is fullscreen (top:0, bottom:0), so its height is the layout viewport height
         vi.spyOn(HTMLElement.prototype, "offsetHeight", "get").mockImplementation(function () {
-          return this.classList.contains("iti--fullscreen-popup") ? window.innerHeight : 0;
+          return this.classList.contains("iti--fullscreen-popup") ? layoutHeight : 0;
         });
       });
 
@@ -180,6 +181,28 @@ describe("countrySelectorMode option", () => {
         fakeViewport.height = window.innerHeight - 300;
         fakeViewport.dispatchEvent(new Event("resize"));
         expect(getKeyboardHeight(getPopup())).toEqual("300px");
+      });
+
+      // Chrome on iOS shrinks the layout viewport for the keyboard too, after the visualViewport has already shrunk (and fired).
+      // The popup shrinks with it, so the keyboard height measured relative to the popup must be recomputed on window resize,
+      // else the popup is padded by the keyboard height AND shrunk by it, leaving no room for the country list (issue #2200).
+      test("resets the keyboard height when the layout viewport also shrinks for the keyboard (Chrome iOS)", async () => {
+        await clickSelectedCountryAsync(container, user);
+        fakeViewport.height = layoutHeight - 300;
+        fakeViewport.dispatchEvent(new Event("resize"));
+        expect(getKeyboardHeight(getPopup())).toEqual("300px");
+        layoutHeight -= 300;
+        window.dispatchEvent(new Event("resize"));
+        expect(getKeyboardHeight(getPopup())).toEqual("0px");
+      });
+
+      test("stops listening for window resize on close", async () => {
+        await clickSelectedCountryAsync(container, user);
+        const popup = getPopup();
+        await user.keyboard("{Escape}");
+        fakeViewport.height = layoutHeight - 300;
+        window.dispatchEvent(new Event("resize"));
+        expect(getKeyboardHeight(popup)).toEqual("");
       });
 
       test("never sets a height on the popup itself, so the dark backdrop stays fullscreen behind the keyboard", async () => {
