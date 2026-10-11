@@ -3,17 +3,17 @@ import type { UiTranslations } from "./types.js";
 
 const interfaceTranslations: UiTranslations = {
   selectedCountryAriaLabel:
-    "Schimbă țara pentru numărul de telefon, selectată ${countryName} (${dialCode})",
+    "Schimbă țara pentru numărul de telefon, țara selectată: ${countryName} (${dialCode})",
   noCountrySelected: "Selectează țara pentru numărul de telefon",
   countryListAriaLabel: "Lista țărilor",
   searchPlaceholder: "Căutare",
   clearSearchAriaLabel: "Șterge căutarea",
   closeCountrySelectorAriaLabel: "Închide",
-  searchEmptyState: "Nici un rezultat găsit",
+  searchEmptyState: "Niciun rezultat găsit",
 
   searchSummaryAria(count) {
     if (count === 0) {
-      return "Nici un rezultat găsit";
+      return "Niciun rezultat găsit";
     }
     if (count === 1) {
       return "1 rezultat găsit";
