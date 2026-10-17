@@ -1,11 +1,12 @@
 {
   "version": 1,
-  "include": ["/*"],
+  "include": [
+    "/",
+    "/playground",
+    "/docs/*",
+    "/examples/*"
+  ],
   "exclude": [
-    "/css/*",
-    "/img/*",
-    "/js/*",
-    "/intl-tel-input/*",
-    "/ads.txt"
+    "/examples/js/*"
   ]
 }
