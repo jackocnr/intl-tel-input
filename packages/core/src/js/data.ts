@@ -4,7 +4,7 @@
 //* Criteria for the core library to support a given country/territory:
 //* - It has an iso2 code: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
 //* - It has a flag in the flag-icons project: https://github.com/lipis/flag-icons/tree/main/flags/4x3
-//* - It is supported by libphonenumber (it must be listed on this page): https://github.com/googlei18n/libphonenumber/blob/master/resources/ShortNumberMetadata.xml
+//* - It is supported by libphonenumber (it must be listed on this page): https://github.com/google/libphonenumber/blob/master/resources/ShortNumberMetadata.xml
 
 //* Criteria for the core library to support area codes for a given country/territory:
 //* - The area codes cover all valid numbers for that territory (there are no valid numbers outside of those area codes)
