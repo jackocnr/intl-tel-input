@@ -126,7 +126,7 @@ const getValidationError = (number, iso2) => {
     return validationErrorName[result] || null;
   } catch (e) {
     //* Here I convert thrown errors into ValidationResult enums (if possible).
-    //* errors are from i18n.phonenumbers.Error in the file https://github.com/googlei18n/libphonenumber/blob/master/javascript/i18n/phonenumbers/phonenumberutil.js.
+    //* errors are from i18n.phonenumbers.Error in the file https://github.com/google/libphonenumber/blob/master/javascript/i18n/phonenumbers/phonenumberutil.js.
     if (e.message === i18n.phonenumbers.Error.INVALID_COUNTRY_CODE) {
       return "INVALID_COUNTRY_CODE";
     }
