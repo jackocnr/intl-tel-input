@@ -1,12 +1,12 @@
-//* Portuguese. Translated by: Google Translate.
+//* Portuguese. Translated by: Vitor Coelho.
 import type { UiTranslations } from "./types.js";
 
 const interfaceTranslations: UiTranslations = {
   selectedCountryAriaLabel:
-    "Alterar país para o número de telefone, selecionado ${countryName} (${dialCode})",
-  noCountrySelected: "Selecionar país para o número de telefone",
+    "Alterar o país do número de telefone. Selecionado: ${countryName} (${dialCode})",
+  noCountrySelected: "Selecionar o país do número de telefone",
   countryListAriaLabel: "Lista de países",
-  searchPlaceholder: "Procurar",
+  searchPlaceholder: "Pesquisar",
   clearSearchAriaLabel: "Limpar pesquisa",
   closeCountrySelectorAriaLabel: "Fechar",
   searchEmptyState: "Nenhum resultado encontrado",
