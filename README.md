@@ -6,13 +6,13 @@ For entering, formatting, and validating international telephone numbers. Availa
 [Explore docs »](https://intl-tel-input.com/docs/integrations)
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/iti-github-dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/iti-github-light.png">
-  <img width="271" height="279" alt="intl-tel-input screenshot showing country dropdown open" src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/iti-github-light.png">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/jackocnr/intl-tel-input/master/screenshots/iti-github-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/jackocnr/intl-tel-input/master/screenshots/iti-github-light.png">
+  <img width="271" height="279" alt="intl-tel-input screenshot showing country dropdown open" src="https://raw.githubusercontent.com/jackocnr/intl-tel-input/master/screenshots/iti-github-light.png">
 </picture>
 
 ## Sponsored by
-<img src="https://raw.github.com/jackocnr/intl-tel-input/master/screenshots/twilio.webp" height="100" alt="Twilio"/>
+<img src="https://raw.githubusercontent.com/jackocnr/intl-tel-input/master/screenshots/twilio.webp" height="100" alt="Twilio"/>
 
 Use [Twilio's API to build phone verification, SMS 2FA, appointment reminders, marketing notifications and so much more](https://www.twilio.com/blog/international-telephone-input-twilio?utm_source=github&utm_medium=referral&utm_campaign=intl_tel_input). We can't wait to see what you build.
 
@@ -55,7 +55,7 @@ See the [contributing guide](https://github.com/jackocnr/intl-tel-input/blob/mas
 ## Attributions
 * Flag images from [flag-icons](https://github.com/lipis/flag-icons)
 * Original country data from mledoze's [World countries in JSON, CSV and XML](https://github.com/mledoze/countries)
-* Formatting/validation/example number code from [libphonenumber](https://github.com/googlei18n/libphonenumber)
+* Formatting/validation/example number code from [libphonenumber](https://github.com/google/libphonenumber)
 
 User testing powered by [BrowserStack Open-Source Program](https://www.browserstack.com/open-source)  
 
