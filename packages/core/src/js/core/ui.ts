@@ -207,9 +207,10 @@ export default class UI {
       );
     }
 
+    //* Note: these children are <span> (not <div>) because the parent can be a <button>, which only permits phrasing content. They're all flex items, so they render identically.
     // The element that gets a grey background on hover (if the country selector is enabled)
     const selectedCountryPrimary = createEl(
-      "div",
+      "span",
       {
         class: this.#withSlotClass(
           "selectedCountryPrimary",
@@ -221,14 +222,14 @@ export default class UI {
 
     //* This is where we will add the selected flag (or globe) class later
     this.#selectedFlagEl = createEl(
-      "div",
+      "span",
       { class: this.#withSlotClass("selectedFlag", CLASSES.FLAG) },
       selectedCountryPrimary,
     );
 
     if (enableCountrySelector) {
       this.#arrowEl = createEl(
-        "div",
+        "span",
         {
           class: this.#withSlotClass("arrow", "iti__arrow"),
           [ARIA.HIDDEN]: "true",
@@ -239,7 +240,7 @@ export default class UI {
 
     if (separateDialCode) {
       this.#selectedDialCodeEl = createEl(
-        "div",
+        "span",
         {
           class: this.#withSlotClass(
             "selectedDialCode",

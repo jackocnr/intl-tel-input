@@ -154,6 +154,22 @@ describe("UI.buildMarkup", () => {
     expect(selectedCountryEl.getAttribute(ARIA.HASPOPUP)).toBe("dialog");
   });
 
+  test("selectedCountry button only contains phrasing content (valid HTML: <button> cannot contain <div>)", () => {
+    const { input } = buildUI({ countrySelectorMode: "DROPDOWN", separateDialCode: true, showFlags: true });
+    const selectedCountryEl = getSelectedCountryEl(input);
+    expect(selectedCountryEl.tagName).toBe("BUTTON");
+    // sanity check: the flag, arrow, dial code and their wrapper are all present
+    expect(selectedCountryEl.querySelector(".iti__selected-country-primary")).not.toBeNull();
+    expect(selectedCountryEl.querySelector(".iti__flag")).not.toBeNull();
+    expect(selectedCountryEl.querySelector(".iti__arrow")).not.toBeNull();
+    expect(selectedCountryEl.querySelector(".iti__selected-dial-code")).not.toBeNull();
+    const descendants = Array.from(selectedCountryEl.querySelectorAll("*"));
+    expect(descendants.length).toBeGreaterThan(0);
+    for (const el of descendants) {
+      expect(el.tagName).toBe("SPAN");
+    }
+  });
+
   test("creates selectedCountry div when countrySelectorMode is 'OFF'", () => {
     const { input } = buildUI({ countrySelectorMode: "OFF", showFlags: true });
     expect(getSelectedCountryEl(input).tagName).toBe("DIV");
