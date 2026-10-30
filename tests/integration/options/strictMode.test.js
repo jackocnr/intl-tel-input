@@ -6,6 +6,7 @@ import { userEvent } from "@testing-library/user-event";
 import { fireEvent } from "@testing-library/dom";
 import {
   initIntlTelInput,
+  intlTelInput,
   teardown,
   stripFormattingChars,
   selectCountryAndTypePlaceholderNumberAsync,
@@ -569,6 +570,71 @@ describe("strictMode option", () => {
       ({ input, iti, container } = initIntlTelInput({ options: { initialCountry: "us", strictMode: true, strictRejectAnimation: false } }));
       await user.type(input, "a");
       expect(container.classList.contains("iti__strict-reject-animation")).toBe(false);
+    });
+  });
+
+  // PREV BUG: https://github.com/jackocnr/intl-tel-input/issues/2213
+  // Gambia allows 7 or 9 digit numbers (but not 8), so the max length can't be found by appending digits to the 7-digit example number
+  describe("country with non-contiguous valid lengths (Gambia)", () => {
+    let input, iti, user;
+
+    beforeEach(() => {
+      user = userEvent.setup();
+    });
+
+    afterEach(() => {
+      teardown(iti);
+    });
+
+    test("allows typing a 9 digit number, but not a 10th digit", async () => {
+      ({ input, iti } = initIntlTelInput({ options: { initialCountry: "gm", strictMode: true } }));
+      await user.type(input, "877546513");
+      expect(iti.getNumber()).toBe("+220877546513");
+      expect(iti.isValidNumber()).toBe(true);
+      await user.type(input, "1");
+      expect(iti.getNumber()).toBe("+220877546513");
+    });
+
+    test("still allows typing a 7 digit number", async () => {
+      ({ input, iti } = initIntlTelInput({ options: { initialCountry: "gm", strictMode: true } }));
+      await user.type(input, "3012345");
+      expect(iti.getNumber()).toBe("+2203012345");
+      expect(iti.isValidNumber()).toBe(true);
+    });
+
+    test("respects allowedNumberTypes when calculating the max length", async () => {
+      ({ input, iti } = initIntlTelInput({ options: { initialCountry: "gm", strictMode: true, allowedNumberTypes: ["MOBILE"] } }));
+      await user.type(input, "877546513");
+      expect(iti.getNumber()).toBe("+220877546513");
+      expect(iti.isValidNumber()).toBe(true);
+    });
+
+    test("allows pasting a 9 digit number", async () => {
+      ({ input, iti } = initIntlTelInput({ options: { initialCountry: "gm", strictMode: true } }));
+      pasteIntoInput(input, "877546513");
+      expect(iti.getNumber()).toBe("+220877546513");
+    });
+  });
+
+  // The max length is found by probing a run of 9s (see #updateMaxCoreNumberLength). That relies on libphonenumber's parser leaving the 9s intact for every country, which is a property of its metadata, so guard it: probing with other digits must agree, and the result must be the longest length that validation accepts.
+  describe("max length probe assumption holds for every country", () => {
+    const probe = (dialCode, iso2, digit) => {
+      let number = `+${dialCode}${digit.repeat(15)}`;
+      while (number.length > dialCode.length + 1 && !intlTelInput.utils.isValidNumber(number, iso2)) {
+        number = number.slice(0, -1);
+      }
+      return intlTelInput.utils.getCoreNumber(number, iso2).length;
+    };
+
+    test.each(intlTelInput.getAllCountries().map((c) => [c.iso2, c.dialCode]))("%s", (iso2, dialCode) => {
+      const max = probe(dialCode, iso2, "9");
+      expect(max).toBeGreaterThan(0);
+      expect(probe(dialCode, iso2, "5")).toBe(max);
+      expect(probe(dialCode, iso2, "2")).toBe(max);
+      // a 9s number one digit longer than the max must be rejected, so the loop really did stop at the longest valid length (unless we hit the E.164 ceiling, which caps the probe before libphonenumber does e.g. ID and JP have 17 digit possible lengths)
+      if (max < 15) {
+        expect(intlTelInput.utils.isValidNumber(`+${dialCode}${"9".repeat(max + 1)}`, iso2)).toBe(false);
+      }
     });
   });
 });

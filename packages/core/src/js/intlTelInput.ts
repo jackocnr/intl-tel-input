@@ -1115,41 +1115,31 @@ export class Iti {
 
   //* Update the maximum valid number length for the currently selected country.
   #updateMaxCoreNumberLength(): void {
-    const { strictMode, placeholderNumberType, allowedNumberTypes } =
-      this.#options;
+    const { strictMode, allowedNumberTypes } = this.#options;
     if (!strictMode || !intlTelInput.utils) {
       return;
     }
 
-    const iso2 = this.#selectedCountry?.iso2;
-    if (!iso2) {
+    if (!this.#selectedCountry) {
       this.#maxCoreNumberLength = null;
       return;
     }
+    const { iso2, dialCode } = this.#selectedCountry;
 
-    let exampleNumber = intlTelInput.utils.getExampleNumber(
-      iso2,
-      placeholderNumberType,
-      NUMBER_FORMAT.E164,
-    );
-    //* See if adding more digits is still valid to get the true maximum valid length.
-    let validNumber = exampleNumber;
+    //* Start from the longest number E.164 allows and remove digits until libphonenumber accepts the length. We used to start from the example number and add digits, stopping at the first invalid length, which missed countries with non-contiguous valid lengths (e.g. Gambia allows 7 or 9 digits but not 8 - see #2213). The digit 9 is used because the parser leaves a run of 9s intact for every country (unlike e.g. 1, which it rewrites for China).
+    let number = `+${dialCode}${"9".repeat(E164_MAX_DIGITS)}`;
     while (
-      intlTelInput.utils.isValidNumber(
-        exampleNumber,
-        iso2,
-        allowedNumberTypes,
-      )
+      number.length > dialCode.length + 1 &&
+      !intlTelInput.utils.isValidNumber(number, iso2, allowedNumberTypes)
     ) {
-      validNumber = exampleNumber;
-      exampleNumber += "0";
+      number = number.slice(0, -1);
     }
-    const coreNumber = intlTelInput.utils.getCoreNumber(validNumber, iso2);
-    this.#maxCoreNumberLength = coreNumber.length;
+    const coreNumber = intlTelInput.utils.getCoreNumber(number, iso2);
+    this.#maxCoreNumberLength = coreNumber.length || null;
 
-    // hack for Belarus, because for some reason, getCoreNumber("80294911911"), aka the placeholder number, returns "294911911" (9 digits), but getCoreNumber("8029491191"), aka you're typing the penultimate digit of the placeholder number, returns "8029491191" (10 digits) and so strictMode blocks it. so we increase the max length to 10 digits to allow this penultimate digit, and then when they type the final digit, getCoreNumber will return 9 digits again, so it will be fine.
-    if (iso2 === "by") {
-      this.#maxCoreNumberLength = coreNumber.length + 1;
+    // hack for Belarus, because for some reason, getCoreNumber("80294911911"), aka the placeholder number, returns "294911911" (9 digits), but getCoreNumber("8029491191"), aka you're typing the penultimate digit of the placeholder number, returns "8029491191" (10 digits) and so strictMode blocks it. so we increase the max length by 1 to allow this penultimate digit, and then when they type the final digit, getCoreNumber will return 9 digits again, so it will be fine.
+    if (iso2 === "by" && this.#maxCoreNumberLength) {
+      this.#maxCoreNumberLength += 1;
     }
   }
 
