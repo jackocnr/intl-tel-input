@@ -56,10 +56,12 @@ intlTelInput.utils.formatNumberAsYouType("702418", "us"); // "702-418"
 ###### utils.getCoreNumber
 Type: `(number: string, iso2: string | undefined) => string`  
 
-Get the [national significant number](https://en.wikipedia.org/wiki/National_significant_number) (NSN) — the number with any international dial code and national prefix stripped off. Returns an empty string if it can't be parsed.
+Get the [national significant number](https://en.wikipedia.org/wiki/National_significant_number) (NSN) — the number with any international dial code and national prefix stripped off. A leading zero that is part of the number itself (e.g. Italian landlines) is kept. Returns an empty string if it can't be parsed.
 
 ```js
 intlTelInput.utils.getCoreNumber("+1 702-418-1234", "us"); // "7024181234"
+intlTelInput.utils.getCoreNumber("07400 123456", "gb"); // "7400123456" (national prefix stripped)
+intlTelInput.utils.getCoreNumber("+39 06 1234 5678", "it"); // "0612345678" (leading zero kept)
 ```
 
 ###### utils.getExampleNumber

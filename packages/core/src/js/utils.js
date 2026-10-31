@@ -83,8 +83,10 @@ const getCoreNumber = (number, iso2) => {
   try {
     const phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
     const numberObj = phoneUtil.parseAndKeepRawInput(number, iso2);
-    // getNationalNumber returns the NSN (no national prefix)
-    return numberObj.getNationalNumber().toString();
+    //* Use getNationalSignificantNumber rather than getNationalNumber, as the latter is a number so loses any leading
+    //* zero(s) that are part of the NSN e.g. Italian landlines, or Benin/Côte d'Ivoire numbers which start with 01.
+    //* (A national prefix like the UK's 0 is not part of the NSN, so is stripped either way.)
+    return phoneUtil.getNationalSignificantNumber(numberObj);
   } catch {
     return "";
   }

@@ -683,7 +683,7 @@ export class Iti {
     const newValue = before + normalisedKey + after;
     const newFullNumber = this.#buildFullNumber(newValue);
 
-    //* Always enforce the E.164 ceiling, which no valid number can exceed. This is the only cap when there's no country-specific max (e.g. no selected country, so we're in the empty/globe state), and a backstop when there is one, as getCoreNumber can't measure a number it can't parse: it strips leading zeros, and returns empty for anything it fails to parse, both of which would otherwise leave the length unbounded.
+    //* Always enforce the E.164 ceiling, which no valid number can exceed. This is the only cap when there's no country-specific max (e.g. no selected country, so we're in the empty/globe state), and a backstop when there is one, as getCoreNumber returns empty for anything it fails to parse, which would otherwise leave the length unbounded.
     let hasExceededMaxLength =
       getNumeric(newFullNumber).length > E164_MAX_DIGITS;
     if (

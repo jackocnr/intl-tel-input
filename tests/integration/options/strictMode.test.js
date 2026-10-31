@@ -407,58 +407,56 @@ describe("strictMode option", () => {
     });
   });
 
-  // The country max is derived from the parsed core number, which getCoreNumber cannot measure for
-  // input it cannot parse: it strips leading zeros, and returns empty for anything it fails to
-  // parse. The E.164 ceiling of 15 digits backstops both cases.
-  describe("input that libphonenumber cannot parse", () => {
+  // PREV BUG: getCoreNumber dropped leading zeros (it returned "0" for "+380000000000"), so a run of zeros
+  // never reached the country max and only the E.164 ceiling of 15 digits applied. It now keeps leading
+  // zeros, so the country max applies to zeros like any other digit. UA numbers have a national prefix
+  // of 0 and 9 core digits, so 10 typed zeros are accepted (prefix + 9 core) and the 11th is rejected.
+  describe("input of leading zeros", () => {
     let input, iti, user;
 
     afterEach(() => {
       teardown(iti);
     });
 
-    // PREV BUG: getCoreNumber("+380000000000", "ua") is "0", so the core length never hit the max
-    test("caps typed zeros at 15 digits", async () => {
+    test("caps typed zeros at the country max", async () => {
       user = userEvent.setup();
       ({ input, iti } = initIntlTelInput({
         options: { strictMode: true, separateDialCode: false, initialCountry: "ua" },
       }));
       await user.type(input, "+38000000000000000000");
-      expect(stripFormattingChars(input.value)).toBe("+380000000000000");
+      expect(stripFormattingChars(input.value)).toBe("+3800000000000");
     });
 
-    // PREV BUG: leading zeros made the number unparseable, so getCoreNumber returned empty and any
-    // digits could follow
-    test("caps typed zeros followed by other digits at 15 digits", async () => {
+    test("caps typed zeros followed by other digits at the country max", async () => {
       user = userEvent.setup();
       ({ input, iti } = initIntlTelInput({
         options: { strictMode: true, separateDialCode: false, initialCountry: "ua" },
       }));
       await user.type(input, "+3800000000001234567890");
-      expect(stripFormattingChars(input.value)).toBe("+380000000000123");
+      expect(stripFormattingChars(input.value)).toBe("+3800000000001");
     });
 
-    test("counts the separate dial code towards the 15 digits", async () => {
+    test("applies the country max to zeros with separateDialCode", async () => {
       user = userEvent.setup();
       ({ input, iti } = initIntlTelInput({
         options: { strictMode: true, initialCountry: "ua" },
       }));
       await user.type(input, "00000000000000000000");
-      expect(stripFormattingChars(input.value)).toBe("000000000000");
+      expect(stripFormattingChars(input.value)).toBe("0000000000");
     });
 
-    test("trims pasted zeros to 15 digits", async () => {
+    test("trims pasted zeros to the country max", async () => {
       user = userEvent.setup();
       ({ input, iti } = initIntlTelInput({
         options: { strictMode: true, separateDialCode: false, initialCountry: "ua" },
       }));
       await user.click(input);
       expect(pasteIntoInput(input, "+38000000000000000000")).toBe(true);
-      expect(stripFormattingChars(input.value)).toBe("+380000000000000");
+      expect(stripFormattingChars(input.value)).toBe("+3800000000000");
     });
 
-    // the national prefix is legitimately stripped from the core number, so make sure the backstop
-    // hasn't broken normal national format entry
+    // the national prefix is legitimately stripped from the core number, so make sure normal national
+    // format entry still works
     test("still allows a national number with its national prefix", async () => {
       user = userEvent.setup();
       ({ input, iti } = initIntlTelInput({
@@ -613,6 +611,41 @@ describe("strictMode option", () => {
       ({ input, iti } = initIntlTelInput({ options: { initialCountry: "gm", strictMode: true } }));
       pasteIntoInput(input, "877546513");
       expect(iti.getNumber()).toBe("+220877546513");
+    });
+  });
+
+  // PREV BUG: in countries where a leading zero is part of the number itself (not a national prefix),
+  // e.g. Benin, Côte d'Ivoire, Italy, getCoreNumber dropped the zero, so a complete number measured one
+  // digit short of the max and strictMode let one extra digit through
+  describe("country whose numbers start with a leading zero (Benin)", () => {
+    let input, iti, user;
+
+    beforeEach(() => {
+      user = userEvent.setup();
+      ({ input, iti } = initIntlTelInput({ options: { initialCountry: "bj", strictMode: true } }));
+    });
+
+    afterEach(() => {
+      teardown(iti);
+    });
+
+    test("getCoreNumber keeps a leading zero that is part of the number, but still strips a national prefix", () => {
+      expect(intlTelInput.utils.getCoreNumber("+2290195123456", "bj")).toBe("0195123456");
+      expect(intlTelInput.utils.getCoreNumber("0612345678", "it")).toBe("0612345678");
+      expect(intlTelInput.utils.getCoreNumber("07400123456", "gb")).toBe("7400123456");
+    });
+
+    test("allows typing the complete number, but not an extra digit", async () => {
+      await user.type(input, "0195123456");
+      expect(iti.getNumber()).toBe("+2290195123456");
+      expect(iti.isValidNumber()).toBe(true);
+      await user.type(input, "1");
+      expect(iti.getNumber()).toBe("+2290195123456");
+    });
+
+    test("trims a pasted number with an extra digit", async () => {
+      pasteIntoInput(input, "01951234561");
+      expect(iti.getNumber()).toBe("+2290195123456");
     });
   });
 
