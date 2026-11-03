@@ -13,10 +13,14 @@ export interface SearchTokens {
 
 export type SearchTokensMap = Map<Iso2, SearchTokens>;
 
-//* Strip all non-letter chars (any script via \p{L}) so separators like "-", ".", "'", "&" all collapse to a single space.
+//* Strip all non-letter chars (any script via \p{L}, keeping combining marks \p{M} so e.g. Devanagari vowel signs stay attached to their letters) so separators like "-", ".", "'", "&" all collapse to a single space.
 //* Lets queries like "St Pierre" match "St. Pierre & Miquelon", "Sant Elena" match "Sant'Elena", etc., regardless of locale.
 const normaliseName = (s: string): string =>
-  normaliseString(s).replace(/[^\p{L}]+/gu, " ").trim();
+  normaliseString(s)
+    .replace(/[^\p{L}\p{M}]+/gu, " ")
+    //* A combining mark with no base letter before it (e.g. a lone vowel sign typed into the search box) carries no meaning on its own: drop it rather than let it match every name containing that mark.
+    .replace(/(^|\s)\p{M}+/gu, "$1")
+    .trim();
 
 //* Precompute country search tokens (normalised name, initials, +dialCode) to speed up filtering.
 export const buildSearchTokens = (countries: Country[]): SearchTokensMap => {
