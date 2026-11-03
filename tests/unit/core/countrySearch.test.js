@@ -141,6 +141,28 @@ describe("countrySearch getMatchedCountries", () => {
   });
 });
 
+describe("countrySearch combining marks", () => {
+  const hiCountries = [
+    makeCountry({ iso2: "in", dialCode: "91", name: "भारत" }),
+    makeCountry({ iso2: "bt", dialCode: "975", name: "भूटान" }),
+  ];
+  const hiTokens = buildSearchTokens(hiCountries);
+
+  test("keeps vowel signs attached so a query only matches names with the same letters", () => {
+    expect(getMatchedCountries(hiCountries, hiTokens, "भा").map((c) => c.iso2)).toEqual(["in"]);
+    expect(getMatchedCountries(hiCountries, hiTokens, "भू").map((c) => c.iso2)).toEqual(["bt"]);
+  });
+
+  test("a query of only combining marks matches nothing by name", () => {
+    expect(getMatchedCountries(hiCountries, hiTokens, "ा")).toEqual([]);
+    expect(getMatchedCountries(hiCountries, hiTokens, "ू")).toEqual([]);
+  });
+
+  test("full name still matches", () => {
+    expect(getMatchedCountries(hiCountries, hiTokens, "भारत").map((c) => c.iso2)).toEqual(["in"]);
+  });
+});
+
 describe("countrySearch findFirstCountryStartingWith", () => {
   test("finds first alphabetical match by original order", () => {
     const result = findFirstCountryStartingWith(countries, tokens, "uni");
