@@ -1178,7 +1178,7 @@ export class Iti {
 
   //* Called when the user selects a list item from the country list (no-op if listItem is null).
   #selectListItem(listItem: HTMLElement | null): void {
-    if (!listItem) {
+    if (!listItem || this.#ui.telInputEl.matches(":disabled")) {
       return;
     }
     //* Update selected country and active list item.

@@ -1,6 +1,37 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("basic usage test with vanilla library", () => {
+  test("ignores country selection after an open input becomes disabled", async ({ page }) => {
+    await page.goto("/tests-e2e/fixtures/vanilla.html");
+
+    const input = page.locator("#phone");
+    const trigger = page.locator(".iti__selected-country");
+    const unitedKingdom = page.locator(".iti__country[data-iso2='gb']");
+    const changes = await page.evaluateHandle(() => {
+      const iti = (window as any).iti;
+      iti.setSelectedCountry("us");
+      const countries: string[] = [];
+      document.querySelector("#phone")!.addEventListener("countrychange", () => {
+        countries.push(iti.getSelectedCountry().iso2);
+      });
+      return countries;
+    });
+
+    await trigger.click();
+    await expect(unitedKingdom).toBeVisible();
+    await page.evaluate(() => (window as any).iti.setDisabled(true));
+    await expect(input).toBeDisabled();
+    await unitedKingdom.click();
+
+    await expect(trigger).toHaveAttribute("title", "United States");
+    expect(await changes.jsonValue()).toEqual([]);
+
+    await page.evaluate(() => (window as any).iti.setDisabled(false));
+    await unitedKingdom.click();
+    await expect(trigger).toHaveAttribute("title", "United Kingdom");
+    expect(await changes.jsonValue()).toEqual(["gb"]);
+  });
+
   test("can select country and type number and getNumber works", async ({ page }) => {
     // Load vanilla fixture page
     await page.goto("/tests-e2e/fixtures/vanilla.html");
