@@ -108,7 +108,9 @@ input.addEventListener("strict:reject", (e) => {
   let msg;
   if (reason === "max-length") msg = "Maximum length reached for this country";
   else if (source === "paste") msg = "Stripped invalid characters from pasted text";
-  else msg = `Character not allowed: "${rejectedInput}"`;
+  else msg = `Character unot allowed: "${rejectedInput}"`;
   // ...show msg to the user (e.g. toast, aria-live region, inline error)
 });
 ```
+marsoni
+Google Find My Device
