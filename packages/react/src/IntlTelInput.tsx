@@ -7,6 +7,7 @@ import React, {
   useImperativeHandle,
   useCallback,
 } from "react";
+import { useEffectEvent } from "./useEffectEvent";
 
 // make this available as a named export, so react users can access globals like intlTelInput.utils
 export { intlTelInput };
@@ -76,6 +77,8 @@ const IntlTelInput = forwardRef(function IntlTelInput(
   const lastEmittedErrorCodeRef = useRef<ValidationError | null | undefined>(undefined);
   // if an input event fires before utils has loaded, we defer the update until the promise resolves
   const pendingUpdateRef = useRef<boolean>(false);
+  // set once the init promise has resolved, after which iti methods that use utils are safe to call synchronously
+  const readyRef = useRef<boolean>(false);
 
   // keep latest pass-through event handlers in refs so listeners registered once always see fresh callbacks
   const onOpenCountrySelectorRef = useRef(onOpenCountrySelector);
@@ -187,21 +190,52 @@ const IntlTelInput = forwardRef(function IntlTelInput(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // push the controlled value into the input. Only call once the init promise has resolved.
+  const syncValue = useEffectEvent((): void => {
+    // if value is undefined, the component is uncontrolled - do not touch the input
+    if (!itiRef.current?.isActive() || value === undefined) {
+      return;
+    }
+    const next = value ?? "";
+    const currentCanonical = itiRef.current.getNumber() ?? "";
+    const isFocused = document.activeElement === inputRef.current;
+    if (isFocused || currentCanonical === next) {
+      return;
+    }
+    itiRef.current.setNumber(next);
+    update();
+  });
+
+  const handleInitPromise = useEffectEvent((): void => {
+    if (!itiRef.current?.isActive()) {
+      return;
+    }
+    readyRef.current = true;
+    // if an input event fired during the utils-loading gap, replay it now so the skipped emissions fire.
+    // the user's input wins over the controlled value here: the parent hasn't seen the typed number yet, so its
+    // value is stale, and the replay is what brings it back in sync.
+    // otherwise seed the refs with current state so we don't fire change callbacks on initial mount, then apply
+    // the controlled value.
+    if (pendingUpdateRef.current) {
+      pendingUpdateRef.current = false;
+      update();
+    } else {
+      seedInitialState();
+      syncValue();
+    }
+  });
+
   useEffect(() => {
+    let cancelled = false;
     itiRef.current?.promise.then(() => {
-      if (!itiRef.current?.isActive()) {
-        return;
-      }
-      // if an input event fired during the utils-loading gap, replay it now so the skipped emissions fire.
-      // otherwise seed the refs with current state so we don't fire change callbacks on initial mount.
-      if (pendingUpdateRef.current) {
-        pendingUpdateRef.current = false;
-        update();
-      } else {
-        seedInitialState();
+      if (!cancelled) {
+        handleInitPromise();
       }
     });
-  }, [seedInitialState, update]);
+    return (): void => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     if (itiRef.current && disabled !== undefined) {
@@ -216,25 +250,11 @@ const IntlTelInput = forwardRef(function IntlTelInput(
   }, [readOnly]);
 
   useEffect(() => {
-    // if value is undefined, the component is uncontrolled - do not touch the input
-    if (!itiRef.current || value === undefined) {
-      return;
+    // until utils has loaded, the init promise handler above applies the latest value instead
+    if (readyRef.current) {
+      syncValue();
     }
-    // wait for utils to load before trying to access iti methods that use it, e.g. getNumber, setNumber, etc.
-    itiRef.current.promise.then(() => {
-      if (!itiRef.current?.isActive()) {
-        return;
-      }
-      const next = value ?? "";
-      const currentCanonical = itiRef.current.getNumber() ?? "";
-      const isFocused = document.activeElement === inputRef.current;
-      if (isFocused || currentCanonical === next) {
-        return;
-      }
-      itiRef.current.setNumber(next);
-      update();
-    });
-  }, [value, update]);
+  }, [value]);
 
   // ignore keys that would break functionality
   const ignoredInputProps = new Set(["type", "ref", "value", "disabled", "readOnly", "onInput"]);
